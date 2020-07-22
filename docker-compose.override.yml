@@ -1,0 +1,10 @@
+version: '2.3'
+services:
+  db:
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+  server:
+    command: bash -l -c "yarn start:dev"
+    volumes:
+      - .:/opt/node/app
+      - /opt/node/app/node_modules

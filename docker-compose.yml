@@ -2,17 +2,10 @@ version: '2.3'
 services:
   db:
     image: postgres:12
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
   server:
     build: .
-    command: bash -l -c "yarn start"
-    tty: true
+    command: bash -l -c "yarn start:prod"
     env_file:
       - .env
     ports:
       - 3000:3000
-    volumes:
-      - .:/opt/node/app
-      - /opt/node/app/node_modules
-  

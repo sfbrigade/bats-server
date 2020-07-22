@@ -17,6 +17,12 @@ and running, you can view the site in your browser:
 
 http://localhost:3000/
 
+4. To log in to the running server container:
+
+```
+docker-compose exec server bash -l
+```
+
 ## Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -19,4 +19,4 @@ RUN mkdir -p $APP_HOME
 ADD . $APP_HOME
 WORKDIR $APP_HOME
 
-RUN yarn
+RUN yarn && yarn build
