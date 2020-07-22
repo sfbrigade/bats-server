@@ -4,26 +4,46 @@
 
 1. Download and install Docker for your platform
 
-2. In this repo, copy the example.env file to .env and fill in empty variables, if any.
+2. Clone this repo, copy the example.env file to .env and fill in empty variables, if any.
 
 3. Run:
 
-```
-docker-compose up
-```
+   ```
+   docker-compose up
+   ```
 
-Wait a while for container images to download/build, then when everything is up
-and running, you can view the site in your browser:
+   Wait a while for container images to download/build, then when everything is up
+   and running, you can view the site in your browser:
 
-http://localhost:3000/
+   http://localhost:3000/
 
 4. To log in to the running server container:
 
-```
-docker-compose exec server bash -l
-```
+   ```
+   docker-compose exec server bash -l
+   ```
 
-## Create React App
+   After you log in, you can create your database by running:
+
+   ```
+   sequelize db:create
+   ```
+
+   Execute any pending database migrations by running:
+
+   ```
+   sequelize db:migrate
+   ```
+
+   If you wish to inspect the db, you can run:
+
+   ```
+   psql $DATABASE_URL
+   ```
+
+   You can also run the script commands set up by Create React App after logging in.
+
+# Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
