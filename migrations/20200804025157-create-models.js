@@ -57,8 +57,8 @@ module.exports = {
       -- TABLE: hospital 
       --
       CREATE TABLE hospital(
-          hospital_uuid            varchar(60)    NOT NULL,
-          hospitalname             bytea          NOT NULL,
+          hospital_uuid            uuid           NOT NULL,
+          hospitalname             varchar(60)    NOT NULL,
           recordcreatetimestamp    timestamp      NOT NULL,
           recordcreatesource       varchar(50)    NOT NULL,
           recordupdatetimestamp    timestamp      NOT NULL,
