@@ -1,26 +1,45 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import EMS from './ems';
+import Entry from './entry';
+import ER from './er';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            start: true,
+            ems: false,
+            er: false
+        }
+        this.chooseEms = this.chooseEms.bind(this);
+        this.chooseEr = this.chooseEr.bind(this);
+    }
+
+    chooseEms(){
+        this.setState({
+            start: false,
+            ems: true
+        })
+    }
+
+    chooseEr(){
+        this.setState({
+            start: false,
+            er: true
+        })
+    }
+
+    render (){
+        return(
+            <div>
+                {this.state.start && <Entry chooseEms={this.chooseEms} chooseEr={this.chooseEr}/>}
+                {this.state.ems && <EMS />}
+                {this.state.er && <ER />}
+            
+            </div>
+        )
+    }
+
 }
 
 export default App;
