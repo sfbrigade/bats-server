@@ -8,26 +8,40 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      // define associations here
     }
   }
   Hospital.init(
     {
-      hospital_uuid: {
+      hospitalId: {
+        field: "hospital_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
       },
-      hospitalname: { type: DataTypes.STRING.BINARY, allowNull: false },
-      recordcreatedsource: { type: DataTypes.STRING, allowNull: false },
+      hospitalName: {
+        field: "hospitalname",
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      recordUpdateSource: {
+        field: "recordupdatesource",
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      recordCreatedSource: {
+        field: "recordcreatedsource",
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordcreatetimestamp", // set a custom name for createdAt timestamp
-      updatedAt: "recordupdatetimestamp", // set a custom name for updatedAt timestamp
+      createdAt: "recordcreatetimestamp",
+      updatedAt: "recordupdatetimestamp",
       tableName: "hospital",
-      modelName: "hospital",
+      modelName: "Hospital",
     }
   );
   return Hospital;
