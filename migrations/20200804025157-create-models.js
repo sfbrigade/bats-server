@@ -71,7 +71,7 @@ module.exports = {
       CREATE TABLE hospitaladministrator(
           hospitaladministrator_uuid         uuid           NOT NULL,
           hospital_uuid                      uuid           NOT NULL,
-          hospitaladministratoridentifier    char(10)       NOT NULL,
+          hospitaladministratoridentifier    varchar(50)    NOT NULL,
           firstname                          varchar(50)    NOT NULL,
           lastname                           varchar(50)    NOT NULL,
           recordcreatetimestamp              timestamp      NOT NULL,
