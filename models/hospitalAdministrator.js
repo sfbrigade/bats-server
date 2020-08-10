@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         // TODO - add association
         field: "hospital_uuid",
         type: DataTypes.UUID,
-        primaryKey: true,
         allowNull: false,
       },
       hospitalAdministratorIdentifier: {
