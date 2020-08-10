@@ -1,27 +1,44 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Hospital extends Model {
+  class HospitalAdministrator extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define associations here
+      // define association here
       // TODO
     }
   }
-  Hospital.init(
+  HospitalAdministrator.init(
     {
+      hospitalAdministratorId: {
+        field: "hospitaladministrator_uuid",
+        type: DataTypes.UUID,
+        primaryKey: true,
+        allowNull: false,
+      },
       hospitalId: {
+        // TODO - add association
         field: "hospital_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
       },
-      hospitalName: {
-        field: "hospitalname",
+      hospitalAdministratorIdentifier: {
+        field: "hospitaladministratoridentifier",
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      firstName: {
+        field: "firstname",
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      lastName: {
+        field: "lastname",
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -41,9 +58,9 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       createdAt: "recordcreatetimestamp",
       updatedAt: "recordupdatetimestamp",
-      tableName: "hospital",
-      modelName: "Hospital",
+      tableName: "hospitaladministrator",
+      modelName: "HospitalAdministrator",
     }
   );
-  return Hospital;
+  return HospitalAdministrator;
 };
