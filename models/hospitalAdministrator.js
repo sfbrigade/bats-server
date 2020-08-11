@@ -24,11 +24,13 @@ module.exports = (sequelize, DataTypes) => {
         // TODO - add association
         field: "hospital_uuid",
         type: DataTypes.UUID,
+        unique: true,
         allowNull: false,
       },
       hospitalAdministratorIdentifier: {
         field: "hospitaladministratoridentifier",
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false,
       },
       firstName: {

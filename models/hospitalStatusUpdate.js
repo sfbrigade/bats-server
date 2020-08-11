@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         // TODO - add association
         field: "hospital_uuid",
         type: DataTypes.UUID,
+        unique: true,
         allowNull: false,
       },
       hospitalAdministratorId: {
@@ -35,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       updateDatetime: {
         field: "updatedatetime",
         type: Sequelize.DATE,
+        unique: true,
         allowNull: false,
       },
       openedBedCount: {

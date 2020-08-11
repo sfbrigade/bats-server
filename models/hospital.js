@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       hospitalName: {
         field: "hospitalname",
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false,
       },
       recordUpdateSource: {
