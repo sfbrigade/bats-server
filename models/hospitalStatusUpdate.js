@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class HospitalAdministrator extends Model {
+  class HospitalStatusUpdate extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       // TODO
     }
   }
-  HospitalAdministrator.init(
+  HospitalStatusUpdate.init(
     {
       id: {
-        field: "hospitaladministrator_uuid",
+        field: "hospitalstatusupdate_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
         allowNull: false,
@@ -26,20 +26,36 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      hospitalAdministratorIdentifier: {
-        field: "hospitaladministratoridentifier",
-        type: Sequelize.STRING,
+      hospitalAdministratorId: {
+        // TODO - add association
+        field: "hospitaladministrator_uuid",
+        type: DataTypes.UUID,
         allowNull: false,
       },
-      firstName: {
-        field: "firstname",
-        type: DataTypes.STRING,
+      updateDatetime: {
+        field: "updatedatetime",
+        type: Sequelize.DATE,
         allowNull: false,
       },
-      lastName: {
-        field: "lastname",
-        type: DataTypes.STRING,
+      openedBedCount: {
+        field: "openedbedcount",
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      edWaitingRoomCount: {
+        field: "edwaitingroomcount",
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      divertStatusIndicator: {
+        field: "divertstatusindicator",
+        type: DataTypes.BOOLEAN,
         allowNull: false,
+      },
+      additionalServiceAvailabilityNotes: {
+        field: "additionalserviceavailabilitynotes",
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       recordUpdateSource: {
         field: "recordupdatesource",
@@ -57,9 +73,9 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       createdAt: "recordcreatetimestamp",
       updatedAt: "recordupdatetimestamp",
-      tableName: "hospitaladministrator",
-      modelName: "HospitalAdministrator",
+      tableName: "hospitalstatusupdate",
+      modelName: "HospitalStatusUpdate",
     }
   );
-  return HospitalAdministrator;
+  return HospitalStatusUpdate;
 };
