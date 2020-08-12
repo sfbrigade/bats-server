@@ -1,45 +1,43 @@
 import React from 'react';
+//import logo from './logo.svg';
+import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
 import EMS from './containers/EMS/ems';
-import Entry from './containers/entryPoint/entry';
 import ER from './containers/ER/er';
 
 class App extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            start: true,
-            ems: false,
-            er: false
-        }
-        this.chooseEms = this.chooseEms.bind(this);
-        this.chooseEr = this.chooseEr.bind(this);
-    }
+  //Entry point
+  
+  render(){
+    return (
+      <Router>
 
-    chooseEms(){
-        this.setState({
-            start: false,
-            ems: true
-        })
-    }
+        <div className="container">
+          <nav> 
+            <Link className="emsLink" onClick={this.handleClick} to="/ems">EMS</Link>
+            <Link  onClick={this.handleClick} to="/er">ER</Link>           
+          </nav>
 
-    chooseEr(){
-        this.setState({
-            start: false,
-            er: true
-        })
-    }
-
-    render (){
-        return(
-            <div>
-                {this.state.start && <Entry chooseEms={this.chooseEms} chooseEr={this.chooseEr}/>}
-                {this.state.ems && <EMS />}
-                {this.state.er && <ER />}
-            
-            </div>
-        )
-    }
-
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/ems">
+              <EMS />
+            </Route>
+            <Route path="/er">
+              <ER />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+  );}
 }
 
 export default App;
