@@ -1,7 +1,7 @@
 import React from 'react';
-import EMS from './ems';
-import Entry from './entry';
-import ER from './er';
+import EMS from './containers/EMS/ems';
+import Entry from './containers/entryPoint/entry';
+import ER from './containers/ER/er';
 
 class App extends React.Component {
     constructor(props){

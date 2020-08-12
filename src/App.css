@@ -5,31 +5,68 @@
   margin: auto;
   text-align: justify;
 }
-nav {
-  height: 10%;
-  width: 100%;
-  position: relative;
+.bedTab {
+  width: 50%;
+  text-align: center;
+}
+.bedTabSelected {
   background-color: grey;
-  font-size: 36px;
+  width: 50%;
+  text-align: center;
 }
 .beds {
-  height: 10%;
-  width: 50%;
-  position: relative;
-  background-color: grey;
   font-size: 36px;
+  
 }
 .ringDown {
-  height: 56%;
-  width: 86em;
-  position: relative;
-  left: 53%;
-  background-color: grey;
   font-size: 36px;
+}
+.ringDownTab {
+  width: 50%;
+  position: relative;
+  left: 27.79em;
+  top: -2.7em;
+  text-align: center;
+}
+.ringDownTabselected {
+  background-color: grey;
+  width: 50%;
+  position: relative;
+  left: 27.79em;
+  top: -2.7em;
+  text-align: center;
+}
+a:link {
+  color: black;
+}
+a:visited {
+  color: black;
 }
 .bedContent {
   padding: 10% 10% 10% 10%;
 }
 .bedComponentContainer {
   padding: 0% 10% 7% 3%;
+  border-bottom: 0.05px solid black;
+}
+a {
+  text-decoration: none;
+}
+.RingDownInfo {
+  border-bottom: 0.05px solid black ;
+}
+.title {
+  text-align: center;
+}
+label {
+  margin: 0% 0% 0% 3%;
+}
+input {
+  margin: 0% 0% 5% 9.5%;
+  position: relative;
+  left: -130px;
+  top: 21px;
+}
+.emsLink{
+  margin: 10%;
 }
