@@ -10,6 +10,8 @@
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "foreman": "^3.0.1",
+    "http-status-codes": "^1.4.0",
+    "mocha": "^8.1.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "pg": "^8.3.0",
@@ -17,14 +19,18 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "sequelize": "^6.3.3",
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^4.0.2",
+    "supertest-session": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "yarn test:server && yarn test:client --watchAll=false",
+    "test:client": "react-scripts test",
+    "test:server": "mocha --recursive",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

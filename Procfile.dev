@@ -1,2 +1,2 @@
 webpack: react-scripts start
-web: nodemon -V --ignore ./src ./bin/www
+web: nodemon -V --ignore ./src --ignore ./test ./bin/www
