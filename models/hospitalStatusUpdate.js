@@ -1,7 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const Hospital = require("./hospital");
-const hospitalAdministrator = require("./hospitalAdministrator");
 
 module.exports = (sequelize, DataTypes) => {
   class HospitalStatusUpdate extends Model {
@@ -11,22 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      HospitalStatusUpdate.belongsTo(Hospital, {
-        foreignKey: {
-          name: "hospitalId",
-          type: DataTypes.UUID,
-          unique: true,
-          allowNull: false,
-        },
-      });
-      HospitalStatusUpdate.belongsTo(hospitalAdministrator, {
-        foreignKey: {
-          name: "hospitalAdministratorId",
-          type: DataTypes.UUID,
-          unique: true,
-          allowNull: false,
-        },
-      });
+      HospitalStatusUpdate.belongsTo(models.Hospital);
+      HospitalStatusUpdate.belongsTo(models.HospitalAdministrator);
     }
   }
   HospitalStatusUpdate.init(
@@ -52,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       updateDatetime: {
         field: "updatedatetime",
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
