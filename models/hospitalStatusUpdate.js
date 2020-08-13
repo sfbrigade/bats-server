@@ -1,5 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
+const Hospital = require("./hospital");
+const hospitalAdministrator = require("./hospitalAdministrator");
+
 module.exports = (sequelize, DataTypes) => {
   class HospitalStatusUpdate extends Model {
     /**
@@ -8,8 +11,22 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      // TODO
+      HospitalStatusUpdate.belongsTo(Hospital, {
+        foreignKey: {
+          name: "hospitalId",
+          type: DataTypes.UUID,
+          unique: true,
+          allowNull: false,
+        },
+      });
+      HospitalStatusUpdate.belongsTo(hospitalAdministrator, {
+        foreignKey: {
+          name: "hospitalAdministratorId",
+          type: DataTypes.UUID,
+          unique: true,
+          allowNull: false,
+        },
+      });
     }
   }
   HospitalStatusUpdate.init(
