@@ -5,3 +5,5 @@ workflows:
   node-tests:
     jobs:
       - node/test
+        pkg-manager: yarn
+        version: 14.4.0
