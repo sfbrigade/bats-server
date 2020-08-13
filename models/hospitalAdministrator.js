@@ -1,23 +1,10 @@
 "use strict";
 const { Model } = require("sequelize");
-const Hospital = require("./hospital");
 
 module.exports = (sequelize, DataTypes) => {
   class HospitalAdministrator extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      HospitalAdministrator.belongsTo(Hospital, {
-        foreignKey: {
-          name: "hospitalId",
-          type: DataTypes.UUID,
-          unique: true,
-          allowNull: false,
-        },
-      });
+      HospitalAdministrator.belongsTo(Model.Hospital);
     }
   }
   HospitalAdministrator.init(

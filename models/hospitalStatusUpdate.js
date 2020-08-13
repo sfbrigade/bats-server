@@ -1,32 +1,11 @@
 "use strict";
 const { Model } = require("sequelize");
-const Hospital = require("./hospital");
-const hospitalAdministrator = require("./hospitalAdministrator");
 
 module.exports = (sequelize, DataTypes) => {
   class HospitalStatusUpdate extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      HospitalStatusUpdate.belongsTo(Hospital, {
-        foreignKey: {
-          name: "hospitalId",
-          type: DataTypes.UUID,
-          unique: true,
-          allowNull: false,
-        },
-      });
-      HospitalStatusUpdate.belongsTo(hospitalAdministrator, {
-        foreignKey: {
-          name: "hospitalAdministratorId",
-          type: DataTypes.UUID,
-          unique: true,
-          allowNull: false,
-        },
-      });
+      HospitalStatusUpdate.belongsTo(Model.Hospital);
+      HospitalStatusUpdate.belongsTo(Model.hospitalAdministratorId);
     }
   }
   HospitalStatusUpdate.init(
@@ -35,19 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         field: "hospitalstatusupdate_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
-        allowNull: false,
-      },
-      hospitalId: {
-        // TODO - add association
-        field: "hospital_uuid",
-        type: DataTypes.UUID,
-        unique: true,
-        allowNull: false,
-      },
-      hospitalAdministratorId: {
-        // TODO - add association
-        field: "hospitaladministrator_uuid",
-        type: DataTypes.UUID,
         allowNull: false,
       },
       updateDatetime: {
