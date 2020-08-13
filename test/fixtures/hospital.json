@@ -1,0 +1,11 @@
+[
+  {
+    "model": "Hospital",
+    "data": {
+      "id": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "hospitalName": "Fixture Hospital",
+      "recordUpdateSource": "fixture",
+      "recordCreateSource": "fixture"
+    }
+  }
+]

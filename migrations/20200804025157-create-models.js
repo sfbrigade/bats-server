@@ -289,6 +289,7 @@ module.exports = {
     `);
     await queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
     await queryInterface.sequelize.query('ALTER TABLE hospital ALTER COLUMN hospital_uuid SET DEFAULT gen_random_uuid();');
+    await queryInterface.sequelize.query('ALTER TABLE hospitaladministrator ALTER COLUMN hospitaladministrator_uuid SET DEFAULT gen_random_uuid();');
   },
 
   down: async (queryInterface, Sequelize) => {
