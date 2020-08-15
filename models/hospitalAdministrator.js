@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       HospitalId: {
-        // TODO - add association
         field: "hospital_uuid",
         type: DataTypes.UUID,
         unique: true,

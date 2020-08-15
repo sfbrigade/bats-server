@@ -14,6 +14,18 @@ module.exports = (sequelize, DataTypes) => {
         field: "hospitalstatusupdate_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
+        autoIncrement: true,
+      },
+      HospitalId: {
+        field: "hospital_uuid",
+        type: DataTypes.UUID,
+        unique: true,
+        allowNull: false,
+      },
+      HospitalAdministratorId: {
+        field: "hospitaladministrator_uuid",
+        type: DataTypes.UUID,
+        unique: true,
         allowNull: false,
       },
       updateDatetime: {
@@ -47,17 +59,25 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      recordCreatedSource: {
-        field: "recordcreatedsource",
+      recordCreateSource: {
+        field: "recordcreatesource",
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      recordUpdateTimestamp: {
+        field: "recordupdatetimestamp",
+        type: DataTypes.DATE,
+      },
+      recordCreateTimestamp: {
+        field: "recordcreatetimestamp",
+        type: DataTypes.DATE,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordcreatetimestamp",
-      updatedAt: "recordupdatetimestamp",
+      createdAt: "recordCreateTimestamp",
+      updatedAt: "recordUpdateTimestamp",
       tableName: "hospitalstatusupdate",
       modelName: "HospitalStatusUpdate",
     }
