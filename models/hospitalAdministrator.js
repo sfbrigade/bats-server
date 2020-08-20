@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class HospitalAdministrator extends Model {
     static associate(models) {
       HospitalAdministrator.belongsTo(models.Hospital);
+      HospitalAdministrator.hasMany(models.HospitalStatusUpdate);
     }
   }
   HospitalAdministrator.init(

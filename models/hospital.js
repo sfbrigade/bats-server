@@ -1,7 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Hospital extends Model {}
+  class Hospital extends Model {
+    static associate(models) {
+      Hospital.hasMany(models.HospitalAdministrator);
+      Hospital.hasMany(models.HospitalStatusUpdate);
+    }
+  }
   Hospital.init(
     {
       id: {
