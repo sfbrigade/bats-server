@@ -19,6 +19,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "sequelize": "^6.3.3",
+    "sequelize-auto": "^0.5.3",
     "sequelize-cli": "^6.2.0",
     "sequelize-fixtures": "^1.2.0",
     "supertest": "^4.0.2",
