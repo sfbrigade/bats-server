@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "user_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
+        autoIncrement: true
       },
       firstName: {
         field: "firstname",
@@ -30,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
         field: "subjectid",
         type: DataTypes.STRING,
       },
-      password: {
-        field: "hashedPassword",
+      hashedPassword: {
+        field: "hashedpassword",
         type: DataTypes.STRING,
       },
       ssoData: {
@@ -51,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      timestamps: true,
+      timestamps: false,
       tableName: "batsuser",
       modelName: "User",
     }
