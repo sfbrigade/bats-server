@@ -8,6 +8,9 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
+    await queryInterface.sequelize.query(
+      "CREATE EXTENSION IF NOT EXISTS citext;"
+    );
     await queryInterface.sequelize.query(`
       --
       -- ER/Studio Data Architect SQL Code Generation
