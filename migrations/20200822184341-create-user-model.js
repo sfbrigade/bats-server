@@ -41,6 +41,9 @@ module.exports = {
       'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
     );
     await queryInterface.sequelize.query(
+      "ALTER TABLE batsuser ADD CONSTRAINT emailuk UNIQUE (email);"
+    );
+    await queryInterface.sequelize.query(
       "ALTER TABLE batsuser ALTER COLUMN user_uuid SET DEFAULT gen_random_uuid();"
     );
     await queryInterface.sequelize.query(
