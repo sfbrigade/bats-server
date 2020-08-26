@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "user_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       firstName: {
         field: "firstname",
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         field: "email",
-        type: DataTypes.STRING,
+        type: DataTypes.CITEXT,
       },
       subjectId: {
         field: "subjectid",

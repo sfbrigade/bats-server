@@ -25,7 +25,7 @@ module.exports = {
           user_uuid             uuid             NOT NULL,
           firstname             varchar(50)      NOT NULL,
           lastname              varchar(50)      NOT NULL,
-          email                 varchar(50),
+          email                 citext,
           subjectid             varchar(100),
           hashedpassword        varchar(100),
           ssodata               jsonb,
@@ -39,6 +39,9 @@ module.exports = {
     );
     await queryInterface.sequelize.query(
       "ALTER TABLE batsuser ALTER COLUMN user_uuid SET DEFAULT gen_random_uuid();"
+    );
+    await queryInterface.sequelize.query(
+      "ALTER TABLE batsuser ALTER COLUMN superuserindicator SET DEFAULT FALSE;"
     );
   },
 
