@@ -23,16 +23,16 @@ app.use(
   })
 );
 
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
+// passport.serializeUser(function (user, done) {
+//   done(null, user.id);
+// });
 
-passport.deserializeUser(function (id, done) {
-  console.log("deserializeUser", id);
-  models.User.findByPk(id)
-    .catch((error) => done(error, null))
-    .then((user) => done(null, user));
-});
+// passport.deserializeUser(function (id, done) {
+//   console.log("deserializeUser", id);
+//   models.User.findByPk(id)
+//     .catch((error) => done(error, null))
+//     .then((user) => done(null, user));
+// });
 
 const samlStrategy = new passportSaml.Strategy(
   {
