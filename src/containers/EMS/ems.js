@@ -32,7 +32,7 @@ class EMS extends React.Component {
   }
 
   saveHistory(state){
-    // let histroy;
+    let histroy;
     this.setState({
       history: state
     })

@@ -1,0 +1,31 @@
+#unit{
+    position: relative;
+    left: -12.5em;
+}
+#patientId{
+    position: relative;
+    left: -14.2em;
+}
+#patientLabel {
+    position: relative;
+    top: 5em;
+    left: -22em;
+}
+.RingDownInfo {
+    position: relative;
+    left: 2em;
+    border-bottom: 0.05px solid black ;
+    height: 200px;
+    width: 95%;
+}
+#age{
+    position: relative;
+    left: -16.5em;
+}
+#ageLabel {
+    position: relative;
+    left: -1em;
+}
+.infoAge {
+    height: 100px;
+}
