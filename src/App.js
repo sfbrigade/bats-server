@@ -19,7 +19,7 @@ class App extends React.Component {
     return (
       <Router>
 
-        <div className="container">
+        <div className="Appcontainer">
           <nav> 
             <Link className="emsLink" onClick={this.handleClick} to="/ems">EMS</Link>
             <Link  onClick={this.handleClick} to="/er">ER</Link>           
