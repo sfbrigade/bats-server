@@ -28,7 +28,7 @@
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
     "build": "react-scripts build",
-    "test": "yarn test:server && yarn test:client --watchAll=false",
+    "test": "yarn lint && yarn test:server && yarn test:client --watchAll=false",
     "test:client": "react-scripts test",
     "test:server": "mocha --recursive",
     "eject": "react-scripts eject",
