@@ -22,6 +22,8 @@ jobs:
       - run:
           command: yarn run sequelize db:migrate --env test
       - run:
+          command: cp example.env .env
+      - run:
           command: yarn run test
 
 workflows:
