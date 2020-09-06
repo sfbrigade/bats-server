@@ -22,7 +22,7 @@ jobs:
       - run:
           command: yarn run sequelize db:migrate --env test
       - run:
-          command: cp example.env .env
+          command: export $(cat .env | grep SAML_ | xargs)
       - run:
           command: yarn run test
 
