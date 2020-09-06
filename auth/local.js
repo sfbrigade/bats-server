@@ -1,10 +1,9 @@
 const bcrypt = require("bcrypt");
-const db = require("../../models");
+const models = require("../models");
 const LocalStrategy = require("passport-local").Strategy;
 
 module.exports = new LocalStrategy(function (username, password, done) {
-  console.log("verifyFunction"); //TODO - remove log statement
-  db.User.findOne({ where: { email: username } })
+  models.User.findOne({ where: { email: username } })
     .catch((error) => {
       // TODO - display a message to user, an error occurred
       done(error, null);

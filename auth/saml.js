@@ -1,5 +1,5 @@
 const passportSaml = require("passport-saml");
-const models = require("../../models");
+const models = require("../models");
 
 module.exports = new passportSaml.Strategy(
   {
