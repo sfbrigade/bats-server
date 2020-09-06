@@ -22,9 +22,7 @@ jobs:
       - run:
           command: yarn run sequelize db:migrate --env test
       - run:
-          command: eval $(cat example.env | grep SAML_ | sed 's/^/export /'); export
-      - run:
-          command: yarn run test
+          command: eval $(cat example.env | grep SAML_ | sed 's/^/export /'); yarn run test
 
 workflows:
   test:
