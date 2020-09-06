@@ -1,5 +1,9 @@
 "use strict";
+
+const bcrypt = require("bcrypt");
 const { Model } = require("sequelize");
+
+const SALT_ROUNDS = 10;
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -31,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
         field: "subjectid",
         type: DataTypes.STRING,
       },
+      password: {
+        type: new DataTypes.VIRTUAL(DataTypes.STRING),
+      },
       hashedPassword: {
         field: "hashedpassword",
         type: DataTypes.STRING,
@@ -48,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "superuserindicator",
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: false
       },
     },
     {
@@ -57,5 +65,11 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
     }
   );
+  User.beforeSave(async function(user, options) {
+    /// if a new password has been set, hash for storage
+    if (user.password) {
+      user.hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
+    }
+  });
   return User;
 };
