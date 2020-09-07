@@ -18,7 +18,6 @@ router.post("/", async function (req, res, next) {
       password: req.body.password,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
-      roleName: req.user?.isSuperUser ? req.body.roleName : "none",
       isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
     });
     res.status(HttpStatus.CREATED).json(user.toJSON());

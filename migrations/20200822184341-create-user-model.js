@@ -32,7 +32,6 @@ module.exports = {
           subjectid               varchar(100),
           hashedpassword          varchar(100),
           ssodata                 jsonb,
-          rolename                varchar(20)      NOT NULL,
           superuserindicator      boolean          NOT NULL,
           recordcreatetimestamp   timestamp        NOT NULL,
           recordupdatetimestamp   timestamp        NOT NULL

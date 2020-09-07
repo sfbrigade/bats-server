@@ -46,11 +46,6 @@ module.exports = (sequelize, DataTypes) => {
         field: "ssodata",
         type: DataTypes.JSONB,
       },
-      roleName: {
-        field: "rolename",
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       isSuperUser: {
         field: "superuserindicator",
         type: DataTypes.BOOLEAN,

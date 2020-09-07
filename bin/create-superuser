@@ -12,7 +12,6 @@ models.User.create({
   lastName: process.argv[3],
   email: process.argv[4],
   password: process.argv[5],
-  roleName: "none",
   isSuperUser: true
 }).then(function() {
   console.log("... Created!")

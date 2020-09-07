@@ -19,7 +19,6 @@ module.exports = new passportSaml.Strategy(
       defaults: {
         firstName: "SAML",
         lastName: "User",
-        roleName: "test",
         isSuperUser: false,
       },
     }).then(([user, created]) => done(null, user));
