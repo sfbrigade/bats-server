@@ -6,8 +6,12 @@ const router = express.Router();
 
 router.get("/login", passport.authenticate("saml"));
 
-router.post("/login/callback", passport.authenticate("saml"), function (req, res, next) {
-  res.sendStatus(HttpStatus.OK);
+router.post("/callback", passport.authenticate("saml"), function (req, res, next) {
+  if (req.accepts("html")) {
+    res.redirect("/");
+  } else {
+    res.status(HttpStatus.OK).end();
+  }
 });
 
 router.get("/metadata", function (req, res) {

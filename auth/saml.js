@@ -3,7 +3,7 @@ const models = require("../models");
 
 module.exports = new passportSaml.Strategy(
   {
-    callbackUrl: "http://localhost:3000/login/saml/callback",
+    callbackUrl: "http://localhost:3000/auth/saml/callback",
     entryPoint: "http://localhost:8080/simplesaml/saml2/idp/SSOService.php",
     issuer: "bats-server",
     identifierFormat: null,
@@ -13,14 +13,19 @@ module.exports = new passportSaml.Strategy(
     validateInResponseTo: true,
     disableRequestedAuthnContext: true,
   },
-  function (profile, done) {
-    models.User.findOrCreate({
-      where: { email: profile.email },
-      defaults: {
-        firstName: "SAML",
-        lastName: "User",
-        isSuperUser: false,
-      },
-    }).then(([user, created]) => done(null, user));
+  async (profile, done) => {
+    try {
+      const [user,] = await models.User.findOrCreate({
+        where: { email: profile.email },
+        defaults: {
+          firstName: "SAML",
+          lastName: "User",
+          isSuperUser: false,
+        }
+      });
+      done(null, user);
+    } catch (error) {
+      done(error, null);
+    }
   }
 );

@@ -14,5 +14,4 @@ services:
       - 8080:8080
     environment:
       - SIMPLESAMLPHP_SP_ENTITY_ID=bats-server
-      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=http://localhost:3000/login/saml/callback
-
+      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=http://localhost:3000/auth/saml/callback
