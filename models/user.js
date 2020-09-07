@@ -57,10 +57,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false
       },
+      recordCreateTimestamp: {
+        field: "recordcreatetimestamp",
+        type: DataTypes.DATE,
+      },
+      recordUpdateTimestamp: {
+        field: "recordupdatetimestamp",
+        type: DataTypes.DATE,
+      },
     },
     {
       sequelize,
-      timestamps: false,
+      timestamps: true,
+      createdAt: "recordCreateTimestamp",
+      updatedAt: "recordUpdateTimestamp",
       tableName: "batsuser",
       modelName: "User",
     }

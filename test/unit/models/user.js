@@ -12,7 +12,7 @@ describe('models.User', function () {
       lastName: "Doe",
       email: "john.doe@test.com",
       password: "abcd1234!",
-      roleName: "test"      
+      roleName: "test",
     });
     assert(user);
     assert(user.id);
@@ -22,6 +22,8 @@ describe('models.User', function () {
     assert.deepStrictEqual(user.roleName, "test");
     assert(!user.isSuperUser);
     assert(user.hashedPassword);
+    assert(user.recordCreateTimestamp);
+    assert(user.recordUpdateTimestamp);
     assert(await bcrypt.compare("abcd1234!", user.hashedPassword));
   });
 });

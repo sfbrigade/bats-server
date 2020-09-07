@@ -25,15 +25,17 @@ module.exports = {
       --
 
       CREATE TABLE batsuser(
-          user_uuid             uuid             NOT NULL,
-          firstname             varchar(50)      NOT NULL,
-          lastname              varchar(50)      NOT NULL,
-          email                 citext,
-          subjectid             varchar(100),
-          hashedpassword        varchar(100),
-          ssodata               jsonb,
-          rolename              varchar(20)      NOT NULL,
-          superuserindicator    boolean          NOT NULL
+          user_uuid               uuid             NOT NULL,
+          firstname               varchar(50)      NOT NULL,
+          lastname                varchar(50)      NOT NULL,
+          email                   citext,
+          subjectid               varchar(100),
+          hashedpassword          varchar(100),
+          ssodata                 jsonb,
+          rolename                varchar(20)      NOT NULL,
+          superuserindicator      boolean          NOT NULL,
+          recordcreatetimestamp   timestamp        NOT NULL,
+          recordupdatetimestamp   timestamp        NOT NULL
       )
       ;
     `);
