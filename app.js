@@ -29,10 +29,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(isAuthenticated, express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/libraries/bootstrap", express.static(path.join(__dirname, "node_modules/bootstrap/dist")));
-
 app.use("/", require("./routes"));
+app.use(isAuthenticated, express.static(path.join(__dirname, "build")));
 
 module.exports = app;
