@@ -29,9 +29,13 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(path.join(__dirname, "public")));
 app.use("/libraries/bootstrap", express.static(path.join(__dirname, "node_modules/bootstrap/dist")));
+app.use(express.static(path.join(__dirname, "build"), {index: false}));
+app.use(express.static(path.join(__dirname, "public"), {index: false}));
 app.use("/", require("./routes"));
-app.use(isAuthenticated, express.static(path.join(__dirname, "build")));
+
+app.get('/*', isAuthenticated, function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 module.exports = app;
