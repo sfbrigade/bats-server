@@ -22,7 +22,7 @@ jobs:
       - run:
           command: yarn run sequelize db:migrate --env test
       - run:
-          command: yarn run test
+          command: eval $(cat example.env | grep -v DATABASE_URL | sed 's/^/export /'); yarn run test
 
 workflows:
   test:

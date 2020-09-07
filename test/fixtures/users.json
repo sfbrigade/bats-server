@@ -1,0 +1,24 @@
+[
+  {
+    "model": "User",
+    "data": {
+      "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "firstName": "Super",
+      "lastName": "User",
+      "email": "super.user@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isSuperUser": true
+    }
+  },
+  {
+    "model": "User",
+    "data": {
+      "id": "daa71fad-dfeb-4259-9c28-bde99180abd9",
+      "firstName": "Regular",
+      "lastName": "User",
+      "email": "regular.user@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isSuperUser": false
+    }
+  }
+]

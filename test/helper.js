@@ -24,6 +24,7 @@ const resetDatabase = async function () {
     DELETE FROM hospital;
     DELETE FROM emergencymedicalservicecall;
     DELETE FROM emergencymedicalserviceprovider;
+    DELETE FROM batsuser;
   `);
 };
 

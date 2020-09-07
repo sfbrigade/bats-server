@@ -1,7 +1,8 @@
 const express = require("express");
+
 const router = express.Router();
 
-router.use("/api", require("./api"));
-router.use("/auth", require("./auth"));
+router.use("/local", require("./local"));
+router.use("/saml", require("./saml"));
 
 module.exports = router;
