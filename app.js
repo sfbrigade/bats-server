@@ -5,6 +5,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const passport = require("./auth/passport");
+const { isAuthenticated } = require("./auth/middleware");
 
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(path.join(__dirname, "build")));
+app.use(isAuthenticated, express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/libraries/bootstrap", express.static(path.join(__dirname, "node_modules/bootstrap/dist")));
 
