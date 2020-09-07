@@ -1,6 +1,7 @@
 const express = require("express");
 const HttpStatus = require("http-status-codes");
 const passport = require("passport");
+const samlStrategy = require("../../auth/saml.js")
 const router = express.Router();
 
 router.get("/login", passport.authenticate("saml"));
