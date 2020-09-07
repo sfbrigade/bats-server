@@ -21,6 +21,8 @@ module.exports = {
         rolename: "test",
         hashedpassword:
           "$2b$10$MQER6j8rgSQhkFPRqEHa8uMuD1omFVErgj5965sukZykNvcynV2Jq",
+        recordcreatetimestamp:"2001-09-29 00:00:00",
+        recordupdatetimestamp:"2001-09-29 00:00:00",
       },
     ]);
   },
