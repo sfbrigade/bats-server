@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+const models = require("../models");
+
+if (process.argv.length < 6) {
+  console.log("Usage: bin/create-superuser First Last email@address.com password");
+  process.exit(1);
+}
+
+models.User.create({
+  firstName: process.argv[2],
+  lastName: process.argv[3],
+  email: process.argv[4],
+  password: process.argv[5],
+  roleName: "none",
+  isSuperUser: true
+}).then(function() {
+  console.log("... Created!")
+  process.exit(0);
+});

@@ -30,6 +30,7 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/libraries/bootstrap", express.static(path.join(__dirname, "node_modules/bootstrap/dist")));
 
 app.use("/", require("./routes"));
 

@@ -4,9 +4,11 @@ const session = require("supertest-session");
 
 const helper = require("../../helper");
 const app = require("../../../app");
+const models = require("../../../models");
 
 describe("/api/users", function() {
   let testSession;
+
   beforeEach(async function() {
     await helper.loadFixtures(["users"]);
     testSession = session(app);
