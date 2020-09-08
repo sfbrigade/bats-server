@@ -28,11 +28,12 @@
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
     "build": "react-scripts build",
-    "test": "yarn lint && yarn test:server && yarn test:client --watchAll=false",
+    "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",
     "test:client": "react-scripts test",
     "test:server": "mocha --recursive",
     "eject": "react-scripts eject",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "yarn prettier --write ."
   },
   "eslintConfig": {
     "extends": [
@@ -76,6 +77,7 @@
   },
   "proxy": "http://localhost:4000",
   "devDependencies": {
+    "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
@@ -83,6 +85,6 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
-    "prettier": "^2.1.1"
+    "prettier": "2.1.1"
   }
 }
