@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
-      patientNumber: {
+        patientNumber: {
         field: "patient",
         type: DataTypes.INTEGER,
         unique: true,
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       stableIndicator: {
         field: "stableindicator",
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       chiefComplaintDescription: {
