@@ -14,14 +14,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   EmergencyMedicalServiceCall.init(
       {
-          emergencymedicalservicecall_uuid: {
-              field: "patient",
+          id: {
+              field: "emergencymedicalservicecall_uuid",
               type: DataTypes.UUID,
               primaryKey: true,
               allowNull: false,
           },
           dispatchcallnumber: {
-              field: "patient",
+              field: "dispatchcallnumber",
               type: DataTypes.INTEGER,
               primaryKey: true,
               autoIncrement: true,

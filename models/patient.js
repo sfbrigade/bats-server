@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   Patient.init(
     {
       id: {
-        field: "patient",
+        field: "patient_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,

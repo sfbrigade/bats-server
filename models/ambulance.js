@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Ambulance.hasMany(models.Patientdelivery);
     }
-  };
+  }
   Ambulance.init({
-    ambulance_uuid: {
-      field: "ambulance",
+    id: {
+      field: "ambulance_uuid",
       type: DataTypes.UUID,
       primaryKey: true,
       autoIncrement: true,

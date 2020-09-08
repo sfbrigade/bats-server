@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       EmergencyMedicalServiceProvider.hasMany(models.Ambulance);
     }
-  };
+  }
   EmergencyMedicalServiceProvider.init({
-    emergencymedicalserviceprovider_uuid: {
-      field: "emergencymedicalserviceprovider",
+    id: {
+      field: "emergencymedicalserviceprovider_uuid",
       type: DataTypes.UUID,
       primaryKey: true,
       autoIncrement: true,
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     recordupdatesource: {
       field: "patient",
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
       allowNull: false
     },
   }, {
