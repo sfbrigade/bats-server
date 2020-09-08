@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "cookie-parser": "^1.4.5",
     "debug": "^4.1.1",
+    "eslint-config-react-app": "^5.2.1",
     "express": "^4.17.1",
     "foreman": "^3.0.1",
     "http-status-codes": "^1.4.0",
@@ -77,7 +78,6 @@
   },
   "proxy": "http://localhost:4000",
   "devDependencies": {
-    "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
