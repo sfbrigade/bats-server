@@ -11,17 +11,45 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      EmergencyMedicalServiceProvider.hasMany(models.Ambulance);
     }
   };
   EmergencyMedicalServiceProvider.init({
-    emergencymedicalserviceprovider_uuid: DataTypes.UUID,
-    emergencymedicalserviceprovidername: DataTypes.TEXT,
-    recordcreatetimestamp: DataTypes.DATE,
-    recordcreatesource: DataTypes.TEXT,
-    recordupdatetimestamp: DataTypes.DATE,
-    recordupdatesource: DataTypes.CHAR
+    emergencymedicalserviceprovider_uuid: {
+      field: "emergencymedicalserviceprovider",
+      type: DataTypes.UUID,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    emergencymedicalserviceprovidername: {
+      field: "emergencymedicalserviceprovidername",
+      type: DataTypes.TEXT,
+      primaryKey: true,
+      allowNull: true
+    },
+    recordcreatetimestamp: {
+      field: "recordcreatetimestamp",
+      type: DataTypes.DATE,
+    },
+    recordcreatesource: {
+      field: "patient",
+      type: DataTypes.TEXT,
+    },
+    recordupdatetimestamp: {
+      field: "recordupdatetimestamp",
+      type: DataTypes.DATE,
+    },
+    recordupdatesource: {
+      field: "patient",
+      type: DataTypes.STRING
+      allowNull: false
+    },
   }, {
     sequelize,
+    timestamps: true,
+    createdAt: "recordCreateTimestamp",
+    updatedAt: "recordUpdateTimestamp",
+    tableName: "emergencymedicalserviceprovider",
     modelName: 'EmergencyMedicalServiceProvider',
   });
   return EmergencyMedicalServiceProvider;

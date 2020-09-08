@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+        Patient.hasMany(models.Patientdelivery);
     }
   }
   Patient.init(
@@ -119,10 +120,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      createdAt: "recordCreateTimestamp",
-      updatedAt: "recordUpdateTimestamp",
-      tableName: "patient",
-      modelName: "Patient",
+        timestamps: true,
+        createdAt: "recordCreateTimestamp",
+        updatedAt: "recordUpdateTimestamp",
+        tableName: "patient",
+        modelName: "Patient",
     }
   );
   return Patient;
