@@ -27,6 +27,7 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach((file) => {
+    // eslint-disable-next-line global-require, import/no-dynamic-require
     const model = require(path.join(__dirname, file))(
       sequelize,
       Sequelize.DataTypes
