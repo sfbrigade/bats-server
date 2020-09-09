@@ -1,17 +1,17 @@
-const express = require("express");
-const HttpStatus = require("http-status-codes");
+const express = require('express');
+const HttpStatus = require('http-status-codes');
 
-const middleware = require("../../auth/middleware");
-const models = require("../../models");
+const middleware = require('../../auth/middleware');
+const models = require('../../models');
 
 const router = express.Router();
 
-router.get("/", middleware.isSuperUser, async function(req, res, next) {
+router.get('/', middleware.isSuperUser, async function (req, res, next) {
   const users = await models.User.findAll();
-  res.json(users.map(u => u.toJSON()));
+  res.json(users.map((u) => u.toJSON()));
 });
 
-router.post("/", async function (req, res, next) {
+router.post('/', async function (req, res, next) {
   try {
     const user = await models.User.create({
       email: req.body.email,

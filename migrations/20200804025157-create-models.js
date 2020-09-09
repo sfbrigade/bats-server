@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -291,13 +291,13 @@ module.exports = {
       'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
     );
     await queryInterface.sequelize.query(
-      "ALTER TABLE hospital ALTER COLUMN hospital_uuid SET DEFAULT gen_random_uuid();"
+      'ALTER TABLE hospital ALTER COLUMN hospital_uuid SET DEFAULT gen_random_uuid();'
     );
     await queryInterface.sequelize.query(
-      "ALTER TABLE hospitaladministrator ALTER COLUMN hospitaladministrator_uuid SET DEFAULT gen_random_uuid();"
+      'ALTER TABLE hospitaladministrator ALTER COLUMN hospitaladministrator_uuid SET DEFAULT gen_random_uuid();'
     );
     await queryInterface.sequelize.query(
-      "ALTER TABLE hospitalstatusupdate ALTER COLUMN hospitalstatusupdate_uuid SET DEFAULT gen_random_uuid();"
+      'ALTER TABLE hospitalstatusupdate ALTER COLUMN hospitalstatusupdate_uuid SET DEFAULT gen_random_uuid();'
     );
   },
 
@@ -308,13 +308,13 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable("patientdelivery");
-    await queryInterface.dropTable("patient");
-    await queryInterface.dropTable("hospitalstatusupdate");
-    await queryInterface.dropTable("hospitaladministrator");
-    await queryInterface.dropTable("hospital");
-    await queryInterface.dropTable("ambulance");
-    await queryInterface.dropTable("emergencymedicalservicecall");
-    await queryInterface.dropTable("emergencymedicalserviceprovider");
+    await queryInterface.dropTable('patientdelivery');
+    await queryInterface.dropTable('patient');
+    await queryInterface.dropTable('hospitalstatusupdate');
+    await queryInterface.dropTable('hospitaladministrator');
+    await queryInterface.dropTable('hospital');
+    await queryInterface.dropTable('ambulance');
+    await queryInterface.dropTable('emergencymedicalservicecall');
+    await queryInterface.dropTable('emergencymedicalserviceprovider');
   },
 };

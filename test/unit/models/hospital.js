@@ -1,15 +1,15 @@
-'use strict'
+'use strict';
 
 const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
 
 describe('models.Hospital', function () {
-  it('creates a new Hospital record', async function() {
+  it('creates a new Hospital record', async function () {
     const hospital = await models.Hospital.create({
       hospitalName: 'San Francisco General',
       recordUpdateSource: 'test',
-      recordCreateSource: 'test'
+      recordCreateSource: 'test',
     });
     assert(hospital);
     assert(hospital.id);

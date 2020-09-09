@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -9,7 +9,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.sequelize.query(
-      "CREATE EXTENSION IF NOT EXISTS citext;"
+      'CREATE EXTENSION IF NOT EXISTS citext;'
     );
     await queryInterface.sequelize.query(`
       --
@@ -42,13 +42,13 @@ module.exports = {
       'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
     );
     await queryInterface.sequelize.query(
-      "ALTER TABLE batsuser ADD CONSTRAINT emailuk UNIQUE (email);"
+      'ALTER TABLE batsuser ADD CONSTRAINT emailuk UNIQUE (email);'
     );
     await queryInterface.sequelize.query(
-      "ALTER TABLE batsuser ALTER COLUMN user_uuid SET DEFAULT gen_random_uuid();"
+      'ALTER TABLE batsuser ALTER COLUMN user_uuid SET DEFAULT gen_random_uuid();'
     );
     await queryInterface.sequelize.query(
-      "ALTER TABLE batsuser ALTER COLUMN superuserindicator SET DEFAULT FALSE;"
+      'ALTER TABLE batsuser ALTER COLUMN superuserindicator SET DEFAULT FALSE;'
     );
   },
 
@@ -59,6 +59,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable("batsuser");
+    await queryInterface.dropTable('batsuser');
   },
 };

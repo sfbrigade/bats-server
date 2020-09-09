@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
 /// MUST BE FIRST! set the NODE_ENV to test to disable logging, switch to test db
-process.env.NODE_ENV = "test";
+process.env.NODE_ENV = 'test';
 
-const fixtures = require("sequelize-fixtures");
-const path = require("path");
+const fixtures = require('sequelize-fixtures');
+const path = require('path');
 
-const models = require("../models");
+const models = require('../models');
 
 const loadFixtures = async function (files) {
   files = files.map((f) => path.resolve(__dirname, `fixtures/${f}.json`));

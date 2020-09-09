@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class HospitalStatusUpdate extends Model {
@@ -11,75 +11,75 @@ module.exports = (sequelize, DataTypes) => {
   HospitalStatusUpdate.init(
     {
       id: {
-        field: "hospitalstatusupdate_uuid",
+        field: 'hospitalstatusupdate_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
       HospitalId: {
-        field: "hospital_uuid",
+        field: 'hospital_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
       HospitalAdministratorId: {
-        field: "hospitaladministrator_uuid",
+        field: 'hospitaladministrator_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
       updateDatetime: {
-        field: "updatedatetime",
+        field: 'updatedatetime',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
       openedBedCount: {
-        field: "openedbedcount",
+        field: 'openedbedcount',
         type: DataTypes.INTEGER,
         allowNull: true,
       },
       edWaitingRoomCount: {
-        field: "edwaitingroomcount",
+        field: 'edwaitingroomcount',
         type: DataTypes.INTEGER,
         allowNull: true,
       },
       divertStatusIndicator: {
-        field: "divertstatusindicator",
+        field: 'divertstatusindicator',
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       additionalServiceAvailabilityNotes: {
-        field: "additionalserviceavailabilitynotes",
+        field: 'additionalserviceavailabilitynotes',
         type: DataTypes.STRING,
         allowNull: true,
       },
       recordUpdateSource: {
-        field: "recordupdatesource",
+        field: 'recordupdatesource',
         type: DataTypes.STRING,
         allowNull: false,
       },
       recordCreateSource: {
-        field: "recordcreatesource",
+        field: 'recordcreatesource',
         type: DataTypes.STRING,
         allowNull: false,
       },
       recordUpdateTimestamp: {
-        field: "recordupdatetimestamp",
+        field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
       recordCreateTimestamp: {
-        field: "recordcreatetimestamp",
+        field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordCreateTimestamp",
-      updatedAt: "recordUpdateTimestamp",
-      tableName: "hospitalstatusupdate",
-      modelName: "HospitalStatusUpdate",
+      createdAt: 'recordCreateTimestamp',
+      updatedAt: 'recordUpdateTimestamp',
+      tableName: 'hospitalstatusupdate',
+      modelName: 'HospitalStatusUpdate',
     }
   );
   return HospitalStatusUpdate;
