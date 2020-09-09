@@ -4,18 +4,17 @@ const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
-const models = require('../../../models');
 
-describe('/api/users', function () {
+describe('/api/users', () => {
   let testSession;
 
-  beforeEach(async function () {
+  beforeEach(async () => {
     await helper.loadFixtures(['users']);
     testSession = session(app);
   });
 
-  describe('GET /', function () {
-    it('returns a list of users to a superuser', async function () {
+  describe('GET /', () => {
+    it('returns a list of users to a superuser', async () => {
       /// log in as a superuser
       await testSession
         .post('/auth/local/login')
@@ -31,7 +30,7 @@ describe('/api/users', function () {
       assert(response.body?.length, 2);
     });
 
-    it('returns forbidden to a non-superuser', async function () {
+    it('returns forbidden to a non-superuser', async () => {
       /// log in as a non-superuser
       await testSession
         .post('/auth/local/login')

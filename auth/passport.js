@@ -1,11 +1,11 @@
 const passport = require('passport');
 const models = require('../models');
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(async function (id, done) {
+passport.deserializeUser(async (id, done) => {
   try {
     const user = await models.User.findByPk(id, { rejectOnEmpty: true });
     done(null, user);

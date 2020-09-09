@@ -1,15 +1,13 @@
-'use strict';
-
 const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
 
-describe('models.HospitalStatusUpdate', function () {
-  beforeEach(async function () {
+describe('models.HospitalStatusUpdate', () => {
+  beforeEach(async () => {
     await helper.loadFixtures(['hospital', 'hospitalAdministrator']);
   });
 
-  it('creates a new HospitalStatusUpdate record', async function () {
+  it('creates a new HospitalStatusUpdate record', async () => {
     const hospitalStatusUpdate = await models.HospitalStatusUpdate.create({
       HospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
       HospitalAdministratorId: '136cf75e-55e8-4c31-a6bb-a90434ca9f18',

@@ -1,12 +1,11 @@
-'use strict';
-
 const assert = require('assert');
 const bcrypt = require('bcrypt');
+// eslint-disable-next-line no-unused-vars
 const helper = require('../../helper');
 const models = require('../../../models');
 
-describe('models.User', function () {
-  it('creates a new User', async function () {
+describe('models.User', () => {
+  it('creates a new User', async () => {
     const user = await models.User.create({
       firstName: 'John',
       lastName: 'Doe',

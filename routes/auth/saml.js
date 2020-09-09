@@ -2,15 +2,12 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 const samlStrategy = require('../../auth/saml.js');
+
 const router = express.Router();
 
 router.get('/login', passport.authenticate('saml'));
 
-router.post('/callback', passport.authenticate('saml'), function (
-  req,
-  res,
-  next
-) {
+router.post('/callback', passport.authenticate('saml'), (req, res) => {
   if (req.accepts('html')) {
     res.redirect('/');
   } else {
@@ -18,7 +15,7 @@ router.post('/callback', passport.authenticate('saml'), function (
   }
 });
 
-router.get('/metadata', function (req, res) {
+router.get('/metadata', (req, res) => {
   res.type('application/xml');
   res
     .status(200)

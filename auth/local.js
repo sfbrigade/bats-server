@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt');
-const models = require('../models');
 const LocalStrategy = require('passport-local').Strategy;
 
-module.exports = new LocalStrategy(async function (username, password, done) {
+const models = require('../models');
+
+module.exports = new LocalStrategy(async (username, password, done) => {
   try {
     const user = await models.User.findOne({
       where: { email: username },
@@ -10,9 +11,10 @@ module.exports = new LocalStrategy(async function (username, password, done) {
     });
     const result = await bcrypt.compare(password, user.hashedPassword);
     if (result) {
-      return done(null, user);
+      done(null, user);
+      return;
     }
-    return done(null, false, {
+    done(null, false, {
       message: 'Invalid username or password.',
     });
   } catch (error) {

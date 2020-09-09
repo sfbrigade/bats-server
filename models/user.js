@@ -1,14 +1,10 @@
-'use strict';
-
 const bcrypt = require('bcrypt');
 const { Model } = require('sequelize');
 
 const SALT_ROUNDS = 10;
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    static associate(models) {}
-  }
+  class User extends Model {}
   User.init(
     {
       id: {
@@ -70,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'User',
     }
   );
-  User.beforeSave(async function (user, options) {
+  User.beforeSave(async (user) => {
     /// if a new password has been set, hash for storage
     if (user.password) {
       user.hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
