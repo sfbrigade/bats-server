@@ -3,14 +3,13 @@ const session = require('supertest-session');
 
 const app = require('../../../app');
 
-describe('/api/health', function() {
+describe('/api/health', () => {
   let testSession;
-  beforeEach(async function() {
+  beforeEach(async () => {
     testSession = session(app);
   });
 
-  it('returns success', async function() {
-    await testSession.get('/api/health')
-      .expect(HttpStatus.NO_CONTENT);
+  it('returns success', async () => {
+    await testSession.get('/api/health').expect(HttpStatus.NO_CONTENT);
   });
 });
