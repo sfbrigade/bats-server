@@ -1,11 +1,11 @@
 .emsContainer {
-    background-color: #E5E5E5;
-    height: 90%;
-    width: 96%;
-    margin: auto;
-    text-align: justify;
-    border: 1px solid #beb8b8;
-  }
+  background-color: #e5e5e5;
+  height: 90%;
+  width: 96%;
+  margin: auto;
+  text-align: justify;
+  border: 1px solid #beb8b8;
+}
 .bedContent {
   padding: 10% 10% 10% 10%;
 }
@@ -29,6 +29,6 @@ input {
   left: -130px;
   top: 21px;
 }
-.emsLink{
+.emsLink {
   margin: 10%;
 }
