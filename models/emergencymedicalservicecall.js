@@ -18,13 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         field: 'patient',
         type: DataTypes.UUID,
         primaryKey: true,
-        allowNull: false,
+        autoIncrement: true,
       },
       dispatchcallnumber: {
         field: 'patient',
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
       },
       startdatetime: {
         field: 'startdatetime',
@@ -42,7 +41,6 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordcreatesource',
         type: DataTypes.TEXT,
         primaryKey: true,
-        autoIncrement: true,
       },
       recordupdatetimestamp: {
         field: 'recordupdatetimestamp',

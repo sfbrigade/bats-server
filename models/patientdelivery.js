@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Patientdelivery.belongsTo(models.Patient);
       Patientdelivery.hasMany(models.Ambulance);
-      Patientdelivery.hasMany(models.Hospital);
+      // Patientdelivery.hasMany(models.Hospital);
     }
   }
   Patientdelivery.init(

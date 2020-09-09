@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         field: 'emergencymedicalserviceprovider_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
-        autoIncrement: true,
       },
       ambulanceidentifier: {
         field: 'ambulanceidentifier',
