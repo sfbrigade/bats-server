@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     recordupdatesource: {
       field: "patient",
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
       allowNull: false
     },
   }, {
