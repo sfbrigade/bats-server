@@ -9,7 +9,7 @@ jobs:
     docker:
       - image: cimg/node:14.4.0
         environment:
-          DATABASE_URL: "postgres://postgres@localhost/bats"
+          DATABASE_URL: 'postgres://postgres@localhost/bats'
       - image: circleci/postgres:12
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust

@@ -1,19 +1,19 @@
-"use strict";
-
 /// MUST BE FIRST! set the NODE_ENV to test to disable logging, switch to test db
-process.env.NODE_ENV = "test";
+process.env.NODE_ENV = 'test';
 
-const fixtures = require("sequelize-fixtures");
-const path = require("path");
+const fixtures = require('sequelize-fixtures');
+const path = require('path');
 
-const models = require("../models");
+const models = require('../models');
 
-const loadFixtures = async function (files) {
-  files = files.map((f) => path.resolve(__dirname, `fixtures/${f}.json`));
-  await fixtures.loadFiles(files, models);
+const loadFixtures = async (files) => {
+  const filePaths = files.map((f) =>
+    path.resolve(__dirname, `fixtures/${f}.json`)
+  );
+  await fixtures.loadFiles(filePaths, models);
 };
 
-const resetDatabase = async function () {
+const resetDatabase = async () => {
   /// clear all test data (order matters due to foreign key relationships)
   await models.sequelize.query(`
     DELETE FROM patient;
@@ -28,11 +28,12 @@ const resetDatabase = async function () {
   `);
 };
 
-beforeEach(async function () {
+beforeEach(async () => {
   await resetDatabase();
 });
 
-after(async function () {
+// eslint-disable-next-line no-undef
+after(async () => {
   /// close all db connections
   await models.sequelize.close();
 });

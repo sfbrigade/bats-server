@@ -49,10 +49,10 @@
 
 2. Make sure the test database is created, and run migrations on it:
 
-    ```
-    sequelize db:create --env test
-    sequelize db:migrate --env test
-    ```
+   ```
+   sequelize db:create --env test
+   sequelize db:migrate --env test
+   ```
 
    During development, you may be working on migrations and you will need to undo and rerun
    migrations- make sure to do that on the test database as well.
@@ -67,7 +67,6 @@
 ```
 yarn test:server
 ```
-
 
 # Create React App
 
