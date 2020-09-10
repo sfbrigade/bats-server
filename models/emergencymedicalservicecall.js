@@ -8,51 +8,51 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      EmergencyMedicalServiceCall.hasMany(models.Patient);
       // define association here
+        EmergencyMedicalServiceCall.hasOne(models.Patient);
+        EmergencyMedicalServiceCall.belongsTo(models.Patient);
     }
   }
   EmergencyMedicalServiceCall.init(
       {
-          id: {
+          Id: {
               field: "emergencymedicalservicecall_uuid",
               type: DataTypes.UUID,
               primaryKey: true,
               allowNull: false,
           },
-          dispatchcallnumber: {
+          DispatchCallNumber: {
               field: "dispatchcallnumber",
               type: DataTypes.INTEGER,
               primaryKey: true,
               autoIncrement: true,
           },
-          startdatetime: {
+          StartDateTime: {
               field: "startdatetime",
               type: DataTypes.DATE,
               primaryKey: true,
               allowNull: false,
           },
-          recordcreatetimestamp: {
+          RecordCreateTimestamp: {
               field: "recordcreatetimestamp",
               type: DataTypes.DATE,
               primaryKey: true,
               allowNull: false,
           },
-          recordcreatesource: {
+          RecordCreateSource: {
               field: "recordcreatesource",
-              type: DataTypes.TEXT,
+              type: DataTypes.STRING,
               primaryKey: true,
-              autoIncrement: true,
           },
-          recordupdatetimestamp: {
+          RecordUpdateTimestamp: {
               field: "recordupdatetimestamp",
               type: DataTypes.DATE,
               primaryKey: true,
               allowNull: false,
           },
-          recordupdatesource: {
+          RecordUpdateSource: {
               field: "recordupdatetimestamp",
-              type: DataTypes.TEXT,
+              type: DataTypes.STRING,
               primaryKey: true,
               allowNull: false,
           },

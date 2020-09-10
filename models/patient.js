@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-        Patient.hasMany(models.Patientdelivery);
+      Patient.hasMany(models.Patientdelivery);
+
     }
   }
   Patient.init(
@@ -20,21 +21,21 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      emergencyMedicalServiceCallId: {
+      EmergencyMedicalServiceCallId: {
         field: "emergencymedicalservicecall_uuid",
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
         patientNumber: {
-        field: "patient",
+        field: "patientnumber",
         type: DataTypes.INTEGER,
         unique: true,
         allowNull: false,
       },
       age: {
         field: "age",
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       sex: {
@@ -84,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       ivIndicator: {
         field: "ivindicator",
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       combativeBehaviorIndicator: {

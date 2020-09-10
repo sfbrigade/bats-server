@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Patientdelivery extends Model {
+  class PatientDelivery extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,85 +11,85 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Patientdelivery.belongsTo(models.Patient);
-      Patientdelivery.hasMany(models.Ambulance);
-      Patientdelivery.hasMany(models.Hospital);
+      // Patientdelivery.belongsTo(models.Patient);
+      // Patientdelivery.hasMany(models.Ambulance);
+      // Patientdelivery.hasMany(models.Hospital);
     }
-  };
-  Patientdelivery.init({
-    patientdelivery_uuid: {
+  }
+  PatientDelivery.init({
+    Id: {
       field: "patientdelivery",
       type: DataTypes.UUID,
       primaryKey: true,
       autoIncrement: true,
     },
-    ambulance_uuid: {
+    Ambulance_uuid: {
       field: "ambulance_uuid",
       type: DataTypes.UUID,
       unique: true,
       allowNull: false,
     },
-    patient_uuid: {
+    Patient_uuid: {
       field: "patient_uuid",
       type: DataTypes.UUID,
       unique: true,
       allowNull: false,
     },
-    hospital_uuid: {
+    Hospital_uuid: {
       field: "hospital_uuid",
       type: DataTypes.UUID,
       unique: true,
       allowNull: false,
     },
-    deliverystatus: {
+    DeliveryStatus: {
       field: "deliverystatus",
-      type: DataTypes.UUID,
+      type: DataTypes.STRING,
       unique: true,
       allowNull: false,
     },
-    departuredatetime: {
+    DepartureDateTime: {
       field: "departuredatetime",
       type: DataTypes.DATE,
       unique: true,
       allowNull: false,
     },
-    estimatedarrivaltime: {
+    EstimatedArrivalTime: {
       field: "estimatedarrivaltime",
       type: DataTypes.DATE,
       unique: true,
       allowNull: false,
     },
-    arrivaldatetime: {
+    ArrivalDateTime: {
       field: "arrivaldatetime",
       type: DataTypes.DATE,
       unique: true,
       allowNull: false,
     },
-    admissiondatetime: {
+    AdmissionDateTime: {
       field: "admissiondatetime",
       type: DataTypes.DATE,
       unique: true,
       allowNull: false,
     },
-    recordcreatetimestamp: {
+    RecordCreateTimestamp: {
       field: "recordcreatetimestamp",
       type: DataTypes.DATE,
       unique: true,
       allowNull: false,
     },
-    recordcreatesource: {
+    RecordCreateSource: {
       field: "recordcreatesource",
       type: DataTypes.TEXT,
       unique: true,
       allowNull: false,
     },
-    recordupdatetimestamp: {
+    RecordUpdateTimestamp: {
       field: "patient",
       type: DataTypes.DATE,
       unique: true,
       allowNull: false,
     },
-    recordupdatesource: {
+    RecordUpdateSource: {
       field: "patient",
       type: DataTypes.DATE,
       unique: true,

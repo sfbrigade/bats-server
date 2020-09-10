@@ -15,40 +15,39 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Ambulance.init({
-    id: {
+    Id: {
       field: "ambulance_uuid",
       type: DataTypes.UUID,
       primaryKey: true,
       autoIncrement: true,
     },
-    emergencymedicalserviceprovider_uuid: {
+    EmergencyMedicalServiceProvider_uuid: {
       field: "emergencymedicalserviceprovider_uuid",
       type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
     },
-    ambulanceidentifier: {
+    AmbulanceIdentifier: {
       field: "ambulanceidentifier",
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
     },
-    recordcreatetimestamp: {
+    RecordCreateTimeStamp: {
       field: "recordcreatetimestamp",
       type: DataTypes.DATE,
       allowNull: false,
     },
-    recordcreatesource: {
+    RecordCreateSource: {
       field: "recordcreatesource",
       type: DataTypes.STRING,
       allowNull: false,
     },
-    recordupdatetimestamp: {
+    RecordUpdateTimestamp: {
       field: "recordupdatetimestamp",
       type: DataTypes.DATE,
       allowNull: false,
     },
-    recordupdatesource: {
+    RecordUpdateSource: {
       field: "recordupdatesource",
       type: DataTypes.STRING,
       allowNull: false,
