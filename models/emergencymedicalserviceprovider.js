@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class EmergencyMedicalServiceProvider extends Model {
     /**
@@ -14,43 +12,46 @@ module.exports = (sequelize, DataTypes) => {
       EmergencyMedicalServiceProvider.hasMany(models.Ambulance);
     }
   }
-  EmergencyMedicalServiceProvider.init({
-    Id: {
-      field: "emergencymedicalserviceprovider_uuid",
-      type: DataTypes.UUID,
-      primaryKey: true,
-      autoIncrement: true,
+  EmergencyMedicalServiceProvider.init(
+    {
+      Id: {
+        field: "emergencymedicalserviceprovider_uuid",
+        type: DataTypes.UUID,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      EmergencyMedicalServiceProviderName: {
+        field: "emergencymedicalserviceprovidername",
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: true,
+      },
+      RecordCreateTimestamp: {
+        field: "recordcreatetimestamp",
+        type: DataTypes.DATE,
+      },
+      RecordCreateSource: {
+        field: "patient",
+        type: DataTypes.STRING,
+      },
+      RecordUpdateTimestamp: {
+        field: "recordupdatetimestamp",
+        type: DataTypes.DATE,
+      },
+      RecordUpdateSource: {
+        field: "patient",
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    EmergencyMedicalServiceProviderName: {
-      field: "emergencymedicalserviceprovidername",
-      type: DataTypes.STRING,
-      primaryKey: true,
-      allowNull: true
-    },
-    RecordCreateTimestamp: {
-      field: "recordcreatetimestamp",
-      type: DataTypes.DATE,
-    },
-    RecordCreateSource: {
-      field: "patient",
-      type: DataTypes.STRING,
-    },
-    RecordUpdateTimestamp: {
-      field: "recordupdatetimestamp",
-      type: DataTypes.DATE,
-    },
-    RecordUpdateSource: {
-      field: "patient",
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-  }, {
-    sequelize,
-    timestamps: true,
-    createdAt: "recordCreateTimestamp",
-    updatedAt: "recordUpdateTimestamp",
-    tableName: "emergencymedicalserviceprovider",
-    modelName: 'EmergencyMedicalServiceProvider',
-  });
+    {
+      sequelize,
+      timestamps: true,
+      createdAt: "recordCreateTimestamp",
+      updatedAt: "recordUpdateTimestamp",
+      tableName: "emergencymedicalserviceprovider",
+      modelName: "EmergencyMedicalServiceProvider",
+    }
+  );
   return EmergencyMedicalServiceProvider;
 };

@@ -1,4 +1,4 @@
-const { Model } = require('sequelize');
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class HospitalAdministrator extends Model {
@@ -10,59 +10,59 @@ module.exports = (sequelize, DataTypes) => {
   HospitalAdministrator.init(
     {
       id: {
-        field: 'hospitaladministrator_uuid',
+        field: "hospitaladministrator_uuid",
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
       HospitalId: {
-        field: 'hospital_uuid',
+        field: "hospital_uuid",
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
       hospitalAdministratorIdentifier: {
-        field: 'hospitaladministratoridentifier',
+        field: "hospitaladministratoridentifier",
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
       },
       firstName: {
-        field: 'firstname',
+        field: "firstname",
         type: DataTypes.STRING,
         allowNull: false,
       },
       lastName: {
-        field: 'lastname',
+        field: "lastname",
         type: DataTypes.STRING,
         allowNull: false,
       },
       recordUpdateSource: {
-        field: 'recordupdatesource',
+        field: "recordupdatesource",
         type: DataTypes.STRING,
         allowNull: false,
       },
       recordUpdateTimestamp: {
-        field: 'recordupdatetimestamp',
+        field: "recordupdatetimestamp",
         type: DataTypes.DATE,
       },
       recordCreateSource: {
-        field: 'recordcreatesource',
+        field: "recordcreatesource",
         type: DataTypes.STRING,
         allowNull: false,
       },
       recordCreateTimestamp: {
-        field: 'recordcreatetimestamp',
+        field: "recordcreatetimestamp",
         type: DataTypes.DATE,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: 'recordCreateTimestamp',
-      updatedAt: 'recordUpdateTimestamp',
-      tableName: 'hospitaladministrator',
-      modelName: 'HospitalAdministrator',
+      createdAt: "recordCreateTimestamp",
+      updatedAt: "recordUpdateTimestamp",
+      tableName: "hospitaladministrator",
+      modelName: "HospitalAdministrator",
     }
   );
   return HospitalAdministrator;

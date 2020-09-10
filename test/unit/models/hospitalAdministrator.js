@@ -1,3 +1,5 @@
+import { describe } from 'mocha';
+
 const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
