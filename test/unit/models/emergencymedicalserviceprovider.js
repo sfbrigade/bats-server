@@ -4,7 +4,7 @@ const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
 
-describe('models.EmergencyMedicalServiceProvider', () => {
+describe.skip('models.EmergencyMedicalServiceProvider', () => {
   beforeEach(async () => {});
 
   it('creates a new EmergencyMedicalServiceProvider record', async () => {
