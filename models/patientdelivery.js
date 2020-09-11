@@ -40,22 +40,27 @@ module.exports = (sequelize, DataTypes) => {
       deliveryStatus: {
         field: 'deliverystatus', // TODO - make an enum?
         type: DataTypes.STRING,
+        allowNull: false,
       },
       departureDateTime: {
         field: 'departuredatetime',
         type: DataTypes.DATE,
+        allowNull: true,
       },
       estimatedArrivalTime: {
-        field: 'estimatedarrivaltime', // TODO - verify time vs. datetime
+        field: 'estimatedarrivaltime',
         type: DataTypes.DATE,
+        allowNull: true,
       },
       arrivalDateTime: {
         field: 'arrivaldatetime',
         type: DataTypes.DATE,
+        allowNull: true,
       },
       admissionDateTime: {
         field: 'admissiondatetime',
         type: DataTypes.DATE,
+        allowNull: true,
       },
       recordCreateTimestamp: {
         field: 'recordcreatetimestamp',

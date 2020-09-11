@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       additionalServiceAvailabilityNotes: {
         field: 'additionalserviceavailabilitynotes',
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       recordUpdateSource: {

@@ -23,10 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       dispatchCallNumber: {
         field: 'dispatchcallnumber',
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       startDateTime: {
         field: 'startdatetime',
         type: DataTypes.DATE,
+        allowNull: false,
       },
       recordCreateTimestamp: {
         field: 'recordcreatetimestamp',
