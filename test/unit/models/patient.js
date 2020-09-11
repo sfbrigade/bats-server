@@ -1,11 +1,11 @@
 const assert = require('assert');
+// TODO - remove the eslint disable once finished with the test
+// eslint-disable-next-line no-unused-vars
 const helper = require('../../helper');
 const models = require('../../../models');
 
 describe('models.Patient', () => {
-  beforeEach(async () => {
-    await helper.loadFixtures(['patientdelivery']);
-  });
+  beforeEach(async () => {});
 
   it('creates a new Patient record', async () => {
     const patient = await models.Patient.create({

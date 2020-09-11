@@ -1,15 +1,13 @@
-import { describe } from 'mocha';
-
 const assert = require('assert');
+// TODO - remove the eslint disable once finished with the test
+// eslint-disable-next-line no-unused-vars
 const helper = require('../../helper');
 const models = require('../../../models');
 
 describe('models.Ambulance', () => {
-  beforeEach(async () => {
-    await helper.loadFixtures(['ambulance']);
-  });
+  beforeEach(async () => {});
 
-  it('creates a new Ambulance record', async (Ambulance) => {
+  it('creates a new Ambulance record', async () => {
     const [ambulance] = await Promise.all([
       models.Ambulance.create({
         AmbulanceId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
@@ -23,19 +21,19 @@ describe('models.Ambulance', () => {
       }),
     ]);
 
-    assert(Ambulance);
-    assert(Ambulance.id);
-    assert(Ambulance.EmergencyMedicalServiceProvider_uuid);
-    assert.deepStrictEqual(Ambulance.AmbulanceIdentifier, 'test');
+    assert(ambulance);
+    assert(ambulance.id);
+    assert(ambulance.EmergencyMedicalServiceProvider_uuid);
+    assert.deepStrictEqual(ambulance.AmbulanceIdentifier, 'test');
     assert.deepStrictEqual(
-      Ambulance.RecordCreateTimestamp,
+      ambulance.RecordCreateTimestamp,
       '2004-10-19 10:23:54+02'
     );
-    assert.deepStrictEqual(Ambulance.RecordCreateSource, 'test');
+    assert.deepStrictEqual(ambulance.RecordCreateSource, 'test');
     assert.deepStrictEqual(
-      Ambulance.RecordUpdateTimestamp,
+      ambulance.RecordUpdateTimestamp,
       '2004-10-19 10:23:54+02'
     );
-    assert.deepStrictEqual(Ambulance.RecordUpdateSource, 'test');
+    assert.deepStrictEqual(ambulance.RecordUpdateSource, 'test');
   });
 });
