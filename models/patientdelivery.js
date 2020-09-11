@@ -1,4 +1,4 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
@@ -16,80 +16,80 @@ module.exports = (sequelize, DataTypes) => {
   }
   PatientDelivery.init(
     {
-      Id: {
-        field: "patientdelivery",
+      id: {
+        field: 'patientdelivery',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
-      Ambulance_uuid: {
-        field: "ambulance_uuid",
+      AmbulanceId: {
+        field: 'ambulance_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
-      Patient_uuid: {
-        field: "patient_uuid",
+      PatientId: {
+        field: 'patient_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
-      Hospital_uuid: {
-        field: "hospital_uuid",
+      HospitalId: {
+        field: 'hospital_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
-      DeliveryStatus: {
-        field: "deliverystatus",
+      deliveryStatus: {
+        field: 'deliverystatus',
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
       },
-      DepartureDateTime: {
-        field: "departuredatetime",
+      departureDateTime: {
+        field: 'departuredatetime',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
-      EstimatedArrivalTime: {
-        field: "estimatedarrivaltime",
+      estimatedArrivalTime: {
+        field: 'estimatedarrivaltime',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
-      ArrivalDateTime: {
-        field: "arrivaldatetime",
+      arrivalDateTime: {
+        field: 'arrivaldatetime',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
-      AdmissionDateTime: {
-        field: "admissiondatetime",
+      admissionDateTime: {
+        field: 'admissiondatetime',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
-      RecordCreateTimestamp: {
-        field: "recordcreatetimestamp",
+      recordCreateTimestamp: {
+        field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
-      RecordCreateSource: {
-        field: "recordcreatesource",
+      recordCreateSource: {
+        field: 'recordcreatesource',
         type: DataTypes.TEXT,
         unique: true,
         allowNull: false,
       },
-      RecordUpdateTimestamp: {
-        field: "patient",
+      recordUpdateTimestamp: {
+        field: 'patient',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
       },
-      RecordUpdateSource: {
-        field: "patient",
+      recordUpdateSource: {
+        field: 'patient',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
@@ -98,10 +98,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordCreateTimestamp",
-      updatedAt: "recordUpdateTimestamp",
-      tableName: "patientdelivery",
-      modelName: "Patientdelivery",
+      createdAt: 'recordCreateTimestamp',
+      updatedAt: 'recordUpdateTimestamp',
+      tableName: 'patientdelivery',
+      modelName: 'Patientdelivery',
     }
   );
   return PatientDelivery;

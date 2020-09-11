@@ -1,4 +1,4 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Patient extends Model {
@@ -15,105 +15,105 @@ module.exports = (sequelize, DataTypes) => {
   Patient.init(
     {
       id: {
-        field: "patient_uuid",
+        field: 'patient_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
       EmergencyMedicalServiceCallId: {
-        field: "emergencymedicalservicecall_uuid",
+        field: 'emergencymedicalservicecall_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
       patientNumber: {
-        field: "patientnumber",
+        field: 'patientnumber',
         type: DataTypes.INTEGER,
         unique: true,
         allowNull: false,
       },
       age: {
-        field: "age",
+        field: 'age',
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       sex: {
-        field: "sex",
+        field: 'sex',
         type: DataTypes.STRING,
         allowNull: false,
       },
       stableIndicator: {
-        field: "stableindicator",
+        field: 'stableindicator',
         type: DataTypes.STRING,
         allowNull: false,
       },
       chiefComplaintDescription: {
-        field: "chiefcomplaintdescription",
+        field: 'chiefcomplaintdescription',
         type: DataTypes.STRING,
         allowNull: false,
       },
       heartRateBpm: {
-        field: "heartratebpm",
+        field: 'heartratebpm',
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       temperature: {
-        field: "temperature",
+        field: 'temperature',
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       systolicBloodPressure: {
-        field: "systolicbloodpressure",
+        field: 'systolicbloodpressure',
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       diastolicBloodPressure: {
-        field: "diastolicbloodpressure",
+        field: 'diastolicbloodpressure',
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       respiratoryRate: {
-        field: "respiratoryrate",
+        field: 'respiratoryrate',
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       oxygenSaturation: {
-        field: "oxygensaturation",
+        field: 'oxygensaturation',
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       ivIndicator: {
-        field: "ivindicator",
+        field: 'ivindicator',
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       combativeBehaviorIndicator: {
-        field: "combativebehaviorindicator",
+        field: 'combativebehaviorindicator',
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       otherObservationNotes: {
-        field: "otherobservationnotes",
+        field: 'otherobservationnotes',
         type: DataTypes.TEXT,
         allowNull: false,
       },
       recordCreateTimestamp: {
-        field: "recordcreatetimestamp",
+        field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
         allowNull: false,
       },
       recordCreateSource: {
-        field: "recordcreatesource",
+        field: 'recordcreatesource',
         type: DataTypes.STRING,
         allowNull: false,
       },
       recordUpdateTimestamp: {
-        field: "recordupdatetimestamp",
+        field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
         allowNull: false,
       },
       recordUpdateSource: {
-        field: "recordupdatesource",
+        field: 'recordupdatesource',
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -121,10 +121,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordCreateTimestamp",
-      updatedAt: "recordUpdateTimestamp",
-      tableName: "patient",
-      modelName: "Patient",
+      createdAt: 'recordCreateTimestamp',
+      updatedAt: 'recordUpdateTimestamp',
+      tableName: 'patient',
+      modelName: 'Patient',
     }
   );
   return Patient;

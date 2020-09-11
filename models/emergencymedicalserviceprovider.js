@@ -1,4 +1,4 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class EmergencyMedicalServiceProvider extends Model {
@@ -14,32 +14,32 @@ module.exports = (sequelize, DataTypes) => {
   }
   EmergencyMedicalServiceProvider.init(
     {
-      Id: {
-        field: "emergencymedicalserviceprovider_uuid",
+      id: {
+        field: 'emergencymedicalserviceprovider_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
-      EmergencyMedicalServiceProviderName: {
-        field: "emergencymedicalserviceprovidername",
+      emergencyMedicalServiceProviderName: {
+        field: 'emergencymedicalserviceprovidername',
         type: DataTypes.STRING,
         primaryKey: true,
         allowNull: true,
       },
-      RecordCreateTimestamp: {
-        field: "recordcreatetimestamp",
+      recordCreateTimestamp: {
+        field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      RecordCreateSource: {
-        field: "patient",
+      recordCreateSource: {
+        field: 'patient',
         type: DataTypes.STRING,
       },
-      RecordUpdateTimestamp: {
-        field: "recordupdatetimestamp",
+      recordUpdateTimestamp: {
+        field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      RecordUpdateSource: {
-        field: "patient",
+      recordUpdateSource: {
+        field: 'patient',
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -47,10 +47,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordCreateTimestamp",
-      updatedAt: "recordUpdateTimestamp",
-      tableName: "emergencymedicalserviceprovider",
-      modelName: "EmergencyMedicalServiceProvider",
+      createdAt: 'recordCreateTimestamp',
+      updatedAt: 'recordUpdateTimestamp',
+      tableName: 'emergencymedicalserviceprovider',
+      modelName: 'EmergencyMedicalServiceProvider',
     }
   );
   return EmergencyMedicalServiceProvider;

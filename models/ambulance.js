@@ -1,4 +1,4 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Ambulance extends Model {
@@ -15,39 +15,39 @@ module.exports = (sequelize, DataTypes) => {
   Ambulance.init(
     {
       Id: {
-        field: "ambulance_uuid",
+        field: 'ambulance_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
-      EmergencyMedicalServiceProvider_uuid: {
-        field: "emergencymedicalserviceprovider_uuid",
+      emergencyMedicalServiceProvider_uuid: {
+        field: 'emergencymedicalserviceprovider_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
       },
-      AmbulanceIdentifier: {
-        field: "ambulanceidentifier",
+      ambulanceIdentifier: {
+        field: 'ambulanceidentifier',
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
       },
-      RecordCreateTimeStamp: {
-        field: "recordcreatetimestamp",
+      recordCreateTimeStamp: {
+        field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
         allowNull: false,
       },
-      RecordCreateSource: {
-        field: "recordcreatesource",
+      recordCreateSource: {
+        field: 'recordcreatesource',
         type: DataTypes.STRING,
         allowNull: false,
       },
-      RecordUpdateTimestamp: {
-        field: "recordupdatetimestamp",
+      recordUpdateTimestamp: {
+        field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
         allowNull: false,
       },
-      RecordUpdateSource: {
-        field: "recordupdatesource",
+      recordUpdateSource: {
+        field: 'recordupdatesource',
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -55,10 +55,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordCreateTimestamp",
-      updatedAt: "recordUpdateTimestamp",
-      tableName: "ambulance",
-      modelName: "Ambulance",
+      createdAt: 'recordCreateTimestamp',
+      updatedAt: 'recordUpdateTimestamp',
+      tableName: 'ambulance',
+      modelName: 'Ambulance',
     }
   );
   return Ambulance;
