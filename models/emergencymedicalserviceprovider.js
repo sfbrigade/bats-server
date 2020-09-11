@@ -23,23 +23,23 @@ module.exports = (sequelize, DataTypes) => {
       emergencyMedicalServiceProviderName: {
         field: 'emergencymedicalserviceprovidername',
         type: DataTypes.STRING,
-        primaryKey: true,
-        allowNull: true,
+        allowNull: false,
       },
       recordCreateTimestamp: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
       recordCreateSource: {
-        field: 'patient',
+        field: 'recordcreatesource',
         type: DataTypes.STRING,
+        allowNull: false,
       },
       recordUpdateTimestamp: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
       recordUpdateSource: {
-        field: 'patient',
+        field: 'recordupdatesource',
         type: DataTypes.STRING,
         allowNull: false,
       },

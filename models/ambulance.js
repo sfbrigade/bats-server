@@ -9,18 +9,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Ambulance.hasMany(models.Patientdelivery);
+      Ambulance.belongsTo(models.EmergencyMedicalServiceProvider);
+      Ambulance.hasMany(models.PatientDelivery);
     }
   }
   Ambulance.init(
     {
-      Id: {
+      id: {
         field: 'ambulance_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
-      emergencyMedicalServiceProvider_uuid: {
+      EmergencyMedicalServiceProviderId: {
         field: 'emergencymedicalserviceprovider_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
@@ -34,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       recordCreateTimeStamp: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
-        allowNull: false,
       },
       recordCreateSource: {
         field: 'recordcreatesource',
@@ -44,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       recordUpdateTimestamp: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
-        allowNull: false,
       },
       recordUpdateSource: {
         field: 'recordupdatesource',

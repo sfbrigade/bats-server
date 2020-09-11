@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Patient.hasMany(models.Patientdelivery);
+      Patient.belongsTo(models.EmergencyMedicalServiceCall);
+      Patient.hasOne(models.PatientDelivery);
     }
   }
   Patient.init(
@@ -100,7 +101,6 @@ module.exports = (sequelize, DataTypes) => {
       recordCreateTimestamp: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
-        allowNull: false,
       },
       recordCreateSource: {
         field: 'recordcreatesource',
@@ -110,7 +110,6 @@ module.exports = (sequelize, DataTypes) => {
       recordUpdateTimestamp: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
-        allowNull: false,
       },
       recordUpdateSource: {
         field: 'recordupdatesource',

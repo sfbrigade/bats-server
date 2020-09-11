@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       EmergencyMedicalServiceCall.hasOne(models.Patient);
-      EmergencyMedicalServiceCall.belongsTo(models.Patient);
     }
   }
   EmergencyMedicalServiceCall.init(
@@ -19,41 +18,32 @@ module.exports = (sequelize, DataTypes) => {
         field: 'emergencymedicalservicecall_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
-        allowNull: false,
+        autoIncrement: true,
       },
       dispatchCallNumber: {
         field: 'dispatchcallnumber',
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
       },
       startDateTime: {
         field: 'startdatetime',
         type: DataTypes.DATE,
-        primaryKey: true,
-        allowNull: false,
       },
       recordCreateTimestamp: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
-        primaryKey: true,
-        allowNull: false,
       },
       recordCreateSource: {
         field: 'recordcreatesource',
         type: DataTypes.STRING,
-        primaryKey: true,
+        allowNull: false,
       },
       recordUpdateTimestamp: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
-        primaryKey: true,
-        allowNull: false,
       },
       recordUpdateSource: {
-        field: 'recordupdatetimestamp',
+        field: 'recordupdatesource',
         type: DataTypes.STRING,
-        primaryKey: true,
         allowNull: false,
       },
     },

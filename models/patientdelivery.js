@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       PatientDelivery.belongsTo(models.Patient);
-      // Patientdelivery.hasMany(models.Ambulance);
-      // Patientdelivery.hasMany(models.Hospital);
+      PatientDelivery.belongsTo(models.Ambulance);
+      PatientDelivery.belongsTo(models.Hospital);
     }
   }
   PatientDelivery.init(
@@ -25,73 +25,54 @@ module.exports = (sequelize, DataTypes) => {
       AmbulanceId: {
         field: 'ambulance_uuid',
         type: DataTypes.UUID,
-        unique: true,
         allowNull: false,
       },
       PatientId: {
         field: 'patient_uuid',
         type: DataTypes.UUID,
-        unique: true,
         allowNull: false,
       },
       HospitalId: {
         field: 'hospital_uuid',
         type: DataTypes.UUID,
-        unique: true,
         allowNull: false,
       },
       deliveryStatus: {
-        field: 'deliverystatus',
+        field: 'deliverystatus', // TODO - make an enum?
         type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
       },
       departureDateTime: {
         field: 'departuredatetime',
         type: DataTypes.DATE,
-        unique: true,
-        allowNull: false,
       },
       estimatedArrivalTime: {
-        field: 'estimatedarrivaltime',
+        field: 'estimatedarrivaltime', // TODO - verify time vs. datetime
         type: DataTypes.DATE,
-        unique: true,
-        allowNull: false,
       },
       arrivalDateTime: {
         field: 'arrivaldatetime',
         type: DataTypes.DATE,
-        unique: true,
-        allowNull: false,
       },
       admissionDateTime: {
         field: 'admissiondatetime',
         type: DataTypes.DATE,
-        unique: true,
-        allowNull: false,
       },
       recordCreateTimestamp: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
-        unique: true,
-        allowNull: false,
       },
       recordCreateSource: {
         field: 'recordcreatesource',
-        type: DataTypes.TEXT,
-        unique: true,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       recordUpdateTimestamp: {
-        field: 'patient',
+        field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
-        unique: true,
-        allowNull: false,
       },
       recordUpdateSource: {
-        field: 'patient',
-        type: DataTypes.DATE,
-        unique: true,
+        field: 'recordupdatesource',
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },
@@ -101,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: 'recordCreateTimestamp',
       updatedAt: 'recordUpdateTimestamp',
       tableName: 'patientdelivery',
-      modelName: 'Patientdelivery',
+      modelName: 'PatientDelivery',
     }
   );
   return PatientDelivery;
