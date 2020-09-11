@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const { Model } = require("sequelize");
+const bcrypt = require('bcrypt');
+const { Model } = require('sequelize');
 
 const SALT_ROUNDS = 10;
 
@@ -8,62 +8,62 @@ module.exports = (sequelize, DataTypes) => {
   User.init(
     {
       id: {
-        field: "user_uuid",
+        field: 'user_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
       firstName: {
-        field: "firstname",
+        field: 'firstname',
         type: DataTypes.STRING,
         allowNull: false,
       },
       lastName: {
-        field: "lastname",
+        field: 'lastname',
         type: DataTypes.STRING,
         allowNull: false,
       },
       email: {
-        field: "email",
+        field: 'email',
         type: DataTypes.CITEXT,
       },
       subjectId: {
-        field: "subjectid",
+        field: 'subjectid',
         type: DataTypes.STRING,
       },
       password: {
         type: new DataTypes.VIRTUAL(DataTypes.STRING),
       },
       hashedPassword: {
-        field: "hashedpassword",
+        field: 'hashedpassword',
         type: DataTypes.STRING,
       },
       ssoData: {
-        field: "ssodata",
+        field: 'ssodata',
         type: DataTypes.JSONB,
       },
       isSuperUser: {
-        field: "superuserindicator",
+        field: 'superuserindicator',
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
       recordCreateTimestamp: {
-        field: "recordcreatetimestamp",
+        field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
       recordUpdateTimestamp: {
-        field: "recordupdatetimestamp",
+        field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: "recordCreateTimestamp",
-      updatedAt: "recordUpdateTimestamp",
-      tableName: "batsuser",
-      modelName: "User",
+      createdAt: 'recordCreateTimestamp',
+      updatedAt: 'recordUpdateTimestamp',
+      tableName: 'batsuser',
+      modelName: 'User',
     }
   );
   User.beforeSave(async (user) => {
