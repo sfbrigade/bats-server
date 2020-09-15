@@ -33,5 +33,15 @@ describe('models.PatientDelivery', () => {
       recordCreateSource: 'fixture',
     });
     assert(patientDelivery);
+    assert(patientDelivery.id);
+    assert.deepEqual(patientDelivery.AmbulanceId, ambulance.id);
+    assert.deepEqual(patientDelivery.PatientId, patient.id);
+    assert.deepEqual(
+      patientDelivery.HospitalId,
+      '7f666fe4-dbdd-4c7f-ab44-d9157379a680'
+    );
+    assert.deepEqual(patientDelivery.deliveryStatus, 'test');
+    assert.deepEqual(patientDelivery.recordCreateSource, 'fixture');
+    assert.deepEqual(patientDelivery.recordUpdateSource, 'fixture');
   });
 });
