@@ -29,6 +29,10 @@ describe('models.PatientDelivery', () => {
       PatientId: patient.id,
       HospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
       deliveryStatus: 'test',
+      departureDateTime: '2004-10-19 10:23:54+02',
+      estimatedArrivalTime: '2004-10-19 11:23:54+02',
+      arrivalDateTime: '2004-10-19 12:23:54+02',
+      admissionDateTime: '2004-10-19 13:23:54+02',
       recordUpdateSource: 'fixture',
       recordCreateSource: 'fixture',
     });
@@ -43,5 +47,11 @@ describe('models.PatientDelivery', () => {
     assert.deepEqual(patientDelivery.deliveryStatus, 'test');
     assert.deepEqual(patientDelivery.recordCreateSource, 'fixture');
     assert.deepEqual(patientDelivery.recordUpdateSource, 'fixture');
+    assert(patientDelivery.departureDateTime);
+    assert(patientDelivery.estimatedArrivalTime);
+    assert(patientDelivery.arrivalDateTime);
+    assert(patientDelivery.admissionDateTime);
+    assert(patientDelivery.recordCreateTimestamp);
+    assert(patientDelivery.recordUpdateTimestamp);
   });
 });
