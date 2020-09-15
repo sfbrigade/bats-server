@@ -2,13 +2,11 @@
   {
     "model": "EmergencyMedicalServiceCall",
     "data": {
-      "id": "136cf75e-55e8-4c31-a6bb-a90434ca9f18",
-      "dispatchcallnumber": "911",
-      "startdatetime": "2004-10-19 10:23:54+02",
-      "recordcreatetimestamp": "2004-10-19 10:23:54+02",
-      "recordcreatesource": "test",
-      "recordupdatetimestamp": "2004-10-19 10:23:54+02",
-      "recordupdatesource": "test"
+      "id": "6d6b74d6-f6f3-11ea-adc1-0242ac120002",
+      "dispatchCallNumber": "911",
+      "startDateTime": "2004-10-19 10:23:54+02",
+      "recordCreateSource": "test",
+      "recordUpdateSource": "test"
     }
   }
 ]
