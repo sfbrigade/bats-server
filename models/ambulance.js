@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
-      recordCreateTimeStamp: {
+      recordCreateTimestamp: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },

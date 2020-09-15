@@ -310,7 +310,7 @@ module.exports = {
       'ALTER TABLE patient ALTER COLUMN patient_uuid SET DEFAULT gen_random_uuid();'
     );
     await queryInterface.sequelize.query(
-      'ALTER TABLE patient ALTER COLUMN patient_uuid SET DEFAULT gen_random_uuid();'
+      'ALTER TABLE patientdelivery ALTER COLUMN patientdelivery_uuid SET DEFAULT gen_random_uuid();'
     );
   },
 
