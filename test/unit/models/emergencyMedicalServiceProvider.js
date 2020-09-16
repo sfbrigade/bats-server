@@ -4,38 +4,31 @@ const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
 
-describe.skip('models.EmergencyMedicalServiceProvider', () => {
+describe('models.EmergencyMedicalServiceProvider', () => {
   beforeEach(async () => {});
 
   it('creates a new EmergencyMedicalServiceProvider record', async () => {
-    const [EmergencyMedicalServiceProvider] = await Promise.all([
-      models.EmergencyMedicalServiceProvider.create({
-        Id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
-        EmergencyMedicalServiceProviderName: 'text',
-        RecordCreateTimestamp: '2004-10-19 10:23:54+02',
-        RecordCreateSource: 'test',
-        RecordUpdateTimestamp: '2004-10-19 10:23:54+02',
-        RecordUpdateSource: 'test',
-      }),
-    ]);
-    assert(EmergencyMedicalServiceProvider);
-    assert(EmergencyMedicalServiceProvider.id);
+    const emergencyMedicalServiceProvider = await models.EmergencyMedicalServiceProvider.create(
+      {
+        emergencyMedicalServiceProviderName: 'test',
+        recordCreateSource: 'test',
+        recordUpdateSource: 'test',
+      }
+    );
+    assert(emergencyMedicalServiceProvider);
+    assert(emergencyMedicalServiceProvider.id);
     assert.deepStrictEqual(
-      EmergencyMedicalServiceProvider.EmergencyMedicalServiceProviderName,
+      emergencyMedicalServiceProvider.emergencyMedicalServiceProviderName,
       'test'
     );
+    assert(emergencyMedicalServiceProvider.recordCreateTimestamp);
     assert.deepStrictEqual(
-      EmergencyMedicalServiceProvider.RecordCreateTimestamp
-    );
-    assert.deepStrictEqual(
-      EmergencyMedicalServiceProvider.RecordCreateSource,
+      emergencyMedicalServiceProvider.recordCreateSource,
       'test'
     );
+    assert(emergencyMedicalServiceProvider.recordUpdateTimestamp);
     assert.deepStrictEqual(
-      EmergencyMedicalServiceProvider.RecordUpdateTimestamp
-    );
-    assert.deepStrictEqual(
-      EmergencyMedicalServiceProvider.RecordUpdateSource,
+      emergencyMedicalServiceProvider.recordUpdateSource,
       'test'
     );
   });
