@@ -5,9 +5,9 @@ const models = require('../../../models');
 describe('models.PatientDelivery', () => {
   beforeEach(async () => {
     await helper.loadFixtures([
-      'emergencyMedicalServiceCall',
-      'emergencyMedicalServiceProvider',
-      'hospital',
+      'emergencyMedicalServiceCalls',
+      'emergencyMedicalServiceProviders',
+      'hospitals',
     ]);
   });
 

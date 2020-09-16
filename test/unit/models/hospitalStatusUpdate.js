@@ -4,7 +4,7 @@ const models = require('../../../models');
 
 describe('models.HospitalStatusUpdate', () => {
   beforeEach(async () => {
-    await helper.loadFixtures(['hospital', 'hospitalAdministrator']);
+    await helper.loadFixtures(['hospitals', 'hospitalAdministrators']);
   });
 
   it('creates a new HospitalStatusUpdate record', async () => {

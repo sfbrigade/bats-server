@@ -6,7 +6,7 @@ const models = require('../../../models');
 
 describe('models.Patient', () => {
   beforeEach(async () => {
-    await helper.loadFixtures(['emergencyMedicalServiceCall']);
+    await helper.loadFixtures(['emergencyMedicalServiceCalls']);
   });
 
   it('creates a new Patient record', async () => {
