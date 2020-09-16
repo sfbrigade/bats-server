@@ -38,15 +38,15 @@ describe('models.PatientDelivery', () => {
     });
     assert(patientDelivery);
     assert(patientDelivery.id);
-    assert.deepEqual(patientDelivery.AmbulanceId, ambulance.id);
-    assert.deepEqual(patientDelivery.PatientId, patient.id);
-    assert.deepEqual(
+    assert.deepStrictEqual(patientDelivery.AmbulanceId, ambulance.id);
+    assert.deepStrictEqual(patientDelivery.PatientId, patient.id);
+    assert.deepStrictEqual(
       patientDelivery.HospitalId,
       '7f666fe4-dbdd-4c7f-ab44-d9157379a680'
     );
-    assert.deepEqual(patientDelivery.deliveryStatus, 'test');
-    assert.deepEqual(patientDelivery.recordCreateSource, 'fixture');
-    assert.deepEqual(patientDelivery.recordUpdateSource, 'fixture');
+    assert.deepStrictEqual(patientDelivery.deliveryStatus, 'test');
+    assert.deepStrictEqual(patientDelivery.recordCreateSource, 'fixture');
+    assert.deepStrictEqual(patientDelivery.recordUpdateSource, 'fixture');
     assert(patientDelivery.departureDateTime);
     assert(patientDelivery.estimatedArrivalTime);
     assert(patientDelivery.arrivalDateTime);
