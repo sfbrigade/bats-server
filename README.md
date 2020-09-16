@@ -43,6 +43,31 @@
 
    You can also run the script commands set up by Create React App after logging in.
 
+## Server Testing
+
+1. Log in to a running server container as above.
+
+2. Make sure the test database is created, and run migrations on it:
+
+   ```
+   sequelize db:create --env test
+   sequelize db:migrate --env test
+   ```
+
+   During development, you may be working on migrations and you will need to undo and rerun
+   migrations- make sure to do that on the test database as well.
+
+   ```
+   sequelize db:migrate:undo --env test
+   sequelize db:migrate --env test
+   ```
+
+3. Run the server tests:
+
+```
+yarn test:server
+```
+
 # Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

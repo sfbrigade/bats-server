@@ -1,9 +1,30 @@
 version: 2.1
+
 orbs:
   node: circleci/node@4.0.0
-workflows:
-  node-tests:
-    jobs:
-      - node/test:
+  docker: circleci/docker@1.4.0
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/node:14.4.0
+        environment:
+          DATABASE_URL: 'postgres://postgres@localhost/bats'
+      - image: circleci/postgres:12
+        environment:
+          POSTGRES_HOST_AUTH_METHOD: trust
+    steps:
+      - checkout
+      - node/install-packages:
           pkg-manager: yarn
-          version: 14.4.0
+      - run:
+          command: yarn run sequelize db:create --env test
+      - run:
+          command: yarn run sequelize db:migrate --env test
+      - run:
+          command: eval $(cat example.env | grep -v DATABASE_URL | sed 's/^/export /'); yarn run test
+
+workflows:
+  test:
+    jobs:
+      - build-and-test
