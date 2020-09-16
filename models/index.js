@@ -4,7 +4,9 @@ const Sequelize = require('sequelize');
 
 /// Assume we're never going to deal with DECIMAL values outside of JS number range
 /// https://github.com/sequelize/sequelize/issues/8019
-Sequelize.postgres.DECIMAL.parse = function (value) { return parseFloat(value); };
+Sequelize.postgres.DECIMAL.parse = function parse(value) {
+  return parseFloat(value);
+};
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';

@@ -51,6 +51,6 @@ describe('models.Patient', () => {
     assert(patient.recordUpdateTimestamp);
 
     const call = await patient.getEmergencyMedicalServiceCall();
-    assert(call);    
+    assert(call);
   });
 });
