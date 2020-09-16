@@ -7,23 +7,15 @@ describe('models.PatientDelivery', () => {
     await helper.loadFixtures([
       'emergencyMedicalServiceCalls',
       'emergencyMedicalServiceProviders',
+      'ambulances',
+      'patients',
       'hospitals',
     ]);
   });
 
   it('creates a new PatientDelivery record', async () => {
-    const patient = await models.Patient.create({
-      EmergencyMedicalServiceCallId: '6d6b74d6-f6f3-11ea-adc1-0242ac120002',
-      patientNumber: 1,
-      recordUpdateSource: 'fixture',
-      recordCreateSource: 'fixture',
-    });
-    const ambulance = await models.Ambulance.create({
-      EmergencyMedicalServiceProviderId: 'aac13870-f6f3-11ea-adc1-0242ac120002',
-      ambulanceIdentifier: 'testId',
-      recordUpdateSource: 'fixture',
-      recordCreateSource: 'fixture',
-    });
+    const patient = await models.Patient.findByPk('136cf75e-55e8-4c31-a6bb-a90434ca9f28');
+    const ambulance = await models.Ambulance.findByPk('7f666fe4-dbdd-4c7f-ab44-d9157379a680');
     const patientDelivery = await models.PatientDelivery.create({
       AmbulanceId: ambulance.id,
       PatientId: patient.id,
