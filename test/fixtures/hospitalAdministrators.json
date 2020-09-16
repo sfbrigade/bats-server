@@ -1,0 +1,14 @@
+[
+  {
+    "model": "HospitalAdministrator",
+    "data": {
+      "id": "136cf75e-55e8-4c31-a6bb-a90434ca9f18",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "hospitalAdministratorIdentifier": "Taxman",
+      "firstName": "Paul",
+      "lastName": "McCartney",
+      "recordUpdateSource": "fixture",
+      "recordCreateSource": "fixture"
+    }
+  }
+]

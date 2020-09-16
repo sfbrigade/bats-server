@@ -8,3 +8,10 @@ services:
     volumes:
       - .:/opt/node/app
       - /opt/node/app/node_modules
+  idp:
+    image: kristophjunge/test-saml-idp
+    ports:
+      - 8080:8080
+    environment:
+      - SIMPLESAMLPHP_SP_ENTITY_ID=bats-server
+      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=http://localhost:3000/auth/saml/callback

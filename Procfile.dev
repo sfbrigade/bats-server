@@ -1,2 +1,2 @@
 webpack: react-scripts start
-web: nodemon -V --ignore ./src --ignore ./test ./bin/www
+web: PROXY_PORT=4000 nodemon -V --ignore ./src --ignore ./test ./bin/www

@@ -1,0 +1,12 @@
+[
+  {
+    "model": "Patient",
+    "data": {
+      "id": "136cf75e-55e8-4c31-a6bb-a90434ca9f28",
+      "EmergencyMedicalServiceCallId": "6d6b74d6-f6f3-11ea-adc1-0242ac120002",
+      "patientNumber": 1,
+      "recordUpdateSource": "fixture",
+      "recordCreateSource": "fixture"
+    }
+  }
+]

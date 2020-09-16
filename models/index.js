@@ -2,11 +2,23 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 
+/// Assume we're never going to deal with DECIMAL values outside of JS number range
+/// https://github.com/sequelize/sequelize/issues/8019
+Sequelize.postgres.DECIMAL.parse = function parse(value) {
+  return parseFloat(value);
+};
+
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.js')[env];
-
-const db = {};
+// eslint-disable-next-line import/no-dynamic-require
+const config = require(`${__dirname}/../config/config.js`)[env];
+const db = {
+  Patient: undefined,
+  Ambulance: undefined,
+  EmergencyMedicalServiceCall: undefined,
+  PatientDelivery: undefined,
+  EmergencyMedicalServiceProvider: undefined,
+};
 
 let sequelize;
 if (config.use_env_variable) {
