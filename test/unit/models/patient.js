@@ -4,17 +4,18 @@ const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
 
-describe.skip('models.Patient', () => {
-  beforeEach(async () => {});
+describe('models.Patient', () => {
+  beforeEach(async () => {
+    await helper.loadFixtures(['emergencyMedicalServiceCall']);
+  });
 
   it('creates a new Patient record', async () => {
     const patient = await models.Patient.create({
-      id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
-      EmergencyMedicalServiceCallId: '136cf75e-55e8-4c31-a6bb-a90434ca9f18',
+      EmergencyMedicalServiceCallId: '6d6b74d6-f6f3-11ea-adc1-0242ac120002',
       patientNumber: 3,
       age: 4,
       sex: 'non-binary',
-      stableIndicator: 'false',
+      stableIndicator: false,
       chiefComplaintDescription: 'test',
       heartRateBpm: 180,
       temperature: 98.6,
@@ -36,7 +37,7 @@ describe.skip('models.Patient', () => {
     assert.deepStrictEqual(patient.patientNumber, 3);
     assert.deepStrictEqual(patient.age, 4);
     assert.deepStrictEqual(patient.sex, 'non-binary');
-    assert.deepStrictEqual(patient.stableIndicator, 'false');
+    assert.deepStrictEqual(patient.stableIndicator, false);
     assert.deepStrictEqual(patient.chiefComplaintDescription, 'test');
     assert.deepStrictEqual(patient.heartRateBpm, 180);
     assert.deepStrictEqual(patient.temperature, 98.6);
@@ -50,5 +51,8 @@ describe.skip('models.Patient', () => {
     assert(patient.recordCreateTimestamp);
     assert(patient.recordCreateSource);
     assert(patient.recordUpdateTimestamp);
+
+    const call = await patient.getEmergencyMedicalServiceCall();
+    assert(call);    
   });
 });
