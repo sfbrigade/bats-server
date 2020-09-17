@@ -1,70 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../App.css';
 import '../../nav.css';
 import Beds from './beds';
 import RingDown from './ringDown';
 
-class EMS extends React.Component {
-  //UI for EMS
-  constructor(props) {
-    super(props);
-    this.state = {
-      beds: true,
-      ringDown: false,
-      unitId: '',
-      patientId: '',
-      history: {},
-    };
-    this.handleClick = this.handleClick.bind(this);
-    this.saveHistory = this.saveHistory.bind(this);
-  }
+const EMS = (/* props */) => {
+  const [beds, setBeds] = useState(true);
+  const [ringDown, setRingDown] = useState(false);
+  // const [unitId, setUnitId] = useState('');
+  // const [patientId, setPatientId] = useState('');
+  const [history, setHistory] = useState({});
 
-  handleClick() {
-    this.setState({
-      beds: !this.state.beds,
-      ringDown: !this.state.ringDown,
-    });
-  }
+  const handleClick = () => {
+    setBeds(!beds);
+    setRingDown(!ringDown);
+  };
 
-  saveHistory(state) {
-    let histroy;
-    this.setState({
-      history: state,
-    });
-    console.log(this.state.history);
-    return histroy;
-  }
+  const saveHistory = (newHistory) => {
+    setHistory(newHistory);
+    return history;
+  };
 
-  render() {
-    return (
-      <div className="emsContainer">
-        <div className="nav">
-          <h2>EMS-SFFD</h2>
-          <div className={this.state.beds ? 'bedTabSelected' : 'bedTab'}>
-            <a className="beds" onClick={this.handleClick}>
-              Beds
-            </a>
-          </div>
-          <div
-            className={
-              this.state.ringDown ? 'ringDownTabselected' : 'ringDownTab'
-            }
-          >
-            <a className="ringDown" onClick={this.handleClick}>
-              Ring Down
-            </a>
-          </div>
+  return (
+    <div className="emsContainer">
+      <div className="nav">
+        <h2>EMS-SFFD</h2>
+        <div className={beds ? 'bedTabSelected' : 'bedTab'}>
+          <button type="button" className="beds" onClick={handleClick}>
+            Beds
+          </button>
         </div>
-        {this.state.beds && <Beds />}
-        {this.state.ringDown && (
-          <RingDown
-            history={this.state.history}
-            saveHistory={this.saveHistory}
-          />
-        )}
+        <div className={ringDown ? 'ringDownTabselected' : 'ringDownTab'}>
+          <button type="button" className="ringDown" onClick={handleClick}>
+            Ring Down
+          </button>
+        </div>
       </div>
-    );
-  }
-}
+      {beds && <Beds />}
+      {ringDown && <RingDown history={history} saveHistory={saveHistory} />}
+    </div>
+  );
+};
 
 export default EMS;
