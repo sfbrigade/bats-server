@@ -2,6 +2,7 @@
   position: relative;
   left: 2em;
   width: 320px;
+  height: 132px;
   font-size: 16px;
   color: #71767A;
   /* border-bottom: 1px solid #DCDEE0; */
@@ -38,14 +39,14 @@
 }
 .title {
   position: relative;
-  left: -32px;
+  left: -1px;
   text-align: left;
   font-size: 16px;
   color: #3D4551;
   border-bottom: 1px solid black;
   padding-bottom: 10px;
-  width: 332px;
-
+  width: 320px;
+  padding-left: 10px;
 }
 #ageLabel {
   position: relative;
@@ -129,7 +130,7 @@
 #complaintLabel {
   position: relative;
   top: 186px;
-  left: -34px;
+  left: -5px;
   font-size: 16px;
 }
 #complaint {
@@ -165,11 +166,60 @@
   height: 22px;
   width: 22px;
 }
+.patientInfo {
+  display: none;
+}
+#patientDisplay {
+  position: relative;
+  top: -64px;
+  left: 301px;
+  border: none;
+  background-color: white;
+  font-size: 16px;
+}
+#vitalsDisplay {
+  position: relative;
+  top: -109px;
+  left: 301px;
+  background-color: white;
+  border: none;
+  font-size: 16px;
+}
+#vitalsDisplay2 {
+  position: relative;
+  top: 313px;
+  left: 303px;
+  background-color: white;
+  border: none;
+  font-size: 16px;
+}
+.vitalsInfo {
+  display: none;
+}
 #vitals {
   position: relative;
-  top: 218px;
-  left: -32px;
+  top: -59px;
+
   text-align: left;
+}
+#vitals2 {
+  position: relative;
+  top: 353px;
+   
+}
+#bpLabel{
+  position: relative;
+  top: -70px;
+  left: -221px;
+  font-size: 16px;
+  margin: 204px;
+}
+#bp {
+  position: relative;
+  top: 4px;
+  left: 174px;
+  width: 168px;
+  height: 36px;
 }
 #saveButton{
   position: relative;
@@ -179,6 +229,84 @@
   color: white;
   width: 272px;
   height: 44px;
+}
+#pulseLabel {
+  position: relative;
+  top: -67px;
+  left: -58px;
+  margin: 45px;
+}
+#pulse {
+  position: relative;
+  top: 32px;
+  left: -109px;
+  width: 112px;
+  height: 36px;
+}
+#respiratoryLabel {
+  position: relative;
+  top: -29px;
+  left: -201px;
+  margin: 190px;
+}
+#respiratory {
+  position: relative;
+  top: 4px;
+  left: 159px;
+  width: 168px;
+  height: 36px;
+}
+#spo2Label {
+  position: relative;
+  top: -29px;
+  left: -201px;
+  margin: 190px;
+}
+#spo2 {
+  position: relative;
+  top: 4px;
+  left: 159px;
+  width: 88px;
+  height: 36px;
+}
+#RALabel {
+  position: relative;
+  top: -18px;
+  left: 69px;
+  font-size: 16px;
+}
+#RA {
+  position: relative;
+  top: 5px;
+  left: -121px;
+  height: 22px;
+  width: 22px;
+}
+#O2Label {
+  position: relative;
+  top: 25px;
+  left: -92px;
+  font-size: 16px;
+}
+#O2 {
+  position: relative;
+  top: 4px;
+  left: -121px;
+  height: 22px;
+  width: 22px;
+}
+#tempLabel {
+  position: relative;
+  top: 53px;
+  left: -201px;
+  margin: 190px;
+}
+#temp {
+  position: relative;
+  top: 4px;
+  left: 159px;
+  width: 88px;
+  height: 36px;
 }
 /* .infoAge {
   height: 100px;
