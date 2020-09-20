@@ -7,15 +7,19 @@ const RingDown = ({ history, saveHistory }) => {
   const [saveTime, setSaveTime] = useState(history?.saveTime ?? '');
   const [incidentId, setIncidentId] = useState(history?.incidentId ?? '');
   const [unit, setUnit] = useState(history?.unit ?? '');
+  const [patientDisplay, setPatientDisplay] = useState(history?.patientDisplay ?? false);
   const [age, setAge] = useState(history?.age ?? '');
   const [gender, setGender] = useState(history?.gender ?? '');
   const [code, setCode] = useState(history?.code ?? '');
   const [complaint, setComplaint] = useState(history?.complaint ?? '');
   const [stable, setStable] = useState(history?.stable ?? '');
+  const [vitalsDisplay, setVitalsDisplay] = useState(history?.vitalsDisplay ?? false);
   const [bp, setBp] = useState(history?.bp ?? '');
   const [pulse, setPulse] = useState(history?.pulse ?? '');
   const [respiratory, setRespiratory] = useState(history?.respiratory ?? '');
   const [spo2, setSpo2] = useState(history?.spo2 ?? '');
+  const [ra, setRa] = useState(history?.ra ?? false);
+  const [o2, setO2] = useState(history?.o2 ?? false);
   const [temp, setTemp] = useState(history?.temp ?? '');
 
   const save = () => {
@@ -27,15 +31,19 @@ const RingDown = ({ history, saveHistory }) => {
       saveTime,
       incidentId,
       unit,
+      patientDisplay,
       age,
       gender,
       code,
       complaint,
       stable,
+      vitalsDisplay,
       bp,
       pulse,
       respiratory,
       spo2,
+      ra,
+      o2,
       temp,
     });
   };
@@ -84,8 +92,10 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
       </div>
-      <div className="RingDownInfo">
+      
         <h6 className="title">Patient Info</h6>
+        <button id="patientDisplay" onClick={() => setPatientDisplay(!patientDisplay)}>+</button>
+        <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo"}>
         {!saved ? (
           <label id="ageLabel" htmlFor="age">
             {' '}
@@ -104,7 +114,7 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
       </div>
-      <div className="RingDownInfo">
+      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo"}>
         {!saved ? (
           <label id="maleLabel" htmlFor="male">
             Male
@@ -152,7 +162,7 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
       </div>
-      <div className="RingDownInfo">
+      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo"}>
         {!saved ? (
           <label id="code2Label" htmlFor="code2">
             {' '}
@@ -189,7 +199,7 @@ const RingDown = ({ history, saveHistory }) => {
           <label id="complaintLabel" htmlFor="complaint">
             {' '}
             ChiefComplaint{' '}
-            <input
+            <textarea
               id="complaint"
               value={complaint}
               onChange={(e) => setComplaint(e.target.value)}
@@ -235,10 +245,11 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
       </div>
-      <div className="RingDownInfo">
-        <h3 className="title" id="vitals">Vitals</h3>
-        {/* {!saved ? (
-          <label htmlFor="bp">
+        <h3 className="title" id={!patientDisplay ? "vitals" : "vitals2"}>Vitals</h3>
+        <button id={!patientDisplay ? "vitalsDisplay" : "vitalsDisplay2"} onClick={() => setVitalsDisplay(!vitalsDisplay)}>+</button>
+        <div className={!vitalsDisplay ? "RingDownInfo vitalsInfo" : "RingDownInfo"}>
+        {!saved ? (
+          <label id="bpLabel" htmlFor="bp">
             {' '}
             Blood Pressure
             <input
@@ -252,9 +263,9 @@ const RingDown = ({ history, saveHistory }) => {
           <div>
             <p>Blood Pressure</p> <p>{bp}</p>
           </div>
-        )}  */}
-        {/* {!saved ? (
-          <label htmlFor="pulse">
+        )} 
+        {!saved ? (
+          <label id="pulseLabel" htmlFor="pulse">
             {' '}
             Pulse Rate
             <input
@@ -270,7 +281,7 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
         {!saved ? (
-          <label htmlFor="respiratory">
+          <label id="respiratoryLabel" htmlFor="respiratory">
             {' '}
             Respiratory Rate{' '}
             <input
@@ -285,8 +296,9 @@ const RingDown = ({ history, saveHistory }) => {
             <p>Respiratory Rate</p> <p>{respiratory}</p>
           </div>
         )}
+        
         {!saved ? (
-          <label htmlFor="spo2">
+          <label id="spo2Label" htmlFor="spo2">
             {' '}
             SpO{' '}
             <input
@@ -301,8 +313,56 @@ const RingDown = ({ history, saveHistory }) => {
             <p> SpO</p> <p>{spo2}</p>
           </div>
         )}
+           {!saved ? (
+          <label id="RALabel" htmlFor="RA">
+            {' '}
+            RA{' '}
+            <input
+              id="RA"
+              value={true}
+              onChange={(e) => setRa(e.target.value)}
+              type="radio"
+            />
+          </label>
+        ) : (
+          <div>
+            <p> RA</p> <p>{ra}</p>
+          </div>
+        )}
         {!saved ? (
-          <label htmlFor="temp">
+          <label id="O2Label" htmlFor="O2">
+            {' '}
+            O2{' '}
+            <input
+              id="O2"
+              value={true}
+              onChange={(e) => setO2(e.target.value)}
+              type="radio"
+            />
+          </label>
+        ) : (
+          <div>
+            <p> O2</p> <p>{o2}</p>
+          </div>
+        )}
+        {/* {!saved ? (
+          <label htmlFor="L">
+            {' '}
+            L{' '}
+            <input
+              id="L"
+              value={L}
+              onChange={(e) => setL(e.target.value)}
+              type="text"
+            />
+          </label>
+        ) : (
+          <div>
+            <p>L</p> <p>{temp}</p>
+          </div>
+        )} */}
+        {!saved ? (
+          <label id="tempLabel" htmlFor="temp">
             {' '}
             Temperature{' '}
             <input
@@ -316,7 +376,7 @@ const RingDown = ({ history, saveHistory }) => {
           <div>
             <p>Temperature</p> <p>{temp}</p>
           </div>
-        )} */}
+        )} 
         </div> 
         
       {/* <div className="RingDownInfo">
