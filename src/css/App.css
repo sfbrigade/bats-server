@@ -1,10 +1,11 @@
 .emsContainer {
-  background-color: #e5e5e5;
-  height: 90%;
-  width: 96%;
+  /* background-color: #e5e5e5; */
+  height: 2000px;
+  width: 330px;
   margin: auto;
   text-align: justify;
   border: 1px solid #beb8b8;
+  /* background-color: #E5E5E5; */
 }
 .bedContent {
   padding: 10% 10% 10% 10%;

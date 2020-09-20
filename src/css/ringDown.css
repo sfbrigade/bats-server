@@ -1,0 +1,185 @@
+.RingDownInfo {
+  position: relative;
+  left: 2em;
+  width: 320px;
+  font-size: 16px;
+  color: #71767A;
+  /* border-bottom: 1px solid #DCDEE0; */
+}
+#unitLabel {
+  position: relative;
+  left: -30px;
+  top: -21px;
+  width: 272px;
+  height: 24px;
+  text-align: left;
+}
+ #unit {
+  position: relative;
+  left: -82px;
+  top: 34px;
+  width: 140px;
+  height: 36px; 
+}
+#incidentLabel {
+  position: relative;
+  left: -279px;
+  top: 61px;
+  width: 272px;
+  height: 24px;
+  text-align: left;
+}
+#incidentId {
+  position: relative;
+  left: 217px;
+  top: -23px;
+  width: 140px;
+  height: 36px; 
+}
+.title {
+  position: relative;
+  left: -32px;
+  text-align: left;
+  font-size: 16px;
+  color: #3D4551;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  width: 332px;
+
+}
+#ageLabel {
+  position: relative;
+  left: -27px;
+  top: -23px;
+  font-size: 16px;
+}
+#age {
+  position: relative;
+  left: -123px;
+  top: 33px;
+  height: 36px;
+  width: 64px;
+  border-radius: 4px;
+}
+#maleLabel {
+  position: relative;
+  top: 23px;
+  left: 1px;
+  font-size: 16px;
+}
+#male {
+  position: relative;
+  top: 5px;
+  left: -98px;
+  height: 22px;
+  width: 22px;
+}
+#femaleLabel {
+  position: relative;
+  top: 62px;
+  left: -116px;
+  font-size: 16px;
+}
+#female {
+  position: relative;
+  top: 5px;
+  left: -112px;
+  height: 22px;
+  width: 22px;
+}
+#non-binaryLabel {
+  position: relative;
+  top: 97px;
+  left: -228px;
+  font-size: 16px;
+}
+#non-binary {
+  position: relative;
+  top: -30px;
+  left: 177px;
+  height: 22px;
+  width: 22px;
+}
+#code2Label {
+  position: relative;
+  top: 97px;
+  left: -1px;
+  font-size: 16px;
+}
+#code2 {
+  position: relative;
+  top: 4px;
+  left: -146px;
+  height: 22px;
+  width: 22px;
+}
+#code3Label {
+  position: relative;
+  top: 134px;
+  left: -170px;
+  font-size: 16px;
+}
+#code3 {
+  position: relative;
+  top: 4px;
+  left: -146px;
+  height: 22px;
+  width: 22px;
+}
+#complaintLabel {
+  position: relative;
+  top: 186px;
+  left: -34px;
+  font-size: 16px;
+}
+#complaint {
+  position: relative;
+  top: 4px;
+  left: -5px;
+  height: 136px;
+  width: 268px;
+}
+#stableLabel {
+  position: relative;
+  top: 213px;
+  left: -1px;
+  font-size: 16px;
+}
+#stable {
+  position: relative;
+  top: 4px;
+  left: -161px;
+  height: 22px;
+  width: 22px;
+}
+#unstableLabel {
+  position: relative;
+  top: 248px;
+  left: -175px;
+  font-size: 16px;
+}
+#unstable {
+  position: relative;
+  top: -33px;
+  left: 127px;
+  height: 22px;
+  width: 22px;
+}
+#vitals {
+  position: relative;
+  top: 218px;
+  left: -32px;
+  text-align: left;
+}
+#saveButton{
+  position: relative;
+  top: 414px;
+  left: 25px;
+  background-color: #005EA2;
+  color: white;
+  width: 272px;
+  height: 44px;
+}
+/* .infoAge {
+  height: 100px;
+}  */

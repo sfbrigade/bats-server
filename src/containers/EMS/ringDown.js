@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import '../../ringDown.css';
+import '../../css/ringDown.css';
 
 const RingDown = ({ history, saveHistory }) => {
   const [saved, setSaved] = useState(history?.saved ?? false);
   const [saveTime, setSaveTime] = useState(history?.saveTime ?? '');
-  const [patientId, setPatientId] = useState(history?.patientId ?? '');
+  const [incidentId, setIncidentId] = useState(history?.incidentId ?? '');
   const [unit, setUnit] = useState(history?.unit ?? '');
   const [age, setAge] = useState(history?.age ?? '');
   const [gender, setGender] = useState(history?.gender ?? '');
+  const [code, setCode] = useState(history?.code ?? '');
   const [complaint, setComplaint] = useState(history?.complaint ?? '');
+  const [stable, setStable] = useState(history?.stable ?? '');
   const [bp, setBp] = useState(history?.bp ?? '');
   const [pulse, setPulse] = useState(history?.pulse ?? '');
   const [respiratory, setRespiratory] = useState(history?.respiratory ?? '');
@@ -23,11 +25,13 @@ const RingDown = ({ history, saveHistory }) => {
     saveHistory({
       saved,
       saveTime,
-      patientId,
+      incidentId,
       unit,
       age,
       gender,
+      code,
       complaint,
+      stable,
       bp,
       pulse,
       respiratory,
@@ -45,11 +49,10 @@ const RingDown = ({ history, saveHistory }) => {
 
   return (
     <div className="ringDownContainer">
-      <h1 className="title">RINGDOWN FORM</h1>
+      
       <div className="RingDownInfo">
-        <h3 className="title">Identification</h3>
         {!saved ? (
-          <label htmlFor="unit">
+          <label id="unitLabel" htmlFor="unit">
             {' '}
             Unit #{' '}
             <input
@@ -65,28 +68,28 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
         {!saved ? (
-          <label id="patientLabel" htmlFor="patientId">
+          <label id="incidentLabel" htmlFor="incidentId">
             {' '}
-            Patient Id{' '}
+           Incident #{' '}
             <input
-              id="patientId"
-              value={patientId}
-              onChange={(e) => setPatientId(e.target.value)}
+              id="incidentId"
+              value={incidentId}
+              onChange={(e) => setIncidentId(e.target.value)}
               type="text"
             />
           </label>
         ) : (
           <div>
-            <p> Patient Id</p> <p>{patientId}</p>
+            <p> Incident Id</p> <p>{incidentId}</p>
           </div>
         )}
       </div>
-      <div className="RingDownInfo infoAge">
-        <h3 className="title">Age</h3>
+      <div className="RingDownInfo">
+        <h6 className="title">Patient Info</h6>
         {!saved ? (
           <label id="ageLabel" htmlFor="age">
             {' '}
-            Estimated Age{' '}
+            Age (estim.){' '}
             <input
               id="age"
               size="2"
@@ -102,7 +105,6 @@ const RingDown = ({ history, saveHistory }) => {
         )}
       </div>
       <div className="RingDownInfo">
-        <h3 className="title">Sex</h3>
         {!saved ? (
           <label id="maleLabel" htmlFor="male">
             Male
@@ -135,10 +137,10 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
         {!saved ? (
-          <label htmlFor="non-binary">
+          <label id="non-binaryLabel" htmlFor="non-binary">
             Non-Binary
             <input
-              id="non-binanry"
+              id="non-binary"
               value="non-binary"
               onChange={(e) => setGender(e.target.value)}
               type="radio"
@@ -151,27 +153,91 @@ const RingDown = ({ history, saveHistory }) => {
         )}
       </div>
       <div className="RingDownInfo">
-        <h3 className="title">Stability &amp; Chief Complaint</h3>
         {!saved ? (
-          <label htmlFor="complaint">
+          <label id="code2Label" htmlFor="code2">
             {' '}
-            Chief Complaint{' '}
+            Code 2{' '}
+            <input
+              id="code2"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              type="radio"
+            />
+          </label>
+        ) : (
+          <div>
+            <p> Code</p> <p>{code}</p>
+          </div>
+        )}
+        {!saved ? (
+          <label id="code3Label" htmlFor="code3">
+            {' '}
+            Code 3{' '}
+            <input
+              id="code3"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              type="radio"
+            />
+          </label>
+        ) : (
+          <div>
+            <p> Code</p> <p>{code}</p>
+          </div>
+        )}
+         {!saved ? (
+          <label id="complaintLabel" htmlFor="complaint">
+            {' '}
+            ChiefComplaint{' '}
             <input
               id="complaint"
               value={complaint}
               onChange={(e) => setComplaint(e.target.value)}
               type="text"
+              size="100"
             />
           </label>
         ) : (
           <div>
-            <p> Chief Complaint</p> <p>{complaint}</p>
+            <p> Chief complaint</p> <p>{code}</p>
+          </div>
+        )}
+         {!saved ? (
+          <label id="stableLabel" htmlFor="stable">
+            {' '}
+            Vitals stable{' '}
+            <input
+              id="stable"
+              value="yes"
+              onChange={(e) => setStable(e.target.value)}
+              type="radio"
+            />
+          </label>
+        ) : (
+          <div>
+            <p> Vitals stable</p> <p>{stable}</p>
+          </div>
+        )}
+        {!saved ? (
+          <label id="unstableLabel" htmlFor="unstable">
+            {' '}
+            Vitals not stable{' '}
+            <input
+              id="unstable"
+              value="no"
+              onChange={(e) => setStable(e.target.value)}
+              type="radio"
+            />
+          </label>
+        ) : (
+          <div>
+            <p> Vitals stable</p> <p>{stable}</p>
           </div>
         )}
       </div>
       <div className="RingDownInfo">
-        <h3 className="title">Vitals</h3>
-        {!saved ? (
+        <h3 className="title" id="vitals">Vitals</h3>
+        {/* {!saved ? (
           <label htmlFor="bp">
             {' '}
             Blood Pressure
@@ -186,8 +252,8 @@ const RingDown = ({ history, saveHistory }) => {
           <div>
             <p>Blood Pressure</p> <p>{bp}</p>
           </div>
-        )}
-        {!saved ? (
+        )}  */}
+        {/* {!saved ? (
           <label htmlFor="pulse">
             {' '}
             Pulse Rate
@@ -250,17 +316,19 @@ const RingDown = ({ history, saveHistory }) => {
           <div>
             <p>Temperature</p> <p>{temp}</p>
           </div>
-        )}
-      </div>
-      <div className="RingDownInfo">
-        <h3 className="title">Special Circumstances</h3>
-      </div>
+        )} */}
+        </div> 
+        
+      {/* <div className="RingDownInfo">
+        <h3 className="title">Additional Notes</h3>
+      </div> */}
+      {/*
       <div className="RingDownInfo">
         <h3 className="title">Send to:</h3>
-      </div>
+      </div>*/}
       {!saved && (
-        <button type="button" onClick={save}>
-          SAVE
+        <button id="saveButton" type="button" onClick={save}>
+          Select Hospital
         </button>
       )}
       {saved && (
@@ -271,7 +339,7 @@ const RingDown = ({ history, saveHistory }) => {
             EDIT
           </button>
         </div>
-      )}
+      )} 
     </div>
   );
 };

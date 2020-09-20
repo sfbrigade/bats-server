@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import '../../App.css';
-import '../../nav.css';
+import '../../css/App.css';
+import '../../css/nav.css';
 import Beds from './beds';
 import RingDown from './ringDown';
 
 const EMS = (/* props */) => {
-  const [beds, setBeds] = useState(true);
-  const [ringDown, setRingDown] = useState(false);
+  const dateObj = new Date();
+  const [beds, setBeds] = useState(false);
+  const [ringDown, setRingDown] = useState(true);
   // const [unitId, setUnitId] = useState('');
   // const [patientId, setPatientId] = useState('');
   const [history, setHistory] = useState({});
@@ -23,18 +24,23 @@ const EMS = (/* props */) => {
 
   return (
     <div className="emsContainer">
+      <div className="header">
+       <h2 id="appName">Hospital Destination Tool</h2>
+       <h2 id="appTimeDisplay">{dateObj.toLocaleTimeString()}</h2>
+      </div>
       <div className="nav">
-        <h2>EMS-SFFD</h2>
-        <div className={beds ? 'bedTabSelected' : 'bedTab'}>
-          <button type="button" className="beds" onClick={handleClick}>
-            Beds
-          </button>
-        </div>
+
         <div className={ringDown ? 'ringDownTabselected' : 'ringDownTab'}>
           <button type="button" className="ringDown" onClick={handleClick}>
-            Ring Down
+            Ringdown
           </button>
         </div>
+        <div className={beds ? 'bedTabSelected' : 'bedTab'}>
+          <button type="button" className="beds" onClick={handleClick}>
+            Hospital Info
+          </button>
+        </div>
+       
       </div>
       {beds && <Beds />}
       {ringDown && <RingDown history={history} saveHistory={saveHistory} />}
