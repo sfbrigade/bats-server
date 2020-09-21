@@ -114,7 +114,7 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
       </div>
-      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo"}>
+      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo genderLabels"}>
         {!saved ? (
           <label id="maleLabel" htmlFor="male">
             Male
@@ -162,7 +162,7 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
       </div>
-      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo"}>
+      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo codeLabels"}>
         {!saved ? (
           <label id="code2Label" htmlFor="code2">
             {' '}
@@ -245,6 +245,7 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )}
       </div>
+      <div id={patientDisplay ? "vitalsContainer" : ""}>
         <h3 className="title" id={!patientDisplay ? "vitals" : "vitals2"}>Vitals</h3>
         <button id={!patientDisplay ? "vitalsDisplay" : "vitalsDisplay2"} onClick={() => setVitalsDisplay(!vitalsDisplay)}>+</button>
         <div className={!vitalsDisplay ? "RingDownInfo vitalsInfo" : "RingDownInfo"}>
@@ -377,6 +378,7 @@ const RingDown = ({ history, saveHistory }) => {
             <p>Temperature</p> <p>{temp}</p>
           </div>
         )} 
+        </div>
         </div> 
         
       {/* <div className="RingDownInfo">

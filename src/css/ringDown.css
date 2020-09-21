@@ -51,7 +51,7 @@
 #ageLabel {
   position: relative;
   left: -27px;
-  top: -23px;
+  top: -35px;
   font-size: 16px;
 }
 #age {
@@ -101,6 +101,10 @@
   height: 22px;
   width: 22px;
 }
+.genderLabels {
+  position: relative;
+  top: -71px;
+}
 #code2Label {
   position: relative;
   top: 97px;
@@ -126,6 +130,10 @@
   left: -146px;
   height: 22px;
   width: 22px;
+}
+.codeLabels {
+  position: relative;
+  top: -137px;
 }
 #complaintLabel {
   position: relative;
@@ -187,7 +195,7 @@
 }
 #vitalsDisplay2 {
   position: relative;
-  top: 313px;
+  top: -96px;
   left: 303px;
   background-color: white;
   border: none;
@@ -204,8 +212,12 @@
 }
 #vitals2 {
   position: relative;
-  top: 353px;
+  top: -51px;
    
+}
+#vitalsContainer {
+  position: relative;
+  top: 264px;
 }
 #bpLabel{
   position: relative;
@@ -223,7 +235,7 @@
 }
 #saveButton{
   position: relative;
-  top: 414px;
+  top: 845px;
   left: 25px;
   background-color: #005EA2;
   color: white;
