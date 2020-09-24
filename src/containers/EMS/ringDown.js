@@ -21,6 +21,7 @@ const RingDown = ({ history, saveHistory }) => {
   const [ra, setRa] = useState(history?.ra ?? false);
   const [o2, setO2] = useState(history?.o2 ?? false);
   const [temp, setTemp] = useState(history?.temp ?? '');
+  const [notesDisplay, setNotesDisplay] = useState(history?.notesDisplay ?? false);
 
   const save = () => {
     const dateObj = new Date();
@@ -45,6 +46,7 @@ const RingDown = ({ history, saveHistory }) => {
       ra,
       o2,
       temp,
+      notesDisplay,
     });
   };
 
@@ -380,10 +382,13 @@ const RingDown = ({ history, saveHistory }) => {
         )} 
         </div>
         </div> 
+       {/* <div className={vitalsDisplay ? "NotesContainer": ""}>
+        <h3 className="title" id={!vitalsDisplay ? "notes" : "notes2"}>Additional Notes</h3>
+        <button id={!patientDisplay ? "notesDisplay" : "notesDisplay2"} onClick={() => setNotesDisplay(!notesDisplay)}>+</button>
+        <div className={!notesDisplay ? "RingDownInfo notesInfo" : "RingDownInfo"}>
         
-      {/* <div className="RingDownInfo">
-        <h3 className="title">Additional Notes</h3>
-      </div> */}
+      </div> 
+      </div>  */}
       {/*
       <div className="RingDownInfo">
         <h3 className="title">Send to:</h3>

@@ -1,3 +1,7 @@
+.header {
+  position: relative;
+  top: -37px;
+}
 .RingDownInfo {
   position: relative;
   left: 2em;
@@ -10,7 +14,7 @@
 #unitLabel {
   position: relative;
   left: -30px;
-  top: -21px;
+  top: -57px;
   width: 272px;
   height: 24px;
   text-align: left;
@@ -24,11 +28,12 @@
 }
 #incidentLabel {
   position: relative;
-  left: -279px;
-  top: 61px;
+  left: -270px;
+  top: 29px;
   width: 272px;
   height: 24px;
   text-align: left;
+  margin: 7px;
 }
 #incidentId {
   position: relative;
@@ -40,6 +45,7 @@
 .title {
   position: relative;
   left: -1px;
+  top: -25px;
   text-align: left;
   font-size: 16px;
   color: #3D4551;
@@ -51,7 +57,7 @@
 #ageLabel {
   position: relative;
   left: -27px;
-  top: -35px;
+  top: -64px;
   font-size: 16px;
 }
 #age {
@@ -78,13 +84,13 @@
 #femaleLabel {
   position: relative;
   top: 62px;
-  left: -116px;
+  left: -146px;
   font-size: 16px;
 }
 #female {
   position: relative;
   top: 5px;
-  left: -112px;
+  left: -117px;
   height: 22px;
   width: 22px;
 }
@@ -103,7 +109,7 @@
 }
 .genderLabels {
   position: relative;
-  top: -71px;
+  top: -116px;
 }
 #code2Label {
   position: relative;
@@ -133,11 +139,11 @@
 }
 .codeLabels {
   position: relative;
-  top: -137px;
+  top: -182px;
 }
 #complaintLabel {
   position: relative;
-  top: 186px;
+  top: 158px;
   left: -5px;
   font-size: 16px;
 }
@@ -179,7 +185,7 @@
 }
 #patientDisplay {
   position: relative;
-  top: -64px;
+  top: -87px;
   left: 301px;
   border: none;
   background-color: white;
@@ -187,7 +193,7 @@
 }
 #vitalsDisplay {
   position: relative;
-  top: -109px;
+  top: -115px;
   left: 301px;
   background-color: white;
   border: none;
@@ -206,7 +212,7 @@
 }
 #vitals {
   position: relative;
-  top: -59px;
+  top: -74px;
 
   text-align: left;
 }
@@ -222,14 +228,14 @@
 #bpLabel{
   position: relative;
   top: -70px;
-  left: -221px;
+  left: -209px;
   font-size: 16px;
-  margin: 204px;
+  margin: 194px;
 }
 #bp {
   position: relative;
   top: 4px;
-  left: 174px;
+  left: 164px;
   width: 168px;
   height: 36px;
 }
@@ -245,26 +251,26 @@
 #pulseLabel {
   position: relative;
   top: -67px;
-  left: -58px;
-  margin: 45px;
+  left: -43px;
+  margin: 29px;
 }
 #pulse {
   position: relative;
   top: 32px;
-  left: -109px;
+  left: -129px;
   width: 112px;
   height: 36px;
 }
 #respiratoryLabel {
   position: relative;
   top: -29px;
-  left: -201px;
-  margin: 190px;
+  left: -189px;
+  margin: 179px;
 }
 #respiratory {
   position: relative;
   top: 4px;
-  left: 159px;
+  left: 149px;
   width: 168px;
   height: 36px;
 }
@@ -319,6 +325,25 @@
   left: 159px;
   width: 88px;
   height: 36px;
+}
+#notes {
+  position: relative;
+  top: -100px;
+}
+#notes2 {
+  position: relative;
+  top: 356bgpx;
+}
+.notesInfo {
+  display: none;
+}
+#notesDisplay {
+  position: relative;
+  top: -147px;
+  left: 300px;
+  background-color: white;
+  border: none;
+  font-size: 16px;
 }
 /* .infoAge {
   height: 100px;
