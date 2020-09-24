@@ -36,7 +36,8 @@
     "sequelize-cli": "^6.2.0",
     "sequelize-fixtures": "^1.2.0",
     "supertest": "^4.0.2",
-    "supertest-session": "^4.0.0"
+    "supertest-session": "^4.0.0",
+    "uswds": "^2.9.0"
   },
   "scripts": {
     "start": "react-scripts start",

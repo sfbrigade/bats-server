@@ -30,8 +30,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(
-  '/libraries/bootstrap',
-  express.static(path.join(__dirname, 'node_modules/bootstrap/dist'))
+  '/libraries/uswds',
+  express.static(path.join(__dirname, 'node_modules/uswds/dist'))
 );
 app.use(express.static(path.join(__dirname, 'build'), { index: false }));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
