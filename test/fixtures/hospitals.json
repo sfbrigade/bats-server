@@ -7,5 +7,14 @@
       "recordUpdateSource": "fixture",
       "recordCreateSource": "fixture"
     }
+  },
+  {
+    "model": "Hospital",
+    "data": {
+      "id": "00752f60-068f-11eb-adc1-0242ac120002",
+      "hospitalName": "Fixture Kaiser Hospital",
+      "recordUpdateSource": "fixture",
+      "recordCreateSource": "fixture"
+    }
   }
 ]
