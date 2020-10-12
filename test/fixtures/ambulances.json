@@ -3,10 +3,10 @@
     "model": "Ambulance",
     "data": {
       "id": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
-      "EmergencyMedicalServiceProviderId": "aac13870-f6f3-11ea-adc1-0242ac120002",
+      "OrganizationId": "aac13870-f6f3-11ea-adc1-0242ac120002",
       "ambulanceIdentifier": "testId",
-      "recordUpdateSource": "fixture",
-      "recordCreateSource": "fixture"
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
   }
 ]

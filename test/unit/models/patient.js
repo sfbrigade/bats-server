@@ -4,7 +4,7 @@ const models = require('../../../models');
 
 describe('models.Patient', () => {
   beforeEach(async () => {
-    await helper.loadFixtures(['emergencyMedicalServiceCalls']);
+    await helper.loadFixtures(['organizations', 'users', 'emergencyMedicalServiceCalls']);
   });
 
   it('creates a new Patient record', async () => {
@@ -24,10 +24,8 @@ describe('models.Patient', () => {
       ivIndicator: true,
       combativeBehaviorIndicator: false,
       otherObservationNotes: 'text',
-      recordCreateTimestamp: '2004-10-19 10:23:54+02',
-      recordCreateSource: 'test',
-      recordUpdateTimestamp: '2004-10-19 10:23:54+02',
-      recordUpdateSource: 'test',
+      CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+      UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
     });
     assert(patient);
     assert(patient.id);
@@ -46,11 +44,19 @@ describe('models.Patient', () => {
     assert.deepStrictEqual(patient.ivIndicator, true);
     assert.deepStrictEqual(patient.combativeBehaviorIndicator, false);
     assert.deepStrictEqual(patient.otherObservationNotes, 'text');
-    assert(patient.recordCreateTimestamp);
-    assert(patient.recordCreateSource);
-    assert(patient.recordUpdateTimestamp);
+    assert(patient.createdAt);
+    assert(patient.updatedAt);
+
+    const createdBy = await patient.getCreatedBy();
+    assert(createdBy);
+    assert.deepStrictEqual(createdBy.name, 'Super User');
+
+    const updatedBy = await patient.getUpdatedBy();
+    assert(updatedBy);
+    assert.deepStrictEqual(updatedBy.name, 'Super User');
 
     const call = await patient.getEmergencyMedicalServiceCall();
     assert(call);
+    assert.deepStrictEqual(call.dispatchCallNumber, 911);
   });
 });
