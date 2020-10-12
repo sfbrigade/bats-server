@@ -1,19 +1,57 @@
 #!/usr/bin/env node
 
-const models = require("../models");
+const bcrypt = require('bcrypt');
+const readline = require('readline');
 
-if (process.argv.length < 6) {
-  console.log("Usage: bin/create-user First Last email@address.com password [1=superuser]");
-  process.exit(1);
+const models = require('../models');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+function readInput(prompt) {
+  return new Promise((resolve) => {
+    rl.question(prompt, (answer) => {
+      resolve(answer);
+    });
+  });
 }
 
-models.User.create({
-  firstName: process.argv[2],
-  lastName: process.argv[3],
-  email: process.argv[4],
-  password: process.argv[5],
-  isSuperUser: process.argv.length > 6 ? true : false
-}).then(function() {
-  console.log("... Created!")
-  process.exit(0);
-});
+async function createUser() {
+  console.log('Superuser Login');
+  let email = await readInput('Email: ');
+  let password = await readInput('Password: ');
+  const superuser = await models.User.findOne({ where: { email }, rejectOnEmpty: true });
+  if (!(await bcrypt.compare(password, superuser.hashedPassword))) {
+    console.log('Superuser log in failed.');
+  }
+  console.log('\nNew User details');
+  const firstName = await readInput('First name: ');
+  const lastName = await readInput('Last name: ');
+  email = await readInput('Email: ');
+  password = await readInput('Password: ');
+  const isOperationalUser = (await readInput('Is Operational User? [y/n]: ')) == 'y';
+  const isAdminUser = (await readInput('Is Admin User? [y/n]: ')) == 'y';
+  const isSuperUser = (await readInput('Is Super User? [y/n]: ')) == 'y';
+  const user = await models.User.create({
+    OrganizationId: superuser.OrganizationId,
+    firstName,
+    lastName,
+    email,
+    password,
+    isOperationalUser,
+    isAdminUser,
+    isSuperUser,
+    CreatedById: superuser.id,
+    UpdatedById: superuser.id,
+  });
+}
+
+createUser()
+  .then(() => console.log('... Created!'))
+  .catch((error) => console.log(error))
+  .finally(async function () {
+    await models.sequelize.close();
+    process.exit(0);
+  });

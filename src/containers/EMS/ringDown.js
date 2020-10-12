@@ -51,13 +51,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label htmlFor="unit">
             {' '}
-            Unit #{' '}
-            <input
-              id="unit"
-              value={unit}
-              onChange={(e) => setUnit(e.target.value)}
-              type="text"
-            />
+            Unit # <input id="unit" value={unit} onChange={(e) => setUnit(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -67,13 +61,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label id="patientLabel" htmlFor="patientId">
             {' '}
-            Patient Id{' '}
-            <input
-              id="patientId"
-              value={patientId}
-              onChange={(e) => setPatientId(e.target.value)}
-              type="text"
-            />
+            Patient Id <input id="patientId" value={patientId} onChange={(e) => setPatientId(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -86,14 +74,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label id="ageLabel" htmlFor="age">
             {' '}
-            Estimated Age{' '}
-            <input
-              id="age"
-              size="2"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              type="text"
-            />
+            Estimated Age <input id="age" size="2" value={age} onChange={(e) => setAge(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -106,12 +87,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label id="maleLabel" htmlFor="male">
             Male
-            <input
-              id="male"
-              value="male"
-              onChange={(e) => setGender(e.target.value)}
-              type="radio"
-            />
+            <input id="male" value="male" onChange={(e) => setGender(e.target.value)} type="radio" />
           </label>
         ) : (
           <div>
@@ -122,12 +98,7 @@ const RingDown = ({ history, saveHistory }) => {
           <label id="femaleLabel" htmlFor="female">
             {' '}
             Female
-            <input
-              id="female"
-              value="female"
-              onChange={(e) => setGender(e.target.value)}
-              type="radio"
-            />
+            <input id="female" value="female" onChange={(e) => setGender(e.target.value)} type="radio" />
           </label>
         ) : (
           <div>
@@ -137,12 +108,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label htmlFor="non-binary">
             Non-Binary
-            <input
-              id="non-binanry"
-              value="non-binary"
-              onChange={(e) => setGender(e.target.value)}
-              type="radio"
-            />
+            <input id="non-binanry" value="non-binary" onChange={(e) => setGender(e.target.value)} type="radio" />
           </label>
         ) : (
           <div>
@@ -155,13 +121,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label htmlFor="complaint">
             {' '}
-            Chief Complaint{' '}
-            <input
-              id="complaint"
-              value={complaint}
-              onChange={(e) => setComplaint(e.target.value)}
-              type="text"
-            />
+            Chief Complaint <input id="complaint" value={complaint} onChange={(e) => setComplaint(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -175,12 +135,7 @@ const RingDown = ({ history, saveHistory }) => {
           <label htmlFor="bp">
             {' '}
             Blood Pressure
-            <input
-              id="bp"
-              value={bp}
-              onChange={(e) => setBp(e.target.value)}
-              type="text"
-            />
+            <input id="bp" value={bp} onChange={(e) => setBp(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -191,12 +146,7 @@ const RingDown = ({ history, saveHistory }) => {
           <label htmlFor="pulse">
             {' '}
             Pulse Rate
-            <input
-              id="pulse"
-              value={pulse}
-              onChange={(e) => setPulse(e.target.value)}
-              type="text"
-            />
+            <input id="pulse" value={pulse} onChange={(e) => setPulse(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -206,13 +156,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label htmlFor="respiratory">
             {' '}
-            Respiratory Rate{' '}
-            <input
-              id="respiratory"
-              value={respiratory}
-              onChange={(e) => setRespiratory(e.target.value)}
-              type="text"
-            />
+            Respiratory Rate <input id="respiratory" value={respiratory} onChange={(e) => setRespiratory(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -222,13 +166,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label htmlFor="spo2">
             {' '}
-            SpO{' '}
-            <input
-              id="spo2"
-              value={spo2}
-              onChange={(e) => setSpo2(e.target.value)}
-              type="text"
-            />
+            SpO <input id="spo2" value={spo2} onChange={(e) => setSpo2(e.target.value)} type="text" />
           </label>
         ) : (
           <div>
@@ -238,13 +176,7 @@ const RingDown = ({ history, saveHistory }) => {
         {!saved ? (
           <label htmlFor="temp">
             {' '}
-            Temperature{' '}
-            <input
-              id="temp"
-              value={temp}
-              onChange={(e) => setTemp(e.target.value)}
-              type="text"
-            />
+            Temperature <input id="temp" value={temp} onChange={(e) => setTemp(e.target.value)} type="text" />
           </label>
         ) : (
           <div>

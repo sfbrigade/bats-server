@@ -1,34 +1,32 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Hospital extends Model {
+  class Organization extends Model {
     static associate(models) {
-      Hospital.belongsTo(models.Organization);
+      Organization.hasMany(models.Ambulance);
+      Organization.hasMany(models.Hospital);
+      Organization.hasMany(models.User);
 
-      Hospital.hasMany(models.HospitalStatusUpdate);
-      Hospital.hasMany(models.HospitalUser);
-      Hospital.hasMany(models.PatientDelivery);
-
-      Hospital.belongsTo(models.User, { as: 'CreatedBy' });
-      Hospital.belongsTo(models.User, { as: 'UpdatedBy' });
+      Organization.belongsTo(models.User, { as: 'CreatedBy' });
+      Organization.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
-  Hospital.init(
+  Organization.init(
     {
       id: {
-        field: 'hospital_uuid',
+        field: 'organization_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
-      OrganizationId: {
-        field: 'healthcareorganization_uuid',
-        type: DataTypes.UUID,
-      },
       name: {
-        field: 'hospitalname',
+        field: 'organizationname',
         type: DataTypes.STRING,
-        unique: true,
+        allowNull: false,
+      },
+      type: {
+        field: 'organizationtypename',
+        type: DataTypes.ENUM('C4SF', 'EMS', 'HEALTHCARE'),
         allowNull: false,
       },
       createdAt: {
@@ -51,9 +49,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       timestamps: true,
-      tableName: 'hospital',
-      modelName: 'Hospital',
+      tableName: 'organization',
+      modelName: 'Organization',
     }
   );
-  return Hospital;
+  return Organization;
 };

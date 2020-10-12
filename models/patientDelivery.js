@@ -2,16 +2,14 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
       PatientDelivery.belongsTo(models.Patient);
       PatientDelivery.belongsTo(models.Ambulance);
       PatientDelivery.belongsTo(models.Hospital);
+      PatientDelivery.belongsTo(models.User, { as: 'ParamedicUser' });
+
+      PatientDelivery.belongsTo(models.User, { as: 'CreatedBy' });
+      PatientDelivery.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
   PatientDelivery.init(
@@ -34,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       HospitalId: {
         field: 'hospital_uuid',
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      ParamedicUserId: {
+        field: 'paramedicuser_uuid',
         type: DataTypes.UUID,
         allowNull: false,
       },
@@ -62,30 +65,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      recordCreateTimestamp: {
+      createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      recordCreateSource: {
-        field: 'recordcreatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      CreatedById: {
+        field: 'recordcreateuser_uuid',
+        type: DataTypes.UUID,
       },
-      recordUpdateTimestamp: {
+      updatedAt: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      recordUpdateSource: {
-        field: 'recordupdatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      UpdatedById: {
+        field: 'recordupdateuser_uuid',
+        type: DataTypes.UUID,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: 'recordCreateTimestamp',
-      updatedAt: 'recordUpdateTimestamp',
       tableName: 'patientdelivery',
       modelName: 'PatientDelivery',
     }

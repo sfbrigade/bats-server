@@ -285,33 +285,23 @@ module.exports = {
           REFERENCES patient(patient_uuid)
       ;
     `);
-    await queryInterface.sequelize.query(
-      'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
-    );
-    await queryInterface.sequelize.query(
-      'ALTER TABLE ambulance ALTER COLUMN ambulance_uuid SET DEFAULT gen_random_uuid();'
-    );
+    await queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
+    await queryInterface.sequelize.query('ALTER TABLE ambulance ALTER COLUMN ambulance_uuid SET DEFAULT gen_random_uuid();');
     await queryInterface.sequelize.query(
       'ALTER TABLE emergencymedicalservicecall ALTER COLUMN emergencymedicalservicecall_uuid SET DEFAULT gen_random_uuid();'
     );
     await queryInterface.sequelize.query(
       'ALTER TABLE emergencymedicalserviceprovider ALTER COLUMN emergencymedicalserviceprovider_uuid SET DEFAULT gen_random_uuid();'
     );
-    await queryInterface.sequelize.query(
-      'ALTER TABLE hospital ALTER COLUMN hospital_uuid SET DEFAULT gen_random_uuid();'
-    );
+    await queryInterface.sequelize.query('ALTER TABLE hospital ALTER COLUMN hospital_uuid SET DEFAULT gen_random_uuid();');
     await queryInterface.sequelize.query(
       'ALTER TABLE hospitaladministrator ALTER COLUMN hospitaladministrator_uuid SET DEFAULT gen_random_uuid();'
     );
     await queryInterface.sequelize.query(
       'ALTER TABLE hospitalstatusupdate ALTER COLUMN hospitalstatusupdate_uuid SET DEFAULT gen_random_uuid();'
     );
-    await queryInterface.sequelize.query(
-      'ALTER TABLE patient ALTER COLUMN patient_uuid SET DEFAULT gen_random_uuid();'
-    );
-    await queryInterface.sequelize.query(
-      'ALTER TABLE patientdelivery ALTER COLUMN patientdelivery_uuid SET DEFAULT gen_random_uuid();'
-    );
+    await queryInterface.sequelize.query('ALTER TABLE patient ALTER COLUMN patient_uuid SET DEFAULT gen_random_uuid();');
+    await queryInterface.sequelize.query('ALTER TABLE patientdelivery ALTER COLUMN patientdelivery_uuid SET DEFAULT gen_random_uuid();');
   },
 
   down: async (queryInterface) => {
