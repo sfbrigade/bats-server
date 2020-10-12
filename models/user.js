@@ -35,6 +35,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      name: {
+        type: DataTypes.VIRTUAL(DataTypes.STRING, ['firstName', 'lastName']),
+        get() {
+          return `${this.firstName} ${this.lastName}`.trim();
+        },
+      },
       email: {
         field: 'email',
         type: DataTypes.CITEXT,

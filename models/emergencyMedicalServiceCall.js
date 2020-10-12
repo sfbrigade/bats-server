@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      EmergencyMedicalServiceCall.hasOne(models.Patient, { as: 'patient' });
+      EmergencyMedicalServiceCall.hasOne(models.Patient);
 
-      EmergencyMedicalServiceCall.belongsTo(models.User, { as: 'createdBy' });
-      EmergencyMedicalServiceCall.belongsTo(models.User, { as: 'updatedBy' });
+      EmergencyMedicalServiceCall.belongsTo(models.User, { as: 'CreatedBy' });
+      EmergencyMedicalServiceCall.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
   EmergencyMedicalServiceCall.init(
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      createdById: {
+      CreatedById: {
         field: 'recordcreateuser_uuid',
         type: DataTypes.UUID,
       },
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      updatedById: {
+      UpdatedById: {
         field: 'recordupdateuser_uuid',
         type: DataTypes.UUID,
       },
