@@ -8,7 +8,7 @@ module.exports = {
           name: 'Code for San Francisco',
           type: 'C4SF',
           CreatedById: '00000000-0000-0000-0000-000000000000',
-          UpdatedById: '00000000-0000-0000-0000-000000000000'
+          UpdatedById: '00000000-0000-0000-0000-000000000000',
         },
         { transaction }
       );
@@ -23,7 +23,7 @@ module.exports = {
           isAdminUser: true,
           isSuperUser: true,
           CreatedById: '00000000-0000-0000-0000-000000000000',
-          UpdatedById: '00000000-0000-0000-0000-000000000000'
+          UpdatedById: '00000000-0000-0000-0000-000000000000',
         },
         { transaction }
       );
