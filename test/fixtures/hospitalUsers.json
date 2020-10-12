@@ -1,0 +1,12 @@
+[
+  {
+    "model": "HospitalUser",
+    "data": {
+      "id": "136cf75e-55e8-4c31-a6bb-a90434ca9f18",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "EdAdminUserId": "a950fed4-d996-4a41-a275-1cc4852d7664",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  }
+]
