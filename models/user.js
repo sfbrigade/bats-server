@@ -6,10 +6,10 @@ const SALT_ROUNDS = 10;
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.belongsTo(models.Organization, { as: 'organization' });
+      User.belongsTo(models.Organization);
 
-      User.belongsTo(models.User, { as: 'createdBy' });
-      User.belongsTo(models.User, { as: 'updatedBy' });
+      User.belongsTo(models.User, { as: 'CreatedBy' });
+      User.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
 
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      organizationId: {
+      OrganizationId: {
         field: 'organization_uuid',
         type: DataTypes.UUID,
       },
@@ -76,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      createdById: {
+      CreatedById: {
         field: 'recordcreateuser_uuid',
         type: DataTypes.UUID,
       },
@@ -84,7 +84,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      updatedById: {
+      UpdatedById: {
         field: 'recordupdateuser_uuid',
         type: DataTypes.UUID,
       },

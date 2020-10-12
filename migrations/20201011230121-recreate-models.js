@@ -1,5 +1,5 @@
 module.exports = {
-  up: async (queryInterface) => {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.sequelize.query(`DROP SCHEMA public CASCADE; CREATE SCHEMA public;`, { transaction });
       await queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS pgcrypto;', { transaction });
@@ -247,16 +247,19 @@ module.exports = {
         ALTER TABLE batsuser ADD CONSTRAINT batsuser_create_batsuser_fk 
             FOREIGN KEY (recordcreateuser_uuid)
             REFERENCES batsuser(user_uuid)
+            DEFERRABLE INITIALLY DEFERRED
         ;
         
         ALTER TABLE batsuser ADD CONSTRAINT batsuser_organization_fk 
             FOREIGN KEY (organization_uuid)
             REFERENCES organization(organization_uuid)
+            DEFERRABLE INITIALLY DEFERRED
         ;
         
         ALTER TABLE batsuser ADD CONSTRAINT batsuser_update_batsuser_fk 
             FOREIGN KEY (recordupdateuser_uuid)
             REFERENCES batsuser(user_uuid)
+            DEFERRABLE INITIALLY DEFERRED
         ;
         
         
@@ -352,11 +355,13 @@ module.exports = {
         ALTER TABLE organization ADD CONSTRAINT organization_create_batsuser_fk 
             FOREIGN KEY (recordcreateuser_uuid)
             REFERENCES batsuser(user_uuid)
+            DEFERRABLE INITIALLY DEFERRED
         ;
         
         ALTER TABLE organization ADD CONSTRAINT organization_update_batsuser_fk 
             FOREIGN KEY (recordupdateuser_uuid)
             REFERENCES batsuser(user_uuid)
+            DEFERRABLE INITIALLY DEFERRED
         ;
         
         
@@ -416,8 +421,20 @@ module.exports = {
       `,
         { transaction }
       );
+      await queryInterface.changeColumn(
+        'organization',
+        'organizationtypename',
+        {
+          type: Sequelize.ENUM('C4SF', 'EMS', 'HEALTHCARE'),
+        },
+        { transaction }
+      );
     });
   },
 
-  down: async () => {},
+  down: async (queryInterface) => {
+    await queryInterface.sequelize.transaction(async (transaction) => {
+      await queryInterface.sequelize.query(`DROP SCHEMA public CASCADE; CREATE SCHEMA public;`, { transaction });
+    });
+  },
 };
