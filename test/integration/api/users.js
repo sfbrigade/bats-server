@@ -9,7 +9,7 @@ describe('/api/users', () => {
   let testSession;
 
   beforeEach(async () => {
-    await helper.loadFixtures(['users']);
+    await helper.loadFixtures(['organizations', 'users']);
     testSession = session(app);
   });
 
@@ -32,7 +32,7 @@ describe('/api/users', () => {
       await testSession
         .post('/auth/local/login')
         .set('Accept', 'application/json')
-        .send({ username: 'regular.user@example.com', password: 'abcd1234' })
+        .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
       /// request user list
