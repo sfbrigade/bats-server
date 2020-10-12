@@ -3,14 +3,14 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Hospital extends Model {
     static associate(models) {
-      Hospital.belongsTo(models.Organization, { as: 'organization' });
+      Hospital.belongsTo(models.Organization);
 
       Hospital.hasMany(models.HospitalStatusUpdate);
       Hospital.hasMany(models.HospitalUser);
       Hospital.hasMany(models.PatientDelivery);
 
-      Hospital.belongsTo(models.User, { as: 'createdBy' });
-      Hospital.belongsTo(models.User, { as: 'updatedBy' });
+      Hospital.belongsTo(models.User, { as: 'CreatedBy' });
+      Hospital.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
   Hospital.init(
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      organizationId: {
+      OrganizationId: {
         field: 'healthcareorganization_uuid',
         type: DataTypes.UUID,
       },
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      createdById: {
+      CreatedById: {
         field: 'recordcreateuser_uuid',
         type: DataTypes.UUID,
       },
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      updatedById: {
+      UpdatedById: {
         field: 'recordupdateuser_uuid',
         type: DataTypes.UUID,
       },
