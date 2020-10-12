@@ -3,8 +3,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class HospitalStatusUpdate extends Model {
     static associate(models) {
-      HospitalStatusUpdate.belongsTo(models.Hospital);
-      HospitalStatusUpdate.belongsTo(models.HospitalAdministrator);
+      HospitalStatusUpdate.belongsTo(models.Hospital, { as: 'hospital' });
+      HospitalStatusUpdate.belongsTo(models.User, { as: 'edAdminUser' });
+
+      HospitalStatusUpdate.belongsTo(models.User, { as: 'createdBy' });
+      HospitalStatusUpdate.belongsTo(models.User, { as: 'updatedBy' });
     }
   }
   HospitalStatusUpdate.init(
@@ -15,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      HospitalId: {
+      hospitalId: {
         field: 'hospital_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
-      HospitalAdministratorId: {
-        field: 'hospitaladministrator_uuid',
+      edAdminUserId: {
+        field: 'edadminuser_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
@@ -53,30 +56,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      recordUpdateSource: {
-        field: 'recordupdatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      createdAt: {
+        field: 'recordcreatetimestamp',
+        type: DataTypes.DATE,
       },
-      recordCreateSource: {
-        field: 'recordcreatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      createdById: {
+        field: 'recordcreateuser_uuid',
+        type: DataTypes.UUID,
       },
-      recordUpdateTimestamp: {
+      updatedAt: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      recordCreateTimestamp: {
-        field: 'recordcreatetimestamp',
-        type: DataTypes.DATE,
+      updatedById: {
+        field: 'recordupdateuser_uuid',
+        type: DataTypes.UUID,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: 'recordCreateTimestamp',
-      updatedAt: 'recordUpdateTimestamp',
       tableName: 'hospitalstatusupdate',
       modelName: 'HospitalStatusUpdate',
     }

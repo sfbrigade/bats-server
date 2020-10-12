@@ -4,22 +4,12 @@ const models = require('../../../models');
 
 describe('models.PatientDelivery', () => {
   beforeEach(async () => {
-    await helper.loadFixtures([
-      'emergencyMedicalServiceCalls',
-      'emergencyMedicalServiceProviders',
-      'ambulances',
-      'patients',
-      'hospitals',
-    ]);
+    await helper.loadFixtures(['emergencyMedicalServiceCalls', 'emergencyMedicalServiceProviders', 'ambulances', 'patients', 'hospitals']);
   });
 
   it('creates a new PatientDelivery record', async () => {
-    const patient = await models.Patient.findByPk(
-      '136cf75e-55e8-4c31-a6bb-a90434ca9f28'
-    );
-    const ambulance = await models.Ambulance.findByPk(
-      '7f666fe4-dbdd-4c7f-ab44-d9157379a680'
-    );
+    const patient = await models.Patient.findByPk('136cf75e-55e8-4c31-a6bb-a90434ca9f28');
+    const ambulance = await models.Ambulance.findByPk('7f666fe4-dbdd-4c7f-ab44-d9157379a680');
     const patientDelivery = await models.PatientDelivery.create({
       AmbulanceId: ambulance.id,
       PatientId: patient.id,
@@ -36,10 +26,7 @@ describe('models.PatientDelivery', () => {
     assert(patientDelivery.id);
     assert.deepStrictEqual(patientDelivery.AmbulanceId, ambulance.id);
     assert.deepStrictEqual(patientDelivery.PatientId, patient.id);
-    assert.deepStrictEqual(
-      patientDelivery.HospitalId,
-      '7f666fe4-dbdd-4c7f-ab44-d9157379a680'
-    );
+    assert.deepStrictEqual(patientDelivery.HospitalId, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
     assert.deepStrictEqual(patientDelivery.deliveryStatus, 'test');
     assert.deepStrictEqual(patientDelivery.recordCreateSource, 'fixture');
     assert.deepStrictEqual(patientDelivery.recordUpdateSource, 'fixture');

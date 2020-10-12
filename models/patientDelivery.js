@@ -2,16 +2,14 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
-      PatientDelivery.belongsTo(models.Patient);
-      PatientDelivery.belongsTo(models.Ambulance);
-      PatientDelivery.belongsTo(models.Hospital);
+      PatientDelivery.belongsTo(models.Patient, { as: 'patient' });
+      PatientDelivery.belongsTo(models.Ambulance, { as: 'ambulance' });
+      PatientDelivery.belongsTo(models.Hospital, { as: 'hospital' });
+      PatientDelivery.belongsTo(models.User, { as: 'paramedicUser' });
+
+      PatientDelivery.belongsTo(models.User, { as: 'createdBy' });
+      PatientDelivery.belongsTo(models.User, { as: 'updatedBy' });
     }
   }
   PatientDelivery.init(
@@ -22,18 +20,23 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      AmbulanceId: {
+      ambulanceId: {
         field: 'ambulance_uuid',
         type: DataTypes.UUID,
         allowNull: false,
       },
-      PatientId: {
+      patientId: {
         field: 'patient_uuid',
         type: DataTypes.UUID,
         allowNull: false,
       },
-      HospitalId: {
+      hospitalId: {
         field: 'hospital_uuid',
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      paramedicUserId: {
+        field: 'paramedicuser_uuid',
         type: DataTypes.UUID,
         allowNull: false,
       },
@@ -62,30 +65,26 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      recordCreateTimestamp: {
+      createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      recordCreateSource: {
-        field: 'recordcreatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      createdById: {
+        field: 'recordcreateuser_uuid',
+        type: DataTypes.UUID,
       },
-      recordUpdateTimestamp: {
+      updatedAt: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      recordUpdateSource: {
-        field: 'recordupdatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      updatedById: {
+        field: 'recordupdateuser_uuid',
+        type: DataTypes.UUID,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: 'recordCreateTimestamp',
-      updatedAt: 'recordUpdateTimestamp',
       tableName: 'patientdelivery',
       modelName: 'PatientDelivery',
     }

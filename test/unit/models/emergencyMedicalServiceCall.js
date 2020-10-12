@@ -8,26 +8,18 @@ describe('models.EmergencyMedicalServiceCall', () => {
   beforeEach(async () => {});
 
   it('creates a new EmergencyMedicalServiceCall record', async () => {
-    const emergencyMedicalServiceCall = await models.EmergencyMedicalServiceCall.create(
-      {
-        dispatchCallNumber: 1,
-        startDateTime: '2004-10-19 10:23:54+02',
-        recordCreateSource: 'test',
-        recordUpdateSource: 'test',
-      }
-    );
+    const emergencyMedicalServiceCall = await models.EmergencyMedicalServiceCall.create({
+      dispatchCallNumber: 1,
+      startDateTime: '2004-10-19 10:23:54+02',
+      recordCreateSource: 'test',
+      recordUpdateSource: 'test',
+    });
     assert(emergencyMedicalServiceCall);
     assert(emergencyMedicalServiceCall.id);
     assert.deepStrictEqual(emergencyMedicalServiceCall.dispatchCallNumber, 1);
     assert(emergencyMedicalServiceCall.recordCreateTimestamp);
-    assert.deepStrictEqual(
-      emergencyMedicalServiceCall.recordCreateSource,
-      'test'
-    );
+    assert.deepStrictEqual(emergencyMedicalServiceCall.recordCreateSource, 'test');
     assert(emergencyMedicalServiceCall.recordUpdateTimestamp);
-    assert.deepStrictEqual(
-      emergencyMedicalServiceCall.recordUpdateSource,
-      'test'
-    );
+    assert.deepStrictEqual(emergencyMedicalServiceCall.recordUpdateSource, 'test');
   });
 });

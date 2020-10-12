@@ -23,10 +23,7 @@ describe('/api/users', () => {
         .expect(HttpStatus.OK);
 
       /// request user list
-      const response = await testSession
-        .get('/api/users')
-        .set('Accept', 'application/json')
-        .expect(HttpStatus.OK);
+      const response = await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert(response.body?.length, 2);
     });
 
@@ -39,10 +36,7 @@ describe('/api/users', () => {
         .expect(HttpStatus.OK);
 
       /// request user list
-      await testSession
-        .get('/api/users')
-        .set('Accept', 'application/json')
-        .expect(HttpStatus.FORBIDDEN);
+      await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.FORBIDDEN);
     });
   });
 });
