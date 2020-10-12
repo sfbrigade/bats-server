@@ -3,13 +3,13 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class HospitalUser extends Model {
     static associate(models) {
-      HospitalUser.belongsTo(models.Hospital, { as: 'hospital' });
-      HospitalUser.belongsTo(models.User, { as: 'edAdminUser' });
+      HospitalUser.belongsTo(models.Hospital);
+      HospitalUser.belongsTo(models.User, { as: 'EdAdminUser' });
 
       HospitalUser.hasMany(models.HospitalStatusUpdate);
 
-      HospitalUser.belongsTo(models.User, { as: 'createdBy' });
-      HospitalUser.belongsTo(models.User, { as: 'updatedBy' });
+      HospitalUser.belongsTo(models.User, { as: 'CreatedBy' });
+      HospitalUser.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
   HospitalUser.init(
@@ -20,13 +20,13 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      hospitalId: {
+      HospitalId: {
         field: 'hospital_uuid',
         type: DataTypes.UUID,
         unique: true,
         allowNull: false,
       },
-      edAdminUserId: {
+      EdAdminUserId: {
         field: 'edadminuser_uuid',
         type: DataTypes.STRING,
         unique: true,
@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      createdById: {
+      CreatedById: {
         field: 'recordcreateuser_uuid',
         type: DataTypes.UUID,
       },
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      updatedById: {
+      UpdatedById: {
         field: 'recordupdateuser_uuid',
         type: DataTypes.UUID,
       },

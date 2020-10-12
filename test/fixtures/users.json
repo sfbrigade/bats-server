@@ -14,5 +14,21 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "User",
+    "data": {
+      "id": "449b1f54-7583-417c-8c25-8da7dde65f6d",
+      "OrganizationId": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
+      "firstName": "Sutter",
+      "lastName": "Operational",
+      "email": "sutter.operational@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isOperationalUser": true,
+      "isAdminUser": false,
+      "isSuperUser": false,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]
