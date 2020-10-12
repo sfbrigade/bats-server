@@ -3,13 +3,13 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
     static associate(models) {
-      PatientDelivery.belongsTo(models.Patient, { as: 'patient' });
-      PatientDelivery.belongsTo(models.Ambulance, { as: 'ambulance' });
-      PatientDelivery.belongsTo(models.Hospital, { as: 'hospital' });
-      PatientDelivery.belongsTo(models.User, { as: 'paramedicUser' });
+      PatientDelivery.belongsTo(models.Patient);
+      PatientDelivery.belongsTo(models.Ambulance);
+      PatientDelivery.belongsTo(models.Hospital);
+      PatientDelivery.belongsTo(models.User, { as: 'ParamedicUser' });
 
-      PatientDelivery.belongsTo(models.User, { as: 'createdBy' });
-      PatientDelivery.belongsTo(models.User, { as: 'updatedBy' });
+      PatientDelivery.belongsTo(models.User, { as: 'CreatedBy' });
+      PatientDelivery.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
   PatientDelivery.init(
@@ -20,22 +20,22 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      ambulanceId: {
+      AmbulanceId: {
         field: 'ambulance_uuid',
         type: DataTypes.UUID,
         allowNull: false,
       },
-      patientId: {
+      PatientId: {
         field: 'patient_uuid',
         type: DataTypes.UUID,
         allowNull: false,
       },
-      hospitalId: {
+      HospitalId: {
         field: 'hospital_uuid',
         type: DataTypes.UUID,
         allowNull: false,
       },
-      paramedicUserId: {
+      ParamedicUserId: {
         field: 'paramedicuser_uuid',
         type: DataTypes.UUID,
         allowNull: false,
@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      createdById: {
+      CreatedById: {
         field: 'recordcreateuser_uuid',
         type: DataTypes.UUID,
       },
@@ -77,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      updatedById: {
+      UpdatedById: {
         field: 'recordupdateuser_uuid',
         type: DataTypes.UUID,
       },

@@ -46,5 +46,21 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "User",
+    "data": {
+      "id": "6737fc42-f815-460f-888a-10435af12f08",
+      "OrganizationId": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
+      "firstName": "SFFD",
+      "lastName": "Paramedic",
+      "email": "sffd.paramedic@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isOperationalUser": true,
+      "isAdminUser": false,
+      "isSuperUser": false,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]
