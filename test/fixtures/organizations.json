@@ -8,5 +8,25 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Organization",
+    "data": {
+      "id": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
+      "name": "Sutter Health",
+      "type": "HEALTHCARE",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Organization",
+    "data": {
+      "id": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
+      "name": "City and County of San Francisco Fire Department",
+      "type": "EMS",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]
