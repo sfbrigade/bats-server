@@ -1,0 +1,25 @@
+<div class="grid-container">
+  <div class="grid-row">
+    <div class="tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
+      <h1 class="text-center">Log in</h1>
+      <% if (locals.unauthorized) { %>
+      <div class="alert alert-danger">
+        Invalid email and/or password.
+      </div>
+      <% } %>
+      <form method="post" action="/auth/local/login" class="usa-form">
+        <div class="usa-form-group">
+          <label for="username" class="usa-label">Email</label>
+          <input type="email" name="username" value="<%= locals.username %>" class="usa-input" />
+        </div>
+        <div class="usa-form-group">
+          <label for="password" class="usa-label">Password</label>
+          <input type="password" name="password" class="usa-input" />
+        </div>
+        <button class="usa-button" type="submit">Submit</button>
+        <p class="text-center">or</p>
+        <p class="text-center"><a href="/auth/saml/login">Log in using SAML SSO</a></p>
+      </form>
+    </div>
+  </div>
+</div>
