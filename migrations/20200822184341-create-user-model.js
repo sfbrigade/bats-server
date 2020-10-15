@@ -6,9 +6,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.sequelize.query(
-      'CREATE EXTENSION IF NOT EXISTS citext;'
-    );
+    await queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS citext;');
     await queryInterface.sequelize.query(`
       --
       -- ER/Studio Data Architect SQL Code Generation
@@ -36,18 +34,10 @@ module.exports = {
       )
       ;
     `);
-    await queryInterface.sequelize.query(
-      'CREATE EXTENSION IF NOT EXISTS "pgcrypto";'
-    );
-    await queryInterface.sequelize.query(
-      'ALTER TABLE batsuser ADD CONSTRAINT emailuk UNIQUE (email);'
-    );
-    await queryInterface.sequelize.query(
-      'ALTER TABLE batsuser ALTER COLUMN user_uuid SET DEFAULT gen_random_uuid();'
-    );
-    await queryInterface.sequelize.query(
-      'ALTER TABLE batsuser ALTER COLUMN superuserindicator SET DEFAULT FALSE;'
-    );
+    await queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
+    await queryInterface.sequelize.query('ALTER TABLE batsuser ADD CONSTRAINT emailuk UNIQUE (email);');
+    await queryInterface.sequelize.query('ALTER TABLE batsuser ALTER COLUMN user_uuid SET DEFAULT gen_random_uuid();');
+    await queryInterface.sequelize.query('ALTER TABLE batsuser ALTER COLUMN superuserindicator SET DEFAULT FALSE;');
   },
 
   down: async (queryInterface) => {

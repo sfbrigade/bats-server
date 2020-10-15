@@ -9,7 +9,7 @@ describe('/api/users', () => {
   let testSession;
 
   beforeEach(async () => {
-    await helper.loadFixtures(['users']);
+    await helper.loadFixtures(['organizations', 'users']);
     testSession = session(app);
   });
 
@@ -23,10 +23,7 @@ describe('/api/users', () => {
         .expect(HttpStatus.OK);
 
       /// request user list
-      const response = await testSession
-        .get('/api/users')
-        .set('Accept', 'application/json')
-        .expect(HttpStatus.OK);
+      const response = await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert(response.body?.length, 2);
     });
 
@@ -35,14 +32,11 @@ describe('/api/users', () => {
       await testSession
         .post('/auth/local/login')
         .set('Accept', 'application/json')
-        .send({ username: 'regular.user@example.com', password: 'abcd1234' })
+        .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
       /// request user list
-      await testSession
-        .get('/api/users')
-        .set('Accept', 'application/json')
-        .expect(HttpStatus.FORBIDDEN);
+      await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.FORBIDDEN);
     });
   });
 });

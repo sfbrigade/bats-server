@@ -2,17 +2,16 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Ambulance extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
-      Ambulance.belongsTo(models.EmergencyMedicalServiceProvider);
+      Ambulance.belongsTo(models.Organization);
+
       Ambulance.hasMany(models.PatientDelivery);
+
+      Ambulance.belongsTo(models.User, { as: 'CreatedBy' });
+      Ambulance.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
+
   Ambulance.init(
     {
       id: {
@@ -21,10 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      EmergencyMedicalServiceProviderId: {
-        field: 'emergencymedicalserviceprovider_uuid',
+      OrganizationId: {
+        field: 'emsorganization_uuid',
         type: DataTypes.UUID,
-        primaryKey: true,
       },
       ambulanceIdentifier: {
         field: 'ambulanceidentifier',
@@ -32,30 +30,26 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
-      recordCreateTimestamp: {
+      createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,
       },
-      recordCreateSource: {
-        field: 'recordcreatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      CreatedById: {
+        field: 'recordcreateuser_uuid',
+        type: DataTypes.UUID,
       },
-      recordUpdateTimestamp: {
+      updatedAt: {
         field: 'recordupdatetimestamp',
         type: DataTypes.DATE,
       },
-      recordUpdateSource: {
-        field: 'recordupdatesource',
-        type: DataTypes.STRING,
-        allowNull: false,
+      UpdatedById: {
+        field: 'recordupdateuser_uuid',
+        type: DataTypes.UUID,
       },
     },
     {
       sequelize,
       timestamps: true,
-      createdAt: 'recordCreateTimestamp',
-      updatedAt: 'recordUpdateTimestamp',
       tableName: 'ambulance',
       modelName: 'Ambulance',
     }

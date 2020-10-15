@@ -39,6 +39,9 @@
     "supertest-session": "^4.0.0",
     "uswds": "^2.9.0"
   },
+  "engines": {
+    "node": "14.8"
+  },
   "scripts": {
     "start": "react-scripts start",
     "start:dev": "nf start -j Procfile.dev",

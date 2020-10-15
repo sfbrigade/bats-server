@@ -7,10 +7,10 @@ const path = require('path');
 const models = require('../models');
 
 const loadFixtures = async (files) => {
-  const filePaths = files.map((f) =>
-    path.resolve(__dirname, `fixtures/${f}.json`)
-  );
-  await fixtures.loadFiles(filePaths, models);
+  const filePaths = files.map((f) => path.resolve(__dirname, `fixtures/${f}.json`));
+  await models.sequelize.transaction(async (transaction) => {
+    await fixtures.loadFiles(filePaths, models, { transaction });
+  });
 };
 
 const resetDatabase = async () => {
@@ -20,10 +20,10 @@ const resetDatabase = async () => {
     DELETE FROM patient;
     DELETE FROM ambulance;
     DELETE FROM hospitalstatusupdate;
-    DELETE FROM hospitaladministrator;
+    DELETE FROM hospitaluser;
     DELETE FROM hospital;
     DELETE FROM emergencymedicalservicecall;
-    DELETE FROM emergencymedicalserviceprovider;
+    DELETE FROM organization;
     DELETE FROM batsuser;
   `);
 };

@@ -3,9 +3,10 @@
     "model": "Hospital",
     "data": {
       "id": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
-      "hospitalName": "Fixture Hospital",
-      "recordUpdateSource": "fixture",
-      "recordCreateSource": "fixture"
+      "OrganizationId": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
+      "name": "CPMC Davies Campus",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
   }
 ]
