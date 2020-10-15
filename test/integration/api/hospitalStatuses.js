@@ -17,20 +17,19 @@ describe.skip('/api/hospitalstatuses', () => {
   });
 
   describe.skip('GET /hospitalstatuses', () => {
+    // TODO
     it('returns a list of the latest status updates per hosptial', async () => {
       await testSession.get('/api/hospitalstatuses').set('Accept', 'application/json').expect(HttpStatus.OK);
-      // TODO expect a list of hospital statuses
     });
   });
 
   describe.skip('POST /hospitalstatuses', () => {
+    // TODO
     it('creates a new hospital status update', async () => {
       await testSession
         .post('/api/hospitalstatuses')
         .set('Accept', 'application/json')
-        .send({
-          hospitalStatus: {}, // TODO after specify schema
-        })
+        .send({})
         .expect(HttpStatus.CREATED);
     });
   });
