@@ -1,3 +1,4 @@
+const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 
@@ -8,14 +9,7 @@ describe('/api/ringdowns', () => {
   let testSession;
 
   beforeEach(async () => {
-    await helper.loadFixtures([
-      'organizations',
-      'users',
-      'ambulances',
-      'emergencyMedicalServiceCalls',
-      'hospitals',
-      'patients',
-    ]);
+    await helper.loadFixtures(['organizations', 'users', 'ambulances', 'emergencyMedicalServiceCalls', 'hospitals', 'patients']);
 
     // Login as paramedic user
     testSession = session(app);
@@ -43,17 +37,23 @@ describe('/api/ringdowns', () => {
 
   describe('POST /ringdowns', () => {
     it('creates a new ringdown', async () => {
-      await testSession
+      const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
         .send({
-          ambulanceIdentifer: 'testId',
-          dispatchCallNumber: 1234,
-          hospitalId: '00752f60-068f-11eb-adc1-0242ac120002',
-          estimatedArrivalTime: '2004-10-19 10:23:54+02',
+          ambulance: {
+            ambulanceIdentifer: 'testId',
+          },
+          emsCall: {
+            dispatchCallNumber: 1234,
+          },
+          hospital: {
+            id: '00752f60-068f-11eb-adc1-0242ac120002',
+          },
           patient: {
             age: 30,
             sex: 'male',
+            patientNumber: 2, // TODO - where does this come from in the UI?
             chiefComplaintDescription: 'Fainted while walking home.',
             systolicBloodPressure: 80,
             diastolicBloodPressure: 120,
@@ -65,20 +65,23 @@ describe('/api/ringdowns', () => {
             ivIndicator: false,
             additionalNotes: 'Needs assistance walking',
           },
+          patientDelivery: {
+            estimatedArrivalTime: '2004-10-19 10:23:54+02',
+          },
         })
         .expect(HttpStatus.CREATED);
+      assert(response.body.ambulance);
+      assert(response.body.emsCall);
+      assert(response.body.hospital);
+      assert(response.body.patient);
+      assert(response.body.patientDelivery);
     });
   });
 
   describe.skip('PATCH /ringdowns/{id}', () => {
     // TODO
     it('updates an existing ringdown', async () => {
-      await testSession
-        .patch('/api/ringdowns')
-        .set('Accept', 'application/json')
-        .send({
-        })
-        .expect(HttpStatus.OK);
+      await testSession.patch('/api/ringdowns').set('Accept', 'application/json').send({}).expect(HttpStatus.OK);
     });
   });
 });

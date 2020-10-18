@@ -26,11 +26,7 @@ describe.skip('/api/hospitalstatuses', () => {
   describe.skip('POST /hospitalstatuses', () => {
     // TODO
     it('creates a new hospital status update', async () => {
-      await testSession
-        .post('/api/hospitalstatuses')
-        .set('Accept', 'application/json')
-        .send({})
-        .expect(HttpStatus.CREATED);
+      await testSession.post('/api/hospitalstatuses').set('Accept', 'application/json').send({}).expect(HttpStatus.CREATED);
     });
   });
 });
