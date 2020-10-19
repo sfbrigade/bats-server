@@ -8,5 +8,15 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Ambulance",
+    "data": {
+      "id": "b594eb54-bfed-41f7-8248-616917cfc6e9",
+      "OrganizationId": "aac13870-f6f3-11ea-adc1-0242ac120002",
+      "ambulanceIdentifier": "secondTestId",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]

@@ -5,22 +5,52 @@ const models = require('../../models');
 
 const router = express.Router();
 
-class Ringdown {
-  constructor(ambulance, emsCall, hospital, patient, patientDelivery) {
-    this.ambulance = ambulance;
-    this.emsCall = emsCall;
-    this.hospital = hospital;
-    this.patient = patient;
-    this.patientDelivery = patientDelivery;
-  }
+function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDelivery) {
+  const ringdownResponse = {
+    id: patientDelivery.id,
+    ambulance: {
+      ambulanceIdentifier: ambulance.ambulanceIdentifier,
+    },
+    emsCall: {
+      dispatchCallNumber: emsCall.dispatchCallNumber,
+    },
+    hospital: {
+      id: hospital.id,
+    },
+    patient: {
+      age: patient.age,
+      sex: patient.sex,
+      patientNumber: patient.patientNumber,
+      chiefComplaintDescription: patient.chiefComplaintDescription,
+      systolicBloodPressure: patient.systolicBloodPressure,
+      diastolicBloodPressure: patient.diastolicBloodPressure,
+      heartRateBpm: patient.heartRateBpm,
+      oxygenSaturation: patient.oxygenSaturation,
+      temperature: patient.temperature,
+      stableIndicator: patient.stableIndicator,
+      combativeBehaviorIndicator: patient.combativeBehaviorIndicator,
+      ivIndicator: patient.ivIndicator,
+      otherObservationNotes: patient.otherObservationNotes,
+    },
+    patientDelivery: {
+      deliveryStatus: patientDelivery.deliveryStatus,
+      departureDateTime: patientDelivery.departureDateTime,
+      estimatedArrivalTime: patientDelivery.estimatedArrivalTime,
+      arrivalDateTime: patientDelivery.arrivalDateTime,
+      admissionDateTime: patientDelivery.admissionDateTime,
+    },
+  };
+
+  return ringdownResponse;
 }
 
 router.post('/', async (req, res) => {
+  // TODO - store dates in UTC or local timezone?
   // TODO - use a transaction
   try {
     const emsCall = await models.EmergencyMedicalServiceCall.create({
       dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
-      startDateTime: '2004-10-19 10:23:54+02', // TODO - pull in a datetime lib
+      startDateTime: new Date(),
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });
@@ -41,14 +71,68 @@ router.post('/', async (req, res) => {
       PatientId: patient.id,
       HospitalId: hospital.id,
       ParamedicUserId: req.user.id,
-      deliveryStatus: 'enroute', // TODO - make an enum?
-      departureDateTime: '2004-10-19 10:23:54+02', // TODO - pull in a datetime lib
+      deliveryStatus: 'En route',
+      departureDateTime: new Date(),
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });
+    const response = createRingdownResponse(ambulance, emsCall, hospital, patient, patientDelivery);
+    res.status(HttpStatus.CREATED).json(response);
+  } catch (error) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+  }
+});
 
-    const ringdown = new Ringdown(ambulance, emsCall, hospital, patient, patientDelivery);
-    res.status(HttpStatus.CREATED).json(ringdown);
+router.patch('/:id', async (req, res) => {
+  try {
+    const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
+      include: { all: true },
+    });
+
+    if (!patientDelivery) {
+      throw new Error('Patient delivery does not exist');
+    }
+
+    if (req.body.ambulance) {
+      const ambulance = await models.Ambulance.findOne({
+        where: {
+          ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
+        },
+      });
+      patientDelivery.Ambulance = ambulance;
+    }
+
+    if (req.body.emsCall) {
+      const emsCall = await patientDelivery.Patient.getEmergencyMedicalServiceCall();
+      emsCall.dispatchCallNumber = req.body.emsCall.dispatchCallNumber;
+      await emsCall.save();
+    }
+
+    if (req.body.hospital) {
+      patientDelivery.HospitalId = req.body.hospital.id;
+    }
+
+    if (req.body.patient) {
+      Object.assign(patientDelivery.Patient, req.body.patient);
+    }
+
+    if (req.body.patientDelivery) {
+      Object.assign(patientDelivery, req.body.patientDelivery);
+      if (req.body.patientDelivery.arrivalDateTime) {
+        patientDelivery.deliveryStatus = 'Arrived';
+      }
+    }
+
+    const updatedPatientDelivery = await patientDelivery.save();
+    const emsCall = await updatedPatientDelivery.Patient.getEmergencyMedicalServiceCall();
+    const response = createRingdownResponse(
+      updatedPatientDelivery.Ambulance,
+      emsCall,
+      updatedPatientDelivery.Hospital,
+      updatedPatientDelivery.Patient,
+      updatedPatientDelivery
+    );
+    res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
