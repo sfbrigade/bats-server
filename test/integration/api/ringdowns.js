@@ -28,22 +28,25 @@ describe('/api/ringdowns', () => {
       .expect(HttpStatus.OK);
   });
 
-  describe.skip('GET /ringdowns', () => {
-    // TODO
+  describe('GET /', () => {
     it('returns a list of all active ringdowns', async () => {
-      await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
+      const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
+      assert.deepStrictEqual(response.body.length, 2);
+      // assert on ids that came back
     });
 
     it('returns a returns a list of active ringdowns filtered by hospital', async () => {
-      await testSession
-        .get('/api/ringdowns')
+      const response = await testSession
+        .get('/api/ringdowns?hospitalId=7f666fe4-dbdd-4c7f-ab44-d9157379a680')
         .query({ hospital: 'Fixture Hospital' })
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK);
+      assert.deepStrictEqual(response.body.length, 1);
+      // TODO assert about which one came back
     });
   });
 
-  describe('POST /ringdowns', () => {
+  describe('POST /', () => {
     it('creates a ringdown', async () => {
       const response = await testSession
         .post('/api/ringdowns')
@@ -61,7 +64,7 @@ describe('/api/ringdowns', () => {
           patient: {
             age: 30,
             sex: 'male',
-            patientNumber: 2, // TODO - where does this come from in the UI?
+            patientNumber: 4, // TODO - where does this come from in the UI?
             chiefComplaintDescription: 'Fainted while walking home.',
             systolicBloodPressure: 80,
             diastolicBloodPressure: 120,
@@ -87,7 +90,7 @@ describe('/api/ringdowns', () => {
     });
   });
 
-  describe('PATCH /ringdowns/:id', () => {
+  describe('PATCH /:id', () => {
     it('updates an existing ringdown', async () => {
       const response = await testSession
         .patch('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247')

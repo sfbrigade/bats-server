@@ -16,14 +16,14 @@ describe.skip('/api/hospitalstatuses', () => {
       .send({ username: 'regular.user@example.com', password: 'abcd1234' });
   });
 
-  describe.skip('GET /hospitalstatuses', () => {
+  describe.skip('GET /', () => {
     // TODO
     it('returns a list of the latest status updates per hosptial', async () => {
       await testSession.get('/api/hospitalstatuses').set('Accept', 'application/json').expect(HttpStatus.OK);
     });
   });
 
-  describe.skip('POST /hospitalstatuses', () => {
+  describe.skip('POST /', () => {
     // TODO
     it('creates a new hospital status update', async () => {
       await testSession.post('/api/hospitalstatuses').set('Accept', 'application/json').send({}).expect(HttpStatus.CREATED);

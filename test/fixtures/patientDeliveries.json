@@ -7,11 +7,41 @@
       "PatientId": "136cf75e-55e8-4c31-a6bb-a90434ca9f28",
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
       "ParamedicUserId": "6737fc42-f815-460f-888a-10435af12f08",
-      "deliveryStatus": "en route",
+      "deliveryStatus": "Arrived",
       "departureDateTime": "2004-10-19 10:23:54+02",
       "estimatedArrivalTime": "2004-10-19 10:23:54+02",
       "arrivalDateTime": "2004-10-19 10:23:54+02",
       "admissionDateTime": "2004-10-19 10:23:54+02",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "d4fd2478-ecd6-4571-9fb3-842bfc64b511",
+      "AmbulanceId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "PatientId": "c264cc57-60da-41ae-8cfb-b1dd34321c48",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "ParamedicUserId": "6737fc42-f815-460f-888a-10435af12f08",
+      "deliveryStatus": "En route",
+      "departureDateTime": "2004-10-19 10:23:54+02",
+      "estimatedArrivalTime": "2004-10-19 10:23:54+02",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "4889b0c8-ce48-474a-ac5b-c5aca708451c",
+      "AmbulanceId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "PatientId": "799eb391-4bb0-4e22-944a-842d0904766e",
+      "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
+      "ParamedicUserId": "6737fc42-f815-460f-888a-10435af12f08",
+      "deliveryStatus": "En route",
+      "departureDateTime": "2004-10-19 10:23:54+02",
+      "estimatedArrivalTime": "2004-10-19 10:23:54+02",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }

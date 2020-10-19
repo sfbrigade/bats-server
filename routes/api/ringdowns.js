@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('sequelize');
 const HttpStatus = require('http-status-codes');
 
 const models = require('../../models');
@@ -43,6 +44,35 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
 
   return ringdownResponse;
 }
+
+router.get('/', async (req, res) => {
+  const filter = {
+    deliveryStatus: {
+      [Op.not]: 'Arrived',
+    },
+  };
+
+  if (req.query.hospitalId) {
+    filter.HospitalId = req.query.hospitalId;
+  }
+
+  try {
+    const patientDeliveries = await models.PatientDelivery.findAll({
+      include: { all: true },
+      where: filter,
+    });
+    const response = await Promise.all(
+      patientDeliveries.map(async (pd) => {
+        const ems = await pd.Patient.getEmergencyMedicalServiceCall();
+        const ringdown = createRingdownResponse(pd.Ambulance, ems, pd.Hospital, pd.Patient, pd);
+        return ringdown;
+      })
+    );
+    res.status(HttpStatus.OK).json(response);
+  } catch (error) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+  }
+});
 
 router.post('/', async (req, res) => {
   // TODO - store dates in UTC or local timezone?

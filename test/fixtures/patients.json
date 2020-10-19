@@ -8,5 +8,25 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "c264cc57-60da-41ae-8cfb-b1dd34321c48",
+      "EmergencyMedicalServiceCallId": "7d9c4dae-efba-4032-a054-e99aaf08c93c",
+      "patientNumber": 2,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "799eb391-4bb0-4e22-944a-842d0904766e",
+      "EmergencyMedicalServiceCallId": "716f1d23-f9d1-4301-8942-23ab12e9a630",
+      "patientNumber": 3,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]
