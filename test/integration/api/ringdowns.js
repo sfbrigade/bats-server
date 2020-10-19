@@ -19,7 +19,6 @@ describe('/api/ringdowns', () => {
       'patientDeliveries',
     ]);
 
-    // Login as paramedic user
     testSession = session(app);
     await testSession
       .post('/auth/local/login')
@@ -32,7 +31,9 @@ describe('/api/ringdowns', () => {
     it('returns a list of all active ringdowns', async () => {
       const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.length, 2);
-      // assert on ids that came back
+      const ids = response.body.map(ringdown => ringdown.id).sort();
+      assert.deepStrictEqual(ids[0], '4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      assert.deepStrictEqual(ids[1], 'd4fd2478-ecd6-4571-9fb3-842bfc64b511');
     });
 
     it('returns a returns a list of active ringdowns filtered by hospital', async () => {
@@ -42,7 +43,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.length, 1);
-      // TODO assert about which one came back
+      assert.deepStrictEqual(response.body[0].id, 'd4fd2478-ecd6-4571-9fb3-842bfc64b511')
     });
   });
 
@@ -64,7 +65,7 @@ describe('/api/ringdowns', () => {
           patient: {
             age: 30,
             sex: 'male',
-            patientNumber: 4, // TODO - where does this come from in the UI?
+            patientNumber: 4,
             chiefComplaintDescription: 'Fainted while walking home.',
             systolicBloodPressure: 80,
             diastolicBloodPressure: 120,

@@ -1,10 +1,11 @@
+const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
 
-describe.skip('/api/hospitalstatuses', () => {
+describe('/api/hospitalstatuses', () => {
   let testSession;
 
   beforeEach(async () => {
@@ -16,10 +17,14 @@ describe.skip('/api/hospitalstatuses', () => {
       .send({ username: 'regular.user@example.com', password: 'abcd1234' });
   });
 
-  describe.skip('GET /', () => {
-    // TODO
+  describe.only('GET /', () => {
     it('returns a list of the latest status updates per hosptial', async () => {
-      await testSession.get('/api/hospitalstatuses').set('Accept', 'application/json').expect(HttpStatus.OK);
+      const response = await testSession
+        .get('/api/hospitalstatuses')
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.OK);
+      assert.deepStrictEqual(response.body.length, 2)
+      assert.deepStrictEqual(response.body.length, 2)
     });
   });
 
