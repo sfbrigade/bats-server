@@ -75,8 +75,6 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  // TODO - store dates in UTC or local timezone?
-  // TODO - use a transaction
   try {
     const emsCall = await models.EmergencyMedicalServiceCall.create({
       dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
@@ -117,11 +115,8 @@ router.patch('/:id', async (req, res) => {
   try {
     const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
       include: { all: true },
+      rejectOnEmpty: true,
     });
-
-    if (!patientDelivery) {
-      throw new Error('Patient delivery does not exist');
-    }
 
     if (req.body.ambulance) {
       const ambulance = await models.Ambulance.findOne({
