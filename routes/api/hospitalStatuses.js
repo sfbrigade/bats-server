@@ -6,7 +6,7 @@ const models = require('../../models');
 const router = express.Router();
 
 function createResponse(hsu) {
-  const { id, openEdBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDatetime } = hsu
+  const { id, openEdBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDatetime } = hsu;
   const response = {
     id,
     hospitalId: hsu.HospitalId,
@@ -17,7 +17,7 @@ function createResponse(hsu) {
     edAdminUserId: hsu.EdAdminUserId,
     createdById: hsu.CreatedById,
     updatedById: hsu.UpdatedById,
-  }
+  };
   return response;
 }
 
@@ -32,12 +32,10 @@ router.get('/', async (req, res) => {
     ;
   `;
   try {
-    const statusUpdates = await models.sequelize.query(mostRecentStatusUpdatesByHospital,
-      {
-        model: models.HospitalStatusUpdate,
-        mapToModel: true
-      }
-    );
+    const statusUpdates = await models.sequelize.query(mostRecentStatusUpdatesByHospital, {
+      model: models.HospitalStatusUpdate,
+      mapToModel: true,
+    });
     const response = statusUpdates.map((statusUpdate) => createResponse(statusUpdate));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
@@ -54,10 +52,10 @@ router.post('/', async (req, res) => {
       additionalServiceAvailabilityNotes: req.body.additionalServiceAvailabilityNotes,
       updateDatetime: new Date(), // TODO - use local timezone
       EdAdminUserId: req.user.id,
-      CreatedById:  req.user.id,
+      CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });
-    const response = createResponse(statusUpdate)
+    const response = createResponse(statusUpdate);
     res.status(HttpStatus.CREATED).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
