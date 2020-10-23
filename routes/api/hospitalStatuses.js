@@ -6,6 +6,22 @@ const models = require('../../models');
 
 const router = express.Router();
 
+function createResponse(hsu) {
+  const { id, openEdBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDatetime } = hsu
+  const response = {
+    id,
+    openEdBedCount,
+    divertStatusIndicator,
+    additionalServiceAvailabilityNotes,
+    updateDatetime,
+    hospitalId: hsu.HospitalId,
+    edAdminUserId: hsu.EdAdminUserId,
+    createdById: hsu.CreatedById,
+    updatedById: hsu.UpdatedById,
+  }
+  return response;
+}
+
 function createResponseFromQuery(queryResult) {
   const response = {
     id: queryResult.hospital_uuid,
@@ -47,14 +63,18 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const hsu = await models.HospitalStatusUpdate.create({
-      ...req.body,
+      HospitalId: req.body.hospitalId,
+      openEdBedCount: req.body.openEdBedCount,
+      divertStatusIndicator: req.body.divertStatusIndicator,
+      additionalServiceAvailabilityNotes: req.body.additionalServiceAvailabilityNotes,
       updateDatetime: new Date(), // TODO - use local timezone
-      CreatedById: req.body.EdAdminUserId,
-      UpdatedById: req.body.EdAdminUserId,
+      EdAdminUserId: req.user.id,
+      CreatedById:  req.user.id,
+      UpdatedById: req.user.id,
     });
-    res.status(HttpStatus.CREATED).json(hsu);
+    res.status(HttpStatus.CREATED).json(createResponse(hsu));
   } catch (error) {
-    console.log(error);
+    console.log(error)
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });

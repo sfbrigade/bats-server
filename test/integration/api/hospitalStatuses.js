@@ -14,7 +14,7 @@ describe('/api/hospitalstatuses', () => {
     await testSession
       .post('/auth/local/login')
       .set('Accept', 'application/json')
-      .send({ username: 'regular.user@example.com', password: 'abcd1234' });
+      .send({ username: 'sutter.admin@example.com', password: 'abcd1234' });
   });
 
   describe('GET /', () => {
@@ -39,16 +39,15 @@ describe('/api/hospitalstatuses', () => {
         .post('/api/hospitalstatuses')
         .set('Accept', 'application/json')
         .send({
-          HospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
-          EdAdminUserId: 'a950fed4-d996-4a41-a275-1cc4852d7664',
+          hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
           openEdBedCount: 5,
           divertStatusIndicator: false,
         })
         .expect(HttpStatus.CREATED);
 
       assert(response.body.id);
-      assert.deepStrictEqual(response.body.HospitalId, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
-      assert.deepStrictEqual(response.body.EdAdminUserId, 'a950fed4-d996-4a41-a275-1cc4852d7664');
+      assert.deepStrictEqual(response.body.hospitalId, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
+      assert.deepStrictEqual(response.body.edAdminUserId, 'a950fed4-d996-4a41-a275-1cc4852d7664');
       assert.deepStrictEqual(response.body.openEdBedCount, 5);
       assert.deepStrictEqual(response.body.divertStatusIndicator, false);
     });
