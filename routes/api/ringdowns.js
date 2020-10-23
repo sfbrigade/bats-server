@@ -41,25 +41,24 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
       admissionDateTime: patientDelivery.admissionDateTime,
     },
   };
-
   return ringdownResponse;
 }
 
 router.get('/', async (req, res) => {
-  const filter = {
+  const queryFilter = {
     deliveryStatus: {
       [Op.not]: 'Arrived',
     },
   };
 
   if (req.query.hospitalId) {
-    filter.HospitalId = req.query.hospitalId;
+    queryFilter.HospitalId = req.query.hospitalId;
   }
 
   try {
     const patientDeliveries = await models.PatientDelivery.findAll({
       include: { all: true },
-      where: filter,
+      where: queryFilter,
     });
     const response = await Promise.all(
       patientDeliveries.map(async (pd) => {
