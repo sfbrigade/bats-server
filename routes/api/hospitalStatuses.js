@@ -1,4 +1,3 @@
-const { QueryTypes } = require('sequelize');
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 
@@ -10,11 +9,11 @@ function createResponse(hsu) {
   const { id, openEdBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDatetime } = hsu
   const response = {
     id,
+    hospitalId: hsu.HospitalId,
     openEdBedCount,
     divertStatusIndicator,
     additionalServiceAvailabilityNotes,
     updateDatetime,
-    hospitalId: hsu.HospitalId,
     edAdminUserId: hsu.EdAdminUserId,
     createdById: hsu.CreatedById,
     updatedById: hsu.UpdatedById,
@@ -22,38 +21,24 @@ function createResponse(hsu) {
   return response;
 }
 
-function createResponseFromQuery(queryResult) {
-  const response = {
-    id: queryResult.hospital_uuid,
-    hospitalName: queryResult.hospitalname,
-    openEdBedCount: queryResult.openedbedcount,
-    divertStatusIndicator: queryResult.divertstatusindicator,
-    updateDatetime: queryResult.updatedatetime,
-  };
-  return response;
-}
-
 router.get('/', async (req, res) => {
-  const mostRecentStatusUpdateByHospital = `
-    SELECT DISTINCT
-      ON (hsu.hospital_uuid) hsu.hospital_uuid,
-      hsu.openedbedcount,
-      hsu.divertstatusindicator,
-      hsu.updatedatetime, 
-      h.hospitalname 
+  const mostRecentStatusUpdatesByHospital = `
+    SELECT DISTINCT ON (hospital_uuid) *
     FROM
-      hospitalstatusupdate hsu
-      INNER JOIN
-          hospital h 
-          ON h.hospital_uuid = hsu.hospital_uuid 
+      hospitalstatusupdate 
     ORDER BY
       hospital_uuid,
       updatedatetime DESC
     ;
   `;
   try {
-    const queryResults = await models.sequelize.query(mostRecentStatusUpdateByHospital, { type: QueryTypes.SELECT });
-    const response = queryResults.map((result) => createResponseFromQuery(result));
+    const statusUpdates = await models.sequelize.query(mostRecentStatusUpdatesByHospital,
+      {
+        model: models.HospitalStatusUpdate,
+        mapToModel: true
+      }
+    );
+    const response = statusUpdates.map((statusUpdate) => createResponse(statusUpdate));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
@@ -62,7 +47,7 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const hsu = await models.HospitalStatusUpdate.create({
+    const statusUpdate = await models.HospitalStatusUpdate.create({
       HospitalId: req.body.hospitalId,
       openEdBedCount: req.body.openEdBedCount,
       divertStatusIndicator: req.body.divertStatusIndicator,
@@ -72,9 +57,9 @@ router.post('/', async (req, res) => {
       CreatedById:  req.user.id,
       UpdatedById: req.user.id,
     });
-    res.status(HttpStatus.CREATED).json(createResponse(hsu));
+    const response = createResponse(statusUpdate)
+    res.status(HttpStatus.CREATED).json(response);
   } catch (error) {
-    console.log(error)
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });

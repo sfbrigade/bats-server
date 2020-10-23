@@ -14,7 +14,7 @@ describe('/api/hospitalstatuses', () => {
     await testSession
       .post('/auth/local/login')
       .set('Accept', 'application/json')
-      .send({ username: 'sutter.admin@example.com', password: 'abcd1234' });
+      .send({ username: 'sutter.operational@example.com', password: 'abcd1234' });
   });
 
   describe('GET /', () => {
@@ -22,14 +22,24 @@ describe('/api/hospitalstatuses', () => {
       const response = await testSession.get('/api/hospitalstatuses').set('Accept', 'application/json').expect(HttpStatus.OK);
 
       assert.deepStrictEqual(response.body.length, 2);
-      const cpmcHospital = response.body.filter((hospital) => hospital.id === '7f666fe4-dbdd-4c7f-ab44-d9157379a680')[0];
+
+      const cpmcHospital = response.body.filter((hospital) => hospital.hospitalId === '7f666fe4-dbdd-4c7f-ab44-d9157379a680')[0];
+      assert(cpmcHospital.id);
       assert(cpmcHospital.updateDatetime);
       assert.deepStrictEqual(cpmcHospital.openEdBedCount, 10);
       assert.deepStrictEqual(cpmcHospital.divertStatusIndicator, false);
-      const sutterHospital = response.body.filter((hospital) => hospital.id === '00752f60-068f-11eb-adc1-0242ac120002')[0];
+      assert.deepStrictEqual(cpmcHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(cpmcHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(cpmcHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+
+      const sutterHospital = response.body.filter((hospital) => hospital.hospitalId === '00752f60-068f-11eb-adc1-0242ac120002')[0];
+      assert(sutterHospital.id);
       assert(sutterHospital.updateDatetime);
       assert.deepStrictEqual(sutterHospital.openEdBedCount, 0);
       assert.deepStrictEqual(sutterHospital.divertStatusIndicator, true);
+      assert.deepStrictEqual(sutterHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(sutterHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(sutterHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
     });
   });
 
@@ -47,9 +57,11 @@ describe('/api/hospitalstatuses', () => {
 
       assert(response.body.id);
       assert.deepStrictEqual(response.body.hospitalId, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
-      assert.deepStrictEqual(response.body.edAdminUserId, 'a950fed4-d996-4a41-a275-1cc4852d7664');
       assert.deepStrictEqual(response.body.openEdBedCount, 5);
       assert.deepStrictEqual(response.body.divertStatusIndicator, false);
+      assert.deepStrictEqual(response.body.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(response.body.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(response.body.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
     });
   });
 });

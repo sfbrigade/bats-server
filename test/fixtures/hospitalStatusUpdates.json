@@ -3,7 +3,7 @@
     "model": "HospitalStatusUpdate",
     "data": {
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
-      "EdAdminUserId": "a950fed4-d996-4a41-a275-1cc4852d7664",
+      "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "updateDatetime": "2004-10-19 10:23:54",
       "openEdBedCount": 1,
       "edWaitingRoomCount": 2,
@@ -16,7 +16,7 @@
     "model": "HospitalStatusUpdate",
     "data": {
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
-      "EdAdminUserId": "a950fed4-d996-4a41-a275-1cc4852d7664",
+      "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "updateDatetime": "2005-10-19 10:23:54",
       "openEdBedCount": 10,
       "edWaitingRoomCount": 2,
@@ -29,7 +29,7 @@
     "model": "HospitalStatusUpdate",
     "data": {
       "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
-      "EdAdminUserId": "a950fed4-d996-4a41-a275-1cc4852d7664",
+      "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "updateDatetime": "2004-10-20 10:23:54",
       "openEdBedCount": 20,
       "edWaitingRoomCount": 2,
@@ -42,7 +42,7 @@
     "model": "HospitalStatusUpdate",
     "data": {
       "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
-      "EdAdminUserId": "a950fed4-d996-4a41-a275-1cc4852d7664",
+      "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "updateDatetime": "2005-10-19 10:23:54+02",
       "openEdBedCount": 0,
       "edWaitingRoomCount": 0,
