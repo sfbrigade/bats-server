@@ -36,7 +36,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(ids[1], 'd4fd2478-ecd6-4571-9fb3-842bfc64b511');
     });
 
-    it('returns a returns a list of active ringdowns filtered by hospital', async () => {
+    it('returns a list of active ringdowns filtered by hospital', async () => {
       const response = await testSession
         .get('/api/ringdowns?hospitalId=7f666fe4-dbdd-4c7f-ab44-d9157379a680')
         .query({ hospital: 'Fixture Hospital' })
@@ -63,9 +63,9 @@ describe('/api/ringdowns', () => {
             id: '00752f60-068f-11eb-adc1-0242ac120002',
           },
           patient: {
+            emergencyServiceResponseType: 'CODE 2',
             age: 30,
             sex: 'male',
-            patientNumber: 4,
             chiefComplaintDescription: 'Fainted while walking home.',
             systolicBloodPressure: 80,
             diastolicBloodPressure: 120,
@@ -112,7 +112,7 @@ describe('/api/ringdowns', () => {
             otherObservationNotes: 'in stable condition',
           },
           patientDelivery: {
-            arrivalDateTime: '2005-10-19 10:23:54',
+            arrivedDateTimeLocal: '2005-10-19 10:23:54',
           },
         })
         .expect(HttpStatus.OK);
@@ -123,7 +123,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(response.body.patient.age, 99);
       assert.deepStrictEqual(response.body.patient.sex, 'female');
       assert.deepStrictEqual(response.body.patient.otherObservationNotes, 'in stable condition');
-      assert.deepStrictEqual(response.body.patientDelivery.arrivalDateTime, '2005-10-19T10:23:54.000Z');
+      assert.deepStrictEqual(response.body.patientDelivery.arrivedDateTimeLocal, '2005-10-19T10:23:54.000Z');
     });
   });
 });

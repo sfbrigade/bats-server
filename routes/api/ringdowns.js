@@ -21,7 +21,6 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
     patient: {
       age: patient.age,
       sex: patient.sex,
-      patientNumber: patient.patientNumber,
       chiefComplaintDescription: patient.chiefComplaintDescription,
       systolicBloodPressure: patient.systolicBloodPressure,
       diastolicBloodPressure: patient.diastolicBloodPressure,
@@ -35,10 +34,11 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
     },
     patientDelivery: {
       deliveryStatus: patientDelivery.deliveryStatus,
-      departureDateTime: patientDelivery.departureDateTime,
-      estimatedArrivalTime: patientDelivery.estimatedArrivalTime,
-      arrivalDateTime: patientDelivery.arrivalDateTime,
-      admissionDateTime: patientDelivery.admissionDateTime,
+      ringdownSentDateTimeLocal: patientDelivery.ringdownSentDateTimeLocal,
+      ringdownReceivedDateTimeLocal: patientDelivery.ringdownReceivedDateTimeLocal,
+      arrivedDateTimeLocal: patientDelivery.arrivedDateTimeLocal,
+      offloadedDateTimeLocal: patientDelivery.offloadedDateTimeLocal,
+      returnToServiceDateTimeLocal: patientDelivery.returnToServiceDateTimeLocal,
     },
   };
   return ringdownResponse;
@@ -47,7 +47,7 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
 router.get('/', async (req, res) => {
   const queryFilter = {
     deliveryStatus: {
-      [Op.not]: 'Arrived',
+      [Op.lt]: 'ARRIVED',
     },
   };
 
@@ -77,7 +77,7 @@ router.post('/', async (req, res) => {
   try {
     const emsCall = await models.EmergencyMedicalServiceCall.create({
       dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
-      startDateTime: new Date(),
+      startDateTimeLocal: new Date(),
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });
@@ -98,8 +98,8 @@ router.post('/', async (req, res) => {
       PatientId: patient.id,
       HospitalId: hospital.id,
       ParamedicUserId: req.user.id,
-      deliveryStatus: 'En route',
-      departureDateTime: new Date(),
+      deliveryStatus: 'RINGDOWN SENT',
+      ringdownSentDateTimeLocal: new Date(),
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });
@@ -142,8 +142,8 @@ router.patch('/:id', async (req, res) => {
 
     if (req.body.patientDelivery) {
       Object.assign(patientDelivery, req.body.patientDelivery);
-      if (req.body.patientDelivery.arrivalDateTime) {
-        patientDelivery.deliveryStatus = 'Arrived';
+      if (req.body.patientDelivery.arriveDateTimeLocal) {
+        patientDelivery.deliveryStatus = 'ARRIVED';
       }
     }
 

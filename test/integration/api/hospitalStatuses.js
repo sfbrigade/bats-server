@@ -25,7 +25,7 @@ describe('/api/hospitalstatuses', () => {
 
       const cpmcHospital = response.body.filter((hospital) => hospital.hospitalId === '7f666fe4-dbdd-4c7f-ab44-d9157379a680')[0];
       assert(cpmcHospital.id);
-      assert(cpmcHospital.updateDatetime);
+      assert(cpmcHospital.updateDateTimeLocal);
       assert.deepStrictEqual(cpmcHospital.openEdBedCount, 10);
       assert.deepStrictEqual(cpmcHospital.divertStatusIndicator, false);
       assert.deepStrictEqual(cpmcHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
@@ -34,7 +34,7 @@ describe('/api/hospitalstatuses', () => {
 
       const sutterHospital = response.body.filter((hospital) => hospital.hospitalId === '00752f60-068f-11eb-adc1-0242ac120002')[0];
       assert(sutterHospital.id);
-      assert(sutterHospital.updateDatetime);
+      assert(sutterHospital.updateDateTimeLocal);
       assert.deepStrictEqual(sutterHospital.openEdBedCount, 0);
       assert.deepStrictEqual(sutterHospital.divertStatusIndicator, true);
       assert.deepStrictEqual(sutterHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
@@ -51,6 +51,7 @@ describe('/api/hospitalstatuses', () => {
         .send({
           hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
           openEdBedCount: 5,
+          openPsychBedCount: 3,
           divertStatusIndicator: false,
         })
         .expect(HttpStatus.CREATED);
@@ -58,6 +59,7 @@ describe('/api/hospitalstatuses', () => {
       assert(response.body.id);
       assert.deepStrictEqual(response.body.hospitalId, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
       assert.deepStrictEqual(response.body.openEdBedCount, 5);
+      assert.deepStrictEqual(response.body.openPsychBedCount, 3);
       assert.deepStrictEqual(response.body.divertStatusIndicator, false);
       assert.deepStrictEqual(response.body.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(response.body.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');

@@ -24,11 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
-      patientNumber: {
-        field: 'patientnumber',
-        type: DataTypes.INTEGER,
-        unique: true,
-        allowNull: false,
+      emergencyServiceResponseType: {
+        field: 'emergencyserviceresponsetypeenum',
+        type: DataTypes.ENUM('CODE 2', 'CODE 3'),
       },
       age: {
         field: 'age',
@@ -74,6 +72,10 @@ module.exports = (sequelize, DataTypes) => {
         field: 'respiratoryrate',
         type: DataTypes.INTEGER,
         allowNull: true,
+      },
+      lowOxygenResponseType: {
+        field: 'lowoxygenresponsetypeenum',
+        type: DataTypes.ENUM('ROOM AIR', 'SUPPLEMENTAL OXYGEN'),
       },
       oxygenSaturation: {
         field: 'oxygensaturation',

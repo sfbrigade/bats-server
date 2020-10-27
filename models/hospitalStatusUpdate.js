@@ -30,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
-      updateDatetime: {
-        field: 'updatedatetime',
+      updateDateTimeLocal: {
+        field: 'updatedatetimelocal',
         type: DataTypes.DATE,
         unique: true,
         allowNull: false,
@@ -39,12 +39,12 @@ module.exports = (sequelize, DataTypes) => {
       openEdBedCount: {
         field: 'openedbedcount',
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
-      edWaitingRoomCount: {
-        field: 'edwaitingroomcount',
+      openPsychBedCount: {
+        field: 'openpsychbedcount',
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       divertStatusIndicator: {
         field: 'divertstatusindicator',

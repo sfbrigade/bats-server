@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      startDateTime: {
-        field: 'startdatetime',
+      startDateTimeLocal: {
+        field: 'startdatetimelocal',
         type: DataTypes.DATE,
         allowNull: false,
       },

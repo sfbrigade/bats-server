@@ -25,9 +25,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       type: {
-        field: 'organizationtypename',
-        type: DataTypes.ENUM('C4SF', 'EMS', 'HEALTHCARE'),
+        field: 'organizationtypeenum',
+        type: DataTypes.ENUM('EMS', 'HEALTHCARE', 'C4SF'),
         allowNull: false,
+      },
+      timeZoneIsoCode: {
+        field: 'timezoneisocode',
+        type: DataTypes.STRING,
       },
       createdAt: {
         field: 'recordcreatetimestamp',

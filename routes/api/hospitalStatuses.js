@@ -6,14 +6,15 @@ const models = require('../../models');
 const router = express.Router();
 
 function createResponse(hsu) {
-  const { id, openEdBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDatetime } = hsu;
+  const { id, openEdBedCount, openPsychBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDateTimeLocal } = hsu;
   const response = {
     id,
     hospitalId: hsu.HospitalId,
     openEdBedCount,
+    openPsychBedCount,
     divertStatusIndicator,
     additionalServiceAvailabilityNotes,
-    updateDatetime,
+    updateDateTimeLocal,
     edAdminUserId: hsu.EdAdminUserId,
     createdById: hsu.CreatedById,
     updatedById: hsu.UpdatedById,
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
       hospitalstatusupdate 
     ORDER BY
       hospital_uuid,
-      updatedatetime DESC
+      updatedatetimelocal DESC
     ;
   `;
   try {
@@ -48,9 +49,10 @@ router.post('/', async (req, res) => {
     const statusUpdate = await models.HospitalStatusUpdate.create({
       HospitalId: req.body.hospitalId,
       openEdBedCount: req.body.openEdBedCount,
+      openPsychBedCount: req.body.openPsychBedCount,
       divertStatusIndicator: req.body.divertStatusIndicator,
       additionalServiceAvailabilityNotes: req.body.additionalServiceAvailabilityNotes,
-      updateDatetime: new Date(), // TODO - use local timezone
+      updateDateTimeLocal: new Date(), // TODO - use local timezone
       EdAdminUserId: req.user.id,
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
