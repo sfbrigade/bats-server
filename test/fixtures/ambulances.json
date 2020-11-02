@@ -3,8 +3,8 @@
     "model": "Ambulance",
     "data": {
       "id": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
-      "OrganizationId": "aac13870-f6f3-11ea-adc1-0242ac120002",
-      "ambulanceIdentifier": "testId",
+      "OrganizationId": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
+      "ambulanceIdentifier": "SFFD-1",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
@@ -13,8 +13,38 @@
     "model": "Ambulance",
     "data": {
       "id": "b594eb54-bfed-41f7-8248-616917cfc6e9",
-      "OrganizationId": "aac13870-f6f3-11ea-adc1-0242ac120002",
-      "ambulanceIdentifier": "secondTestId",
+      "OrganizationId": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
+      "ambulanceIdentifier": "SFFD-2",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Ambulance",
+    "data": {
+      "id": "dbd811c5-d1c8-428e-8940-5f7dfe88dcc8",
+      "OrganizationId": "7c9023ff-dd16-4e87-823a-80567a7b834a",
+      "ambulanceIdentifier": "AMR-1",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Ambulance",
+    "data": {
+      "id": "bb972448-97ca-4b72-8dad-c11c95886583",
+      "OrganizationId": "0a276fb6-6766-4e2c-b735-cabc4da684ff",
+      "ambulanceIdentifier": "KING-1",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Ambulance",
+    "data": {
+      "id": "015b04ad-e9fb-4df3-acfc-baeaede7ce61",
+      "OrganizationId": "49f916bb-bfb9-40cf-965c-6e9a8ab7e970",
+      "ambulanceIdentifier": "NORCAL-1",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }

@@ -42,7 +42,7 @@ describe('models.PatientDelivery', () => {
     assert.deepStrictEqual(updatedBy.name, 'Super User');
 
     const ambulance = await patientDelivery.getAmbulance();
-    assert.deepStrictEqual(ambulance.ambulanceIdentifier, 'testId');
+    assert.deepStrictEqual(ambulance.ambulanceIdentifier, 'SFFD-1');
 
     const patient = await patientDelivery.getPatient();
     assert(patient);

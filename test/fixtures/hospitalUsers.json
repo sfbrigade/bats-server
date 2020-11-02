@@ -2,6 +2,16 @@
   {
     "model": "HospitalUser",
     "data": {
+      "id": "a19bce9b-35ae-4df6-9603-f40150d2c7b0",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "HospitalUser",
+    "data": {
       "id": "136cf75e-55e8-4c31-a6bb-a90434ca9f18",
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
       "EdAdminUserId": "a950fed4-d996-4a41-a275-1cc4852d7664",

@@ -45,15 +45,39 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
   return ringdownResponse;
 }
 
-router.get('/', middleware.isAuthenticated, async (req, res) => {
+router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {
     deliveryStatus: {
       [Op.lt]: 'ARRIVED',
     },
   };
 
-  if (req.query.hospitalId) {
-    queryFilter.HospitalId = req.query.hospitalId;
+  try {
+    if (req.query.hospitalId) {
+      queryFilter.HospitalId = req.query.hospitalId;
+      // ensure auth user is either a superuser or an administrator of this hospital ED
+      if (!req.user.isSuperUser) {
+        await models.HospitalUser.findOne({
+          where: {
+            HospitalId: req.query.hospitalId,
+            EdAdminUserId: req.user.id,
+          },
+          rejectOnEmpty: true,
+        });
+      }
+    } else if (req.params.scope === 'mine') {
+      queryFilter.ParamedicUserId = req.user.id;
+      // ensure auth user is part of an EMS organization
+      const org = await req.user.getOrganization();
+      if (org.type !== 'EMS') {
+        throw new Error();
+      }
+    } else if (!req.user.isSuperUser) {
+      // must be a superuser to see ringdowns for ALL hospitals
+      throw new Error();
+    }
+  } catch (error) {
+    res.status(HttpStatus.FORBIDDEN).end();
   }
 
   try {
@@ -75,6 +99,19 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
 });
 
 router.post('/', middleware.isAuthenticated, async (req, res) => {
+  try {
+    // ensure auth user is part of an EMS organization
+    const org = await req.user.getOrganization();
+    if (org.type !== 'EMS') {
+      throw new Error();
+    }
+    // ensure authenticated user is an operational user allowed to do this
+    if (!req.user.isOperationalUser) {
+      throw new Error();
+    }
+  } catch (error) {
+    res.status(HttpStatus.FORBIDDEN).end();
+  }
   try {
     const emsCall = await models.EmergencyMedicalServiceCall.create({
       dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
@@ -117,6 +154,21 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       include: { all: true },
       rejectOnEmpty: true,
     });
+
+    // check if calling user is allowed to modify this record
+    if (req.user.id !== patientDelivery.CreatedById) {
+      // check if user is in the receiving hospital ED
+      const hospitalUser = await models.HospitalUser.findOne({
+        where: {
+          HospitalId: patientDelivery.hospitalId,
+          EdAdminUserId: req.user.id,
+        },
+      });
+      if (!hospitalUser || !hospitalUser.isOperationalUser) {
+        req.send(HttpStatus.FORBIDDEN).end();
+        return;
+      }
+    }
 
     if (req.body.ambulance) {
       const ambulance = await models.Ambulance.findOne({

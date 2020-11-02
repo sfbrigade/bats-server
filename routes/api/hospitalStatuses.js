@@ -47,6 +47,22 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
 
 router.post('/', middleware.isAuthenticated, async (req, res) => {
   try {
+    // ensure authenticated user is an administrator of this hospital ED
+    await models.HospitalUser.findOne({
+      where: {
+        HospitalId: req.body.hospitalId,
+        EdAdminUserId: req.user.id,
+      },
+      rejectOnEmpty: true,
+    });
+    // ensure authenticated user is an operational user allowed to do this
+    if (!req.user.isOperationalUser) {
+      throw new Error();
+    }
+  } catch (error) {
+    res.status(HttpStatus.FORBIDDEN).end();
+  }
+  try {
     const statusUpdate = await models.HospitalStatusUpdate.create({
       HospitalId: req.body.hospitalId,
       openEdBedCount: req.body.openEdBedCount,
