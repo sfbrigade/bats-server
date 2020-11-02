@@ -1,6 +1,7 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 
+const middleware = require('../../auth/middleware');
 const models = require('../../models');
 
 const router = express.Router();
@@ -22,7 +23,7 @@ function createResponse(hsu) {
   return response;
 }
 
-router.get('/', async (req, res) => {
+router.get('/', middleware.isAuthenticated, async (req, res) => {
   const mostRecentStatusUpdatesByHospital = `
     SELECT DISTINCT ON (hospital_uuid) *
     FROM
@@ -44,7 +45,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', middleware.isAuthenticated, async (req, res) => {
   try {
     const statusUpdate = await models.HospitalStatusUpdate.create({
       HospitalId: req.body.hospitalId,

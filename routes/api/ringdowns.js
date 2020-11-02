@@ -2,6 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 const HttpStatus = require('http-status-codes');
 
+const middleware = require('../../auth/middleware');
 const models = require('../../models');
 
 const router = express.Router();
@@ -44,7 +45,7 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
   return ringdownResponse;
 }
 
-router.get('/', async (req, res) => {
+router.get('/', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {
     deliveryStatus: {
       [Op.lt]: 'ARRIVED',
@@ -73,7 +74,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', middleware.isAuthenticated, async (req, res) => {
   try {
     const emsCall = await models.EmergencyMedicalServiceCall.create({
       dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
@@ -110,7 +111,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
   try {
     const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
       include: { all: true },
