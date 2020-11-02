@@ -41,29 +41,29 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       deliveryStatus: {
-        field: 'deliverystatus', // TODO - make an enum?
-        type: DataTypes.STRING,
+        field: 'deliverystatusenum',
+        type: DataTypes.ENUM('RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE'),
         allowNull: false,
       },
-      departureDateTime: {
-        field: 'departuredatetime',
+      ringdownSentDateTimeLocal: {
+        field: 'ringdownsentdatetimelocal',
         type: DataTypes.DATE,
-        allowNull: true,
       },
-      estimatedArrivalTime: {
-        field: 'estimatedarrivaltime',
+      ringdownReceivedDateTimeLocal: {
+        field: 'ringdownreceiveddatetimelocal',
         type: DataTypes.DATE,
-        allowNull: true,
       },
-      arrivalDateTime: {
-        field: 'arrivaldatetime',
+      arrivedDateTimeLocal: {
+        field: 'arriveddatetimelocal',
         type: DataTypes.DATE,
-        allowNull: true,
       },
-      admissionDateTime: {
-        field: 'admissiondatetime',
+      offloadedDateTimeLocal: {
+        field: 'offloadeddatetimelocal',
         type: DataTypes.DATE,
-        allowNull: true,
+      },
+      returnToServiceDateTimeLocal: {
+        field: 'returntoservicedatetimelocal',
+        type: DataTypes.DATE,
       },
       createdAt: {
         field: 'recordcreatetimestamp',

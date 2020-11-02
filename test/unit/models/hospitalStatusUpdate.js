@@ -11,18 +11,18 @@ describe('models.HospitalStatusUpdate', () => {
     const hospitalStatusUpdate = await models.HospitalStatusUpdate.create({
       HospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
       EdAdminUserId: 'a950fed4-d996-4a41-a275-1cc4852d7664',
-      updateDatetime: '2004-10-19 10:23:54+02',
+      updateDateTimeLocal: '2004-10-19 10:23:54+02',
       openEdBedCount: 1,
-      edWaitingRoomCount: 2,
+      openPsychBedCount: 3,
       divertStatusIndicator: false,
       CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
       UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
     });
     assert(hospitalStatusUpdate);
     assert(hospitalStatusUpdate.id);
-    assert(hospitalStatusUpdate.updateDatetime);
+    assert(hospitalStatusUpdate.updateDateTimeLocal);
     assert.deepStrictEqual(hospitalStatusUpdate.openEdBedCount, 1);
-    assert.deepStrictEqual(hospitalStatusUpdate.edWaitingRoomCount, 2);
+    assert.deepStrictEqual(hospitalStatusUpdate.openPsychBedCount, 3);
     assert.deepStrictEqual(hospitalStatusUpdate.divertStatusIndicator, false);
     assert(hospitalStatusUpdate.createdAt);
     assert(hospitalStatusUpdate.updatedAt);

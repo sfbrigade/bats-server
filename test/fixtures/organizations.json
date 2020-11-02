@@ -28,5 +28,35 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Organization",
+    "data": {
+      "id": "7c9023ff-dd16-4e87-823a-80567a7b834a",
+      "name": "American Medical Response - San Francisco",
+      "type": "EMS",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Organization",
+    "data": {
+      "id": "0a276fb6-6766-4e2c-b735-cabc4da684ff",
+      "name": "King-American Ambulance Company",
+      "type": "EMS",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Organization",
+    "data": {
+      "id": "49f916bb-bfb9-40cf-965c-6e9a8ab7e970",
+      "name": "NORCal Ambulance",
+      "type": "EMS",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]
