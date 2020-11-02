@@ -10,7 +10,7 @@ describe('models.Patient', () => {
   it('creates a new Patient record', async () => {
     const patient = await models.Patient.create({
       EmergencyMedicalServiceCallId: '6d6b74d6-f6f3-11ea-adc1-0242ac120002',
-      patientNumber: 3,
+      emergencyServiceResponseType: 'CODE 2',
       age: 4,
       sex: 'non-binary',
       stableIndicator: false,
@@ -30,7 +30,6 @@ describe('models.Patient', () => {
     assert(patient);
     assert(patient.id);
     assert(patient.EmergencyMedicalServiceCallId);
-    assert.deepStrictEqual(patient.patientNumber, 3);
     assert.deepStrictEqual(patient.age, 4);
     assert.deepStrictEqual(patient.sex, 'non-binary');
     assert.deepStrictEqual(patient.stableIndicator, false);

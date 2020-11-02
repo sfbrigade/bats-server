@@ -4,7 +4,27 @@
     "data": {
       "id": "6d6b74d6-f6f3-11ea-adc1-0242ac120002",
       "dispatchCallNumber": "911",
-      "startDateTime": "2004-10-19 10:23:54+02",
+      "startDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "EmergencyMedicalServiceCall",
+    "data": {
+      "id": "7d9c4dae-efba-4032-a054-e99aaf08c93c",
+      "dispatchCallNumber": "111",
+      "startDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "EmergencyMedicalServiceCall",
+    "data": {
+      "id": "716f1d23-f9d1-4301-8942-23ab12e9a630",
+      "dispatchCallNumber": "999",
+      "startDateTimeLocal": "2004-10-19 10:23:54+02",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }

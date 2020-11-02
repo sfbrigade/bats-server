@@ -10,7 +10,7 @@ describe('models.EmergencyMedicalServiceCall', () => {
   it('creates a new EmergencyMedicalServiceCall record', async () => {
     const emsCall = await models.EmergencyMedicalServiceCall.create({
       dispatchCallNumber: 1,
-      startDateTime: '2004-10-19 10:23:54+02',
+      startDateTimeLocal: '2004-10-19 10:23:54+02',
       CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
       UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
     });
