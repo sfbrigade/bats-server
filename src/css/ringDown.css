@@ -1,3 +1,10 @@
+#legend-header{
+  border-bottom: 1px solid black;
+ margin: 0px 0px 40px 0px;
+ background-color: rgb(243, 243, 243);
+color: black;
+text-align: start;
+}
 .header {
   position: relative;
   top: -37px;
@@ -54,7 +61,7 @@
   width: 320px;
   padding-left: 10px;
 }
-#ageLabel {
+/* #ageLabel {
   position: relative;
   left: -27px;
   top: -64px;
@@ -345,6 +352,65 @@
   border: none;
   font-size: 16px;
 }
-/* .infoAge {
+ .infoAge {
   height: 100px;
-}  */
+}  
+.positionDown{
+  position: relative;
+  top: 93px;
+}
+#button-location{
+  position: relative;
+  top: 93px;
+} */
+
+.usa-radio__label{
+  border-radius: 40%;
+  color: black;
+}
+.personalInfo{
+  position: relative;
+  top: 5em;
+}
+
+.usa-accordion{
+  position: relative;
+  top: 5em;
+}
+
+.usa-accordion__content{
+  position: relative;
+  left: 0em;
+  top: 2em;
+}
+.additionalNotes{
+  position: relative;
+  top: 5em;
+}
+.usa-legend{
+  background-color: rgb(243, 243, 243);
+  border-bottom: 1px solid black;
+  color: black;
+  height: 44px;
+  font-size: 25px;
+}
+.usa-header{
+  border-bottom: 2px solid black;
+  background-color: rgb(243, 243, 243);
+  color: black;
+  position: relative;
+  top: 3em;
+  left: -1em;
+}
+.select{
+  position: relative;
+  top: 8em;
+}
+.clear{
+  position: relative;
+  top: 9em;
+}
+.usa-character-count{
+  position: relative;
+  top: 4em;
+}

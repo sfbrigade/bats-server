@@ -75,13 +75,13 @@ h2 {
 }
 
 .bedTab .beds {
-  width: 162px;
+  width: 153px;
   text-align: center;
   border-radius: none;
   background: #F0F0F0; 
 }
 .bedTabSelected .beds {
-  width: 162px;
+  /* width: 162px; */
   text-align: center;
   color: #0050D8;
   background-color: white;

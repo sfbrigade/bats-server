@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../css/ringDown.css';
+// import '../../css/test.css';
+// import {usa-accordian} from 'uswds@latest';
+// import 'uswds-theme-general';
+import uswds from 'uswds';
 
 const RingDown = ({ history, saveHistory }) => {
   const [saved, setSaved] = useState(history?.saved ?? false);
@@ -50,21 +54,126 @@ const RingDown = ({ history, saveHistory }) => {
     });
   };
 
-  // const createHistory = () => {
-  // }
-
   const edit = () => {
     setSaved(false);
   };
 
   return (
-    <div className="ringDownContainer">
-      
-      <div className="RingDownInfo">
-        {!saved ? (
+
+      <div>
+
+    <form class="usa-form">
+  {/* <fieldset class="usa-fieldset">
+    
+    <h2 id="legend-header">
+      *Hospital Selection
+    </h2>
+    <legend class="usa-legend usa-legend" id="legend-header">*Hospital Destination</legend> 
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+        id="hospital-sfGeneral" 
+        type="radio" 
+        name="hospitalSelections" 
+        value="SF_General"/>
+      <label class="usa-radio__label" 
+        for="hospital-sfGeneral">
+          SF General</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+        id="hospital-cpmcMissionBernal" 
+          type="radio"  
+          name="hospitalSelections" 
+          value="CPMC_Mission_Bernal"/>
+      <label class="usa-radio__label" 
+        for="hospital-cpmcMissionBernal">
+          CPMC Mission Bernal</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+        id="hospital-cpmcDavies" 
+        type="radio" 
+        name="hospitalSelections" 
+        value="CPMC_Davies"/>
+      <label class="usa-radio__label" 
+        for="hospital-cpmcDavies">
+          CPMC Davies</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+        id="hospital-cpmcVanNess" 
+        type="radio" 
+        name="hospitalSelections" 
+        value="CPMC_Van_Ness"/>
+      <label class="usa-radio__label" 
+        for="hospital-cpmcVanNess">CPMC Van Ness</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+      id="hospital-StFrancis" 
+      type="radio" 
+      name="hospitalSelections" 
+      value="St_Francis"/>
+      <label class="usa-radio__label" 
+      for="hospital-StFrancis">
+        St. Francis </label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+      id="hospital-chineseHospital" 
+      type="radio" 
+      name="hospitalSelections" 
+      value="Chinese_Hospital"/>
+      <label class="usa-radio__label" 
+      for="hospital-chineseHospital">Chinese Hospital</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+      id="hospital-kaiserSf" 
+      type="radio" 
+      name="hospitalSelections" 
+      value="Kaiser_SF"/>
+      <label class="usa-radio__label" 
+      for="hospital-kaiserSf">Kaiser SF</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+      id="hospital-stMarys" 
+      type="radio" 
+      name="hospitalSelections" 
+      value="St_Marys"/>
+      <label class="usa-radio__label" 
+      for="hospital-stMarys">St. Mary's</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+      id="hospital-ucsfParnassus" 
+      type="radio" 
+      name="hospitalSelections" 
+      value="UCSF_Parnasus"/>
+      <label class="usa-radio__label" 
+      for="hospital-ucsfParnassus">UCSF Parnassus</label>
+    </div>
+    <div class="usa-radio">
+      <input class="usa-radio__input" 
+      id="hospital-vaMedicalCenter" 
+      type="radio" 
+      name="hospitalSelections" 
+      value="VA_Medical_Center"/>
+      <label class="usa-radio__label" 
+      for="hospital-vaMedicalCenter">VA Medical Center</label>
+    </div>
+  </fieldset> */}
+
+<fieldset className="usa-fieldset">
+  {!saved ? (
           <label id="unitLabel" htmlFor="unit">
             {' '}
-            Unit # <input id="unit" value={unit} onChange={(e) => setUnit(e.target.value)} type="text" />
+            Unit # <input id="unit" 
+            
+            value={unit} 
+            onChange={(e) => setUnit(e.target.value)} 
+            type="text" />
           </label>
         ) : (
           <div>
@@ -76,6 +185,7 @@ const RingDown = ({ history, saveHistory }) => {
             {' '}
            Incident #{' '}
             <input
+              
               id="incidentId"
               value={incidentId}
               onChange={(e) => setIncidentId(e.target.value)}
@@ -87,16 +197,21 @@ const RingDown = ({ history, saveHistory }) => {
             <p> Incident Id</p> <p>{incidentId}</p>
           </div>
         )}
-      </div>
-      
-        <h6 className="title">Patient Info</h6>
-        <button id="patientDisplay" onClick={() => setPatientDisplay(!patientDisplay)}>+</button>
-        <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo"}>
-        {!saved ? (
-          <label id="ageLabel" htmlFor="age">
+
+
+  <header className="usa-header">
+    <h2>Patient Info</h2>
+  </header>
+  <div className="personalInfo">
+{!saved ? (
+          
+          <label  id="ageLabel" 
+          
+          htmlFor="age">
             {' '}
             Age (estim.){' '}
             <input
+              className="usa-input--small"
               id="age"
               size="2"
               value={age}
@@ -104,85 +219,117 @@ const RingDown = ({ history, saveHistory }) => {
               type="text"
             />
           </label>
+          
         ) : (
           <div>
             <p> Estimated Age</p> <p>{age}</p>
           </div>
         )}
-      </div>
-      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo genderLabels"}>
+
+      
         {!saved ? (
-          <label id="maleLabel" htmlFor="male">
+          <div class="usa-radio">
+          <label className="usa-radio__label"   htmlFor="male">
             Male
-            <input id="male" value="male" onChange={(e) => setGender(e.target.value)} type="radio" />
+            <input className="usa-radio__input" 
+            id="male" 
+            value="male" 
+            onChange={(e) => setGender(e.target.value)} 
+            type="radio" />
           </label>
+          </div>
         ) : (
           <div>
             <p>{gender}</p>
           </div>
         )}
         {!saved ? (
-          <label id="femaleLabel" htmlFor="female">
+          <div class="usa-radio">
+          <label id="femaleLabel" 
+          className="usa-radio__label"
+          htmlFor="female">
             {' '}
             Female
-            <input id="female" value="female" onChange={(e) => setGender(e.target.value)} type="radio" />
+            <input id="female" 
+            className="usa-radio__input"
+            value="female" 
+            onChange={(e) => setGender(e.target.value)} 
+            type="radio" />
           </label>
+          </div>
         ) : (
           <div>
             <p>{gender}</p>
           </div>
         )}
         {!saved ? (
-          <label id="non-binaryLabel" htmlFor="non-binary">
+          <div class="usa-radio">
+          <label id="non-binaryLabel" 
+          className="usa-radio__label"
+          htmlFor="non-binary">
             Non-Binary
             <input
               id="non-binary"
+              className="usa-radio__input"
               value="non-binary"
               onChange={(e) => setGender(e.target.value)}
               type="radio"
             />
           </label>
+          </div>
         ) : (
           <div>
             <p>{gender}</p>
           </div>
         )}
-      </div>
-      <div className={!patientDisplay ? "RingDownInfo patientInfo" : "RingDownInfo codeLabels"}>
+     
+      
         {!saved ? (
-          <label id="code2Label" htmlFor="code2">
+          <div class="usa-radio">
+          <label id="code2Label"
+          className="usa-radio__label"
+          htmlFor="code2">
             {' '}
             Code 2{' '}
             <input
               id="code2"
+              className="usa-radio__input"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               type="radio"
             />
           </label>
+          </div>
         ) : (
           <div>
             <p> Code</p> <p>{code}</p>
           </div>
         )}
+        
         {!saved ? (
-          <label id="code3Label" htmlFor="code3">
+          <div class="usa-radio">
+          <label id="code3Label" 
+          className="usa-radio__label"
+          htmlFor="code3">
             {' '}
             Code 3{' '}
             <input
               id="code3"
+              className="usa-radio__input"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               type="radio"
             />
           </label>
+          </div>
         ) : (
           <div>
             <p> Code</p> <p>{code}</p>
           </div>
         )}
          {!saved ? (
-          <label id="complaintLabel" htmlFor="complaint">
+          <label id="complaintLabel" 
+          htmlFor="complaint">
             {' '}
             ChiefComplaint{' '}
             <textarea
@@ -193,75 +340,118 @@ const RingDown = ({ history, saveHistory }) => {
               size="100"
             />
           </label>
+          
         ) : (
           <div>
             <p> Chief complaint</p> <p>{code}</p>
           </div>
         )}
          {!saved ? (
-          <label id="stableLabel" htmlFor="stable">
+           <div class="usa-radio">
+          <label id="stableLabel"
+          className="usa-radio__label" 
+          htmlFor="stable">
             {' '}
             Vitals stable{' '}
             <input
               id="stable"
+              className="usa-radio__input"
               value="yes"
               onChange={(e) => setStable(e.target.value)}
               type="radio"
             />
           </label>
+          </div>
         ) : (
           <div>
             <p> Vitals stable</p> <p>{stable}</p>
           </div>
         )}
         {!saved ? (
-          <label id="unstableLabel" htmlFor="unstable">
+          <div class="usa-radio">
+          <label id="unstableLabel"
+          className="usa-radio__label"
+          htmlFor="unstable">
             {' '}
             Vitals not stable{' '}
             <input
               id="unstable"
+              className="usa-radio__input"
               value="no"
               onChange={(e) => setStable(e.target.value)}
               type="radio"
             />
           </label>
+          </div>
         ) : (
           <div>
             <p> Vitals stable</p> <p>{stable}</p>
           </div>
         )}
+        
       </div>
-      <div id={patientDisplay ? "vitalsContainer" : ""}>
-        <h3 className="title" id={!patientDisplay ? "vitals" : "vitals2"}>Vitals</h3>
-        <button id={!patientDisplay ? "vitalsDisplay" : "vitalsDisplay2"} onClick={() => setVitalsDisplay(!vitalsDisplay)}>+</button>
-        <div className={!vitalsDisplay ? "RingDownInfo vitalsInfo" : "RingDownInfo"}>
+      <div className="usa-accordion"> 
+      <h2 className="usa-accordion__heading">
+        <button className="usa-accordion__button"
+          aria-expanded="false"
+          aria-controls="a4">
+          Vitals
+        </button>
+      </h2>
+      <div id="a4" className="usa-accordion__content usa-prose">
+     
         {!saved ? (
-          <label id="bpLabel" htmlFor="bp">
+          <div>
+          <label id="bpLabel" 
+          className="usa-label"
+          htmlFor="bp">
             {' '}
             Blood Pressure
-            <input id="bp" value={bp} onChange={(e) => setBp(e.target.value)} type="text" />
+            <input id="bp" 
+            className="usa-input"
+            value={bp} 
+            onChange={(e) => setBp(e.target.value)} 
+            type="text" />
           </label>
+          </div>
         ) : (
           <div>
             <p>Blood Pressure</p> <p>{bp}</p>
           </div>
         )} 
         {!saved ? (
-          <label id="pulseLabel" htmlFor="pulse">
+          <div>
+          <label id="pulseLabel" 
+          className="usa-label"
+          htmlFor="pulse">
             {' '}
             Pulse Rate
-            <input id="pulse" value={pulse} onChange={(e) => setPulse(e.target.value)} type="text" />
+            <input id="pulse" 
+            className="usa-input--small" 
+            value={pulse} 
+            onChange={(e) => setPulse(e.target.value)} 
+            type="text" />
           </label>
+          </div>
         ) : (
           <div>
             <p>Pulse Rate</p> <p>{pulse}</p>
           </div>
         )}
         {!saved ? (
-          <label id="respiratoryLabel" htmlFor="respiratory">
+          <div>
+          <label id="respiratoryLabel" 
+          className="usa-label"
+          htmlFor="respiratory">
             {' '}
-            Respiratory Rate <input id="respiratory" value={respiratory} onChange={(e) => setRespiratory(e.target.value)} type="text" />
+            Respiratory Rate 
+            <input id="respiratory" 
+            className="usa-input--small"
+            value={respiratory} 
+            onChange={(e) => setRespiratory(e.target.value)} 
+            type="text" />
           </label>
+          </div>
         ) : (
           <div>
             <p>Respiratory Rate</p> <p>{respiratory}</p>
@@ -269,42 +459,60 @@ const RingDown = ({ history, saveHistory }) => {
         )}
         
         {!saved ? (
-          <label id="spo2Label" htmlFor="spo2">
+          <div>
+          <label id="spo2Label" 
+          className="usa-label"
+          htmlFor="spo2">
             {' '}
-            SpO <input id="spo2" value={spo2} onChange={(e) => setSpo2(e.target.value)} type="text" />
+            SpO <input id="spo2" 
+             className="usa-input--small"
+            value={spo2} 
+            onChange={(e) => setSpo2(e.target.value)} 
+            type="text" />
           </label>
+          </div>
         ) : (
           <div>
             <p> SpO</p> <p>{spo2}</p>
           </div>
         )}
            {!saved ? (
-          <label id="RALabel" htmlFor="RA">
+            <div className="usa-radio">
+          <label id="RALabel"
+          className="usa-radio__label"
+          htmlFor="RA">
             {' '}
             RA{' '}
             <input
+            className="usa-radio__input"
               id="RA"
               value={true}
               onChange={(e) => setRa(e.target.value)}
               type="radio"
             />
           </label>
+          </div>
         ) : (
           <div>
             <p> RA</p> <p>{ra}</p>
           </div>
         )}
         {!saved ? (
-          <label id="O2Label" htmlFor="O2">
+          <div className="usa-radio">
+          <label id="O2Label"
+          className="usa-radio__label"
+          htmlFor="O2">
             {' '}
             O2{' '}
             <input
               id="O2"
+              className="usa-radio__input"
               value={true}
               onChange={(e) => setO2(e.target.value)}
               type="radio"
             />
           </label>
+          </div>
         ) : (
           <div>
             <p> O2</p> <p>{o2}</p>
@@ -327,51 +535,100 @@ const RingDown = ({ history, saveHistory }) => {
           </div>
         )} */}
         {!saved ? (
-          <label id="tempLabel" htmlFor="temp">
+          <div>
+          <label id="tempLabel" 
+           className="usa-label"
+          htmlFor="temp">
             {' '}
-            Temperature <input id="temp" value={temp} onChange={(e) => setTemp(e.target.value)} type="text" />
+            Temperature 
+            <input id="temp" 
+             className="usa-input"
+            value={temp} 
+            onChange={(e) => setTemp(e.target.value)} 
+            type="text" />
           </label>
+          </div>
         ) : (
           <div>
             <p>Temperature</p> <p>{temp}</p>
           </div>
         )} 
         </div>
-        </div> 
-       {/* <div className={vitalsDisplay ? "NotesContainer": ""}>
-        <h3 className="title" id={!vitalsDisplay ? "notes" : "notes2"}>Additional Notes</h3>
-        <button id={!patientDisplay ? "notesDisplay" : "notesDisplay2"} onClick={() => setNotesDisplay(!notesDisplay)}>+</button>
-        <div className={!notesDisplay ? "RingDownInfo notesInfo" : "RingDownInfo"}>
-        
-      </div> 
-      </div>  */}
-      {/*
-      <div className="RingDownInfo">
-        <h3 className="title">Send to:</h3>
-      </div>*/}
-      {!saved && (
-        <button id="saveButton" type="button" onClick={save}>
+        </div>
+
+          <div className="additionalNotes">
+        <legend class="usa-legend">Addtl. Notes (optional)</legend>
+    <div class="usa-checkbox">
+      <input class="usa-checkbox__input" id="ETOH" type="checkbox" name="additionalNotes" value="ETOH_suspected" checked/>
+      <label class="usa-checkbox__label" for="ETOH">ETOH suspected</label>
+    </div>
+    <div class="usa-checkbox">
+      <input class="usa-checkbox__input" id="drugs" type="checkbox" name="additionalNotes" value="drugs_suspected"/>
+      <label class="usa-checkbox__label" for="drugs">Drugs suspected</label>
+    </div>
+    <div class="usa-checkbox">
+      <input class="usa-checkbox__input" id="psych" type="checkbox" name="additionalNotes" value="psych_patient"/>
+      <label class="usa-checkbox__label" for="psych">Psych patient</label>
+    </div>
+    <div class="usa-checkbox">
+      <input class="usa-checkbox__input" id="combative" type="checkbox" name="additionalNotes" value="combative_patient"/>
+      <label class="usa-checkbox__label" for="combative">Combative</label>
+    </div>
+    <div class="usa-checkbox">
+      <input class="usa-checkbox__input" id="4-point" type="checkbox" name="additionalNotes" value="combative_patient"/>
+      <label class="usa-checkbox__label" for="4-point">4-point restraint</label>
+    </div>
+    <div class="usa-checkbox">
+      <input class="usa-checkbox__input" id="COVID" type="checkbox" name="additionalNotes" value="COVID-19_suspected"/>
+      <label class="usa-checkbox__label" for="COVID">COVID-19 suspected</label>
+    </div>
+    <div class="usa-checkbox">
+      <input class="usa-checkbox__input" id="IV" type="checkbox" name="additionalNotes" value="IV_started"/>
+      <label class="usa-checkbox__label" for="IV">IV started</label>
+    </div>
+    </div>
+
+    <div class="usa-character-count">
+    <div class="usa-form-group">
+      <label class="usa-label" for="with-hint-textarea">
+        Other
+      </label>
+      <span id="with-hint-textarea-hint" class="usa-hint">
+      </span>
+      <textarea class="usa-textarea usa-character-count__field" 
+      id="with-hint-textarea" 
+      maxlength="50" 
+      name="with-hint-textarea" 
+      rows="5" 
+      aria-describedby="with-hint-textarea-info with-hint-textarea-hint"></textarea>
+    </div>
+    <span id="with-hint-textarea-info" class="usa-hint usa-character-count__message" aria-live="polite">
+    </span>
+  </div>
+      </fieldset>
+  </form>
+          <div className="select">
+          <button className="usa-button usa-button--big" type="button" onClick={save}>
           Select Hospital
         </button>
-      )}
-      {saved && (
-        <div>
-          {' '}
-          <p>{saveTime}</p>{' '}
-          <button type="button" onClick={edit}>
-            EDIT
-          </button>
-        </div>
-      )} 
-    </div>
+          </div>
+          <div className="clear">
+          <button className="usa-button usa-button--outline usa-button--big" type="button" onClick={save}>
+          Clear Form
+        </button>
+          </div>
+
+      </div>
   );
+
+
 };
 
 RingDown.propTypes = {
   history: PropTypes.shape({
     saved: PropTypes.bool,
     saveTime: PropTypes.string,
-    patientId: PropTypes.string,
+    incidentId: PropTypes.string,
     unit: PropTypes.string,
     age: PropTypes.string,
     gender: PropTypes.string,
@@ -381,6 +638,12 @@ RingDown.propTypes = {
     respiratory: PropTypes.string,
     spo2: PropTypes.string,
     temp: PropTypes.string,
+    notesDisplay: PropTypes.string,
+    spo2: PropTypes.string,
+    ra: PropTypes.string,
+    o2: PropTypes.string,
+    stable: PropTypes.string,
+    
   }).isRequired,
   saveHistory: PropTypes.func.isRequired,
 };

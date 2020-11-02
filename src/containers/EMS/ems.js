@@ -23,7 +23,7 @@ const EMS = (/* props */) => {
   };
 
   return (
-    <div className="emsContainer">
+    <div >
       <div className="header">
        <h2 id="appName">Hospital Destination Tool</h2>
        <h2 id="appTimeDisplay">{dateObj.toLocaleTimeString()}</h2>
