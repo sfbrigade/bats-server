@@ -18,6 +18,7 @@
     "foreman": "^3.0.1",
     "http-proxy-middleware": "^1.0.5",
     "http-status-codes": "^1.4.0",
+    "lodash": "^4.17.20",
     "mocha": "^8.1.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",

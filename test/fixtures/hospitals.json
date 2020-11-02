@@ -8,5 +8,15 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Hospital",
+    "data": {
+      "id": "00752f60-068f-11eb-adc1-0242ac120002",
+      "OrganizationId": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
+      "name": "Sutter Hospital",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]

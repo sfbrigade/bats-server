@@ -2,7 +2,12 @@ const HttpStatus = require('http-status-codes');
 
 const isAuthenticated = (req, res, next) => {
   if (req.user) {
-    next();
+    // ensure authenticated user is active
+    if (!req.user.isActive) {
+      res.status(HttpStatus.FORBIDDEN).end();
+    } else {
+      next();
+    }
   } else if (req.accepts('html')) {
     res.redirect('/auth/local/login');
   } else {

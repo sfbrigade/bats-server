@@ -62,5 +62,53 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "User",
+    "data": {
+      "id": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "OrganizationId": "7c9023ff-dd16-4e87-823a-80567a7b834a",
+      "firstName": "AMR",
+      "lastName": "Paramedic",
+      "email": "amr.paramedic@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isOperationalUser": true,
+      "isAdminUser": false,
+      "isSuperUser": false,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "User",
+    "data": {
+      "id": "ed05b7c3-2cac-4642-9498-02bc5ef04c13",
+      "OrganizationId": "0a276fb6-6766-4e2c-b735-cabc4da684ff",
+      "firstName": "King-American",
+      "lastName": "Paramedic",
+      "email": "king.paramedic@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isOperationalUser": true,
+      "isAdminUser": false,
+      "isSuperUser": false,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "User",
+    "data": {
+      "id": "08f31c8e-4ad9-4254-ab30-da4e1d09e352",
+      "OrganizationId": "49f916bb-bfb9-40cf-965c-6e9a8ab7e970",
+      "firstName": "NORCal",
+      "lastName": "Paramedic",
+      "email": "norcal.paramedic@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isOperationalUser": true,
+      "isAdminUser": false,
+      "isSuperUser": false,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]
