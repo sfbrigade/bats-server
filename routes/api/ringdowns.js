@@ -113,36 +113,50 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
     res.status(HttpStatus.FORBIDDEN).end();
   }
   try {
-    const emsCall = await models.EmergencyMedicalServiceCall.create({
-      dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
-      startDateTimeLocal: new Date(),
-      CreatedById: req.user.id,
-      UpdatedById: req.user.id,
+    await models.sequelize.transaction(async (transaction) => {
+      const emsCall = await models.EmergencyMedicalServiceCall.create(
+        {
+          dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
+          startDateTimeLocal: new Date(),
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
+        },
+        { transaction }
+      );
+      const patient = await models.Patient.create(
+        {
+          ...req.body.patient,
+          EmergencyMedicalServiceCallId: emsCall.id,
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
+        },
+        { transaction }
+      );
+      const ambulance = await models.Ambulance.findOne(
+        {
+          where: {
+            ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
+          },
+        },
+        { transaction }
+      );
+      const hospital = await models.Hospital.findByPk(req.body.hospital.id, { transaction });
+      const patientDelivery = await models.PatientDelivery.create(
+        {
+          AmbulanceId: ambulance.id,
+          PatientId: patient.id,
+          HospitalId: hospital.id,
+          ParamedicUserId: req.user.id,
+          deliveryStatus: 'RINGDOWN SENT',
+          ringdownSentDateTimeLocal: new Date(),
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
+        },
+        { transaction }
+      );
+      const response = createRingdownResponse(ambulance, emsCall, hospital, patient, patientDelivery);
+      res.status(HttpStatus.CREATED).json(response);
     });
-    const patient = await models.Patient.create({
-      ...req.body.patient,
-      EmergencyMedicalServiceCallId: emsCall.id,
-      CreatedById: req.user.id,
-      UpdatedById: req.user.id,
-    });
-    const ambulance = await models.Ambulance.findOne({
-      where: {
-        ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
-      },
-    });
-    const hospital = await models.Hospital.findByPk(req.body.hospital.id);
-    const patientDelivery = await models.PatientDelivery.create({
-      AmbulanceId: ambulance.id,
-      PatientId: patient.id,
-      HospitalId: hospital.id,
-      ParamedicUserId: req.user.id,
-      deliveryStatus: 'RINGDOWN SENT',
-      ringdownSentDateTimeLocal: new Date(),
-      CreatedById: req.user.id,
-      UpdatedById: req.user.id,
-    });
-    const response = createRingdownResponse(ambulance, emsCall, hospital, patient, patientDelivery);
-    res.status(HttpStatus.CREATED).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
@@ -150,66 +164,70 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
 
 router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
   try {
-    const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
-      include: { all: true },
-      rejectOnEmpty: true,
+    await models.sequelize.transaction(async (transaction) => {
+      const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
+        include: { all: true },
+        rejectOnEmpty: true,
+        transaction,
+      });
+
+      // check if calling user is allowed to modify this record
+      if (req.user.id !== patientDelivery.CreatedById) {
+        // check if user is in the receiving hospital ED
+        const hospitalUser = await models.HospitalUser.findOne({
+          where: {
+            HospitalId: patientDelivery.hospitalId,
+            EdAdminUserId: req.user.id,
+          },
+          transaction,
+        });
+        if (!hospitalUser || !hospitalUser.isOperationalUser) {
+          req.send(HttpStatus.FORBIDDEN).end();
+          return;
+        }
+      }
+
+      if (req.body.ambulance) {
+        const ambulance = await models.Ambulance.findOne({
+          where: {
+            ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
+          },
+          transaction,
+        });
+        patientDelivery.Ambulance = ambulance;
+      }
+
+      const emsCall = await patientDelivery.Patient.getEmergencyMedicalServiceCall({ transaction });
+      if (req.body.emsCall) {
+        emsCall.dispatchCallNumber = req.body.emsCall.dispatchCallNumber;
+        await emsCall.save({ transaction });
+      }
+
+      if (req.body.hospital) {
+        patientDelivery.HospitalId = req.body.hospital.id;
+      }
+
+      if (req.body.patient) {
+        Object.assign(patientDelivery.Patient, req.body.patient);
+      }
+
+      if (req.body.patientDelivery) {
+        Object.assign(patientDelivery, req.body.patientDelivery);
+        if (req.body.patientDelivery.arriveDateTimeLocal) {
+          patientDelivery.deliveryStatus = 'ARRIVED';
+        }
+      }
+
+      await patientDelivery.save({ transaction });
+      const response = createRingdownResponse(
+        patientDelivery.Ambulance,
+        emsCall,
+        patientDelivery.Hospital,
+        patientDelivery.Patient,
+        patientDelivery
+      );
+      res.status(HttpStatus.OK).json(response);
     });
-
-    // check if calling user is allowed to modify this record
-    if (req.user.id !== patientDelivery.CreatedById) {
-      // check if user is in the receiving hospital ED
-      const hospitalUser = await models.HospitalUser.findOne({
-        where: {
-          HospitalId: patientDelivery.hospitalId,
-          EdAdminUserId: req.user.id,
-        },
-      });
-      if (!hospitalUser || !hospitalUser.isOperationalUser) {
-        req.send(HttpStatus.FORBIDDEN).end();
-        return;
-      }
-    }
-
-    if (req.body.ambulance) {
-      const ambulance = await models.Ambulance.findOne({
-        where: {
-          ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
-        },
-      });
-      patientDelivery.Ambulance = ambulance;
-    }
-
-    if (req.body.emsCall) {
-      const emsCall = await patientDelivery.Patient.getEmergencyMedicalServiceCall();
-      emsCall.dispatchCallNumber = req.body.emsCall.dispatchCallNumber;
-      await emsCall.save();
-    }
-
-    if (req.body.hospital) {
-      patientDelivery.HospitalId = req.body.hospital.id;
-    }
-
-    if (req.body.patient) {
-      Object.assign(patientDelivery.Patient, req.body.patient);
-    }
-
-    if (req.body.patientDelivery) {
-      Object.assign(patientDelivery, req.body.patientDelivery);
-      if (req.body.patientDelivery.arriveDateTimeLocal) {
-        patientDelivery.deliveryStatus = 'ARRIVED';
-      }
-    }
-
-    const updatedPatientDelivery = await patientDelivery.save();
-    const emsCall = await updatedPatientDelivery.Patient.getEmergencyMedicalServiceCall();
-    const response = createRingdownResponse(
-      updatedPatientDelivery.Ambulance,
-      emsCall,
-      updatedPatientDelivery.Hospital,
-      updatedPatientDelivery.Patient,
-      updatedPatientDelivery
-    );
-    res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
