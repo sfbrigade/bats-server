@@ -1,6 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 const HttpStatus = require('http-status-codes');
+const _ = require('lodash');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
@@ -19,28 +20,28 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
     hospital: {
       id: hospital.id,
     },
-    patient: {
-      age: patient.age,
-      sex: patient.sex,
-      chiefComplaintDescription: patient.chiefComplaintDescription,
-      systolicBloodPressure: patient.systolicBloodPressure,
-      diastolicBloodPressure: patient.diastolicBloodPressure,
-      heartRateBpm: patient.heartRateBpm,
-      oxygenSaturation: patient.oxygenSaturation,
-      temperature: patient.temperature,
-      stableIndicator: patient.stableIndicator,
-      combativeBehaviorIndicator: patient.combativeBehaviorIndicator,
-      ivIndicator: patient.ivIndicator,
-      otherObservationNotes: patient.otherObservationNotes,
-    },
-    patientDelivery: {
-      deliveryStatus: patientDelivery.deliveryStatus,
-      ringdownSentDateTimeLocal: patientDelivery.ringdownSentDateTimeLocal,
-      ringdownReceivedDateTimeLocal: patientDelivery.ringdownReceivedDateTimeLocal,
-      arrivedDateTimeLocal: patientDelivery.arrivedDateTimeLocal,
-      offloadedDateTimeLocal: patientDelivery.offloadedDateTimeLocal,
-      returnToServiceDateTimeLocal: patientDelivery.returnToServiceDateTimeLocal,
-    },
+    patient: _.pick(patient, [
+      'age',
+      'sex',
+      'chiefComplaintDescription',
+      'systolicBloodPressure',
+      'diastolicBloodPressure',
+      'heartRateBpm',
+      'oxygenSaturation',
+      'temperature',
+      'stableIndicator',
+      'combativeBehaviorIndicator',
+      'ivIndicator',
+      'otherObservationNotes',
+    ]),
+    patientDelivery: _.pick(patientDelivery, [
+      'deliveryStatus',
+      'ringdownSentDateTimeLocal',
+      'ringdownReceivedDateTimeLocal',
+      'arrivedDateTimeLocal',
+      'offloadedDateTimeLocal',
+      'returnToServiceDateTimeLocal',
+    ]),
   };
   return ringdownResponse;
 }
