@@ -1,0 +1,59 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-color';
+
+.tabbar {
+  display: flex;
+  border-bottom: 1rem solid white;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+.tabbar__tab {
+  @include u-bg($theme-color-base-lightest);
+  border: none;
+  cursor: pointer;
+  flex-basis: 0;
+  flex-grow: 1;
+  font-weight: 600;
+  padding: 0;
+}
+
+.tabbar__tabcontent {
+  @include u-bg($theme-color-base-lightest);
+  @include u-text($theme-color-base-light);
+  align-items: center;
+  display: flex;
+  height: 3rem;
+  justify-content: center;
+}
+
+.tabbar__tab--beforeselected {
+  background-color: white;
+  .tabbar__tabcontent {
+    border-bottom-right-radius: 0.75rem;
+  }
+}
+
+.tabbar__tab--selected {
+  .tabbar__tabcontent {
+    @include u-text($theme-color-primary-vivid);
+    background-color: white;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+  }
+
+  & + .tabbar__tab {
+    background-color: white;
+    .tabbar__tabcontent {
+      border-bottom-left-radius: 0.75rem;
+    }
+  }
+
+  &:first-child {
+    border-top-left-radius: 0.75rem;
+  }
+
+  &:last-child {
+    border-top-right-radius: 0.75rem;
+  }
+}

@@ -1,0 +1,25 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-color';
+
+.header {
+  @include u-bg($theme-color-primary-dark);
+  color: white;
+}
+
+.header__name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 1rem 1.5rem 0;
+}
+
+.header__time {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0 1.5rem 1rem;
+  span {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+}

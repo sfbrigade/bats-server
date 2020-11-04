@@ -1,5 +1,5 @@
 import React from 'react';
-import BedInfo from './bedInfo';
+import BedInfo from './BedInfo';
 
 const Beds = () => (
   <div className="bedContent">
