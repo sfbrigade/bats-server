@@ -2,58 +2,30 @@
 @import '../../theme/uswds-theme-color';
 
 .tabbar {
+  border-top: 1px solid color($theme-color-base-lighter);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
-  border-bottom: 1rem solid white;
-  border-top-left-radius: 0.75rem;
-  border-top-right-radius: 0.75rem;
 }
 
 .tabbar__tab {
-  @include u-bg($theme-color-base-lightest);
-  border: none;
+  align-items: center;
+  background-color: white;
+  border-bottom: 0.1875rem solid white;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  color: color($theme-color-base-light);
   cursor: pointer;
+  display: flex;
   flex-basis: 0;
   flex-grow: 1;
   font-weight: 600;
+  height: 2.75rem;
+  justify-content: center;
   padding: 0;
 }
 
-.tabbar__tabcontent {
-  @include u-bg($theme-color-base-lightest);
-  @include u-text($theme-color-base-light);
-  align-items: center;
-  display: flex;
-  height: 3rem;
-  justify-content: center;
-}
-
-.tabbar__tab--beforeselected {
-  background-color: white;
-  .tabbar__tabcontent {
-    border-bottom-right-radius: 0.75rem;
-  }
-}
-
 .tabbar__tab--selected {
-  .tabbar__tabcontent {
-    @include u-text($theme-color-primary-vivid);
-    background-color: white;
-    border-top-left-radius: 0.75rem;
-    border-top-right-radius: 0.75rem;
-  }
-
-  & + .tabbar__tab {
-    background-color: white;
-    .tabbar__tabcontent {
-      border-bottom-left-radius: 0.75rem;
-    }
-  }
-
-  &:first-child {
-    border-top-left-radius: 0.75rem;
-  }
-
-  &:last-child {
-    border-top-right-radius: 0.75rem;
-  }
+  border-bottom-color: color($theme-color-primary);
+  color: color($theme-color-primary);
 }

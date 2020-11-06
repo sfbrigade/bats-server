@@ -2,14 +2,14 @@
 @import '../../theme/uswds-theme-color';
 
 .header {
-  @include u-bg($theme-color-primary-dark);
-  color: white;
+  background-color: white;
+  @include u-text($theme-color-base-ink);
 }
 
 .header__name {
   font-size: 1.25rem;
   font-weight: 600;
-  margin: 0;
+  margin: 0 0 0.25rem;
   padding: 1rem 1.5rem 0;
 }
 

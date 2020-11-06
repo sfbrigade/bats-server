@@ -32,9 +32,10 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'build'), { index: false }));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
-app.use('/theme', express.static(path.join(__dirname, 'node_modules/uswds/dist')));
+app.use('/libraries/fontawesome-free', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free')));
+app.use('/libraries/uswds/theme', express.static(path.join(__dirname, 'node_modules/uswds/dist')));
 if (process.env.NODE_ENV !== 'production') {
-  // for css sourcemap debugging only
+  // for theme css sourcemap debugging only
   app.use('/theme', express.static(path.join(__dirname, 'theme')));
   app.use('/node_modules/uswds/dist', express.static(path.join(__dirname, 'node_modules/uswds/dist')));
 }

@@ -16,7 +16,7 @@ function Header({ name, children }) {
     <div className="header">
       <h1 className="header__name">{name}</h1>
       <h2 className="header__time">
-        {now.toFormat('h:mm:ss')} <span>{now.toFormat('a')}</span>
+        {now.toFormat('hh:mm:ss')} <span>{now.toFormat('a')}</span>
       </h2>
       {children}
     </div>

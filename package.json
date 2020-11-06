@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -52,7 +53,7 @@
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
     "build": "react-scripts build && yarn sass",
-    "sass": "sass --load-path=node_modules/uswds/dist/scss --no-source-map --style=compressed theme/styles.scss build/theme/styles.css",
+    "sass": "sass --load-path=node_modules/uswds/dist/scss --no-source-map --style=compressed theme/styles.scss build/libraries/uswds/theme/styles.css",
     "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",
     "test:client": "react-scripts test",
     "test:server": "mocha --recursive",
@@ -77,6 +78,12 @@
         "error",
         {
           "props": false
+        }
+      ],
+      "jsx-a11y/label-has-associated-control": [
+        "error",
+        {
+          "assert": "either"
         }
       ],
       "react/jsx-filename-extension": [

@@ -22,11 +22,10 @@ function TabBar({ onSelect, tabs }) {
         type="button"
         className={classNames('tabbar__tab', {
           'tabbar__tab--selected': i === selectedIndex,
-          'tabbar__tab--beforeselected': i === selectedIndex - 1,
         })}
         onClick={() => onClick(i)}
       >
-        <div className="tabbar__tabcontent">{tabs[i]}</div>
+        {tabs[i]}
       </button>
     );
   }

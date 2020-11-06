@@ -50,454 +50,335 @@ const RingDown = ({ history, saveHistory }) => {
   };
 
   return (
-    <div>
+    <>
       <form className="usa-form">
-        {/* <fieldset class="usa-fieldset">
-    
-    <h2 id="legend-header">
-      *Hospital Selection
-    </h2>
-    <legend class="usa-legend usa-legend" id="legend-header">*Hospital Destination</legend> 
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-        id="hospital-sfGeneral" 
-        type="radio" 
-        name="hospitalSelections" 
-        value="SF_General"/>
-      <label class="usa-radio__label" 
-        for="hospital-sfGeneral">
-          SF General</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-        id="hospital-cpmcMissionBernal" 
-          type="radio"  
-          name="hospitalSelections" 
-          value="CPMC_Mission_Bernal"/>
-      <label class="usa-radio__label" 
-        for="hospital-cpmcMissionBernal">
-          CPMC Mission Bernal</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-        id="hospital-cpmcDavies" 
-        type="radio" 
-        name="hospitalSelections" 
-        value="CPMC_Davies"/>
-      <label class="usa-radio__label" 
-        for="hospital-cpmcDavies">
-          CPMC Davies</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-        id="hospital-cpmcVanNess" 
-        type="radio" 
-        name="hospitalSelections" 
-        value="CPMC_Van_Ness"/>
-      <label class="usa-radio__label" 
-        for="hospital-cpmcVanNess">CPMC Van Ness</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-      id="hospital-StFrancis" 
-      type="radio" 
-      name="hospitalSelections" 
-      value="St_Francis"/>
-      <label class="usa-radio__label" 
-      for="hospital-StFrancis">
-        St. Francis </label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-      id="hospital-chineseHospital" 
-      type="radio" 
-      name="hospitalSelections" 
-      value="Chinese_Hospital"/>
-      <label class="usa-radio__label" 
-      for="hospital-chineseHospital">Chinese Hospital</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-      id="hospital-kaiserSf" 
-      type="radio" 
-      name="hospitalSelections" 
-      value="Kaiser_SF"/>
-      <label class="usa-radio__label" 
-      for="hospital-kaiserSf">Kaiser SF</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-      id="hospital-stMarys" 
-      type="radio" 
-      name="hospitalSelections" 
-      value="St_Marys"/>
-      <label class="usa-radio__label" 
-      for="hospital-stMarys">St. Mary's</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-      id="hospital-ucsfParnassus" 
-      type="radio" 
-      name="hospitalSelections" 
-      value="UCSF_Parnasus"/>
-      <label class="usa-radio__label" 
-      for="hospital-ucsfParnassus">UCSF Parnassus</label>
-    </div>
-    <div class="usa-radio">
-      <input class="usa-radio__input" 
-      id="hospital-vaMedicalCenter" 
-      type="radio" 
-      name="hospitalSelections" 
-      value="VA_Medical_Center"/>
-      <label class="usa-radio__label" 
-      for="hospital-vaMedicalCenter">VA Medical Center</label>
-    </div>
-  </fieldset> */}
-
-        <fieldset className="usa-fieldset">
-          {!saved ? (
-            <label id="unitLabel" htmlFor="unit">
-              {' '}
-              Unit # <input id="unit" value={unit} onChange={(e) => setUnit(e.target.value)} type="text" />
-            </label>
-          ) : (
-            <div>
-              <p> Unit #</p> <p>{unit}</p>
-            </div>
-          )}
-          {!saved ? (
-            <label id="incidentLabel" htmlFor="incidentId">
-              {' '}
-              Incident # <input id="incidentId" value={incidentId} onChange={(e) => setIncidentId(e.target.value)} type="text" />
-            </label>
-          ) : (
-            <div>
-              <p> Incident Id</p> <p>{incidentId}</p>
-            </div>
-          )}
-
-          <header className="usa-header">
-            <h2>Patient Info</h2>
-          </header>
-          <div className="personalInfo">
-            {!saved ? (
-              <label id="ageLabel" htmlFor="age">
-                {' '}
-                Age (estim.){' '}
-                <input className="usa-input--small" id="age" size="2" value={age} onChange={(e) => setAge(e.target.value)} type="text" />
-              </label>
-            ) : (
-              <div>
-                <p> Estimated Age</p> <p>{age}</p>
-              </div>
-            )}
-
-            {!saved ? (
-              <div className="usa-radio">
-                <label className="usa-radio__label" htmlFor="male">
-                  Male
-                  <input className="usa-radio__input" id="male" value="male" onChange={(e) => setGender(e.target.value)} type="radio" />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <p>{gender}</p>
-              </div>
-            )}
-            {!saved ? (
-              <div className="usa-radio">
-                <label id="femaleLabel" className="usa-radio__label" htmlFor="female">
-                  {' '}
-                  Female
-                  <input id="female" className="usa-radio__input" value="female" onChange={(e) => setGender(e.target.value)} type="radio" />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <p>{gender}</p>
-              </div>
-            )}
-            {!saved ? (
-              <div className="usa-radio">
-                <label id="non-binaryLabel" className="usa-radio__label" htmlFor="non-binary">
-                  Non-Binary
-                  <input
-                    id="non-binary"
-                    className="usa-radio__input"
-                    value="non-binary"
-                    onChange={(e) => setGender(e.target.value)}
-                    type="radio"
-                  />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <p>{gender}</p>
-              </div>
-            )}
-
-            {!saved ? (
-              <div className="usa-radio">
-                <label id="code2Label" className="usa-radio__label" htmlFor="code2">
-                  {' '}
-                  Code 2{' '}
-                  <input id="code2" className="usa-radio__input" value={code} onChange={(e) => setCode(e.target.value)} type="radio" />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <p> Code</p> <p>{code}</p>
-              </div>
-            )}
-
-            {!saved ? (
-              <div className="usa-radio">
-                <label id="code3Label" className="usa-radio__label" htmlFor="code3">
-                  {' '}
-                  Code 3{' '}
-                  <input id="code3" className="usa-radio__input" value={code} onChange={(e) => setCode(e.target.value)} type="radio" />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <p> Code</p> <p>{code}</p>
-              </div>
-            )}
-            {!saved ? (
-              <label id="complaintLabel" htmlFor="complaint">
-                {' '}
-                ChiefComplaint{' '}
-                <textarea id="complaint" value={complaint} onChange={(e) => setComplaint(e.target.value)} type="text" size="100" />
-              </label>
-            ) : (
-              <div>
-                <p> Chief complaint</p> <p>{code}</p>
-              </div>
-            )}
-            {!saved ? (
-              <div className="usa-radio">
-                <label id="stableLabel" className="usa-radio__label" htmlFor="stable">
-                  {' '}
-                  Vitals stable{' '}
-                  <input id="stable" className="usa-radio__input" value="yes" onChange={(e) => setStable(e.target.value)} type="radio" />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <p> Vitals stable</p> <p>{stable}</p>
-              </div>
-            )}
-            {!saved ? (
-              <div className="usa-radio">
-                <label id="unstableLabel" className="usa-radio__label" htmlFor="unstable">
-                  {' '}
-                  Vitals not stable{' '}
-                  <input id="unstable" className="usa-radio__input" value="no" onChange={(e) => setStable(e.target.value)} type="radio" />
-                </label>
-              </div>
-            ) : (
-              <div>
-                <p> Vitals stable</p> <p>{stable}</p>
-              </div>
-            )}
+        <div className="usa-alert usa-alert--info usa-alert--slim usa-alert--no-icon">
+          <div className="usa-alert__body">
+            <p className="usa-alert__text">
+              <span className="text-secondary-dark">*</span> Indicates a required field.
+            </p>
           </div>
-          <div className="usa-accordion">
-            <h2 className="usa-accordion__heading">
-              <button type="button" className="usa-accordion__button" aria-expanded="false" aria-controls="a4">
-                Vitals
-              </button>
-            </h2>
-            <div id="a4" className="usa-accordion__content usa-prose">
-              {!saved ? (
-                <div>
-                  <label id="bpLabel" className="usa-label" htmlFor="bp">
-                    {' '}
-                    Blood Pressure
-                    <input id="bp" className="usa-input" value={bp} onChange={(e) => setBp(e.target.value)} type="text" />
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  <p>Blood Pressure</p> <p>{bp}</p>
-                </div>
-              )}
-              {!saved ? (
-                <div>
-                  <label id="pulseLabel" className="usa-label" htmlFor="pulse">
-                    {' '}
-                    Pulse Rate
-                    <input id="pulse" className="usa-input--small" value={pulse} onChange={(e) => setPulse(e.target.value)} type="text" />
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  <p>Pulse Rate</p> <p>{pulse}</p>
-                </div>
-              )}
-              {!saved ? (
-                <div>
-                  <label id="respiratoryLabel" className="usa-label" htmlFor="respiratory">
-                    {' '}
-                    Respiratory Rate
-                    <input
-                      id="respiratory"
-                      className="usa-input--small"
-                      value={respiratory}
-                      onChange={(e) => setRespiratory(e.target.value)}
-                      type="text"
-                    />
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  <p>Respiratory Rate</p> <p>{respiratory}</p>
-                </div>
-              )}
-
-              {!saved ? (
-                <div>
-                  <label id="spo2Label" className="usa-label" htmlFor="spo2">
-                    {' '}
-                    SpO <input id="spo2" className="usa-input--small" value={spo2} onChange={(e) => setSpo2(e.target.value)} type="text" />
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  <p> SpO</p> <p>{spo2}</p>
-                </div>
-              )}
-              {!saved ? (
-                <div className="usa-radio">
-                  <label id="RALabel" className="usa-radio__label" htmlFor="RA">
-                    {' '}
-                    RA <input className="usa-radio__input" id="RA" value onChange={(e) => setRa(e.target.value)} type="radio" />
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  <p> RA</p> <p>{ra}</p>
-                </div>
-              )}
-              {!saved ? (
-                <div className="usa-radio">
-                  <label id="O2Label" className="usa-radio__label" htmlFor="O2">
-                    {' '}
-                    O2 <input id="O2" className="usa-radio__input" value onChange={(e) => setO2(e.target.value)} type="radio" />
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  <p> O2</p> <p>{o2}</p>
-                </div>
-              )}
-              {/* {!saved ? (
-          <label htmlFor="L">
-            {' '}
-            L{' '}
-            <input
-              id="L"
-              value={L}
-              onChange={(e) => setL(e.target.value)}
-              type="text"
-            />
-          </label>
-        ) : (
-          <div>
-            <p>L</p> <p>{temp}</p>
+        </div>
+        <div className="usa-accordion">
+          <div className="usa-accordion__content">
+            <fieldset className="usa-fieldset">
+              <label htmlFor="unit" className="usa-label usa-label--required">
+                Unit #
+              </label>
+              <input
+                id="unit"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                required
+                type="text"
+                className="usa-input usa-input--medium"
+              />
+              <label htmlFor="incidentId" className="usa-label usa-label--required">
+                Incident #
+              </label>
+              <input
+                id="incidentId"
+                value={incidentId}
+                onChange={(e) => setIncidentId(e.target.value)}
+                required
+                type="text"
+                className="usa-input usa-input--medium"
+              />
+            </fieldset>
           </div>
-        )} */}
-              {!saved ? (
-                <div>
-                  <label id="tempLabel" className="usa-label" htmlFor="temp">
-                    {' '}
-                    Temperature
-                    <input id="temp" className="usa-input" value={temp} onChange={(e) => setTemp(e.target.value)} type="text" />
-                  </label>
-                </div>
-              ) : (
-                <div>
-                  <p>Temperature</p> <p>{temp}</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="additionalNotes">
-            <legend className="usa-legend">Addtl. Notes (optional)</legend>
-            <div className="usa-checkbox">
-              <label className="usa-checkbox__label" htmlFor="ETOH">
-                <input className="usa-checkbox__input" id="ETOH" type="checkbox" name="additionalNotes" value="ETOH_suspected" checked />
-                ETOH suspected
+          <h3 className="usa-accordion__heading">
+            <button disabled type="button" className="usa-accordion__button">
+              <span className="text-secondary-dark">*</span> Patient Info
+            </button>
+          </h3>
+          <div className="usa-accordion__content">
+            <fieldset className="usa-fieldset">
+              <label htmlFor="age" className="usa-label">
+                Age (estim.)
               </label>
-            </div>
-            <div className="usa-checkbox">
-              <label className="usa-checkbox__label" htmlFor="drugs">
-                <input className="usa-checkbox__input" id="drugs" type="checkbox" name="additionalNotes" value="drugs_suspected" />
-                Drugs suspected
-              </label>
-            </div>
-            <div className="usa-checkbox">
-              <label className="usa-checkbox__label" htmlFor="psych">
-                <input className="usa-checkbox__input" id="psych" type="checkbox" name="additionalNotes" value="psych_patient" />
-                Psych patient
-              </label>
-            </div>
-            <div className="usa-checkbox">
-              <label className="usa-checkbox__label" htmlFor="combative">
-                <input className="usa-checkbox__input" id="combative" type="checkbox" name="additionalNotes" value="combative_patient" />
-                Combative
-              </label>
-            </div>
-            <div className="usa-checkbox">
-              <label className="usa-checkbox__label" htmlFor="4-point">
-                <input className="usa-checkbox__input" id="4-point" type="checkbox" name="additionalNotes" value="combative_patient" />
-                4-point restraint
-              </label>
-            </div>
-            <div className="usa-checkbox">
-              <label className="usa-checkbox__label" htmlFor="COVID">
-                <input className="usa-checkbox__input" id="COVID" type="checkbox" name="additionalNotes" value="COVID-19_suspected" />
-                COVID-19 suspected
-              </label>
-            </div>
-            <div className="usa-checkbox">
-              <label className="usa-checkbox__label" htmlFor="IV">
-                <input className="usa-checkbox__input" id="IV" type="checkbox" name="additionalNotes" value="IV_started" />
-                IV started
-              </label>
-            </div>
-          </div>
-
-          <div className="usa-character-count">
-            <div className="usa-form-group">
-              <label className="usa-label" htmlFor="with-hint-textarea">
-                Other
-                <span id="with-hint-textarea-hint" className="usa-hint" />
-                <textarea
-                  className="usa-textarea usa-character-count__field"
-                  id="with-hint-textarea"
-                  maxLength="50"
-                  name="with-hint-textarea"
-                  rows="5"
-                  aria-describedby="with-hint-textarea-info with-hint-textarea-hint"
+              <input
+                id="age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+                type="number"
+                className="usa-input usa-input--small"
+              />
+            </fieldset>
+            <fieldset className="usa-fieldset">
+              <div className="usa-radio">
+                <input
+                  onChange={(e) => setGender(e.target.value)}
+                  className="usa-radio__input"
+                  id="gender-male"
+                  type="radio"
+                  name="gender"
+                  value="MALE"
                 />
+                <label className="usa-radio__label" htmlFor="gender-male">
+                  Male
+                </label>
+              </div>
+              <div className="usa-radio">
+                <input
+                  onChange={(e) => setGender(e.target.value)}
+                  className="usa-radio__input"
+                  id="gender-female"
+                  type="radio"
+                  name="gender"
+                  value="FEMALE"
+                />
+                <label className="usa-radio__label" htmlFor="gender-female">
+                  Female
+                </label>
+              </div>
+              <div className="usa-radio">
+                <input
+                  onChange={(e) => setGender(e.target.value)}
+                  className="usa-radio__input"
+                  id="gender-non-binary"
+                  type="radio"
+                  name="gender"
+                  value="NON-BINARY"
+                />
+                <label className="usa-radio__label" htmlFor="gender-non-binary">
+                  Non-binary
+                </label>
+              </div>
+            </fieldset>
+            <fieldset className="usa-fieldset">
+              <div className="usa-radio">
+                <input
+                  onChange={(e) => setCode(e.target.value)}
+                  className="usa-radio__input"
+                  id="code-2"
+                  type="radio"
+                  name="code"
+                  value="CODE 2"
+                />
+                <label className="usa-radio__label" htmlFor="code-2">
+                  Code 2
+                </label>
+              </div>
+              <div className="usa-radio">
+                <input
+                  onChange={(e) => setCode(e.target.value)}
+                  className="usa-radio__input"
+                  id="code-3"
+                  type="radio"
+                  name="code"
+                  value="CODE 3"
+                />
+                <label className="usa-radio__label" htmlFor="code-3">
+                  Code 3
+                </label>
+              </div>
+            </fieldset>
+            <fieldset className="usa-fieldset">
+              <label htmlFor="complaint" className="usa-label">
+                Chief Complaint
               </label>
-            </div>
-            <span id="with-hint-textarea-info" className="usa-hint usa-character-count__message" aria-live="polite" />
+              <textarea id="complaint" value={complaint} onChange={(e) => setComplaint(e.target.value)} required className="usa-textarea" />
+              <div className="usa-hint usa-hint--important">
+                <i className="fas fa-info-circle" /> Exclude identifying information.
+              </div>
+            </fieldset>
+            <fieldset className="usa-fieldset">
+              <div className="usa-radio">
+                <input
+                  onChange={(e) => setStable(e.target.value)}
+                  className="usa-radio__input"
+                  id="vitals-stable"
+                  type="radio"
+                  name="vitals"
+                  value
+                />
+                <label className="usa-radio__label" htmlFor="vitals-stable">
+                  Vitals stable
+                </label>
+              </div>
+              <div className="usa-radio">
+                <input
+                  onChange={(e) => setStable(e.target.value)}
+                  className="usa-radio__input"
+                  id="vitals-not-stable"
+                  type="radio"
+                  name="vitals"
+                  value={false}
+                />
+                <label className="usa-radio__label" htmlFor="vitals-not-stable">
+                  Vitals not stable
+                </label>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
+          <h3 className="usa-accordion__heading">
+            <button type="button" className="usa-accordion__button">
+              Vitals <span>(optional)</span>
+            </button>
+          </h3>
+          <div className="usa-accordion__content">
+            <fieldset className="usa-fieldset">
+              <label htmlFor="bp" className="usa-label">
+                Blood pressure
+              </label>
+              <div className="grid-row flex-align-center">
+                <input id="bp" value={bp} onChange={(e) => setBp(e.target.value)} type="number" className="usa-input usa-input--small" />
+                <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+                <input onChange={(e) => setBp(e.target.value)} type="number" className="usa-input usa-input--small" />
+                <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;mmHg</span>
+              </div>
+              <label htmlFor="pulse" className="usa-label">
+                Pulse
+              </label>
+              <div className="grid-row flex-align-center">
+                <input
+                  id="pulse"
+                  value={pulse}
+                  onChange={(e) => setPulse(e.target.value)}
+                  type="number"
+                  className="usa-input usa-input--small"
+                />
+                <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;bpm</span>
+              </div>
+              <label htmlFor="respiratory" className="usa-label">
+                Respiratory Rate
+              </label>
+              <div className="grid-row flex-align-center">
+                <input
+                  id="respiratory"
+                  value={respiratory}
+                  onChange={(e) => setRespiratory(e.target.value)}
+                  type="number"
+                  className="usa-input usa-input--small"
+                />
+                <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;breath/m</span>
+              </div>
+              <label htmlFor="spo2" className="usa-label">
+                SpO2
+              </label>
+              <div className="grid-row flex-align-center">
+                <input
+                  id="spo2"
+                  value={spo2}
+                  onChange={(e) => setSpo2(e.target.value)}
+                  type="number"
+                  className="usa-input usa-input--small"
+                />
+                <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;%</span>
+              </div>
+              <div className="padding-left-4">
+                <div className="usa-radio">
+                  <input onChange={(e) => setRa(e.target.value)} className="usa-radio__input" id="ra" type="radio" name="ra" value />
+                  <label className="usa-radio__label" htmlFor="ra">
+                    RA
+                  </label>
+                </div>
+                <div className="grid-row flex-align-center">
+                  <div className="usa-radio">
+                    <input
+                      onChange={(e) => setO2(e.target.value)}
+                      className="usa-radio__input"
+                      id="o2"
+                      type="radio"
+                      name="o2"
+                      value={false}
+                    />
+                    <label className="usa-radio__label" htmlFor="o2">
+                      O2
+                    </label>
+                  </div>
+                  <input
+                    id="o2level"
+                    value={o2}
+                    onChange={(e) => setO2(e.target.value)}
+                    type="number"
+                    className="usa-input usa-input--inline usa-input--small margin-left-4"
+                  />
+                  <span className="usa-hint usa-hint--inline usa-hint--unit">&nbsp;&nbsp;L</span>
+                </div>
+              </div>
+              <label htmlFor="temp" className="usa-label">
+                Temp.
+              </label>
+              <div className="grid-row flex-align-center">
+                <input
+                  id="temp"
+                  value={temp}
+                  onChange={(e) => setTemp(e.target.value)}
+                  type="number"
+                  className="usa-input usa-input--small"
+                />
+                <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;&deg;F</span>
+              </div>
+            </fieldset>
+          </div>
+          <h3 className="usa-accordion__heading">
+            <button disabled type="button" className="usa-accordion__button">
+              Addtl. Notes <span>(optional)</span>
+            </button>
+          </h3>
+          <div className="usa-accordion__content">
+            <fieldset className="usa-fieldset">
+              <div className="usa-checkbox">
+                <input className="usa-checkbox__input" id="ETOH" type="checkbox" name="additionalNotes" value="ETOH_suspected" />
+                <label className="usa-checkbox__label" htmlFor="ETOH">
+                  ETOH suspected
+                </label>
+              </div>
+              <div className="usa-checkbox">
+                <label className="usa-checkbox__label" htmlFor="drugs">
+                  Drugs suspected
+                </label>
+                <input className="usa-checkbox__input" id="drugs" type="checkbox" name="additionalNotes" value="drugs_suspected" />
+              </div>
+              <div className="usa-checkbox">
+                <label className="usa-checkbox__label" htmlFor="psych">
+                  Psych patient
+                </label>
+                <input className="usa-checkbox__input" id="psych" type="checkbox" name="additionalNotes" value="psych_patient" />
+              </div>
+              <div className="usa-checkbox">
+                <label className="usa-checkbox__label" htmlFor="combative">
+                  Combative
+                </label>
+                <input className="usa-checkbox__input" id="combative" type="checkbox" name="additionalNotes" value="combative_patient" />
+              </div>
+              <div className="usa-checkbox padding-left-4">
+                <label className="usa-checkbox__label" htmlFor="4-point">
+                  4-point restraint
+                </label>
+                <input className="usa-checkbox__input" id="4-point" type="checkbox" name="additionalNotes" value="combative_patient" />
+              </div>
+              <div className="usa-checkbox">
+                <label className="usa-checkbox__label" htmlFor="COVID">
+                  COVID-19 suspected
+                </label>
+                <input className="usa-checkbox__input" id="COVID" type="checkbox" name="additionalNotes" value="COVID-19_suspected" />
+              </div>
+              <div className="usa-checkbox">
+                <label className="usa-checkbox__label" htmlFor="IV">
+                  IV started
+                </label>
+                <input className="usa-checkbox__input" id="IV" type="checkbox" name="additionalNotes" value="IV_started" />
+              </div>
+              <label className="usa-label" htmlFor="other">
+                Other
+              </label>
+              <textarea className="usa-textarea" id="other" name="other" rows="5" />
+            </fieldset>
+            <fieldset className="usa-fieldset">
+              <button className="usa-button width-full" type="button" onClick={save}>
+                Select Hospital
+              </button>
+              <button className="usa-button usa-button--outline width-full margin-top-4" type="button" onClick={save}>
+                Clear Form
+              </button>
+            </fieldset>
+          </div>
+        </div>
       </form>
-      <div className="select">
-        <button className="usa-button usa-button--big" type="button" onClick={save}>
-          Select Hospital
-        </button>
-      </div>
-      <div className="clear">
-        <button className="usa-button usa-button--outline usa-button--big" type="button" onClick={save}>
-          Clear Form
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
