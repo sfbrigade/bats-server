@@ -74,6 +74,12 @@
       "prettier"
     ],
     "rules": {
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allowAfterThis": true
+        }
+      ],
       "no-param-reassign": [
         "error",
         {
@@ -84,6 +90,15 @@
         "error",
         {
           "assert": "either"
+        }
+      ],
+      "react/jsx-boolean-value": [
+        "error",
+        "never",
+        {
+          "always": [
+            "value"
+          ]
         }
       ],
       "react/jsx-filename-extension": [

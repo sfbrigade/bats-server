@@ -24,10 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
-      emergencyServiceResponseType: {
-        field: 'emergencyserviceresponsetypeenum',
-        type: DataTypes.ENUM('CODE 2', 'CODE 3'),
-      },
       age: {
         field: 'age',
         type: DataTypes.INTEGER,
@@ -38,24 +34,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING, // TODO - make an enum?
         allowNull: true,
       },
-      stableIndicator: {
-        field: 'stableindicator',
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
+      emergencyServiceResponseType: {
+        field: 'emergencyserviceresponsetypeenum',
+        type: DataTypes.ENUM('CODE 2', 'CODE 3'),
       },
       chiefComplaintDescription: {
         field: 'chiefcomplaintdescription',
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      heartRateBpm: {
-        field: 'heartratebpm',
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      temperature: {
-        field: 'temperature',
-        type: DataTypes.DECIMAL,
+      stableIndicator: {
+        field: 'stableindicator',
+        type: DataTypes.BOOLEAN,
         allowNull: true,
       },
       systolicBloodPressure: {
@@ -68,8 +58,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      heartRateBpm: {
+        field: 'heartratebpm',
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       respiratoryRate: {
         field: 'respiratoryrate',
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      oxygenSaturation: {
+        field: 'oxygensaturation',
         type: DataTypes.INTEGER,
         allowNull: true,
       },
@@ -77,18 +77,43 @@ module.exports = (sequelize, DataTypes) => {
         field: 'lowoxygenresponsetypeenum',
         type: DataTypes.ENUM('ROOM AIR', 'SUPPLEMENTAL OXYGEN'),
       },
-      oxygenSaturation: {
-        field: 'oxygensaturation',
-        type: DataTypes.INTEGER,
+      temperature: {
+        field: 'temperature',
+        type: DataTypes.DECIMAL,
         allowNull: true,
       },
-      ivIndicator: {
-        field: 'ivindicator',
+      etohSuspectedIndicator: {
+        field: 'etohsuspectedindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
+      drugsSuspectedIndicator: {
+        field: 'drugssuspectedindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
+      psychIndicator: {
+        field: 'psychindicator',
         type: DataTypes.BOOLEAN,
         allowNull: true,
       },
       combativeBehaviorIndicator: {
         field: 'combativebehaviorindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
+      restraintIndicator: {
+        field: 'restraintindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
+      // covid19Indicator: {
+      //   field: 'covid19indicator',
+      //   type: DataTypes.BOOLEAN,
+      //   allowNull: true,
+      // },
+      ivIndicator: {
+        field: 'ivindicator',
         type: DataTypes.BOOLEAN,
         allowNull: true,
       },

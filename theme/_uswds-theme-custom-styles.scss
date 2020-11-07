@@ -20,6 +20,42 @@ i.e.
 ----------------------------------------
 */
 
+@mixin focus-shadow {
+  outline: none;
+  box-shadow: 0 0 0 4px color($theme-focus-color);
+}
+
+input,
+select,
+textarea,
+button {
+  &:not([disabled]) {
+    &:focus {
+      @include focus-shadow();
+    }
+  }
+}
+
+iframe,
+[href],
+[tabindex],
+[contentEditable='true'] {
+  &:focus {
+    @include focus-shadow();
+  }
+}
+
+.usa-focus {
+  @include focus-shadow();
+}
+
+.flex-row {
+  & > .usa-checkbox .usa-checkbox__label,
+  & > .usa-radio .usa-radio__label {
+    margin-top: 0;
+  }
+}
+
 .grid-container {
   padding-left: 0;
   padding-right: 0;
@@ -81,11 +117,6 @@ i.e.
 
 .usa-hint--important {
   color: color($theme-color-primary-vivid);
-}
-
-.usa-hint--inline,
-.usa-input--inline {
-  margin-top: 1.5rem !important;
 }
 
 .usa-hint--unit {
