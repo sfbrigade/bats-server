@@ -4,7 +4,7 @@ const models = require('../../../models');
 
 describe('models.HospitalStatusUpdate', () => {
   beforeEach(async () => {
-    await helper.loadFixtures(['organizations', 'users', 'hospitals', 'hospitalUsers']);
+    await helper.loadFixtures(['organizations', 'users', 'hospitals', 'hospitalUsers', 'hospitalStatusUpdates']);
   });
 
   it('creates a new HospitalStatusUpdate record', async () => {
@@ -40,5 +40,20 @@ describe('models.HospitalStatusUpdate', () => {
 
     const hospitalAdmin = await hospitalStatusUpdate.getEdAdminUser();
     assert.deepStrictEqual(hospitalAdmin.name, 'Sutter Admin');
+  });
+
+  describe("scope('latest')", () => {
+    it('returns only the latest status update per hospital', async () => {
+      const hospitalStatusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({
+        include: [models.Hospital],
+      });
+      // should only return one update per the 2 hospitals
+      assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
+      // each update should reflect the latest (test data year 2005 vs 2004)
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'Sutter Hospital');
+      assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies Campus');
+      assert.deepStrictEqual(hospitalStatusUpdates[1].updateDateTimeLocal.getFullYear(), 2005);
+    });
   });
 });

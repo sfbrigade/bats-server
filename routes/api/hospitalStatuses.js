@@ -10,7 +10,10 @@ function createResponse(hsu) {
   const { id, openEdBedCount, openPsychBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDateTimeLocal } = hsu;
   const response = {
     id,
-    hospitalId: hsu.HospitalId,
+    hospital: {
+      id: hsu.Hospital.id,
+      name: hsu.Hospital.name,
+    },
     openEdBedCount,
     openPsychBedCount,
     divertStatusIndicator,
@@ -24,20 +27,8 @@ function createResponse(hsu) {
 }
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
-  const mostRecentStatusUpdatesByHospital = `
-    SELECT DISTINCT ON (hospital_uuid) *
-    FROM
-      hospitalstatusupdate 
-    ORDER BY
-      hospital_uuid,
-      updatedatetimelocal DESC
-    ;
-  `;
   try {
-    const statusUpdates = await models.sequelize.query(mostRecentStatusUpdatesByHospital, {
-      model: models.HospitalStatusUpdate,
-      mapToModel: true,
-    });
+    const statusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({ include: [models.Hospital] });
     const response = statusUpdates.map((statusUpdate) => createResponse(statusUpdate));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
@@ -74,6 +65,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });
+    statusUpdate.Hospital = await statusUpdate.getHospital();
     const response = createResponse(statusUpdate);
     res.status(HttpStatus.CREATED).json(response);
   } catch (error) {

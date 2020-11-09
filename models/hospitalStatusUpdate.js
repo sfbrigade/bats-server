@@ -80,5 +80,14 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'HospitalStatusUpdate',
     }
   );
+  HospitalStatusUpdate.addScope('latest', () => ({
+    attributes: [sequelize.literal('DISTINCT ON("HospitalStatusUpdate".hospital_uuid) 1')].concat(
+      Object.keys(HospitalStatusUpdate.rawAttributes)
+    ),
+    order: [
+      ['HospitalId', 'ASC'],
+      ['updateDateTimeLocal', 'DESC'],
+    ],
+  }));
   return HospitalStatusUpdate;
 };

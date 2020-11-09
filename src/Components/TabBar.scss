@@ -1,0 +1,31 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-color';
+
+.tabbar {
+  border-top: 1px solid color($theme-color-base-lighter);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+}
+
+.tabbar__tab {
+  align-items: center;
+  background-color: white;
+  border-bottom: 0.1875rem solid white;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  color: color($theme-color-base-light);
+  cursor: pointer;
+  display: flex;
+  flex-basis: 0;
+  flex-grow: 1;
+  font-weight: 600;
+  height: 2.75rem;
+  justify-content: center;
+  padding: 0;
+}
+
+.tabbar__tab--selected {
+  border-bottom-color: color($theme-color-primary);
+  color: color($theme-color-primary);
+}

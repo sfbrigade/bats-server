@@ -17,7 +17,7 @@ module.exports = {
           OrganizationId: org.id,
           firstName: 'C4SF',
           lastName: 'Admin',
-          email: 'batsadmin@c4sf.org',
+          email: 'batsadmin@c4sf.me',
           hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
           isOperationalUser: true,
           isAdminUser: true,
@@ -48,7 +48,7 @@ module.exports = {
     await queryInterface.sequelize.transaction(async (transaction) => {
       await models.User.destroy({
         where: {
-          email: 'batsadmin@c4sf.org',
+          email: 'batsadmin@c4sf.me',
         },
         transaction,
       });
