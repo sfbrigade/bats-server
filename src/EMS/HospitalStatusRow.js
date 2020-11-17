@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import HospitalStatus from '../Models/HospitalStatus'
 
-const BedInfo = () => (
-  <div className="bedComponentContainer">
+const HospitalStatusRow = ({ hospitalStatus }) => (
+  <div>
+    <h3>{hospitalStatus.hospitalName}</h3>
     <p>
       On diversion&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       <strong>NO</strong>
@@ -27,4 +30,8 @@ const BedInfo = () => (
   </div>
 );
 
-export default BedInfo;
+HospitalStatusRow.propTypes = {
+  hospitalStatus: PropTypes.instanceOf(HospitalStatus).isRequired,
+};
+
+export default HospitalStatusRow;

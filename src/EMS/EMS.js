@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
 
-import Beds from './Beds';
+import HospitalStatuses from './HospitalStatuses';
 import RingdownForm from './RingdownForm';
 
 export default function EMS() {
@@ -15,7 +15,7 @@ export default function EMS() {
         <TabBar onSelect={setSelectedTab} tabs={['Ringdown', 'Hospital Info']} />
       </Header>
       {selectedTab === 0 && <RingdownForm />}
-      {selectedTab === 1 && <Beds />}
+      {selectedTab === 1 && <HospitalStatuses />}
     </>
   );
 }
