@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import HospitalStatusRow from './HospitalStatusRow';
+import HospitalStatusHeader from './HospitalStatusHeader'; 
 import HospitalStatus from '../Models/HospitalStatus';
 import ApiService from '../ApiService';
 
@@ -15,9 +16,7 @@ const HospitalStatuses = () => {
 
   return (
     <div>
-      <div>
-        {/* TODO - column header */}
-      </div>
+      <HospitalStatusHeader />
       {
         hospitalStatusResponse.map(hsData => {
           const hs = new HospitalStatus(hsData);

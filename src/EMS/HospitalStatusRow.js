@@ -2,31 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import HospitalStatus from '../Models/HospitalStatus'
 
+import './HospitalStatusRow.scss';
+
 const HospitalStatusRow = ({ hospitalStatus }) => (
-  <div>
-    <h3>{hospitalStatus.hospitalName}</h3>
-    <p>
-      On diversion&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <strong>NO</strong>
-    </p>
-    <p>
-      ER beds&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <strong>4</strong>&nbsp;&nbsp;&nbsp;&nbsp;15:24 7/20/2020
-    </p>
-    <p>
-      PES beds&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <strong>2</strong>&nbsp;&nbsp;&nbsp;&nbsp; 15:24 7/20/2020
-    </p>
-    <br />
-    <p>
-      Rigs enroute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <strong>3</strong>
-    </p>
-    <p>
-      Rigs waiting&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <strong>2</strong>
-    </p>
-    <br />
+  <div className="grid-container">
+    <div className="grid-row">
+      <div className="grid-col-4 hospitalstatusrow__name">
+        <h3>{hospitalStatus.hospitalName}</h3>
+      </div>
+      <div className="grid-col-8 hospitalstatusrow__data">
+        <div className="">{hospitalStatus.diversionStatusIndicator ? "Yes" : "No"}</div>
+        <div className="">{hospitalStatus.openEdBedCount}</div>
+        <div className="">{hospitalStatus.openPsychBedCount}</div>
+        <div className="">999</div>
+        <div className="">999</div>
+      </div>
+    </div>
   </div>
 );
 

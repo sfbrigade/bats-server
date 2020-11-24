@@ -1,0 +1,14 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-color';
+
+.hospitalstatusrow__name {
+  border: 1px solid color($theme-color-base-lighter);
+  display: flex;
+  justify-content: left;
+}
+
+.hospitalstatusrow__data {
+  border: 1px solid color($theme-color-base-lighter);
+  height: 5rem;
+  display: flex;
+}
