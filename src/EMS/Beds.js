@@ -1,8 +1,11 @@
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
+
 import BedInfo from './BedInfo';
 
-const Beds = () => (
-  <div className="bedContent">
+const Beds = ({ className }) => (
+  <div className={classNames('bedContent', className)}>
     <h1 className="title">Hospital beds + rigs</h1>
     <h3>SF General</h3>
     {/* BedInfo Component will take props containing bed info to be displayed */}
@@ -27,5 +30,13 @@ const Beds = () => (
     <BedInfo />
   </div>
 );
+
+Beds.propTypes = {
+  className: PropTypes.string,
+};
+
+Beds.defaultProps = {
+  className: null,
+};
 
 export default Beds;
