@@ -20,11 +20,15 @@ i.e.
 ----------------------------------------
 */
 
-.h2 {
+@mixin h2 {
   font-size: 1.3125rem;
   font-style: normal;
   font-weight: bold;
   line-height: 1.5rem;
+}
+
+.h2 {
+  @include h2;
 }
 
 .h4 {
@@ -79,17 +83,10 @@ iframe,
   padding-right: 0;
 }
 
-.usa-accordion__button {
-  background-image: none;
-  font-size: 1.3125rem;
-  font-weight: 700;
-  padding-bottom: 0.75rem;
-  padding-top: 0.75rem;
-  &:disabled {
-    &:hover {
-      @include u-bg($theme-color-base-lightest);
-    }
-  }
+.usa-accordion__heading {
+  @include h2;
+  border-bottom: 1px solid color($theme-color-base-lighter);
+  padding: 1.25rem 1.5rem 0.5rem;
 }
 
 .usa-accordion__content {

@@ -11,6 +11,7 @@ function PatientFields({ ringdown, onChange }) {
   return (
     <>
       <div className="usa-accordion">
+        <h3 className="usa-accordion__heading">Unit Info</h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormInput
@@ -32,9 +33,7 @@ function PatientFields({ ringdown, onChange }) {
           </fieldset>
         </div>
         <h3 className="usa-accordion__heading">
-          <button disabled type="button" className="usa-accordion__button">
-            <span className="text-secondary-dark">*</span> Patient Info
-          </button>
+          <span className="text-secondary-dark">*</span> Patient Info
         </h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
@@ -100,9 +99,7 @@ function PatientFields({ ringdown, onChange }) {
           </fieldset>
         </div>
         <h3 className="usa-accordion__heading">
-          <button type="button" className="usa-accordion__button">
-            Vitals <span>(optional)</span>
-          </button>
+          Vitals <span>(optional)</span>
         </h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
@@ -196,9 +193,7 @@ function PatientFields({ ringdown, onChange }) {
           </fieldset>
         </div>
         <h3 className="usa-accordion__heading">
-          <button disabled type="button" className="usa-accordion__button">
-            Addtl. Notes <span>(optional)</span>
-          </button>
+          Addtl. Notes <span>(optional)</span>
         </h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
