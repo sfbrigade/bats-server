@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
+      sortSequenceNumber: {
+        field: 'sortsequencenumber',
+        type: DataTypes.INTEGER,
+      },
       createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,

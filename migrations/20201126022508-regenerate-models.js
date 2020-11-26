@@ -10,7 +10,7 @@ module.exports = {
         -- ER/Studio Data Architect SQL Code Generation
         -- Project :      BATS Logical Data Model.DM1
         --
-        -- Date Created : Friday, October 23, 2020 10:19:12
+        -- Date Created : Wednesday, November 11, 2020 07:09:44
         -- Target DBMS : PostgreSQL 10.x-12.x
         --
         
@@ -55,6 +55,7 @@ module.exports = {
             operationaluserindicator       boolean         NOT NULL,
             administrativeuserindicator    boolean         NOT NULL,
             superuserindicator             boolean         NOT NULL,
+            activeindicator                boolean,
             recordcreatetimestamp          timestamp       NOT NULL,
             recordcreateuser_uuid          uuid            NOT NULL,
             recordupdatetimestamp          timestamp       NOT NULL,
@@ -93,6 +94,8 @@ module.exports = {
             hospital_uuid                  uuid           DEFAULT gen_random_uuid() NOT NULL,
             healthcareorganization_uuid    uuid           NOT NULL,
             hospitalname                   varchar(60)    NOT NULL,
+            sortsequencenumber             smallint,
+            activeindicator                boolean,
             recordcreatetimestamp          timestamp      NOT NULL,
             recordcreateuser_uuid          uuid           NOT NULL,
             recordupdatetimestamp          timestamp      NOT NULL,
@@ -156,6 +159,7 @@ module.exports = {
             organizationname         varchar(100)    NOT NULL,
             organizationtypeenum     varchar(50)     NOT NULL,
             timezoneisocode          character(3)    DEFAULT 'PST' NOT NULL,
+            activeindicator          boolean,
             recordcreatetimestamp    timestamp       NOT NULL,
             recordcreateuser_uuid    uuid            NOT NULL,
             recordupdatetimestamp    timestamp       NOT NULL,
@@ -177,9 +181,8 @@ module.exports = {
             patient_uuid                        uuid             DEFAULT gen_random_uuid() NOT NULL,
             emergencymedicalservicecall_uuid    uuid             NOT NULL,
             emergencyserviceresponsetypeenum    varchar(18)      NOT NULL,
-            lowoxygenresponsetypeenum           varchar(18),
             age                                 smallint,
-            sex                                 varchar(10),
+            sexenum                             varchar(10),
             stableindicator                     boolean,
             chiefcomplaintdescription           varchar(1000),
             heartratebpm                        smallint,
@@ -188,12 +191,15 @@ module.exports = {
             diastolicbloodpressure              smallint,
             respiratoryrate                     smallint,
             oxygensaturation                    smallint,
+            lowoxygenresponsetypeenum           varchar(18),
+            supplementaloxygenamount            integer,
             ivindicator                         boolean,
             etohsuspectedindicator              boolean,
             drugssuspectedindicator             boolean,
             psychindicator                      boolean,
             combativebehaviorindicator          boolean,
             restraintindicator                  boolean,
+            "19suspectedindicator"              boolean,
             otherobservationnotes               varchar(1000),
             recordcreatetimestamp               timestamp        NOT NULL,
             recordcreateuser_uuid               uuid             NOT NULL,
@@ -210,6 +216,10 @@ module.exports = {
         alter table patient 
            alter column lowoxygenresponsetypeenum type lowoxygenresponsetype 
            using lowoxygenresponsetypeenum::lowoxygenresponsetype;
+        CREATE TYPE sextype AS ENUM ('MALE', 'FEMALE', 'NON-BINARY');
+        alter table patient 
+           alter column sexenum type sextype 
+           using sexenum::sextype;
         
         -- 
         -- TABLE: patientdelivery 
@@ -437,7 +447,7 @@ module.exports = {
         ALTER TABLE patientdelivery ADD CONSTRAINT patientdelivery_patient_fk 
             FOREIGN KEY (patient_uuid)
             REFERENCES patient(patient_uuid)
-        ;
+        ;                
         `,
         { transaction }
       );
