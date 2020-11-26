@@ -14,10 +14,11 @@ function Header({ name, children }) {
 
   return (
     <div className="header">
-      <h1 className="header__name">{name}</h1>
-      <h2 className="header__time">
-        {now.toFormat('hh:mm:ss')} <span>{now.toFormat('a')}</span>
-      </h2>
+      <a className="header__logout h4" href="/auth/local/logout">
+        Logout
+      </a>
+      <h2 className="header__time h4">{now.toLocaleString(DateTime.TIME_24_WITH_SECONDS)}</h2>
+      <h1 className="header__name h2">{name}</h1>
       {children}
     </div>
   );

@@ -20,6 +20,24 @@ i.e.
 ----------------------------------------
 */
 
+.h2 {
+  font-size: 1.3125rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+.h4 {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.5rem;
+}
+
+a.h4 {
+  font-weight: 600;
+}
+
 @mixin focus-shadow {
   outline: none;
   box-shadow: 0 0 0 4px color($theme-focus-color);

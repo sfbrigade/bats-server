@@ -2,24 +2,24 @@
 @import '../../theme/uswds-theme-color';
 
 .header {
-  background-color: white;
-  @include u-text($theme-color-base-ink);
+  background-color: color($theme-color-primary-dark);
+  color: white;
+}
+
+.header__logout {
+  color: white;
+  padding: 0.5rem 1.5rem 0;
+  position: absolute;
 }
 
 .header__name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0 0 0.25rem;
-  padding: 1rem 1.5rem 0;
+  margin: 0;
+  padding: 1rem 1.5rem 1.5rem;
+  text-align: center;
 }
 
 .header__time {
-  font-size: 2rem;
-  font-weight: 700;
   margin: 0;
-  padding: 0 1.5rem 1rem;
-  span {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
+  padding: 0.5rem 1.5rem 0;
+  text-align: right;
 }

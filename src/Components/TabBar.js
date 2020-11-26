@@ -20,9 +20,13 @@ function TabBar({ onSelect, tabs }) {
       <button
         key={i}
         type="button"
-        className={classNames('tabbar__tab', {
-          'tabbar__tab--selected': i === selectedIndex,
-        })}
+        className={classNames(
+          'tabbar__tab',
+          {
+            'tabbar__tab--selected': i === selectedIndex,
+          },
+          'h4'
+        )}
         onClick={() => onClick(i)}
       >
         {tabs[i]}
