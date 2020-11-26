@@ -91,7 +91,7 @@ describe('/api/ringdowns', () => {
           patient: {
             emergencyServiceResponseType: 'CODE 2',
             age: 30,
-            sex: 'male',
+            sex: 'MALE',
             chiefComplaintDescription: 'Fainted while walking home.',
             systolicBloodPressure: 80,
             diastolicBloodPressure: 120,
@@ -140,7 +140,7 @@ describe('/api/ringdowns', () => {
           },
           patient: {
             age: 99,
-            sex: 'female',
+            sex: 'FEMALE',
             otherObservationNotes: 'in stable condition',
           },
           patientDelivery: {
@@ -153,7 +153,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 7777);
       assert.deepStrictEqual(response.body.hospital.id, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
       assert.deepStrictEqual(response.body.patient.age, 99);
-      assert.deepStrictEqual(response.body.patient.sex, 'female');
+      assert.deepStrictEqual(response.body.patient.sex, 'FEMALE');
       assert.deepStrictEqual(response.body.patient.otherObservationNotes, 'in stable condition');
       assert.deepStrictEqual(response.body.patientDelivery.arrivedDateTimeLocal, '2005-10-19T10:23:54.000Z');
     });

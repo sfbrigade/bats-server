@@ -30,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       sex: {
-        field: 'sex',
-        type: DataTypes.STRING, // TODO - make an enum?
+        field: 'sexenum',
+        type: DataTypes.ENUM('MALE', 'FEMALE', 'NON-BINARY'),
         allowNull: true,
       },
       emergencyServiceResponseType: {
