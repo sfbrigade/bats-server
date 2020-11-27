@@ -199,7 +199,7 @@ function PatientFields({ ringdown, onChange }) {
           </fieldset>
         </div>
         <h3 className="usa-accordion__heading">
-          Addtl. Notes <span>(optional)</span>
+          Additional notes <span>(optional)</span>
         </h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">

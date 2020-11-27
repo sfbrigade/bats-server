@@ -68,6 +68,17 @@ a.h4 {
   @include h4-bold;
 }
 
+@mixin h4-italic {
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: normal;
+  line-height: 1.5rem;
+}
+
+.h4-italic {
+  @include h4-italic;
+}
+
 @mixin focus-shadow {
   outline: none;
   border: 2px solid color($theme-color-primary-vivid);
@@ -113,6 +124,12 @@ iframe,
   @include h2;
   border-bottom: 1px solid color($theme-color-base-lighter);
   padding: 1.25rem 1.5rem 0.5rem;
+
+  span {
+    @include h4-italic;
+    display: block;
+    color: color($theme-color-base-light);
+  }
 }
 
 .usa-accordion__content {
