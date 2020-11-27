@@ -136,14 +136,13 @@ iframe,
   padding: 1.5rem;
 }
 
-.usa-fieldset + .usa-fieldset {
-  border-top: 1px solid color($theme-color-base-lighter);
+.usa-fieldset > .usa-button:first-child {
+  margin-top: 0;
 }
 
-.usa-fieldset > .usa-button:first-child,
-.usa-fieldset > .usa-checkbox:first-child .usa-checkbox__label,
-.usa-fieldset > .usa-radio:first-child .usa-radio__label {
-  margin-top: 0;
+.usa-fieldset > .usa-label + .usa-checkbox .usa-checkbox__label,
+.usa-fieldset > .usa-label + .usa-radio .usa-radio__label {
+  margin-top: 1rem;
 }
 
 .usa-form {

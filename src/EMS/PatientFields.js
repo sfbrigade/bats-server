@@ -32,9 +32,7 @@ function PatientFields({ ringdown, onChange }) {
             />
           </fieldset>
         </div>
-        <h3 className="usa-accordion__heading">
-          <span className="text-secondary-dark">*</span> Patient Info
-        </h3>
+        <h3 className="usa-accordion__heading">Patient Info</h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormInput
@@ -42,7 +40,6 @@ function PatientFields({ ringdown, onChange }) {
               onChange={onChange}
               property="age"
               required
-              showRequiredHint={false}
               size="small"
               type="number"
               unit="years"
@@ -50,11 +47,17 @@ function PatientFields({ ringdown, onChange }) {
             />
           </fieldset>
           <fieldset className="usa-fieldset">
+            <label className="usa-label usa-label--required" htmlFor="sex">
+              Gender Identity
+            </label>
             <FormRadio currentValue={ringdown.sex} label="Male" onChange={onChange} property="sex" value="MALE" />
             <FormRadio currentValue={ringdown.sex} label="Female" onChange={onChange} property="sex" value="FEMALE" />
             <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={onChange} property="sex" value="NON-BINARY" />
           </fieldset>
           <fieldset className="usa-fieldset">
+            <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
+              Urgency
+            </label>
             <FormRadio
               currentValue={ringdown.emergencyServiceResponseType}
               label="Code 2"
@@ -82,6 +85,9 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
+            <label className="usa-label usa-label--required" htmlFor="stableIndicator">
+              Vitals Stability
+            </label>
             <FormRadio
               currentValue={ringdown.stableIndicator}
               label="Vitals stable"
