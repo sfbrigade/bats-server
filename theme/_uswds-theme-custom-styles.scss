@@ -31,20 +31,46 @@ i.e.
   @include h2;
 }
 
-.h4 {
+@mixin h3 {
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.5625rem;
+}
+
+.h3 {
+  @include h3;
+}
+
+@mixin h4 {
   font-size: 1rem;
   font-style: normal;
   font-weight: normal;
   line-height: 1.5rem;
 }
 
+.h4 {
+  @include h4;
+}
+
 a.h4 {
   font-weight: 600;
 }
 
+@mixin h4-bold {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+.h4-bold {
+  @include h4-bold;
+}
+
 @mixin focus-shadow {
   outline: none;
-  box-shadow: 0 0 0 4px color($theme-focus-color);
+  border: 2px solid color($theme-color-primary-vivid);
 }
 
 input,
@@ -141,6 +167,7 @@ iframe,
 
 .usa-input,
 .usa-textarea {
+  @include h3;
   border-radius: 0.25rem;
   margin-top: 0;
 
@@ -150,6 +177,7 @@ iframe,
 }
 
 .usa-label {
+  @include h4-bold;
   margin-top: 2rem;
   &:first-child {
     margin-top: 0;
@@ -162,4 +190,8 @@ iframe,
     @include u-text($theme-color-secondary-dark);
     content: '* ';
   }
+}
+
+.usa-label--focused {
+  color: color($theme-color-primary-vivid);
 }
