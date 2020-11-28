@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { promiseImpl } from 'ejs';
 
 
-const Counter = () => {
+const Counter = (props) => {
 
     const [count, setCount] = useState(0);
 
@@ -28,6 +29,7 @@ const Counter = () => {
         <div>
             <div class="grid-container">
   <div className="grid-row">
+    <div class="grid-col-8">{props.CountTitle}</div>
     <div className="grid-col-auto"><button className="usa-button" style={BorderRound} onClick={handleDecrement}>-</button></div>
     <div className="grid-col-auto"><div style={NumberBox}>{count}</div></div>
     <div className="grid-col-auto"><button className="usa-button border" style={BorderRound} onClick={handleIncrement}>+</button></div>
