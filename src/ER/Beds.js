@@ -1,39 +1,43 @@
 import React, { useState } from 'react';
 import Counter from '../Components/counter';
+import Banner from '../Components/banner';
 
 const Beds = () => {
+  const DiversionStyle = {
+    "background-color": "#005ea2",
+    "width": "5px"
+  }
   
   return (
     <div className="cointainer">
-      <h1> SF General ER </h1>
+      <Banner BannerTitle="Bed availability" />
       <div>
-        <h2> Available Beds </h2>
         <div id="erCountButtons">
-          <Counter />
-          <h5>ER Beds</h5>
-          
-       
+          <Counter CountTitle="ER Beds" />
         </div>
         <div id="psychCountButtons">
-        <Counter/>
-          <h5>Psych Beds</h5>
-         
-        </div>
+        <Counter CountTitle="Psych Beds"/>
+         </div>
+
         <div id="erNotesForm">
+        <Banner BannerTitle="Addtl. Notes (optional)" />
           <label htmlFor="erNotes">
-            ER Notes:
+          ER conditions:
             <textarea id="erNotes" name="erNotes" rows="4" cols="50" />
           </label>
-          <button type="button"> Save </button>
+          <button className="usa-button"> Update </button>
         </div>
         <div id="onDiversionForm">
-          On diversion{' '}
-          <b>
-            <span className="onDiversion"> NO </span>{' '}
-          </b>{' '}
-          <button type="button"> Change </button>
+          <Banner BannerTitle="Diversion status" />
+
+          <div className="grid-row height-7 width-card-lg">
+    <div class="grid-col-1" style={DiversionStyle}></div>
+    <div className="grid-col-8">Not On Diversion<button className="usa-button--unstyled">Change status</button></div>
+    </div>
+        
         </div>
       </div>
+      
     </div>
   );
 };
