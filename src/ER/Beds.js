@@ -1,38 +1,23 @@
 import React, { useState } from 'react';
+import Counter from '../Components/counter';
 
 const Beds = () => {
-  const [count, setCount] = useState(0);
-
-  const handleIncrement = () => {
-    setCount((prevCount) => prevCount + 1);
-  };
-
-  const handleDecrement = () => {
-    setCount((prevCount) => prevCount - 1);
-  };
-
+  
   return (
     <div className="cointainer">
       <h1> SF General ER </h1>
       <div>
         <h2> Available Beds </h2>
         <div id="erCountButtons">
-          <button type="button" onClick={handleDecrement}>
-            -
-          </button>
-          <h5>ER Beds {count}</h5>
-          <button type="button" onClick={handleIncrement}>
-            +
-          </button>
+          <Counter />
+          <h5>ER Beds</h5>
+          
+       
         </div>
         <div id="psychCountButtons">
-          <button type="button" onClick={handleDecrement}>
-            -
-          </button>
-          <h5>Psych Beds {count}</h5>
-          <button type="button" onClick={handleIncrement}>
-            +
-          </button>
+        <Counter/>
+          <h5>Psych Beds</h5>
+         
         </div>
         <div id="erNotesForm">
           <label htmlFor="erNotes">
