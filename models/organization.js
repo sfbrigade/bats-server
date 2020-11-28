@@ -33,6 +33,12 @@ module.exports = (sequelize, DataTypes) => {
         field: 'timezoneisocode',
         type: DataTypes.STRING,
       },
+      isActive: {
+        field: 'activeindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
       createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,

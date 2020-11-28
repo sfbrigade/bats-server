@@ -10,7 +10,7 @@ module.exports = {
         -- ER/Studio Data Architect SQL Code Generation
         -- Project :      BATS Logical Data Model.DM1
         --
-        -- Date Created : Wednesday, November 11, 2020 07:09:44
+        -- Date Created : Friday, November 27, 2020 18:58:54
         -- Target DBMS : PostgreSQL 10.x-12.x
         --
         
@@ -28,12 +28,13 @@ module.exports = {
             ambulance_uuid           uuid           DEFAULT gen_random_uuid() NOT NULL,
             emsorganization_uuid     uuid,
             ambulanceidentifier      varchar(50)    NOT NULL,
+            activeindicator          boolean        DEFAULT TRUE NOT NULL,
             recordcreatetimestamp    timestamp      NOT NULL,
             recordcreateuser_uuid    uuid           NOT NULL,
             recordupdatetimestamp    timestamp      NOT NULL,
             recordupdateuser_uuid    uuid           NOT NULL,
             CONSTRAINT ambulance_pk PRIMARY KEY (ambulance_uuid),
-            CONSTRAINT ambulance_uk  UNIQUE (emsorganization_uuid, ambulanceidentifier)
+             UNIQUE (emsorganization_uuid, ambulanceidentifier)
         )
         ;
         
@@ -55,13 +56,13 @@ module.exports = {
             operationaluserindicator       boolean         NOT NULL,
             administrativeuserindicator    boolean         NOT NULL,
             superuserindicator             boolean         NOT NULL,
-            activeindicator                boolean,
+            activeindicator                boolean         DEFAULT TRUE NOT NULL,
             recordcreatetimestamp          timestamp       NOT NULL,
             recordcreateuser_uuid          uuid            NOT NULL,
             recordupdatetimestamp          timestamp       NOT NULL,
             recordupdateuser_uuid          uuid            NOT NULL,
             CONSTRAINT batsuser_pk PRIMARY KEY (user_uuid),
-            CONSTRAINT batsuser_uk  UNIQUE (email)
+             UNIQUE (email)
         )
         ;
         alter table batsuser alter column email type citext;
@@ -80,7 +81,7 @@ module.exports = {
             recordupdatetimestamp               timestamp                      NOT NULL,
             recordupdateuser_uuid               uuid                           NOT NULL,
             CONSTRAINT emergencymedicalservicecall_pk PRIMARY KEY (emergencymedicalservicecall_uuid),
-            CONSTRAINT emergencymedicalservicecall_uk  UNIQUE (dispatchcallnumber)
+             UNIQUE (dispatchcallnumber)
         )
         ;
         
@@ -95,13 +96,13 @@ module.exports = {
             healthcareorganization_uuid    uuid           NOT NULL,
             hospitalname                   varchar(60)    NOT NULL,
             sortsequencenumber             smallint,
-            activeindicator                boolean,
+            activeindicator                boolean        DEFAULT TRUE NOT NULL,
             recordcreatetimestamp          timestamp      NOT NULL,
             recordcreateuser_uuid          uuid           NOT NULL,
             recordupdatetimestamp          timestamp      NOT NULL,
             recordupdateuser_uuid          uuid           NOT NULL,
             CONSTRAINT hospital_pk PRIMARY KEY (hospital_uuid),
-            CONSTRAINT hospital_uk  UNIQUE (hospitalname)
+             UNIQUE (hospitalname)
         )
         ;
         
@@ -125,7 +126,7 @@ module.exports = {
             recordupdatetimestamp                 timestamp                      NOT NULL,
             recordupdateuser_uuid                 uuid                           NOT NULL,
             CONSTRAINT hospitalstatusupdate_pk PRIMARY KEY (hospitalstatusupdate_uuid),
-            CONSTRAINT hospitalstatusupdate_uk  UNIQUE (hospital_uuid, updatedatetimelocal)
+             UNIQUE (hospital_uuid, updatedatetimelocal)
         )
         ;
         
@@ -139,12 +140,13 @@ module.exports = {
             hospitaluser_uuid        uuid         DEFAULT gen_random_uuid() NOT NULL,
             hospital_uuid            uuid         DEFAULT gen_random_uuid(),
             edadminuser_uuid         uuid         DEFAULT gen_random_uuid(),
+            activeindicator          boolean      DEFAULT TRUE NOT NULL,
             recordcreatetimestamp    timestamp    NOT NULL,
             recordcreateuser_uuid    uuid         NOT NULL,
             recordupdatetimestamp    timestamp    NOT NULL,
             recordupdateuser_uuid    uuid         NOT NULL,
             CONSTRAINT hospitaluser_pk PRIMARY KEY (hospitaluser_uuid),
-            CONSTRAINT hospitaluser_uk  UNIQUE (hospital_uuid, edadminuser_uuid)
+             UNIQUE (hospital_uuid, edadminuser_uuid)
         )
         ;
         
@@ -159,13 +161,13 @@ module.exports = {
             organizationname         varchar(100)    NOT NULL,
             organizationtypeenum     varchar(50)     NOT NULL,
             timezoneisocode          character(3)    DEFAULT 'PST' NOT NULL,
-            activeindicator          boolean,
+            activeindicator          boolean         DEFAULT TRUE NOT NULL,
             recordcreatetimestamp    timestamp       NOT NULL,
             recordcreateuser_uuid    uuid            NOT NULL,
             recordupdatetimestamp    timestamp       NOT NULL,
             recordupdateuser_uuid    uuid            NOT NULL,
             CONSTRAINT organization_pk PRIMARY KEY (organization_uuid),
-            CONSTRAINT organization_uk  UNIQUE (organizationname)
+             UNIQUE (organizationname)
         )
         ;
         CREATE TYPE organizationtype AS ENUM ('EMS', 'HEALTHCARE', 'C4SF');
@@ -199,7 +201,7 @@ module.exports = {
             psychindicator                      boolean,
             combativebehaviorindicator          boolean,
             restraintindicator                  boolean,
-            "19suspectedindicator"              boolean,
+            "covid-19suspectedindicator"        boolean,
             otherobservationnotes               varchar(1000),
             recordcreatetimestamp               timestamp        NOT NULL,
             recordcreateuser_uuid               uuid             NOT NULL,
@@ -232,6 +234,7 @@ module.exports = {
             hospital_uuid                    uuid                           NOT NULL,
             paramedicuser_uuid               uuid                           NOT NULL,
             deliverystatusenum               varchar(50)                    NOT NULL,
+            etaminutes                       int2,
             ringdownsentdatetimelocal        timestamp without time zone,
             ringdownreceiveddatetimelocal    timestamp without time zone,
             arriveddatetimelocal             timestamp without time zone,
@@ -242,7 +245,7 @@ module.exports = {
             recordupdatetimestamp            timestamp                      NOT NULL,
             recordupdateuser_uuid            uuid                           NOT NULL,
             CONSTRAINT patientdelivery_pk PRIMARY KEY (patientdelivery_uuid),
-            CONSTRAINT patientdelivery_uk  UNIQUE (ambulance_uuid, patient_uuid, hospital_uuid)
+             UNIQUE (ambulance_uuid, patient_uuid, hospital_uuid)
         )
         ;
         CREATE TYPE deliverystatus AS ENUM ('RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE');
@@ -447,7 +450,7 @@ module.exports = {
         ALTER TABLE patientdelivery ADD CONSTRAINT patientdelivery_patient_fk 
             FOREIGN KEY (patient_uuid)
             REFERENCES patient(patient_uuid)
-        ;                
+        ;
         `,
         { transaction }
       );

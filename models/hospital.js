@@ -35,6 +35,12 @@ module.exports = (sequelize, DataTypes) => {
         field: 'sortsequencenumber',
         type: DataTypes.INTEGER,
       },
+      isActive: {
+        field: 'activeindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
       createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,

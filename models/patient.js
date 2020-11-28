@@ -107,11 +107,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
       },
-      // covid19Indicator: {
-      //   field: 'covid19indicator',
-      //   type: DataTypes.BOOLEAN,
-      //   allowNull: true,
-      // },
+      covid19SuspectedIndicator: {
+        field: 'covid-19suspectedindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
       ivIndicator: {
         field: 'ivindicator',
         type: DataTypes.BOOLEAN,

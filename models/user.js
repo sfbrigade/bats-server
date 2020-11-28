@@ -79,10 +79,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
       isActive: {
-        type: DataTypes.VIRTUAL(DataTypes.BOOLEAN, ['isOperationalUser', 'isAdminUser', 'isSuperUser']),
-        get() {
-          return this.isOperationalUser || this.isAdminUser || this.isSuperUser;
-        },
+        field: 'activeindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       createdAt: {
         field: 'recordcreatetimestamp',
