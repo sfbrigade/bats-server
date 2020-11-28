@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Counter from '../Components/counter';
 import Banner from '../Components/banner';
+import ButtonRight from '../Components/ButtonRight';
 
 const Beds = () => {
   const DiversionStyle = {
@@ -25,8 +26,9 @@ const Beds = () => {
           ER conditions:
             <textarea id="erNotes" name="erNotes" rows="4" cols="50" />
           </label>
-          <button className="usa-button"> Update </button>
+          <ButtonRight ButtonTitle="Update" />   
         </div>
+
         <div id="onDiversionForm">
           <Banner BannerTitle="Diversion status" />
 
