@@ -35,18 +35,18 @@ const Counter = (props) => {
         "borderRadius": "45%",
         "fontSize": "27px",
         "padding": "10%",
-        "margin": "-14% 0% 0% 61%",
-        "height": "1.2em",
-        "width": "1.05em"
+        "margin": "-26% 0% 0% 43%",
+        "height": "1.6em",
+        "width": "1.5em"
         
     }
       const NumberBox = {
-          "border": "1px solid black",
+          "border": "0.5px solid black",
           "borderRadius": "11%",
           "width": "2em",
-          "height": "1.09em",
+          "height": "1.3em",
           "textAlign": "center",
-          "padding": "0%",
+          "paddingTop": "4%",
           "fontSize": "30px",
           "margin": "-9% 0% 0% 0%",
       }
