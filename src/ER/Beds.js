@@ -3,6 +3,7 @@ import Counter from '../Components/counter';
 import Banner from '../Components/banner';
 import ButtonRight from '../Components/ButtonRight';
 import DiversionPopup from '../Components/DiversionPopup';
+import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
 
 const Beds = () => {
   const DiversionStyle = {
@@ -23,6 +24,7 @@ const Beds = () => {
   const [DiversionDateBanner, setDiversionDateUpdate] = useState("11/29/2020");
   const [diversion, setDiversion] = useState(false);
   const [popup, setPopup] = useState(false);
+  const [PopupConfirmation, setPopupConfirmation] = useState(false);
 
   const handleBedUpdate = () => {
     const date = new Date();
@@ -44,11 +46,6 @@ const Beds = () => {
     const TimeArray = TimeString.split(' ');
     setNotesTimeUpdate(TimeArray[0]);
     setNotesDateUpdate(date.getMonth() + 1 + "/" + DateArray[2] + "/" + DateArray[3]);
-
-
- 
-
-
   }
 
   const handleDiversionUpdate = () => {
@@ -61,7 +58,8 @@ const Beds = () => {
     setDiversionTimeUpdate(TimeArray[0]);
     setDiversionDateUpdate(date.getMonth() + 1 + "/" + DateArray[2] + "/" + DateArray[3]);
     setDiversion(!diversion);
-    setPopup(!popup)
+    setPopup(!popup);
+    setPopupConfirmation(!PopupConfirmation);
 
   }
 
@@ -77,6 +75,9 @@ const container2 = {
 
 const TogglePopup = () => {
   setPopup(!popup)
+}
+const TogglePopupConfirmation = () => {
+  setPopupConfirmation(!PopupConfirmation)
 }
   return (
     <div className="cointainer">
@@ -108,6 +109,7 @@ const TogglePopup = () => {
     {diversion && <div className="grid-col-1" style={DiversionStyle2}></div>}
     {diversion && <div className="grid-col-8">On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
     {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
+    {PopupConfirmation && <DiversionPopupConfirmation ok={TogglePopupConfirmation} />}
     </div>
         
         </div>

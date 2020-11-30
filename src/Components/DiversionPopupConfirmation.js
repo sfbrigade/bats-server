@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const DiversionPopup = (props) => {
+const DiversionPopupConfirmation = (props) => {
     const popup = {
         "position": "fixed",  
         "width": "100%",  
@@ -20,20 +20,20 @@ const DiversionPopup = (props) => {
         "top": "25%",
         "bottom": "25%",  
         "margin": "auto",  
-        "background": "#fee685"  
+        "background": "#ecf3ec"  
 
     }
 
     return (  
         <div style={popup}>  
         <div style={PopupInner}>  
-        <h1>Change divert status?</h1> 
-        <p>Ambulances will be notified.</p> 
-        <button className="usa-button--outline" onClick={props.keep}>Keep status</button> <button className="usa-button--secondary" onClick={props.update}>Update status</button>
+        <h1>Divert status updated</h1>  
+        <p>Ambulances will be notified.</p>
+        <button className="usa-button" onClick={props.ok}>Back to form</button> 
         </div>  
         </div>  
         );  
 
 }
 
-export default DiversionPopup;
+export default DiversionPopupConfirmation;
