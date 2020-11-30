@@ -9,13 +9,19 @@ const Beds = () => {
     "width": "5px"
   }
 
+  const DiversionStyle2 = {
+    "backgroundColor": "#ffbe2e",
+    "width": "5px"
+  }
+
   const [BedTimeBanner, setBedTimeUpdate] = useState("pending");
   const [BedDateBanner, setBedDateUpdate] = useState("pending");
   const [NotesTimeBanner, setNotesTimeUpdate] = useState("pending");
   const [NotesDateBanner, setNotesDateUpdate] = useState("pending");
-  const [DiversionTimeBanner, setDiversionTimeUpdate] = useState("pending");
-  const [DiversionDateBanner, setDiversionDateUpdate] = useState("pending");
-  
+  const [DiversionTimeBanner, setDiversionTimeUpdate] = useState("19:09:35");
+  const [DiversionDateBanner, setDiversionDateUpdate] = useState("11/29/2020");
+  const [diversion, setDiversion] = useState(false)
+
   const handleBedUpdate = () => {
     const date = new Date();
     const DateString = date.toString();
@@ -51,11 +57,19 @@ const Beds = () => {
     const TimeArray = TimeString.split(' ');
     setDiversionTimeUpdate(TimeArray[0]);
     setDiversionDateUpdate(date.getMonth() + 1 + "/" + DateArray[2] + "/" + DateArray[3]);
-
+    setDiversion(!diversion);
 
   }
 
-  
+  const container = {
+    "margin": "0.7em",
+    "padding": "0.7em"
+}
+const container2 = {
+  "margin": "0.9em",
+  "padding": "0em",
+  "boxShadow": "0em 0em 0.4em gray"
+}
   return (
     <div className="cointainer">
       <Banner BannerTitle="Bed availability" date={BedDateBanner} time={BedTimeBanner} />
@@ -67,21 +81,24 @@ const Beds = () => {
         <Counter CountTitle="Psych Beds" update={handleBedUpdate} />
          </div>
 
-        <div id="erNotesForm">
+        
         <Banner BannerTitle="Addtl. Notes (optional)" date={NotesDateBanner} time={NotesTimeBanner} />
+        <div style={container}>
           <label htmlFor="erNotes">
           ER conditions
-            <textarea id="erNotes" name="erNotes" rows="4" cols="50" />
+            <textarea id="erNotes" name="erNotes" rows="4" cols="50" require="true" />
           </label>
           <ButtonRight ButtonTitle="Update" update={handleNotesUpdate} />   
         </div>
 
-        <div id="onDiversionForm">
+        
           <Banner BannerTitle="Diversion status" date={DiversionDateBanner} time={DiversionTimeBanner} />
-
+          <div style={container2}>
           <div className="grid-row height-7 width-card-lg">
-    <div className="grid-col-1" style={DiversionStyle}></div>
-    <div className="grid-col-8">Not On Diversion<button className="usa-button--unstyled" onClick={handleDiversionUpdate}>Change status</button></div>
+    {!diversion && <div className="grid-col-1" style={DiversionStyle}></div>}
+    {!diversion && <div className="grid-col-8">Not On Diversion<button className="usa-button--unstyled" onClick={handleDiversionUpdate}>Change status</button></div>}
+    {diversion && <div className="grid-col-1" style={DiversionStyle2}></div>}
+    {diversion && <div className="grid-col-8">On Diversion<button className="usa-button--unstyled" onClick={handleDiversionUpdate}>Change status</button></div>}
     </div>
         
         </div>
