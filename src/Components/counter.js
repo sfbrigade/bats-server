@@ -35,9 +35,9 @@ const Counter = (props) => {
         "borderRadius": "45%",
         "fontSize": "27px",
         "padding": "10%",
-        "margin": "-26% 0% 0% 43%",
-        "height": "1.6em",
-        "width": "1.5em"
+        "margin": "-7% 0% 0% 43%",
+        "height": "1.2em",
+        "width": "1.05em"
         
     }
       const NumberBox = {

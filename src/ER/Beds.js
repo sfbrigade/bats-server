@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Counter from '../Components/counter';
 import Banner from '../Components/banner';
 import ButtonRight from '../Components/ButtonRight';
+import DiversionPopup from '../Components/DiversionPopup';
 
 const Beds = () => {
   const DiversionStyle = {
@@ -20,7 +21,8 @@ const Beds = () => {
   const [NotesDateBanner, setNotesDateUpdate] = useState("pending");
   const [DiversionTimeBanner, setDiversionTimeUpdate] = useState("19:09:35");
   const [DiversionDateBanner, setDiversionDateUpdate] = useState("11/29/2020");
-  const [diversion, setDiversion] = useState(false)
+  const [diversion, setDiversion] = useState(false);
+  const [popup, setPopup] = useState(false);
 
   const handleBedUpdate = () => {
     const date = new Date();
@@ -50,6 +52,7 @@ const Beds = () => {
   }
 
   const handleDiversionUpdate = () => {
+    
     const date = new Date();
     const DateString = date.toString();
     const DateArray = DateString.split(' ');
@@ -58,6 +61,7 @@ const Beds = () => {
     setDiversionTimeUpdate(TimeArray[0]);
     setDiversionDateUpdate(date.getMonth() + 1 + "/" + DateArray[2] + "/" + DateArray[3]);
     setDiversion(!diversion);
+    setPopup(!popup)
 
   }
 
@@ -69,6 +73,10 @@ const container2 = {
   "margin": "0.9em",
   "padding": "0em",
   "boxShadow": "0em 0em 0.4em gray"
+}
+
+const TogglePopup = () => {
+  setPopup(!popup)
 }
   return (
     <div className="cointainer">
@@ -96,9 +104,10 @@ const container2 = {
           <div style={container2}>
           <div className="grid-row height-7 width-card-lg">
     {!diversion && <div className="grid-col-1" style={DiversionStyle}></div>}
-    {!diversion && <div className="grid-col-8">Not On Diversion<button className="usa-button--unstyled" onClick={handleDiversionUpdate}>Change status</button></div>}
+    {!diversion && <div className="grid-col-8">Not On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
     {diversion && <div className="grid-col-1" style={DiversionStyle2}></div>}
-    {diversion && <div className="grid-col-8">On Diversion<button className="usa-button--unstyled" onClick={handleDiversionUpdate}>Change status</button></div>}
+    {diversion && <div className="grid-col-8">On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
+    {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
     </div>
         
         </div>
