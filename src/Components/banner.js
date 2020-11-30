@@ -9,11 +9,10 @@ const Banner = (props) => {
     const title = {
         "margin":"0em"
     }
-    
+
     return (
         <section className="usa-banner">
         <h1 style={title}>{props.BannerTitle}</h1>
-        {/* Functionality needed for updated date and time */}
         <p style={update}>Updated {props.date} @{props.time}</p>
   
         </section>
