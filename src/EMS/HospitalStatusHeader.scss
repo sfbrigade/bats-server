@@ -1,1 +1,17 @@
 @import '~uswds/dist/scss/packages/required';
+
+$rotation-deg: 60deg;
+
+@mixin rotate {
+  transform: rotate($rotation-deg);
+  -webkit-transform: rotate($rotation-deg);
+  -moz-transform: rotate($rotation-deg);
+  -ms-transform: rotate($rotation-deg);
+  -o-transform: rotate($rotation-deg);
+}
+
+.header__column-name {
+  @include u-text('base-light');
+  @include u-text('normal');
+  @include rotate;
+}

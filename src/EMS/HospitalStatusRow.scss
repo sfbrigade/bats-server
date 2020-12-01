@@ -1,14 +1,24 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-color';
 
-.hospitalstatusrow__name {
+$row-height: 5rem;
+
+.hospitalstatusrow__name-container {
   border: 1px solid color($theme-color-base-lighter);
-  display: flex;
   justify-content: left;
+  height: $row-height;
+  display: flex;
+}
+.hospitalstatusrow__name {
+  @include u-text('normal');
+}
+
+.hospitalstatusrow__data-container {
+  border: 1px solid color($theme-color-base-lighter);
+  height: $row-height;
+  display: flex;
 }
 
 .hospitalstatusrow__data {
-  border: 1px solid color($theme-color-base-lighter);
-  height: 5rem;
-  display: flex;
+  // TODO - make text red if diversion == true or beds == 0
 }
