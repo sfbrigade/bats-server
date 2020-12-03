@@ -28,7 +28,10 @@ function createResponse(hsu) {
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
   try {
-    const statusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({ include: [models.Hospital] });
+    const statusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({
+      include: [models.Hospital],
+    });
+    statusUpdates.sort((a, b) => a.Hospital.sortSequenceNumber - b.Hospital.sortSequenceNumber);
     const response = statusUpdates.map((statusUpdate) => createResponse(statusUpdate));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {

@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         allowNull: false,
       },
+      isActive: {
+        field: 'activeindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
       createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,

@@ -23,16 +23,7 @@ describe('/api/hospitalstatuses', () => {
 
       assert.deepStrictEqual(response.body.length, 2);
 
-      const cpmcHospital = response.body.filter((hsu) => hsu.hospital.id === '7f666fe4-dbdd-4c7f-ab44-d9157379a680')[0];
-      assert(cpmcHospital.id);
-      assert(cpmcHospital.updateDateTimeLocal);
-      assert.deepStrictEqual(cpmcHospital.openEdBedCount, 10);
-      assert.deepStrictEqual(cpmcHospital.divertStatusIndicator, false);
-      assert.deepStrictEqual(cpmcHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
-      assert.deepStrictEqual(cpmcHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
-      assert.deepStrictEqual(cpmcHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
-
-      const sutterHospital = response.body.filter((hsu) => hsu.hospital.id === '00752f60-068f-11eb-adc1-0242ac120002')[0];
+      const sutterHospital = response.body[0];
       assert(sutterHospital.id);
       assert(sutterHospital.updateDateTimeLocal);
       assert.deepStrictEqual(sutterHospital.openEdBedCount, 0);
@@ -40,6 +31,15 @@ describe('/api/hospitalstatuses', () => {
       assert.deepStrictEqual(sutterHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(sutterHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(sutterHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+
+      const cpmcHospital = response.body[1];
+      assert(cpmcHospital.id);
+      assert(cpmcHospital.updateDateTimeLocal);
+      assert.deepStrictEqual(cpmcHospital.openEdBedCount, 10);
+      assert.deepStrictEqual(cpmcHospital.divertStatusIndicator, false);
+      assert.deepStrictEqual(cpmcHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(cpmcHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(cpmcHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
     });
   });
 

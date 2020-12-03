@@ -11,6 +11,7 @@ function PatientFields({ ringdown, onChange }) {
   return (
     <>
       <div className="usa-accordion">
+        <h3 className="usa-accordion__heading">Unit Info</h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormInput
@@ -27,15 +28,12 @@ function PatientFields({ ringdown, onChange }) {
               property="dispatchCallNumber"
               required
               size="medium"
+              type="number"
               value={ringdown.dispatchCallNumber}
             />
           </fieldset>
         </div>
-        <h3 className="usa-accordion__heading">
-          <button disabled type="button" className="usa-accordion__button">
-            <span className="text-secondary-dark">*</span> Patient Info
-          </button>
-        </h3>
+        <h3 className="usa-accordion__heading">Patient Info</h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormInput
@@ -43,7 +41,6 @@ function PatientFields({ ringdown, onChange }) {
               onChange={onChange}
               property="age"
               required
-              showRequiredHint={false}
               size="small"
               type="number"
               unit="years"
@@ -51,11 +48,17 @@ function PatientFields({ ringdown, onChange }) {
             />
           </fieldset>
           <fieldset className="usa-fieldset">
+            <label className="usa-label usa-label--required" htmlFor="sex">
+              Gender Identity
+            </label>
             <FormRadio currentValue={ringdown.sex} label="Male" onChange={onChange} property="sex" value="MALE" />
             <FormRadio currentValue={ringdown.sex} label="Female" onChange={onChange} property="sex" value="FEMALE" />
             <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={onChange} property="sex" value="NON-BINARY" />
           </fieldset>
           <fieldset className="usa-fieldset">
+            <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
+              Urgency
+            </label>
             <FormRadio
               currentValue={ringdown.emergencyServiceResponseType}
               label="Code 2"
@@ -83,6 +86,9 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
+            <label className="usa-label usa-label--required" htmlFor="stableIndicator">
+              Vitals Stability
+            </label>
             <FormRadio
               currentValue={ringdown.stableIndicator}
               label="Vitals stable"
@@ -100,9 +106,7 @@ function PatientFields({ ringdown, onChange }) {
           </fieldset>
         </div>
         <h3 className="usa-accordion__heading">
-          <button type="button" className="usa-accordion__button">
-            Vitals <span>(optional)</span>
-          </button>
+          Vitals <span>(optional)</span>
         </h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
@@ -175,11 +179,11 @@ function PatientFields({ ringdown, onChange }) {
                   <FormInput
                     disabled={ringdown.lowOxygenResponseType !== 'SUPPLEMENTAL OXYGEN'}
                     onChange={onChange}
-                    property="supplementalOxygen"
+                    property="supplementalOxygenAmount"
                     size="small"
                     type="number"
                     unit="L"
-                    value={ringdown.supplementalOxygen}
+                    value={ringdown.supplementalOxygenAmount}
                   />
                 </div>
               </div>
@@ -196,9 +200,7 @@ function PatientFields({ ringdown, onChange }) {
           </fieldset>
         </div>
         <h3 className="usa-accordion__heading">
-          <button disabled type="button" className="usa-accordion__button">
-            Addtl. Notes <span>(optional)</span>
-          </button>
+          Additional notes <span>(optional)</span>
         </h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">

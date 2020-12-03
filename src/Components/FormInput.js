@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 function FormInput({ children, disabled, label, onChange, isWrapped, property, required, showRequiredHint, size, type, unit, value }) {
+  const [focused, setFocused] = useState(false);
+
   function typedValue(stringValue) {
     if (type === 'number') {
       const number = Number(stringValue);
@@ -20,7 +22,9 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
         id={property}
         disabled={disabled}
         value={value || ''}
+        onBlur={() => setFocused(false)}
         onChange={(e) => onChange(property, typedValue(e.target.value))}
+        onFocus={() => setFocused(true)}
         required={required}
         type={type}
         className={classNames('usa-input', {
@@ -38,7 +42,10 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
   return (
     <>
       {label && (
-        <label htmlFor={property} className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required })}>
+        <label
+          htmlFor={property}
+          className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required, 'usa-label--focused': focused })}
+        >
           {label}
         </label>
       )}

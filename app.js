@@ -1,14 +1,14 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-const expressSession = require('express-session');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const logger = require('morgan');
 const passport = require('./auth/passport');
 const { isAuthenticated } = require('./auth/middleware');
 
 const app = express();
 
+app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
@@ -17,12 +17,11 @@ if (process.env.NODE_ENV !== 'test') {
 }
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(
-  expressSession({
-    resave: false,
-    saveUninitialized: true,
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
     secret: process.env.SESSION_SECRET,
+    secure: process.env.NODE_ENV === 'production',
   })
 );
 
