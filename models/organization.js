@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -9,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
 
       Organization.belongsTo(models.User, { as: 'CreatedBy' });
       Organization.belongsTo(models.User, { as: 'UpdatedBy' });
+    }
+
+    toJSON() {
+      const attributes = { ...this.get() };
+      attributes.organization = this.Organization?.toJSON() || { id: this.OrganizationId };
+      return _.pick(attributes, ['id', 'name', 'type', 'timeZoneIsoCode', 'isActive']);
     }
   }
   Organization.init(

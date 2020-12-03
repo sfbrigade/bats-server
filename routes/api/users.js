@@ -26,4 +26,9 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/me', middleware.isAuthenticated, async (req, res) => {
+  req.user.Organization = await req.user.getOrganization();
+  res.json(req.user.toJSON());
+});
+
 module.exports = router;

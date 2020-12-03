@@ -12,7 +12,7 @@ function HospitalSelection({ ringdown, onChange }) {
   const [hospitalStatuses, setHospitalStatuses] = useState([]);
 
   useEffect(() => {
-    ApiService.getHospitalStatuses().then((response) => {
+    ApiService.hospitalStatuses.get().then((response) => {
       setHospitalStatuses(response.data);
     });
   }, []);

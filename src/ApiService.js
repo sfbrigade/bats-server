@@ -16,10 +16,15 @@ instance.interceptors.response.use(
   }
 );
 
-function getHospitalStatuses() {
-  return instance.get('/api/hospitalstatuses');
-}
-
 export default {
-  getHospitalStatuses,
+  hospitalStatuses: {
+    get() {
+      return instance.get('/api/hospitalstatuses');
+    },
+  },
+  users: {
+    me() {
+      return instance.get('/api/users/me');
+    },
+  },
 };
