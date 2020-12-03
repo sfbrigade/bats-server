@@ -11,11 +11,11 @@ const HospitalStatusRow = ({ hospitalStatus }) => (
         <h3 className="hospitalstatusrow__name">{hospitalStatus.hospitalName}</h3>
       </div>
       <div className="grid-col-8 hospitalstatusrow__data-container">
-        <div className="">{hospitalStatus.diversionStatusIndicator ? "Yes" : "No"}</div>
-        <div className="">{hospitalStatus.openEdBedCount}</div>
-        <div className="">{hospitalStatus.openPsychBedCount}</div>
-        <div className="">999</div>
-        <div className="">999</div>
+        <div className="hospitalstatusrow__data">{hospitalStatus.diversionStatusIndicator ? "Yes" : "No"}</div>
+        <div className="hospitalstatusrow__data">{hospitalStatus.openEdBedCount}</div>
+        <div className="hospitalstatusrow__data">{hospitalStatus.openPsychBedCount}</div>
+        <div className="hospitalstatusrow__data">999</div>
+        <div className="hospitalstatusrow__data">999</div>
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ const HospitalStatuses = () => {
   const [hospitalStatusResponse, setHospitalStatusResponse] = useState([]);
 
   useEffect(() => {
-    ApiService.getHospitalStatuses().then((response) => {
+    ApiService.hospitalStatuses.get().then((response) => {
       setHospitalStatusResponse(response.data);
     });
   }, []);

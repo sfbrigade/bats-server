@@ -13,5 +13,16 @@ $rotation-deg: 60deg;
 .header__column-name {
   @include u-text('base-light');
   @include u-text('normal');
-  @include rotate;
+  @include u-text('no-wrap');
+  // @include rotate;
+}
+
+.header__column-container {
+  width: 20%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.header__container {
+  height: 200px;
 }

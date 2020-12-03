@@ -21,4 +21,6 @@ $row-height: 5rem;
 
 .hospitalstatusrow__data {
   // TODO - make text red if diversion == true or beds == 0
+  width: 20%;
+  text-align: center;
 }
