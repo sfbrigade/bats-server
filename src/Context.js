@@ -1,19 +1,11 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState } from 'react';
 
-const Context = createContext({
-  user: undefined,
-  setUser: () => {}
-});
+const Context = createContext();
 
-function ContextProvider({children}) {
+function ContextProvider({ children }) {
   const [user, setUser] = useState();
 
-  return (
-    <Context.Provider
-      value={{ user, setUser }}>
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={{ user, setUser }}>{children}</Context.Provider>;
 }
 
 export { ContextProvider };

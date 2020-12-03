@@ -53,10 +53,6 @@ i.e.
   @include h4;
 }
 
-a.h4 {
-  font-weight: 600;
-}
-
 @mixin h4-bold {
   font-size: 1rem;
   font-style: normal;
