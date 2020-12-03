@@ -28,6 +28,7 @@ function PatientFields({ ringdown, onChange }) {
               property="dispatchCallNumber"
               required
               size="medium"
+              type="number"
               value={ringdown.dispatchCallNumber}
             />
           </fieldset>
@@ -178,11 +179,11 @@ function PatientFields({ ringdown, onChange }) {
                   <FormInput
                     disabled={ringdown.lowOxygenResponseType !== 'SUPPLEMENTAL OXYGEN'}
                     onChange={onChange}
-                    property="supplementalOxygen"
+                    property="supplementalOxygenAmount"
                     size="small"
                     type="number"
                     unit="L"
-                    value={ringdown.supplementalOxygen}
+                    value={ringdown.supplementalOxygenAmount}
                   />
                 </div>
               </div>

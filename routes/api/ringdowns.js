@@ -8,6 +8,40 @@ const models = require('../../models');
 
 const router = express.Router();
 
+const patientParams = [
+  'age',
+  'sex',
+  'emergencyServiceResponseType',
+  'chiefComplaintDescription',
+  'stableIndicator',
+  'systolicBloodPressure',
+  'diastolicBloodPressure',
+  'heartRateBpm',
+  'respiratoryRate',
+  'oxygenSaturation',
+  'lowOxygenResponseType',
+  'supplementalOxygenAmount',
+  'temperature',
+  'etohSuspectedIndicator',
+  'drugsSuspectedIndicator',
+  'psychIndicator',
+  'combativeBehaviorIndicator',
+  'restraintIndicator',
+  'covid19SuspectedIndicator',
+  'ivIndicator',
+  'otherObservationNotes',
+];
+
+const patientDeliveryParams = [
+  'deliveryStatus',
+  'etaMinutes',
+  'ringdownSentDateTimeLocal',
+  'ringdownReceivedDateTimeLocal',
+  'arrivedDateTimeLocal',
+  'offloadedDateTimeLocal',
+  'returnToServiceDateTimeLocal',
+];
+
 function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDelivery) {
   const ringdownResponse = {
     id: patientDelivery.id,
@@ -20,28 +54,8 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
     hospital: {
       id: hospital.id,
     },
-    patient: _.pick(patient, [
-      'age',
-      'sex',
-      'chiefComplaintDescription',
-      'systolicBloodPressure',
-      'diastolicBloodPressure',
-      'heartRateBpm',
-      'oxygenSaturation',
-      'temperature',
-      'stableIndicator',
-      'combativeBehaviorIndicator',
-      'ivIndicator',
-      'otherObservationNotes',
-    ]),
-    patientDelivery: _.pick(patientDelivery, [
-      'deliveryStatus',
-      'ringdownSentDateTimeLocal',
-      'ringdownReceivedDateTimeLocal',
-      'arrivedDateTimeLocal',
-      'offloadedDateTimeLocal',
-      'returnToServiceDateTimeLocal',
-    ]),
+    patient: _.pick(patient, patientParams),
+    patientDelivery: _.pick(patientDelivery, patientDeliveryParams),
   };
   return ringdownResponse;
 }
@@ -126,7 +140,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       );
       const patient = await models.Patient.create(
         {
-          ...req.body.patient,
+          ..._.pick(req.body.patient, patientParams),
           EmergencyMedicalServiceCallId: emsCall.id,
           CreatedById: req.user.id,
           UpdatedById: req.user.id,
@@ -149,6 +163,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
           HospitalId: hospital.id,
           ParamedicUserId: req.user.id,
           deliveryStatus: 'RINGDOWN SENT',
+          etaMinutes: req.body.patientDelivery.etaMinutes,
           ringdownSentDateTimeLocal: new Date(),
           CreatedById: req.user.id,
           UpdatedById: req.user.id,
@@ -209,11 +224,11 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       }
 
       if (req.body.patient) {
-        Object.assign(patientDelivery.Patient, req.body.patient);
+        Object.assign(patientDelivery.Patient, _.pick(req.body.patient, patientParams));
       }
 
       if (req.body.patientDelivery) {
-        Object.assign(patientDelivery, req.body.patientDelivery);
+        Object.assign(patientDelivery, _.pick(req.body.patientDelivery, patientDeliveryParams));
         if (req.body.patientDelivery.arriveDateTimeLocal) {
           patientDelivery.deliveryStatus = 'ARRIVED';
         }

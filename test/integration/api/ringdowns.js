@@ -75,6 +75,29 @@ describe('/api/ringdowns', () => {
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
+      const patientData = {
+        age: 30,
+        sex: 'MALE',
+        emergencyServiceResponseType: 'CODE 2',
+        chiefComplaintDescription: 'Fainted while walking home.',
+        stableIndicator: true,
+        systolicBloodPressure: 120,
+        diastolicBloodPressure: 80,
+        heartRateBpm: 70,
+        respiratoryRate: 24,
+        oxygenSaturation: 98,
+        lowOxygenResponseType: 'SUPPLEMENTAL OXYGEN',
+        supplementalOxygenAmount: 2,
+        temperature: 99.4,
+        etohSuspectedIndicator: false,
+        drugsSuspectedIndicator: true,
+        psychIndicator: false,
+        combativeBehaviorIndicator: false,
+        restraintIndicator: false,
+        covid19SuspectedIndicator: true,
+        ivIndicator: false,
+        otherObservationNotes: 'Needs assistance walking',
+      };
       const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
@@ -88,32 +111,19 @@ describe('/api/ringdowns', () => {
           hospital: {
             id: '00752f60-068f-11eb-adc1-0242ac120002',
           },
-          patient: {
-            emergencyServiceResponseType: 'CODE 2',
-            age: 30,
-            sex: 'MALE',
-            chiefComplaintDescription: 'Fainted while walking home.',
-            systolicBloodPressure: 80,
-            diastolicBloodPressure: 120,
-            heartRateBpm: 70,
-            oxygenSaturation: 98,
-            temperature: 99.4,
-            stableIndicator: true,
-            combativeBehaviorIndicator: false,
-            ivIndicator: false,
-            otherObservationNotes: 'Needs assistance walking',
-          },
+          patient: patientData,
           patientDelivery: {
-            estimatedArrivalTime: '2004-10-19 10:23:54+02',
+            etaMinutes: 15,
           },
         })
         .expect(HttpStatus.CREATED);
       assert(response.body.id);
-      assert(response.body.ambulance);
-      assert(response.body.emsCall);
-      assert(response.body.hospital);
-      assert(response.body.patient);
-      assert(response.body.patientDelivery);
+      assert.deepStrictEqual(response.body.ambulance.ambulanceIdentifier, 'NORCAL-1');
+      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 1234);
+      assert.deepStrictEqual(response.body.hospital.id, '00752f60-068f-11eb-adc1-0242ac120002');
+      assert.deepStrictEqual(response.body.patient, patientData);
+      assert.deepStrictEqual(response.body.patientDelivery.deliveryStatus, 'RINGDOWN SENT');
+      assert.deepStrictEqual(response.body.patientDelivery.etaMinutes, 15);
     });
   });
 

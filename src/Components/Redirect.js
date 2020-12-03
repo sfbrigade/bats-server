@@ -4,12 +4,12 @@ import { useHistory } from 'react-router-dom';
 import Context from '../Context';
 
 function Redirect() {
-  const {user} = useContext(Context);
+  const { user } = useContext(Context);
   const history = useHistory();
 
   useEffect(() => {
     if (user) {
-      if (user.organization.type == 'HEALTHCARE') {
+      if (user.organization.type === 'HEALTHCARE') {
         history.push('/er');
       } else {
         history.push('/ems');
@@ -17,9 +17,7 @@ function Redirect() {
     }
   }, [history, user]);
 
-  return (
-    <div>Loading...</div>
-  );
+  return <div>Loading...</div>;
 }
 
 export default Redirect;

@@ -4,8 +4,6 @@ class Ringdown {
   constructor() {
     this.ambulanceIdentifier = null;
     this.dispatchCallNumber = null;
-    this.hospitalId = null;
-    this.estimatedArrivalTime = null;
     // Patient Info
     this.age = null;
     this.sex = null;
@@ -19,7 +17,7 @@ class Ringdown {
     this.respiratoryRate = null;
     this.oxygenSaturation = null;
     this._lowOxygenResponseType = null;
-    this.supplementalOxygen = null;
+    this.supplementalOxygenAmount = null;
     this.temperature = null;
     // Addtl. Notes
     this.etohSuspectedIndicator = false;
@@ -31,6 +29,8 @@ class Ringdown {
     this.ivIndicator = false;
     this.otherObservationNotes = null;
     // Status
+    this.hospitalId = null;
+    this.etaMinutes = null;
     this.deliveryStatus = null;
     this.ringdownSentDateTimeLocal = null;
     this.ringdownReceivedDateTimeLocal = null;
@@ -55,7 +55,7 @@ class Ringdown {
   set lowOxygenResponseType(newValue) {
     this._lowOxygenResponseType = newValue;
     if (newValue !== 'SUPPLEMENTAL OXYGEN') {
-      this.supplementalOxygen = '';
+      this.supplementalOxygenAmount = '';
     }
   }
 
@@ -78,15 +78,13 @@ class Ringdown {
   }
 
   get isValid() {
-    return this.isPatientValid && this.hospitalId !== null && this.estimatedArrivalTime !== null;
+    return this.isPatientValid && this.hospitalId !== null && this.etaMinutes !== null;
   }
 }
 
 Ringdown.propTypes = {
   ambulanceIdentifier: PropTypes.string.isRequired,
-  dispatchCallNumber: PropTypes.string.isRequired,
-  hospitalId: PropTypes.string.isRequired,
-  estimatedArrivalTime: PropTypes.number.isRequired,
+  dispatchCallNumber: PropTypes.number.isRequired,
   // Patient Info
   age: PropTypes.number.isRequired,
   sex: PropTypes.oneOf(['MALE', 'FEMALE', 'NON-BINARY']).isRequired,
@@ -100,7 +98,7 @@ Ringdown.propTypes = {
   respiratoryRate: PropTypes.number,
   oxygenSaturation: PropTypes.number,
   lowOxygenResponseType: PropTypes.oneOf(['ROOM AIR', 'SUPPLEMENTAL OXYGEN']),
-  supplementalOxygen: PropTypes.number,
+  supplementalOxygenAmount: PropTypes.number,
   temperature: PropTypes.number,
   // Addtl. Notes
   etohSuspectedIndicator: PropTypes.bool,
@@ -112,6 +110,8 @@ Ringdown.propTypes = {
   ivIndicator: PropTypes.bool,
   otherObservationNotes: PropTypes.string,
   // Status
+  hospitalId: PropTypes.string.isRequired,
+  etaMinutes: PropTypes.number.isRequired,
   deliveryStatus: PropTypes.oneOf(['RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE']),
   ringdownSentDateTimeLocal: PropTypes.instanceOf(Date),
   ringdownReceivedDateTimeLocal: PropTypes.instanceOf(Date),

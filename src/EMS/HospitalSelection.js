@@ -37,13 +37,13 @@ function HospitalSelection({ ringdown, onChange }) {
             <FormInput
               label="Arrival at ER"
               onChange={onChange}
-              property="estimatedArrivalTime"
+              property="etaMinutes"
               required
               showRequiredHint={false}
               size="small"
               type="number"
               unit="min"
-              value={ringdown.estimatedArrivalTime}
+              value={ringdown.etaMinutes}
             />
           </fieldset>
         </div>
