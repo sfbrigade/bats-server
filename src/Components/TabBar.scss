@@ -28,3 +28,11 @@
   border-bottom-color: white;
   color: white;
 }
+
+.tabbar-content {
+  display: none;
+}
+
+.tabbar-content--selected {
+  display: block;
+}

@@ -12,7 +12,7 @@ function HospitalSelection({ ringdown, onChange }) {
   const [hospitalStatuses, setHospitalStatuses] = useState([]);
 
   useEffect(() => {
-    ApiService.getHospitalStatuses().then((response) => {
+    ApiService.hospitalStatuses.get().then((response) => {
       setHospitalStatuses(response.data);
     });
   }, []);
@@ -20,16 +20,13 @@ function HospitalSelection({ ringdown, onChange }) {
   return (
     <>
       <div className="usa-accordion">
-        <h3 className="usa-accordion__heading">
-          <button disabled type="button" className="usa-accordion__button">
-            <span className="text-secondary-dark">*</span> Hospital Selection
-          </button>
-        </h3>
+        <h3 className="usa-accordion__heading">Hospital Selection</h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             {hospitalStatuses.map((hsu) => (
               <FormRadio
                 currentValue={ringdown.hospitalId}
+                key={hsu.hospital.id}
                 label={hsu.hospital.name}
                 onChange={onChange}
                 property="hospitalId"
@@ -41,13 +38,13 @@ function HospitalSelection({ ringdown, onChange }) {
             <FormInput
               label="Arrival at ER"
               onChange={onChange}
-              property="estimatedArrivalTime"
+              property="etaMinutes"
               required
               showRequiredHint={false}
               size="small"
               type="number"
               unit="min"
-              value={ringdown.estimatedArrivalTime}
+              value={ringdown.etaMinutes}
             />
           </fieldset>
         </div>

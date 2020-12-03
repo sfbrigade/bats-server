@@ -4,6 +4,7 @@ const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
+const models = require('../../../models');
 
 describe('/api/ringdowns', () => {
   let testSession;
@@ -68,6 +69,30 @@ describe('/api/ringdowns', () => {
   });
 
   describe('POST /', () => {
+    const patientData = {
+      age: 30,
+      sex: 'MALE',
+      emergencyServiceResponseType: 'CODE 2',
+      chiefComplaintDescription: 'Fainted while walking home.',
+      stableIndicator: true,
+      systolicBloodPressure: 120,
+      diastolicBloodPressure: 80,
+      heartRateBpm: 70,
+      respiratoryRate: 24,
+      oxygenSaturation: 98,
+      lowOxygenResponseType: 'SUPPLEMENTAL OXYGEN',
+      supplementalOxygenAmount: 2,
+      temperature: 99.4,
+      etohSuspectedIndicator: false,
+      drugsSuspectedIndicator: true,
+      psychIndicator: false,
+      combativeBehaviorIndicator: false,
+      restraintIndicator: false,
+      covid19SuspectedIndicator: true,
+      ivIndicator: false,
+      otherObservationNotes: 'Needs assistance walking',
+    };
+
     it('creates a ringdown', async () => {
       await testSession
         .post('/auth/local/login')
@@ -80,7 +105,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({
           ambulance: {
-            ambulanceIdentifer: 'NORCAL-1',
+            ambulanceIdentifier: 'NORCAL-1',
           },
           emsCall: {
             dispatchCallNumber: 1234,
@@ -88,32 +113,55 @@ describe('/api/ringdowns', () => {
           hospital: {
             id: '00752f60-068f-11eb-adc1-0242ac120002',
           },
-          patient: {
-            emergencyServiceResponseType: 'CODE 2',
-            age: 30,
-            sex: 'male',
-            chiefComplaintDescription: 'Fainted while walking home.',
-            systolicBloodPressure: 80,
-            diastolicBloodPressure: 120,
-            heartRateBpm: 70,
-            oxygenSaturation: 98,
-            temperature: 99.4,
-            stableIndicator: true,
-            combativeBehaviorIndicator: false,
-            ivIndicator: false,
-            otherObservationNotes: 'Needs assistance walking',
-          },
+          patient: patientData,
           patientDelivery: {
-            estimatedArrivalTime: '2004-10-19 10:23:54+02',
+            etaMinutes: 15,
           },
         })
         .expect(HttpStatus.CREATED);
       assert(response.body.id);
-      assert(response.body.ambulance);
-      assert(response.body.emsCall);
-      assert(response.body.hospital);
-      assert(response.body.patient);
-      assert(response.body.patientDelivery);
+      assert.deepStrictEqual(response.body.ambulance.ambulanceIdentifier, 'NORCAL-1');
+      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 1234);
+      assert.deepStrictEqual(response.body.hospital.id, '00752f60-068f-11eb-adc1-0242ac120002');
+      assert.deepStrictEqual(response.body.patient, patientData);
+      assert.deepStrictEqual(response.body.patientDelivery.deliveryStatus, 'RINGDOWN SENT');
+      assert.deepStrictEqual(response.body.patientDelivery.etaMinutes, 15);
+    });
+
+    it('creates a new ambulance record as needed', async () => {
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      const response = await testSession
+        .post('/api/ringdowns')
+        .set('Accept', 'application/json')
+        .send({
+          ambulance: {
+            ambulanceIdentifier: 'NEW-1',
+          },
+          emsCall: {
+            dispatchCallNumber: 1234,
+          },
+          hospital: {
+            id: '00752f60-068f-11eb-adc1-0242ac120002',
+          },
+          patient: patientData,
+          patientDelivery: {
+            etaMinutes: 15,
+          },
+        })
+        .expect(HttpStatus.CREATED);
+      assert(response.body.id);
+      assert.deepStrictEqual(response.body.ambulance.ambulanceIdentifier, 'NEW-1');
+
+      const user = await models.User.findOne({ where: { email: 'norcal.paramedic@example.com' } });
+      const ambulance = await models.Ambulance.findOne({ where: { ambulanceIdentifier: 'NEW-1' } });
+      assert(ambulance);
+      assert.deepStrictEqual(ambulance.CreatedById, user.id);
+      assert.deepStrictEqual(ambulance.UpdatedById, user.id);
     });
   });
 
@@ -130,7 +178,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({
           ambulance: {
-            ambulanceIdentifer: 'SFFD-2',
+            ambulanceIdentifier: 'SFFD-2',
           },
           emsCall: {
             dispatchCallNumber: 7777,
@@ -140,7 +188,7 @@ describe('/api/ringdowns', () => {
           },
           patient: {
             age: 99,
-            sex: 'female',
+            sex: 'FEMALE',
             otherObservationNotes: 'in stable condition',
           },
           patientDelivery: {
@@ -153,7 +201,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 7777);
       assert.deepStrictEqual(response.body.hospital.id, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
       assert.deepStrictEqual(response.body.patient.age, 99);
-      assert.deepStrictEqual(response.body.patient.sex, 'female');
+      assert.deepStrictEqual(response.body.patient.sex, 'FEMALE');
       assert.deepStrictEqual(response.body.patient.otherObservationNotes, 'in stable condition');
       assert.deepStrictEqual(response.body.patientDelivery.arrivedDateTimeLocal, '2005-10-19T10:23:54.000Z');
     });

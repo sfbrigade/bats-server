@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const _ = require('lodash');
 const { Model } = require('sequelize');
 
 const SALT_ROUNDS = 10;
@@ -10,6 +11,22 @@ module.exports = (sequelize, DataTypes) => {
 
       User.belongsTo(models.User, { as: 'CreatedBy' });
       User.belongsTo(models.User, { as: 'UpdatedBy' });
+    }
+
+    toJSON() {
+      const attributes = { ...this.get() };
+      attributes.organization = this.Organization?.toJSON() || { id: this.OrganizationId };
+      return _.pick(attributes, [
+        'id',
+        'firstName',
+        'lastName',
+        'email',
+        'isActive',
+        'isAdminUser',
+        'isOperationalUser',
+        'isSuperUser',
+        'organization',
+      ]);
     }
   }
 
@@ -79,10 +96,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
       isActive: {
-        type: DataTypes.VIRTUAL(DataTypes.BOOLEAN, ['isOperationalUser', 'isAdminUser', 'isSuperUser']),
-        get() {
-          return this.isOperationalUser || this.isAdminUser || this.isSuperUser;
-        },
+        field: 'activeindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       createdAt: {
         field: 'recordcreatetimestamp',

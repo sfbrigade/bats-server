@@ -12,6 +12,7 @@
     "bootstrap": "^4.5.2",
     "classnames": "^2.2.6",
     "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
     "debug": "^4.1.1",
     "ejs": "^3.1.5",
     "eslint-config-react-app": "^5.2.1",

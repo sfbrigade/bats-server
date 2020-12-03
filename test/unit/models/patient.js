@@ -12,7 +12,7 @@ describe('models.Patient', () => {
       EmergencyMedicalServiceCallId: '6d6b74d6-f6f3-11ea-adc1-0242ac120002',
       emergencyServiceResponseType: 'CODE 2',
       age: 4,
-      sex: 'non-binary',
+      sex: 'NON-BINARY',
       stableIndicator: false,
       chiefComplaintDescription: 'test',
       heartRateBpm: 180,
@@ -31,7 +31,7 @@ describe('models.Patient', () => {
     assert(patient.id);
     assert(patient.EmergencyMedicalServiceCallId);
     assert.deepStrictEqual(patient.age, 4);
-    assert.deepStrictEqual(patient.sex, 'non-binary');
+    assert.deepStrictEqual(patient.sex, 'NON-BINARY');
     assert.deepStrictEqual(patient.stableIndicator, false);
     assert.deepStrictEqual(patient.chiefComplaintDescription, 'test');
     assert.deepStrictEqual(patient.heartRateBpm, 180);

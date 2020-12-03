@@ -20,27 +20,64 @@ i.e.
 ----------------------------------------
 */
 
-.h2 {
+@mixin h2 {
   font-size: 1.3125rem;
   font-style: normal;
   font-weight: bold;
   line-height: 1.5rem;
 }
 
-.h4 {
+.h2 {
+  @include h2;
+}
+
+@mixin h3 {
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.5625rem;
+}
+
+.h3 {
+  @include h3;
+}
+
+@mixin h4 {
   font-size: 1rem;
   font-style: normal;
   font-weight: normal;
   line-height: 1.5rem;
 }
 
-a.h4 {
-  font-weight: 600;
+.h4 {
+  @include h4;
+}
+
+@mixin h4-bold {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+.h4-bold {
+  @include h4-bold;
+}
+
+@mixin h4-italic {
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: normal;
+  line-height: 1.5rem;
+}
+
+.h4-italic {
+  @include h4-italic;
 }
 
 @mixin focus-shadow {
   outline: none;
-  box-shadow: 0 0 0 4px color($theme-focus-color);
+  border: 2px solid color($theme-color-primary-vivid);
 }
 
 input,
@@ -79,16 +116,15 @@ iframe,
   padding-right: 0;
 }
 
-.usa-accordion__button {
-  background-image: none;
-  font-size: 1.3125rem;
-  font-weight: 700;
-  padding-bottom: 0.75rem;
-  padding-top: 0.75rem;
-  &:disabled {
-    &:hover {
-      @include u-bg($theme-color-base-lightest);
-    }
+.usa-accordion__heading {
+  @include h2;
+  border-bottom: 1px solid color($theme-color-base-lighter);
+  padding: 1.25rem 1.5rem 0.5rem;
+
+  span {
+    @include h4-italic;
+    display: block;
+    color: color($theme-color-base-light);
   }
 }
 
@@ -113,14 +149,15 @@ iframe,
   padding: 1.5rem;
 }
 
-.usa-fieldset + .usa-fieldset {
-  border-top: 1px solid color($theme-color-base-lighter);
-}
-
 .usa-fieldset > .usa-button:first-child,
 .usa-fieldset > .usa-checkbox:first-child .usa-checkbox__label,
 .usa-fieldset > .usa-radio:first-child .usa-radio__label {
   margin-top: 0;
+}
+
+.usa-fieldset > .usa-label + .usa-checkbox .usa-checkbox__label,
+.usa-fieldset > .usa-label + .usa-radio .usa-radio__label {
+  margin-top: 1rem;
 }
 
 .usa-form {
@@ -144,6 +181,7 @@ iframe,
 
 .usa-input,
 .usa-textarea {
+  @include h3;
   border-radius: 0.25rem;
   margin-top: 0;
 
@@ -153,6 +191,7 @@ iframe,
 }
 
 .usa-label {
+  @include h4-bold;
   margin-top: 2rem;
   &:first-child {
     margin-top: 0;
@@ -165,4 +204,8 @@ iframe,
     @include u-text($theme-color-secondary-dark);
     content: '* ';
   }
+}
+
+.usa-label--focused {
+  color: color($theme-color-primary-vivid);
 }
