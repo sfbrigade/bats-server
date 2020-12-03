@@ -147,14 +147,13 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
         },
         { transaction }
       );
-      const ambulance = await models.Ambulance.findOne(
-        {
-          where: {
-            ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
-          },
+      const [ambulance] = await models.Ambulance.findOrCreate({
+        where: {
+          OrganizationId: req.user.OrganizationId,
+          ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
         },
-        { transaction }
-      );
+        transaction,
+      });
       const hospital = await models.Hospital.findByPk(req.body.hospital.id, { transaction });
       const patientDelivery = await models.PatientDelivery.create(
         {
