@@ -103,7 +103,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({
           ambulance: {
-            ambulanceIdentifer: 'NORCAL-1',
+            ambulanceIdentifier: 'NORCAL-1',
           },
           emsCall: {
             dispatchCallNumber: 1234,
@@ -140,7 +140,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({
           ambulance: {
-            ambulanceIdentifer: 'SFFD-2',
+            ambulanceIdentifier: 'SFFD-2',
           },
           emsCall: {
             dispatchCallNumber: 7777,

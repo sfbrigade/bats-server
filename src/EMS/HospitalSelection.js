@@ -26,6 +26,7 @@ function HospitalSelection({ ringdown, onChange }) {
             {hospitalStatuses.map((hsu) => (
               <FormRadio
                 currentValue={ringdown.hospitalId}
+                key={hsu.hospital.id}
                 label={hsu.hospital.name}
                 onChange={onChange}
                 property="hospitalId"

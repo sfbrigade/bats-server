@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
+import ApiService from '../ApiService';
 import Ringdown from '../Models/Ringdown';
 
 import HospitalSelection from './HospitalSelection';
@@ -16,7 +17,16 @@ function RingdownForm({ className }) {
     setStep(1);
   }
 
-  function send() {}
+  function send() {
+    ApiService.ringdowns
+      .create(ringdown.toJSON())
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   function edit() {
     setStep(0);

@@ -150,7 +150,11 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       const [ambulance] = await models.Ambulance.findOrCreate({
         where: {
           OrganizationId: req.user.OrganizationId,
-          ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
+          ambulanceIdentifier: req.body.ambulance.ambulanceIdentifier,
+        },
+        defaults: {
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
         },
         transaction,
       });
@@ -173,6 +177,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       res.status(HttpStatus.CREATED).json(response);
     });
   } catch (error) {
+    console.log(error);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -203,9 +208,14 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       }
 
       if (req.body.ambulance) {
-        const ambulance = await models.Ambulance.findOne({
+        const [ambulance] = await models.Ambulance.findOrCreate({
           where: {
-            ambulanceIdentifier: req.body.ambulance.ambulanceIdentifer,
+            OrganizationId: req.user.OrganizationId,
+            ambulanceIdentifier: req.body.ambulance.ambulanceIdentifier,
+          },
+          defaults: {
+            CreatedById: req.user.id,
+            UpdatedById: req.user.id,
           },
           transaction,
         });
