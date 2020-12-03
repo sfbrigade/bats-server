@@ -20,11 +20,7 @@ function HospitalSelection({ ringdown, onChange }) {
   return (
     <>
       <div className="usa-accordion">
-        <h3 className="usa-accordion__heading">
-          <button disabled type="button" className="usa-accordion__button">
-            <span className="text-secondary-dark">*</span> Hospital Selection
-          </button>
-        </h3>
+        <h3 className="usa-accordion__heading">Hospital Selection</h3>
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             {hospitalStatuses.map((hsu) => (
