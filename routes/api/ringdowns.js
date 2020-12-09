@@ -53,6 +53,7 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
     },
     hospital: {
       id: hospital.id,
+      name: hospital.name,
     },
     patient: _.pick(patient, patientParams),
     patientDelivery: _.pick(patientDelivery, patientDeliveryParams),
