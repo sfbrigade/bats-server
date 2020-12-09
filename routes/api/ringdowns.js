@@ -63,7 +63,7 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {
     deliveryStatus: {
-      [Op.lt]: 'ARRIVED',
+      [Op.lt]: 'RETURNED TO SERVICE',
     },
   };
 
