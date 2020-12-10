@@ -15,7 +15,7 @@ function RingdownStatus({ ringdown }) {
             <h4 className="text-base-light">ETA {ringdown.patientDelivery.etaMinutes} minutes</h4>
             <ol className="status-list">
               <li className="status-list-item status-list-item--completed">
-                <div className="status-list-item__icon"></div>
+                <div className="status-list-item__icon" />
                 <div className="status-list-item__text">
                   Ringdown sent{' '}
                   <span>
@@ -24,19 +24,19 @@ function RingdownStatus({ ringdown }) {
                 </div>
               </li>
               <li className="status-list-item status-list-item--noninteractive">
-                <div className="status-list-item__icon"></div>
+                <div className="status-list-item__icon" />
                 <div className="status-list-item__text">Ringdown received</div>
               </li>
               <li className="status-list-item">
-                <div className="status-list-item__icon"></div>
+                <div className="status-list-item__icon" />
                 <div className="status-list-item__text">Arrived at ED</div>
               </li>
               <li className="status-list-item">
-                <div className="status-list-item__icon"></div>
+                <div className="status-list-item__icon" />
                 <div className="status-list-item__text">Patient offloaded</div>
               </li>
               <li className="status-list-item">
-                <div className="status-list-item__icon"></div>
+                <div className="status-list-item__icon" />
                 <div className="status-list-item__text">Returned to service</div>
               </li>
             </ol>

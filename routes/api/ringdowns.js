@@ -178,7 +178,6 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       res.status(HttpStatus.CREATED).json(response);
     });
   } catch (error) {
-    console.log(error);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
