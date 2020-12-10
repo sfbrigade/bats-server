@@ -17,32 +17,27 @@ function RingdownStatus({ ringdown }) {
               <li className="status-list-item status-list-item--completed">
                 <div className="status-list-item__icon"></div>
                 <div className="status-list-item__text">
-                  Ringdown sent <span>{DateTime.fromISO(ringdown.patientDelivery.ringdownSentDateTimeLocal).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}</span>
+                  Ringdown sent{' '}
+                  <span>
+                    {DateTime.fromISO(ringdown.patientDelivery.ringdownSentDateTimeLocal).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                  </span>
                 </div>
               </li>
               <li className="status-list-item status-list-item--noninteractive">
                 <div className="status-list-item__icon"></div>
-                <div className="status-list-item__text">
-                  Ringdown received
-                </div>
+                <div className="status-list-item__text">Ringdown received</div>
               </li>
               <li className="status-list-item">
                 <div className="status-list-item__icon"></div>
-                <div className="status-list-item__text">
-                  Arrived at ED
-                </div>
+                <div className="status-list-item__text">Arrived at ED</div>
               </li>
               <li className="status-list-item">
                 <div className="status-list-item__icon"></div>
-                <div className="status-list-item__text">
-                  Patient offloaded
-                </div>
+                <div className="status-list-item__text">Patient offloaded</div>
               </li>
               <li className="status-list-item">
                 <div className="status-list-item__icon"></div>
-                <div className="status-list-item__text">
-                  Returned to service
-                </div>
+                <div className="status-list-item__text">Returned to service</div>
               </li>
             </ol>
           </fieldset>
