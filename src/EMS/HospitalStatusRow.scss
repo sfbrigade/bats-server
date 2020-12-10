@@ -10,10 +10,14 @@ $row-height: 5rem;
   display: flex;
 }
 .hospitalstatusrow__name {
-  @include u-text('normal');
+  @include u-text('bold');
+  @include u-margin-left(1);
+  max-width: 100%;
+  display: block;
 }
 
 .hospitalstatusrow__data-container {
+  @include u-padding-top(1);
   border: 1px solid color($theme-color-base-lighter);
   height: $row-height;
   display: flex;

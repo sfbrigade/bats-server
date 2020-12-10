@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import HospitalStatusRow from './HospitalStatusRow';
-import HospitalStatusHeader from './HospitalStatusHeader'; 
+import HospitalStatusHeader from './HospitalStatusHeader';
 import HospitalStatus from '../Models/HospitalStatus';
 import ApiService from '../ApiService';
 
-const HospitalStatuses = () => {
+const HospitalStatuses = ({ onReturn }) => {
   const [hospitalStatusResponse, setHospitalStatusResponse] = useState([]);
 
   useEffect(() => {
@@ -17,22 +18,19 @@ const HospitalStatuses = () => {
   return (
     <div>
       <HospitalStatusHeader />
-      {
-        hospitalStatusResponse.map(hsData => {
-          const hs = new HospitalStatus(hsData);
-          return (
-            <HospitalStatusRow
-              key={hs.id}
-              hospitalStatus={hs} />
-          )
-        })
-      }
-      <button className="usa-button width-full margin-top-4" type="button">
+      {hospitalStatusResponse.map((hsData) => {
+        const hs = new HospitalStatus(hsData);
+        return <HospitalStatusRow key={hs.id} hospitalStatus={hs} />;
+      })}
+      <button className="usa-button width-full margin-top-4" type="button" onClick={onReturn('hi')}>
         Return to ringdown form
       </button>
     </div>
   );
 };
 
+HospitalStatuses.propTypes = {
+  onReturn: PropTypes.func.isRequired,
+};
 
 export default HospitalStatuses;

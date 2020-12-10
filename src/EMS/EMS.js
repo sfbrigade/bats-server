@@ -16,7 +16,10 @@ export default function EMS() {
         <TabBar onSelect={setSelectedTab} tabs={['Ringdown', 'Hospital Info']} />
       </Header>
       <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 0 })} />
-      <HospitalStatuses className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 1 })} />
+      <HospitalStatuses
+        onReturn={console.log}
+        className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 1 })}
+      />
     </>
   );
 }
