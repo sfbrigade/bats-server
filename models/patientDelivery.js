@@ -45,6 +45,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM('RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE'),
         allowNull: false,
       },
+      etaMinutes: {
+        field: 'etaminutes',
+        type: DataTypes.INTEGER,
+      },
       ringdownSentDateTimeLocal: {
         field: 'ringdownsentdatetimelocal',
         type: DataTypes.DATE,

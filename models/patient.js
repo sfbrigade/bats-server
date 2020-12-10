@@ -30,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       sex: {
-        field: 'sex',
-        type: DataTypes.STRING, // TODO - make an enum?
+        field: 'sexenum',
+        type: DataTypes.ENUM('MALE', 'FEMALE', 'NON-BINARY'),
         allowNull: true,
       },
       emergencyServiceResponseType: {
@@ -77,6 +77,10 @@ module.exports = (sequelize, DataTypes) => {
         field: 'lowoxygenresponsetypeenum',
         type: DataTypes.ENUM('ROOM AIR', 'SUPPLEMENTAL OXYGEN'),
       },
+      supplementalOxygenAmount: {
+        field: 'supplementaloxygenamount',
+        type: DataTypes.INTEGER,
+      },
       temperature: {
         field: 'temperature',
         type: DataTypes.DECIMAL,
@@ -107,11 +111,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
       },
-      // covid19Indicator: {
-      //   field: 'covid19indicator',
-      //   type: DataTypes.BOOLEAN,
-      //   allowNull: true,
-      // },
+      covid19SuspectedIndicator: {
+        field: 'covid-19suspectedindicator',
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
       ivIndicator: {
         field: 'ivindicator',
         type: DataTypes.BOOLEAN,

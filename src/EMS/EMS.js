@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useState } from 'react';
 
 import Header from '../Components/Header';
@@ -14,8 +15,8 @@ export default function EMS() {
       <Header name="Hospital Destination Tool">
         <TabBar onSelect={setSelectedTab} tabs={['Ringdown', 'Hospital Info']} />
       </Header>
-      {selectedTab === 0 && <RingdownForm />}
-      {selectedTab === 1 && <Beds />}
+      <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 0 })} />
+      <Beds className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 1 })} />
     </>
   );
 }
