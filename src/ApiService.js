@@ -26,6 +26,9 @@ export default {
     create(data) {
       return instance.post('/api/ringdowns', data);
     },
+    mine() {
+      return instance.get('/api/ringdowns/mine');
+    },
   },
   users: {
     me() {
