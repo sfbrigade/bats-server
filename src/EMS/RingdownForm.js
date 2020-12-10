@@ -9,6 +9,7 @@ import Spinner from '../Components/Spinner';
 
 import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
+import RingdownStatus from './RingdownStatus';
 
 function RingdownForm({ className }) {
   const { ringdowns, setRingdowns } = useContext(Context);
@@ -90,7 +91,7 @@ function RingdownForm({ className }) {
           </fieldset>
         </form>
       )}
-      {ringdowns && ringdowns.length > 0 && <div>{JSON.stringify(ringdowns[0])}</div>}
+      {ringdowns && ringdowns.length > 0 && <RingdownStatus ringdown={ringdowns[0]} />}
       {!ringdowns && (
         <div className="padding-9">
           <Spinner />
