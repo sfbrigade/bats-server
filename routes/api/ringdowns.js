@@ -53,6 +53,7 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
     },
     hospital: {
       id: hospital.id,
+      name: hospital.name,
     },
     patient: _.pick(patient, patientParams),
     patientDelivery: _.pick(patientDelivery, patientDeliveryParams),
@@ -63,7 +64,7 @@ function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDe
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {
     deliveryStatus: {
-      [Op.lt]: 'ARRIVED',
+      [Op.lt]: 'RETURNED TO SERVICE',
     },
   };
 
@@ -177,7 +178,6 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       res.status(HttpStatus.CREATED).json(response);
     });
   } catch (error) {
-    console.log(error);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
