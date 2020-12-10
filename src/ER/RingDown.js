@@ -1,9 +1,10 @@
 import React from 'react';
+import Offloading from './OffLoading'
 
 const RingDown = () => {
   return (
     <div>
-      <h1> Answer Ringdown </h1>
+      <Offloading />
     </div>
   );
 };

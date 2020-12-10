@@ -1,0 +1,51 @@
+.accordian-section { 
+    display: flex;
+    flex-direction: column;
+    float: left;
+}
+
+.accordian { 
+    background-color: #eee;
+    /* color: #444; */
+    cursor: pointer;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    /* transition: background-color 0.6 ease; */
+}
+
+.accordian:hover,  
+.active { 
+    background-color: #ccc;
+}
+
+.accordian-title { 
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    font-size: 14px; 
+}
+
+.accordian-icon { 
+    margin-left: auto;
+    transition: tranform 0.6 ease;
+}
+
+.rotate { 
+    transform: rotate(90deg);
+}
+
+.accordian-content { 
+    background-color: white;
+    overflow: hidden;
+    transition: max-height 0.6 ease;
+
+}
+
+.accordian-text { 
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 14px; 
+    padding: 18px; 
+}
