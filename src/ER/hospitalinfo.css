@@ -1,0 +1,92 @@
+.DiversionStyle{
+    background-color: #005ea2;
+    width: 5px;
+  }
+
+.DiversionStyle2{
+    background-color: #ffbe2e;
+    width: 5px;
+  }
+
+.update{
+    color: gray;
+    font-size: 20px;
+    margin: 0em;
+}
+.title {
+    margin:0em;
+}
+
+.container  {
+    margin: 0.7em;
+    padding: 0.7em;
+}
+.title  {
+    font-size: 20px;
+}
+.BorderRoundMinus  {
+    border-radius: 45%;
+    font-size: 27px;
+    padding: 10%;
+    margin: -14% 0% 0% -42%;
+    height: 1.2em;
+    width: 1.05em;
+
+    
+}
+.BorderRoundPlus  {
+  border-radius: 45%;
+  font-size: 27px;
+  padding: 10%;
+  margin: -7% 0% 0% 43%;
+  height: 1.2em;
+  width: 1.05em;
+  
+}
+.NumberBox  {
+    border: 0.5px solid black;
+    border-radius: 11%;
+    width: 2em;
+    height: 1.3em;
+    text-align: center;
+    padding-top: 4%;
+    font-size: 30px;
+    margin: -9% 0% 0% 0%;
+    
+}
+
+.ButtonText  {
+  position: relative;
+  top: 1em;
+  left: 1em;
+}
+
+.popup {
+    position: fixed;  
+    width: 100%;  
+    height: 100%;  
+    top: 0;  
+    left: 0;  
+    right: 0;  
+    bottom: 0;  
+    margin: auto;  
+    
+}
+
+.PopupInner {
+    position: absolute;  
+    left: 25%;
+    right: 25%;  
+    top: 25%;
+    bottom: 25%;  
+    margin: auto;  
+    
+
+}
+.PopupOne{
+    background: #fee685;
+}
+
+.PopupTwo{
+background: #ecf3ec;  
+}

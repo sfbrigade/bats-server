@@ -4,17 +4,10 @@ import Banner from '../Components/banner';
 import ButtonRight from '../Components/ButtonRight';
 import DiversionPopup from '../Components/DiversionPopup';
 import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
+import './hospitalinfo.css';
 
 const Beds = () => {
-  const DiversionStyle = {
-    "backgroundColor": "#005ea2",
-    "width": "5px"
-  }
-
-  const DiversionStyle2 = {
-    "backgroundColor": "#ffbe2e",
-    "width": "5px"
-  }
+ 
 
   const [BedTimeBanner, setBedTimeUpdate] = useState("pending");
   const [BedDateBanner, setBedDateUpdate] = useState("pending");
@@ -104,9 +97,9 @@ const TogglePopupConfirmation = () => {
           <Banner BannerTitle="Diversion status" date={DiversionDateBanner} time={DiversionTimeBanner} />
           <div style={container2}>
           <div className="grid-row height-7 width-card-lg">
-    {!diversion && <div className="grid-col-1" style={DiversionStyle}></div>}
+    {!diversion && <div className="grid-col-1 DiversionStyle" ></div>}
     {!diversion && <div className="grid-col-8">Not On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
-    {diversion && <div className="grid-col-1" style={DiversionStyle2}></div>}
+    {diversion && <div className="grid-col-1 DiversionStyle2" ></div>}
     {diversion && <div className="grid-col-8">On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
     {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
     {PopupConfirmation && <DiversionPopupConfirmation ok={TogglePopupConfirmation} />}
