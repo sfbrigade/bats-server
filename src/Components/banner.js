@@ -4,11 +4,10 @@ const Banner = (props) => {
 
 
     return (
-        <section>
-        <h1 className="title">{props.BannerTitle}</h1>
-        <p className="update">Updated {props.date} @{props.time}</p>
-  
-        </section>
+        <div className="usa-accordion__heading ">
+        <h1 className="font-alt-lg">{props.BannerTitle}</h1>
+        <p className="font-alt-md margin-y-neg-1">Updated {props.date} @{props.time}</p>
+        </div>
     )
 }
 

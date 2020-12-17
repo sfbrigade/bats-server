@@ -74,9 +74,9 @@ const TogglePopupConfirmation = () => {
 }
   return (
     <div className="usa-accordion">
-      <div className="usa-accordion__heading">
+      
       <Banner BannerTitle="Bed availability" date={BedDateBanner} time={BedTimeBanner} />
-      </div>
+    
       <div className="usa-accordion__content">
         <div id="erCountButtons" className="usa-fieldset">
           <Counter CountTitle="ER Beds" update={handleBedUpdate} />
@@ -85,9 +85,9 @@ const TogglePopupConfirmation = () => {
         <Counter CountTitle="Psych Beds" update={handleBedUpdate} />
          </div>
 
-         <div className="usa-accordion__heading">
+         
         <Banner BannerTitle="Addtl. Notes (optional)" date={NotesDateBanner} time={NotesTimeBanner} />
-        </div>
+     
         <div style={container} className="usa-fieldset">
           <label htmlFor="erNotes">
           ER conditions
@@ -96,9 +96,9 @@ const TogglePopupConfirmation = () => {
           <ButtonRight ButtonTitle="Update" update={handleNotesUpdate} />   
         </div>
 
-        <div className="usa-accordion__heading">
+      
           <Banner BannerTitle="Diversion status" date={DiversionDateBanner} time={DiversionTimeBanner} />
-          </div>
+      
           <div style={container2} className="usa-fieldset">
           <div className="grid-row height-7 width-card-lg">
     {!diversion && <div className="grid-col-1 DiversionStyle" ></div>}

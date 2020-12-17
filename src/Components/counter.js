@@ -20,10 +20,10 @@ const Counter = (props) => {
         <div className="container">
             <div className="grid-container">
   <div className="grid-row">
-    <div className="grid-col-8 title" >{props.CountTitle}</div>
-    <div className="grid-col-auto"><button className="usa-button BorderRoundMinus" onClick={handleDecrement}>-</button></div>
-    <div className="grid-col-auto NumberBox"><div className="NumberPosition">{count}</div></div>
-    <div className="grid-col-auto"><button className="usa-button border BorderRoundPlus" onClick={handleIncrement}><span >+</span></button></div>
+    <div className="grid-col-7 title">{props.CountTitle}</div>
+    <div className="grid-col-auto"><button className="usa-button circle-105 margin-05" onClick={handleDecrement}><span className="font-alt-lg position-absolute bottom-05 left-2">-</span></button></div>
+    <div className="grid-col-auto NumberBox"><div className="position-absolute bottom-05 left-2">{count}</div></div>
+    <div className="grid-col-auto"><button className="usa-button circle-2 margin-05" onClick={handleIncrement}><span className="font-alt-lg position-absolute bottom-05 left-2">+</span></button></div>
   </div>
 </div>
             
