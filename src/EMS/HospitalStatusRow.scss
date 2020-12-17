@@ -21,6 +21,7 @@ $row-height: 6rem;
 
 .hospitalstatusrow__timestamp {
   @include u-margin-left(1);
+  @include u-margin-bottom(1);
   @include u-text('base-light');
   justify-content: left;
   position: absolute;
@@ -45,7 +46,9 @@ $row-height: 6rem;
 
 .hospitalstatusrow__notes {
   @include u-margin-left(2);
+  @include u-margin-bottom(1);
   @include u-text('secondary');
+  @include u-text('italic');
   position: absolute;
   bottom: 0;
 }
