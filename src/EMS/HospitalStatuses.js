@@ -22,7 +22,7 @@ const HospitalStatuses = ({ onReturn }) => {
         const hs = new HospitalStatus(hsData);
         return <HospitalStatusRow key={hs.id} hospitalStatus={hs} />;
       })}
-      <button className="usa-button width-full margin-top-4" type="button" onClick={onReturn('hi')}>
+      <button className="usa-button width-full margin-top-4" type="button" onClick={() => onReturn()}>
         Return to ringdown form
       </button>
     </div>
