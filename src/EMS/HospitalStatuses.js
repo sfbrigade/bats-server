@@ -11,7 +11,6 @@ const HospitalStatuses = ({ onReturn }) => {
 
   useEffect(() => {
     ApiService.hospitalStatuses.get().then((response) => {
-      console.log(response.data)
       setHospitalStatusResponse(response.data);
     });
   }, []);
