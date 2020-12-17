@@ -4,7 +4,7 @@ const Banner = (props) => {
 
 
     return (
-        <section className="usa-banner">
+        <section>
         <h1 className="title">{props.BannerTitle}</h1>
         <p className="update">Updated {props.date} @{props.time}</p>
   

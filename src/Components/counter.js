@@ -22,7 +22,7 @@ const Counter = (props) => {
   <div className="grid-row">
     <div className="grid-col-8 title" >{props.CountTitle}</div>
     <div className="grid-col-auto"><button className="usa-button BorderRoundMinus" onClick={handleDecrement}>-</button></div>
-    <div className="grid-col-auto NumberBox"><div >{count}</div></div>
+    <div className="grid-col-auto NumberBox"><div className="NumberPosition">{count}</div></div>
     <div className="grid-col-auto"><button className="usa-button border BorderRoundPlus" onClick={handleIncrement}><span >+</span></button></div>
   </div>
 </div>
