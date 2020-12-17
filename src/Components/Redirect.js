@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Context from '../Context';
+import Spinner from './Spinner';
 
 function Redirect() {
   const { user } = useContext(Context);
@@ -17,7 +18,11 @@ function Redirect() {
     }
   }, [history, user]);
 
-  return <div>Loading...</div>;
+  return (
+    <div className="padding-9">
+      <Spinner />
+    </div>
+  );
 }
 
 export default Redirect;
