@@ -24,9 +24,11 @@ const HospitalStatuses = ({ className, onReturn }) => {
           return <HospitalStatusRow key={hs.id} hospitalStatus={hs} />;
         })}
       </div>
-      <button className="usa-button width-full margin-top-4 margin-bottom-4" type="button" onClick={() => onReturn()}>
-        Return to ringdown form
-      </button>
+      <fieldset className="usa-fieldset">
+        <button className="usa-button width-full" type="button" onClick={() => onReturn()}>
+          Return to ringdown form
+        </button>
+      </fieldset>
     </div>
   );
 };
