@@ -1,19 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import './TabBar.scss';
 
-function TabBar({ onSelect, tabs }) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const onClick = (index) => {
-    setSelectedIndex(index);
-    if (onSelect) {
-      onSelect(index);
-    }
-  };
-
+function TabBar({ onSelect, selectedTab, tabs }) {
   const children = [];
   for (let i = 0; i < tabs.length; i += 1) {
     children.push(
@@ -23,11 +14,11 @@ function TabBar({ onSelect, tabs }) {
         className={classNames(
           'tabbar__tab',
           {
-            'tabbar__tab--selected': i === selectedIndex,
+            'tabbar__tab--selected': i === selectedTab,
           },
           'h4'
         )}
-        onClick={() => onClick(i)}
+        onClick={() => onSelect(i)}
       >
         {tabs[i]}
       </button>
@@ -38,6 +29,7 @@ function TabBar({ onSelect, tabs }) {
 }
 TabBar.propTypes = {
   onSelect: PropTypes.func.isRequired,
+  selectedTab: PropTypes.number.isRequired,
   tabs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 export default TabBar;

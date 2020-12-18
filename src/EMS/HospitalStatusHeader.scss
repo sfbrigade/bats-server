@@ -1,4 +1,5 @@
 @import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
 
 $rotation-deg: 60deg;
 
@@ -11,10 +12,10 @@ $rotation-deg: 60deg;
   -o-transform: rotate($rotation-deg);
 }
 
-.header__column-name {
+.hospitalstatusheader__column-name {
   @include u-text('base-light');
-  @include u-text('normal');
   @include u-text('no-wrap');
+  @include h4;
   position: absolute;
   top: 0;
   right: 50%;
@@ -22,12 +23,12 @@ $rotation-deg: 60deg;
   @include rotate;
 }
 
-.header__column-container {
+.hospitalstatusheader__column-container {
   width: 20%;
   height: 2em;
   position: relative;
 }
 
-.header__container {
-  height: 200px;
+.hospitalstatusheader__container {
+  height: 150px;
 }
