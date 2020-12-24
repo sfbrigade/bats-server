@@ -29,15 +29,12 @@
 }
 
 .usa-card__footer { 
-    // float: left;
-    // width: 500px;
-    display: flex;
-    flex-wrap: wrap;
+    display: inline-block;
 }
 .eta-arrival-time { 
-    // float: left;
-    // margin: .5rem; /* This value plus the left to right padding * 2 == final flex value */
+    float: left;
+    margin: .5rem; /* This value plus the left to right padding * 2 == final flex value */
     // padding: 2rem .25rem; /* Padding given for example on inner element */  
-    // flex: 50%;
-    // display: flex;
+    flex: 50%;
+    display: flex;
 }

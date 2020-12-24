@@ -24,7 +24,7 @@ function OffLoading({ ringdown, onChange }) {
                 <CardBody
                     header="Incident #7753428"
                     children="Chest Pain. Mild Headache"
-                    accordianTitle="Title1"
+                    accordianTitle="More Info"
                     accordianContent="1---Random words within here"
                 />
 

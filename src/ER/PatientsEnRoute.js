@@ -19,27 +19,25 @@ function EnRoute({ ringdown, onChange }) {
         <>
         {
             <div className="usa">   
-
                 <h2 className="padding-bottom-2">En Route</h2>
                 <CardBody
                     header="Incident #7753428"
                     children="Chest Pain. Mild Headache"
-                    accordianTitle="Title2"
+                    accordianTitle="More Info"
                     accordianContent="2---Random words within here"
                 />
                  <CardBody
                     header="Incident #8690275"
                     children="Chest Pain. Mild Headache"
-                    accordianTitle="Title3"
+                    accordianTitle="More Info"
                     accordianContent="3---Random words within here"
                 />
                 <CardBody
                     header="Incident #1175629"
                     children="Chest Pain. Mild Headache"
-                    accordianTitle="Title3"
+                    accordianTitle="More Info"
                     accordianContent="3---Random words within here"
                 />
-
             </div>
         }
         </>
