@@ -8,14 +8,23 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.belongsTo(models.Organization);
-
       User.belongsTo(models.User, { as: 'CreatedBy' });
       User.belongsTo(models.User, { as: 'UpdatedBy' });
+      User.belongsToMany(models.Hospital, { through: models.HospitalUser, foreignKey: 'edadminuser_uuid' });
+      User.belongsToMany(models.Hospital, {
+        as: 'activeHospitals',
+        through: models.HospitalUser.scope('active'),
+        foreignKey: 'edadminuser_uuid',
+      });
+      User.hasMany(models.HospitalUser, { foreignKey: 'edadminuser_uuid' });
     }
 
     toJSON() {
       const attributes = { ...this.get() };
       attributes.organization = this.Organization?.toJSON() || { id: this.OrganizationId };
+      if (this.activeHospitals) {
+        attributes.activeHospitals = this.activeHospitals.map((h) => h.toJSON());
+      }
       return _.pick(attributes, [
         'id',
         'firstName',
@@ -26,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         'isOperationalUser',
         'isSuperUser',
         'organization',
+        'activeHospitals',
       ]);
     }
   }

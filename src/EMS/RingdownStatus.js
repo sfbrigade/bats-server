@@ -23,9 +23,21 @@ function RingdownStatus({ className, ringdown }) {
                 </span>
               </div>
             </li>
-            <li className="status-list-item status-list-item--noninteractive">
+            <li
+              className={classNames('status-list-item', {
+                'status-list-item--noninteractive': !ringdown.patientDelivery.ringdownReceivedDateTimeLocal,
+                'status-list-item--completed': ringdown.patientDelivery.ringdownReceivedDateTimeLocal,
+              })}
+            >
               <div className="status-list-item__icon" />
-              <div className="status-list-item__text">Ringdown received</div>
+              <div className="status-list-item__text">
+                Ringdown received
+                {ringdown.patientDelivery.ringdownReceivedDateTimeLocal && (
+                  <span>
+                    {DateTime.fromISO(ringdown.patientDelivery.ringdownReceivedDateTimeLocal).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                  </span>
+                )}
+              </div>
             </li>
             <li className="status-list-item">
               <div className="status-list-item__icon" />

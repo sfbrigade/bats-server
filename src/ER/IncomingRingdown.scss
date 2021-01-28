@@ -1,0 +1,38 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-color';
+
+html,
+body,
+body > .grid-container,
+body > .grid-container > .grid-row,
+body > .grid-container > .grid-row > div {
+  height: 100%;
+}
+
+body > .grid-container > .grid-row > div > #root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.incoming-ringdown-container {
+  border: 0.5rem solid color($theme-color-warning);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.incoming-ringdown {
+  padding: 1rem;
+  text-align: center;
+
+  h1,
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    color: color($theme-color-base-light);
+  }
+}

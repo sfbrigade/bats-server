@@ -16,7 +16,12 @@ module.exports = {
         },
         transaction,
       });
-      await models.User.create(
+      const hospital = await models.Hospital.findOne({
+        where: {
+          name: 'SF General',
+        },
+      });
+      const user = await models.User.create(
         {
           OrganizationId: org.id,
           firstName: 'Operational',
@@ -26,6 +31,15 @@ module.exports = {
           isOperationalUser: true,
           isAdminUser: false,
           isSuperUser: false,
+          CreatedById: superuser.id,
+          UpdatedById: superuser.id,
+        },
+        { transaction }
+      );
+      await models.HospitalUser.create(
+        {
+          HospitalId: hospital.id,
+          EdAdminUserId: user.id,
           CreatedById: superuser.id,
           UpdatedById: superuser.id,
         },
@@ -57,12 +71,19 @@ module.exports = {
 
   down: async (queryInterface) => {
     await queryInterface.sequelize.transaction(async (transaction) => {
-      await models.User.destroy({
+      const user = await models.User.findOne({
         where: {
           email: 'op.healthcare@c4sf.me',
         },
         transaction,
       });
+      await models.HospitalUser.destroy({
+        where: {
+          EdAdminUserId: user.id,
+        },
+        transaction,
+      });
+      await user.destroy({ transaction });
       await models.User.destroy({
         where: {
           email: 'op.ems@c4sf.me',

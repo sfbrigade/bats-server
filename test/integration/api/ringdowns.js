@@ -165,6 +165,30 @@ describe('/api/ringdowns', () => {
     });
   });
 
+  describe('PATCH /:id/deliveryStatus', async () => {
+    it('transitions to a next valid state', async () => {
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      const now = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: models.PatientDelivery.Status.RINGDOWN_RECEIVED,
+          dateTimeLocal: now,
+        })
+        .expect(HttpStatus.OK);
+
+      const patientDelivery = await models.PatientDelivery.findByPk('d4fd2478-ecd6-4571-9fb3-842bfc64b511');
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.RINGDOWN_RECEIVED);
+      assert.deepStrictEqual(patientDelivery.ringdownReceivedDateTimeLocal, now);
+    });
+  });
+
   describe('PATCH /:id', () => {
     it('updates an existing ringdown', async () => {
       await testSession
@@ -192,7 +216,7 @@ describe('/api/ringdowns', () => {
             otherObservationNotes: 'in stable condition',
           },
           patientDelivery: {
-            arrivedDateTimeLocal: '2005-10-19 10:23:54',
+            etaMinutes: 15,
           },
         })
         .expect(HttpStatus.OK);
@@ -203,7 +227,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(response.body.patient.age, 99);
       assert.deepStrictEqual(response.body.patient.sex, 'FEMALE');
       assert.deepStrictEqual(response.body.patient.otherObservationNotes, 'in stable condition');
-      assert.deepStrictEqual(response.body.patientDelivery.arrivedDateTimeLocal, '2005-10-19T10:23:54.000Z');
+      assert.deepStrictEqual(response.body.patientDelivery.etaMinutes, 15);
     });
   });
 });
