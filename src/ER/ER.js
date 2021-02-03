@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
+import IncomingRingdown from './IncomingRingdown';
+
+import ApiService from '../ApiService';
+import Context from '../Context';
 
 import Beds from './Beds';
 import RingDown from './RingDown';
 
 export default function ER() {
+  const { hospital } = useContext(Context);
+
   const [selectedTab, setSelectedTab] = useState(0);
+  const [incomingRingdowns, setIncomingRingdowns] = useState([]);
+
+  function onConfirm(ringdown) {
+    const newIncomingRingdowns = incomingRingdowns.filter((r) => r.id !== ringdown.id);
+    setIncomingRingdowns(newIncomingRingdowns);
+  }
+
+  useEffect(() => {
+    if (hospital) {
+      ApiService.ringdowns.get(hospital.id).then((response) => {
+        const ringdowns = response.data.filter((r) => r.patientDelivery.deliveryStatus === 'RINGDOWN SENT');
+        ringdowns.sort((a, b) => a.patientDelivery.etaMinutes - b.patientDelivery.etaMinutes);
+        setIncomingRingdowns(ringdowns);
+      });
+    }
+  }, [hospital, setIncomingRingdowns]);
 
   return (
     <>
       <Header name="Hospital Destination Tool">
-        <TabBar onSelect={setSelectedTab} tabs={['Ringdowns', 'Hospital Info']} />
+        {incomingRingdowns.length === 0 && (
+          <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
+        )}
       </Header>
-      {selectedTab === 0 && <RingDown />}
-      {selectedTab === 1 && <Beds />}
+      {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
+      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDown />}
+      {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds />}
     </>
   );
 }

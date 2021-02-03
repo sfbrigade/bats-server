@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -12,7 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       Hospital.belongsTo(models.User, { as: 'CreatedBy' });
       Hospital.belongsTo(models.User, { as: 'UpdatedBy' });
     }
+
+    toJSON() {
+      const attributes = { ...this.get() };
+      return _.pick(attributes, ['id', 'name', 'sortSequenceNumber', 'isActive']);
+    }
   }
+
   Hospital.init(
     {
       id: {

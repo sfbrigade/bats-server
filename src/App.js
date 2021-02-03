@@ -8,15 +8,20 @@ import ER from './ER';
 import Redirect from './Components/Redirect';
 
 function App() {
-  const { setUser } = useContext(Context);
+  const { setUser, setHospital } = useContext(Context);
 
   useEffect(() => {
     // hit the users endpoint to ensure authenticated
     ApiService.users.me().then((response) => {
       // save the user data into the context
-      setUser(response.data);
+      const user = response.data;
+      setUser(user);
+      if (user.organization.type === 'HEALTHCARE') {
+        // TODO: handle user added to multiple hospitals
+        setHospital(user.activeHospitals[0]);
+      }
     });
-  }, [setUser]);
+  }, [setUser, setHospital]);
 
   return (
     <Router>

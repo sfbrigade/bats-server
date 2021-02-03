@@ -1,7 +1,20 @@
 const { Model } = require('sequelize');
 
+const DeliveryStatus = {
+  RINGDOWN_SENT: 'RINGDOWN SENT',
+  RINGDOWN_RECEIVED: 'RINGDOWN RECEIVED',
+  ARRIVED: 'ARRIVED',
+  OFFLOADED: 'OFFLOADED',
+  RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
+};
+Object.freeze(DeliveryStatus);
+
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
+    static get Status() {
+      return DeliveryStatus;
+    }
+
     static associate(models) {
       PatientDelivery.belongsTo(models.Patient);
       PatientDelivery.belongsTo(models.Ambulance);
@@ -10,6 +23,49 @@ module.exports = (sequelize, DataTypes) => {
 
       PatientDelivery.belongsTo(models.User, { as: 'CreatedBy' });
       PatientDelivery.belongsTo(models.User, { as: 'UpdatedBy' });
+    }
+
+    setDeliveryStatus(deliveryStatus, dateTimeLocal) {
+      // if we're already in the specified state, just return
+      if (this.deliveryStatus === deliveryStatus) {
+        return;
+      }
+      // otherwise, check for a valid state transition
+      switch (deliveryStatus) {
+        case DeliveryStatus.RINGDOWN_RECEIVED:
+          if (this.deliveryStatus === DeliveryStatus.RINGDOWN_SENT) {
+            this.deliveryStatus = deliveryStatus;
+            this.ringdownReceivedDateTimeLocal = dateTimeLocal;
+            return;
+          }
+          break;
+        case DeliveryStatus.ARRIVED:
+          if (this.deliveryStatus === DeliveryStatus.RINGDOWN_SENT || this.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED) {
+            this.deliveryStatus = deliveryStatus;
+            this.arrivedDateTimeLocal = dateTimeLocal;
+            return;
+          }
+          break;
+        case DeliveryStatus.OFFLOADED:
+          if (this.deliveryStatus === DeliveryStatus.ARRIVED) {
+            this.deliveryStatus = deliveryStatus;
+            this.offloadedDateTimeLocal = dateTimeLocal;
+            return;
+          }
+          break;
+        case DeliveryStatus.RETURNED_TO_SERVICE:
+          if (this.deliveryStatus === DeliveryStatus.OFFLOADED) {
+            this.deliveryStatus = deliveryStatus;
+            this.returnToServiceDateTimeLocal = dateTimeLocal;
+            return;
+          }
+          break;
+        default:
+          // fallthrough...
+          break;
+      }
+      // otherwise, throw an exception
+      throw new Error();
     }
   }
   PatientDelivery.init(

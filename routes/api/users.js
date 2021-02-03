@@ -27,7 +27,11 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/me', middleware.isAuthenticated, async (req, res) => {
-  req.user.Organization = await req.user.getOrganization();
+  const org = await req.user.getOrganization();
+  req.user.Organization = org;
+  if (org.type === 'HEALTHCARE') {
+    req.user.activeHospitals = await req.user.getActiveHospitals();
+  }
   res.json(req.user.toJSON());
 });
 
