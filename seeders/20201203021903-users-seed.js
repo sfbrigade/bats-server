@@ -66,6 +66,66 @@ module.exports = {
         },
         { transaction }
       );
+      await models.User.create(
+        {
+          OrganizationId: org.id,
+          firstName: 'Operational',
+          lastName: 'EMS 1',
+          email: 'op.ems.1@c4sf.me',
+          hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
+          isOperationalUser: true,
+          isAdminUser: false,
+          isSuperUser: false,
+          CreatedById: superuser.id,
+          UpdatedById: superuser.id,
+        },
+        { transaction }
+      );
+      await models.User.create(
+        {
+          OrganizationId: org.id,
+          firstName: 'Operational',
+          lastName: 'EMS 2',
+          email: 'op.ems.2@c4sf.me',
+          hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
+          isOperationalUser: true,
+          isAdminUser: false,
+          isSuperUser: false,
+          CreatedById: superuser.id,
+          UpdatedById: superuser.id,
+        },
+        { transaction }
+      );
+      await models.User.create(
+        {
+          OrganizationId: org.id,
+          firstName: 'Operational',
+          lastName: 'EMS 3',
+          email: 'op.ems.3@c4sf.me',
+          hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
+          isOperationalUser: true,
+          isAdminUser: false,
+          isSuperUser: false,
+          CreatedById: superuser.id,
+          UpdatedById: superuser.id,
+        },
+        { transaction }
+      );
+      await models.User.create(
+        {
+          OrganizationId: org.id,
+          firstName: 'Operational',
+          lastName: 'EMS 4',
+          email: 'op.ems.4@c4sf.me',
+          hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
+          isOperationalUser: true,
+          isAdminUser: false,
+          isSuperUser: false,
+          CreatedById: superuser.id,
+          UpdatedById: superuser.id,
+        },
+        { transaction }
+      );
     });
   },
 
