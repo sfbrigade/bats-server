@@ -82,6 +82,12 @@
           "allowAfterThis": true
         }
       ],
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "Sequelize|queryInterface"
+        }
+      ],
       "no-param-reassign": [
         "error",
         {

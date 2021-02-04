@@ -14,6 +14,7 @@ export default function ER() {
   const { hospital } = useContext(Context);
 
   const [selectedTab, setSelectedTab] = useState(0);
+  const [ringdowns, setRingdowns] = useState([]);
   const [incomingRingdowns, setIncomingRingdowns] = useState([]);
 
   function onConfirm(ringdown) {
@@ -24,9 +25,10 @@ export default function ER() {
   useEffect(() => {
     if (hospital) {
       ApiService.ringdowns.get(hospital.id).then((response) => {
-        const ringdowns = response.data.filter((r) => r.patientDelivery.deliveryStatus === 'RINGDOWN SENT');
-        ringdowns.sort((a, b) => a.patientDelivery.etaMinutes - b.patientDelivery.etaMinutes);
-        setIncomingRingdowns(ringdowns);
+        const newRingdowns = response.data.sort((a, b) => a.patientDelivery.etaMinutes - b.patientDelivery.etaMinutes);
+        const newIncomingRingdowns = response.data.filter((r) => r.patientDelivery.deliveryStatus === 'RINGDOWN SENT');
+        setRingdowns(newRingdowns);
+        setIncomingRingdowns(newIncomingRingdowns);
       });
     }
   }, [hospital, setIncomingRingdowns]);
@@ -39,7 +41,7 @@ export default function ER() {
         )}
       </Header>
       {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
-      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDown />}
+      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDown ringdowns={ringdowns} />}
       {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds />}
     </>
   );

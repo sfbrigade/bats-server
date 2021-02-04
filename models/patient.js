@@ -76,10 +76,12 @@ module.exports = (sequelize, DataTypes) => {
       lowOxygenResponseType: {
         field: 'lowoxygenresponsetypeenum',
         type: DataTypes.ENUM('ROOM AIR', 'SUPPLEMENTAL OXYGEN'),
+        allowNull: true,
       },
       supplementalOxygenAmount: {
         field: 'supplementaloxygenamount',
         type: DataTypes.INTEGER,
+        allowNull: true,
       },
       temperature: {
         field: 'temperature',
