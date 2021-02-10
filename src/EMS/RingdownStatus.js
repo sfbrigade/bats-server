@@ -4,15 +4,14 @@ import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 
 import Ringdown from '../Models/Ringdown';
-import './RingdownStatus.scss';
 
 function RingdownStatus({ className, ringdown }) {
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
-          <h3 className="h1">{ringdown.hospital.name}</h3>
-          <h4 className="text-base-light">ETA {ringdown.patientDelivery.etaMinutes} minutes</h4>
+          <h3 className="h1 margin-0">{ringdown.hospital.name}</h3>
+          <h4 className="text-base-light margin-top-2">ETA {ringdown.patientDelivery.etaMinutes} minutes</h4>
           <ol className="status-list">
             <li className="status-list-item status-list-item--completed">
               <div className="status-list-item__icon" />
