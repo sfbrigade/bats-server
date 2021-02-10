@@ -8,7 +8,7 @@ import ApiService from '../ApiService';
 import Context from '../Context';
 
 import Beds from './Beds';
-import RingDown from './RingDown';
+import RingDowns from './Ringdowns';
 
 export default function ER() {
   const { hospital } = useContext(Context);
@@ -41,7 +41,7 @@ export default function ER() {
         )}
       </Header>
       {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
-      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDown ringdowns={ringdowns} />}
+      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
       {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds />}
     </>
   );
