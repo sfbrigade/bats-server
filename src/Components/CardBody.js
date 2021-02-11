@@ -23,10 +23,11 @@ function CardBody({ header, children, accordianTitle, accordianContent }) {
                 <div className="usa-card__body">
                     <p> {children} </p> 
                 </div>
+                <div class="line"></div>
                 <div className="usa-card__footer" >
-                  {/* <div class="line"></div> */}
                   <div className="eta-arrival-time">
-                      ETA: {now.toFormat('hh:mm:ss')} <span>{now.toFormat('a')}</span>
+                    
+                      ETA: 19:59:29
                   </div>
                   <Accordian 
                       title={accordianTitle}

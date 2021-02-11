@@ -19,7 +19,7 @@ function OffLoading({ ringdown, onChange }) {
         <>
         {
             <div className="usa">   
-                <h2 className="padding-bottom-2">OffLoading</h2>
+                <h2 className="padding-bottom-2">Waiting</h2>
 
                 <CardBody
                     header="Incident #7753428"
