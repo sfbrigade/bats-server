@@ -1,56 +1,54 @@
-.accordian-section { 
-    display: flex;
-    flex-direction: column;
-    float: right;
+.accordian-section {
+  display: flex;
+  flex-direction: column;
+  float: right;
 }
 
-.usa-accordion__button { 
-    background-color: #ffffff;
-    color: #005ea2;
-    text-align: center;
-    /* background-image: url("./img/plus.svg"),linear-gradient(transparent, transparent); */
-    /* color: #444; */
-    cursor: pointer;
-    padding:  .2rem 1.5rem 0rem 0rem;
-    background-position: right 3.5rem center;
-    /* display: flex; */
-    /* align-items: center; */
-    border: none;
-    outline: none;
-    /* transition: background-color 0.6 ease; */
+.usa-accordion__button {
+  background-color: #ffffff;
+  color: #005ea2;
+  text-align: center;
+  /* background-image: url("./img/plus.svg"),linear-gradient(transparent, transparent); */
+  /* color: #444; */
+  cursor: pointer;
+  padding: 0.2rem 1.5rem 0rem 0rem;
+  background-position: right 3.5rem center;
+  /* display: flex; */
+  /* align-items: center; */
+  border: none;
+  outline: none;
+  /* transition: background-color 0.6 ease; */
 }
 
-.usa-accordion__button:hover, 
-
-.active { 
-    background-color: #ffffff;
+.usa-accordion__button:hover,
+.active {
+  background-color: #ffffff;
 }
 
-.accordian-title { 
-    font-family: "Open Sans", sans-serif;
-    font-weight: 600;
-    font-size: 18px; 
+.accordian-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
 }
 
-.accordian-icon { 
-    margin-left: auto;
-    transition: tranform 0.6 ease;
+.accordian-icon {
+  margin-left: auto;
+  transition: tranform 0.6 ease;
 }
 
-.rotate { 
-    transform: rotate(90deg);
+.rotate {
+  transform: rotate(90deg);
 }
 
-.accordian-content { 
-    background-color: white;
-    overflow: hidden;
-    transition: max-height 0.6 ease;
-
+.accordian-content {
+  background-color: white;
+  overflow: hidden;
+  transition: max-height 0.6 ease;
 }
 
-.accordian-text { 
-    font-family: "Open Sans", sans-serif;
-    font-weight: 400;
-    font-size: 14px; 
-    padding: 18px; 
+.accordian-text {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding: 18px;
 }
