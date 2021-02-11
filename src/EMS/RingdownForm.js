@@ -91,9 +91,9 @@ function RingdownForm({ className }) {
           </fieldset>
         </form>
       )}
-      {ringdowns && ringdowns.length > 0 && <RingdownStatus ringdown={ringdowns[0]} />}
+      {ringdowns && ringdowns.length > 0 && <RingdownStatus className={className} ringdown={ringdowns[0]} />}
       {!ringdowns && (
-        <div className="padding-9">
+        <div className={classNames('padding-9', className)}>
           <Spinner />
         </div>
       )}

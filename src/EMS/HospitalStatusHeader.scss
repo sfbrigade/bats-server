@@ -1,28 +1,34 @@
 @import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
 
 $rotation-deg: 60deg;
 
 @mixin rotate {
   transform: rotate($rotation-deg);
+  transform-origin: center right;
   -webkit-transform: rotate($rotation-deg);
   -moz-transform: rotate($rotation-deg);
   -ms-transform: rotate($rotation-deg);
   -o-transform: rotate($rotation-deg);
 }
 
-.header__column-name {
+.hospitalstatusheader__column-name {
   @include u-text('base-light');
-  @include u-text('normal');
   @include u-text('no-wrap');
-  // @include rotate;
+  @include h4;
+  position: absolute;
+  top: 0;
+  right: 50%;
+  margin: 0;
+  @include rotate;
 }
 
-.header__column-container {
+.hospitalstatusheader__column-container {
   width: 20%;
-  display: flex;
-  align-items: flex-end;
+  height: 2em;
+  position: relative;
 }
 
-.header__container {
-  height: 200px;
+.hospitalstatusheader__container {
+  height: 150px;
 }

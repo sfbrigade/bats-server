@@ -35,6 +35,20 @@
    sequelize db:migrate
    ```
 
+   Seed the database with hospitals and test users by running:
+
+   ```
+   sequelize db:seed:all
+   ```
+
+   The test users include (email/password):
+
+   batsadmin@c4sf.me/abcd1234 (a Superuser)
+
+   op.healthcare@c4sf.me/abcd1234 (an operational Healthcare user)
+
+   op.ems@c4sf.me/abcd1234 (an operational EMS user)
+
    If you wish to inspect the db, you can run:
 
    ```
@@ -64,9 +78,9 @@
 
 3. Run the server tests:
 
-```
-yarn test:server
-```
+   ```
+   yarn test:server
+   ```
 
 # Create React App
 

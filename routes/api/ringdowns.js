@@ -182,6 +182,56 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
   }
 });
 
+router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res) => {
+  try {
+    await models.sequelize.transaction(async (transaction) => {
+      const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
+        include: { all: true },
+        rejectOnEmpty: true,
+        transaction,
+      });
+      // check if calling user is allowed to modify this record
+      if (req.body.deliveryStatus === models.PatientDelivery.Status.RINGDOWN_RECEIVED) {
+        // check if user is in the receiving hospital ED
+        const hospitalUser = await models.HospitalUser.findOne({
+          where: {
+            HospitalId: patientDelivery.HospitalId,
+            EdAdminUserId: req.user.id,
+          },
+          transaction,
+        });
+        if (!hospitalUser || !req.user.isOperationalUser) {
+          res.status(HttpStatus.FORBIDDEN).end();
+          return;
+        }
+      } else if (req.user.id !== patientDelivery.CreatedById) {
+        res.status(HttpStatus.FORBIDDEN).end();
+        return;
+      }
+      // update status
+      try {
+        patientDelivery.setDeliveryStatus(req.body.deliveryStatus, req.body.dateTimeLocal);
+      } catch (error) {
+        res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
+        return;
+      }
+      // save and acknowledge
+      await patientDelivery.save();
+      const emsCall = await patientDelivery.Patient.getEmergencyMedicalServiceCall({ transaction });
+      const response = createRingdownResponse(
+        patientDelivery.Ambulance,
+        emsCall,
+        patientDelivery.Hospital,
+        patientDelivery.Patient,
+        patientDelivery
+      );
+      res.status(HttpStatus.OK).json(response);
+    });
+  } catch (error) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+  }
+});
+
 router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
   try {
     await models.sequelize.transaction(async (transaction) => {
@@ -196,13 +246,13 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
         // check if user is in the receiving hospital ED
         const hospitalUser = await models.HospitalUser.findOne({
           where: {
-            HospitalId: patientDelivery.hospitalId,
+            HospitalId: patientDelivery.HospitalId,
             EdAdminUserId: req.user.id,
           },
           transaction,
         });
-        if (!hospitalUser || !hospitalUser.isOperationalUser) {
-          req.send(HttpStatus.FORBIDDEN).end();
+        if (!hospitalUser || !req.user.isOperationalUser) {
+          res.status(HttpStatus.FORBIDDEN).end();
           return;
         }
       }
@@ -237,10 +287,8 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       }
 
       if (req.body.patientDelivery) {
-        Object.assign(patientDelivery, _.pick(req.body.patientDelivery, patientDeliveryParams));
-        if (req.body.patientDelivery.arriveDateTimeLocal) {
-          patientDelivery.deliveryStatus = 'ARRIVED';
-        }
+        // only allow updates to eta in PatientDelivery- all other state changes should use above route
+        Object.assign(patientDelivery, _.pick(req.body.patientDelivery, ['etaMinutes']));
       }
 
       await patientDelivery.save({ transaction });

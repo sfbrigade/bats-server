@@ -5,7 +5,7 @@ import Context from '../Context';
 import Spinner from './Spinner';
 
 function Redirect() {
-  const { user } = useContext(Context);
+  const { user, setHospital } = useContext(Context);
   const history = useHistory();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function Redirect() {
         history.push('/ems');
       }
     }
-  }, [history, user]);
+  }, [history, user, setHospital]);
 
   return (
     <div className="padding-9">

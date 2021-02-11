@@ -1,0 +1,46 @@
+@mixin h1 {
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 2.375rem;
+}
+
+@mixin h2 {
+  font-size: 1.3125rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+@mixin h3 {
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.5625rem;
+}
+
+@mixin h4 {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.5rem;
+}
+
+@mixin h4-bold {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 1.5rem;
+}
+
+@mixin h4-italic {
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: normal;
+  line-height: 1.5rem;
+}
+
+@mixin focus-shadow {
+  outline: none;
+  border: 2px solid color($theme-color-primary-vivid);
+}

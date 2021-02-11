@@ -50,4 +50,50 @@ describe('models.PatientDelivery', () => {
     const hospital = await patientDelivery.getHospital();
     assert.deepStrictEqual(hospital.name, 'CPMC Davies Campus');
   });
+
+  describe('.setDeliveryStatus()', () => {
+    beforeEach(async () => {
+      await helper.loadFixtures(['patientDeliveries']);
+    });
+
+    it('allows valid state transitions', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      const now = new Date();
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.RINGDOWN_SENT);
+
+      patientDelivery.setDeliveryStatus(models.PatientDelivery.Status.RINGDOWN_RECEIVED, now);
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.RINGDOWN_RECEIVED);
+      assert.deepStrictEqual(patientDelivery.ringdownReceivedDateTimeLocal, now);
+
+      patientDelivery.setDeliveryStatus(models.PatientDelivery.Status.ARRIVED, now);
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.ARRIVED);
+      assert.deepStrictEqual(patientDelivery.arrivedDateTimeLocal, now);
+
+      patientDelivery.setDeliveryStatus(models.PatientDelivery.Status.OFFLOADED, now);
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.OFFLOADED);
+      assert.deepStrictEqual(patientDelivery.offloadedDateTimeLocal, now);
+
+      patientDelivery.setDeliveryStatus(models.PatientDelivery.Status.RETURNED_TO_SERVICE, now);
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.RETURNED_TO_SERVICE);
+      assert.deepStrictEqual(patientDelivery.returnToServiceDateTimeLocal, now);
+    });
+
+    it('can skip received state directly to arrived', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      const now = new Date();
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.RINGDOWN_SENT);
+
+      patientDelivery.setDeliveryStatus(models.PatientDelivery.Status.ARRIVED, now);
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.ARRIVED);
+      assert.deepStrictEqual(patientDelivery.arrivedDateTimeLocal, now);
+    });
+
+    it('throws an error for other invalid state transitions', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      const now = new Date();
+      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.RINGDOWN_SENT);
+
+      assert.throws(() => patientDelivery.setDeliveryStatus(models.PatientDelivery.Status.OFFLOADED, now));
+    });
+  });
 });

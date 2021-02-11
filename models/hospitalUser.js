@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       HospitalUser.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
+
   HospitalUser.init(
     {
       id: {
@@ -60,5 +61,10 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'HospitalUser',
     }
   );
+
+  HospitalUser.addScope('active', {
+    where: { isActive: true },
+  });
+
   return HospitalUser;
 };

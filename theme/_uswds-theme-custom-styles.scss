@@ -20,79 +20,34 @@ i.e.
 ----------------------------------------
 */
 
-@mixin h1 {
-  font-size: 2rem;
-  font-style: normal;
-  font-weight: bold;
-  line-height: 2.375rem;
-}
+@import 'uswds-theme-custom-mixins';
 
+h1,
 .h1 {
   @include h1;
 }
 
-@mixin h2 {
-  font-size: 1.3125rem;
-  font-style: normal;
-  font-weight: bold;
-  line-height: 1.5rem;
-}
-
+h2,
 .h2 {
   @include h2;
 }
 
-@mixin h3 {
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1.5625rem;
-}
-
+h3,
 .h3 {
   @include h3;
 }
 
-@mixin h4 {
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1.5rem;
-}
-
-h4 {
-  @include h4;
-}
-
+h4,
 .h4 {
   @include h4;
-}
-
-@mixin h4-bold {
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: bold;
-  line-height: 1.5rem;
 }
 
 .h4-bold {
   @include h4-bold;
 }
 
-@mixin h4-italic {
-  font-size: 1rem;
-  font-style: italic;
-  font-weight: normal;
-  line-height: 1.5rem;
-}
-
 .h4-italic {
   @include h4-italic;
-}
-
-@mixin focus-shadow {
-  outline: none;
-  border: 2px solid color($theme-color-primary-vivid);
 }
 
 input,

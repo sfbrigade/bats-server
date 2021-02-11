@@ -1,5 +1,5 @@
 class HospitalStatus {
-  constructor ({
+  constructor({
     id,
     hospital,
     openEdBedCount,
@@ -8,13 +8,13 @@ class HospitalStatus {
     updateDateTimeLocal,
     additionalServiceAvailabilityNotes,
   }) {
-    this.id = id
+    this.id = id;
     this.hospitalName = (hospital && hospital.name) || null;
     this.openEdBedCount = openEdBedCount;
     this.openPsychBedCount = openPsychBedCount;
     this.divertStatusIndicator = divertStatusIndicator;
     this.updateDateTimeLocal = updateDateTimeLocal;
-    this.additionalServiceAvailabilityNotes = additionalServiceAvailabilityNotes || "";
+    this.additionalServiceAvailabilityNotes = additionalServiceAvailabilityNotes || '';
   }
 
   get isValid() {
@@ -26,7 +26,7 @@ class HospitalStatus {
       this.divertStatusIndicator !== null &&
       this.updateDateTimeLocal !== null &&
       this.additionalServiceAvailabilityNotes !== null
-    )
+    );
   }
 }
 
