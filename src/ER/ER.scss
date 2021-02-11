@@ -4,6 +4,8 @@
 
 .usa-card__container { 
     width: 500px;
+    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
 }
 
 .usa-card__header > :only-child, .usa-card__body > :only-child {
@@ -14,23 +16,21 @@
     font-size: 20px;
 }
 
-.header__time {
-    color: #858889;
-    padding: 0; 
-    padding-bottom: 20px;
+// To make a line above the time and more info dropdown tab
+.line{ 
+    border: 1px solid #DCDEE0;
 }
 
-// To make a line above the time and more info dropdown tab
-.line {
-    width: 500px;
-    height: 47px;
-    border-bottom: 1px solid black;
-    position: absolute;
-}
+// .header__time {
+//     color: #858889;
+//     padding: 0; 
+//     padding-bottom: 20px;
+// }
 
 .usa-card__footer { 
     display: inline-block;
 }
+
 .eta-arrival-time { 
     float: left;
     margin: .5rem; /* This value plus the left to right padding * 2 == final flex value */
