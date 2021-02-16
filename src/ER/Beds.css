@@ -49,7 +49,7 @@
     width: 2em;
     height: 1.3em;
     text-align: center;
-    padding-top: 4%;
+    padding: 6%;
     font-size: 30px;
     margin: -9% 0% 0% 0%;
     
@@ -94,4 +94,14 @@ background: #ecf3ec;
 .NumberPosition{
     position: relative;
     top: -0.5em;
+}
+.Beds_Counter_Button_Text {
+    font-size: 38px;
+    position: relative;
+    top: -0.56em;
+    left: -0.34em;
+}
+.Beds_Counter_Button {
+    position: relative;
+    top: 0em;
 }
