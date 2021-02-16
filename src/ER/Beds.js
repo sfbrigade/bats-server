@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Counter from '../Components/counter';
-import Banner from '../Components/banner';
+import Counter from '../Components/Counter';
+import Banner from '../Components/Banner';
 import ButtonRight from '../Components/ButtonRight';
 import DiversionPopup from '../Components/DiversionPopup';
 import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
-import './hospitalinfo.css';
+import './Beds.css';
 
 const Beds = () => {
  
@@ -101,9 +101,9 @@ const TogglePopupConfirmation = () => {
       
           <div style={container2} className="usa-fieldset">
           <div className="grid-row height-7 width-card-lg">
-    {!diversion && <div className="grid-col-1 DiversionStyle" ></div>}
+    {!diversion && <div className="grid-col-1 Beds_DiversionStyle" ></div>}
     {!diversion && <div className="grid-col-8">Not On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
-    {diversion && <div className="grid-col-1 DiversionStyle2" ></div>}
+    {diversion && <div className="grid-col-1 Beds_DiversionStyle2" ></div>}
     {diversion && <div className="grid-col-8">On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
     {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
     {PopupConfirmation && <DiversionPopupConfirmation ok={TogglePopupConfirmation} />}
