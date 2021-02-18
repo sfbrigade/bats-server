@@ -4,7 +4,7 @@ import Banner from '../Components/Banner';
 import ButtonRight from '../Components/ButtonRight';
 import DiversionPopup from '../Components/DiversionPopup';
 import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
-import './Beds.css';
+import './Beds.scss';
 
 const Beds = () => {
  
@@ -84,13 +84,11 @@ const TogglePopupConfirmation = () => {
         <div id="psychCountButtons" className="usa-fieldset">
         <Counter CountTitle="Psych Beds" update={handleBedUpdate} />
          </div>
-
-         
-        <Banner BannerTitle="Addtl. Notes (optional)" date={NotesDateBanner} time={NotesTimeBanner} />
+        <Banner BannerTitle="Addtl. Notes" date={NotesDateBanner} time={NotesTimeBanner} />
      
         <div style={container} className="usa-fieldset">
-          <label htmlFor="erNotes">
-          ER conditions
+          <label htmlFor="erNotes" className="beds_er_conditions">
+          ER conditions <span className="beds_er_conditions_optional">(optional)</span>
             <textarea id="erNotes" name="erNotes" rows="4" cols="50" require="true" />
           </label>
           <ButtonRight ButtonTitle="Update" update={handleNotesUpdate} />   
@@ -101,9 +99,9 @@ const TogglePopupConfirmation = () => {
       
           <div style={container2} className="usa-fieldset">
           <div className="grid-row height-7 width-card-lg">
-    {!diversion && <div className="grid-col-1 Beds_DiversionStyle" ></div>}
+    {!diversion && <div className="grid-col-1 beds_diversion_style" ></div>}
     {!diversion && <div className="grid-col-8">Not On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
-    {diversion && <div className="grid-col-1 Beds_DiversionStyle2" ></div>}
+    {diversion && <div className="grid-col-1 beds_diversion_style_2" ></div>}
     {diversion && <div className="grid-col-8">On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
     {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
     {PopupConfirmation && <DiversionPopupConfirmation ok={TogglePopupConfirmation} />}

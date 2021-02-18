@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const DiversionPopup = (props) => {
   return (
-    <div className="Beds_Popup">
+    <div className="diversionPopup">
       <div class="usa-alert usa-alert--warning" >
   <div class="usa-alert__body">
     <h3 class="usa-alert__heading">Change divert status?</h3>
