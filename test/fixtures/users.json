@@ -110,5 +110,21 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "User",
+    "data": {
+      "id": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "OrganizationId": "49f916bb-bfb9-40cf-965c-6e9a8ab7e970",
+      "firstName": "NORCal2",
+      "lastName": "Paramedic",
+      "email": "norcal.paramedic2@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isOperationalUser": true,
+      "isAdminUser": false,
+      "isSuperUser": false,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]

@@ -47,5 +47,35 @@
       "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
       "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
     }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "f8f948ac-719f-11eb-9439-0242ac130002",
+      "AmbulanceId": "b594eb54-bfed-41f7-8248-616917cfc6e9",
+      "PatientId": "f1c8d886-71a0-11eb-9439-0242ac130002",
+      "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
+      "ParamedicUserId": "08f31c8e-4ad9-4254-ab30-da4e1d09e352",
+      "deliveryStatus": "RINGDOWN SENT",
+      "etaMinutes": 12,
+      "ringdownSentDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "f3ad9b22-719f-11eb-9439-0242ac130002",
+      "AmbulanceId": "015b04ad-e9fb-4df3-acfc-baeaede7ce61",
+      "PatientId": "ed1f60fc-71a0-11eb-9439-0242ac130002",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "ParamedicUserId": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "deliveryStatus": "ARRIVED",
+      "etaMinutes": 12,
+      "ringdownSentDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
+    }
   }
 ]

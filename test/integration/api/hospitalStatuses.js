@@ -29,6 +29,8 @@ describe('/api/hospitalstatuses', () => {
       assert.deepStrictEqual(sutterHospital.openEdBedCount, 0);
       assert.deepStrictEqual(sutterHospital.divertStatusIndicator, true);
       assert.deepStrictEqual(sutterHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(sutterHospital.ambulancesEnroute, 2);
+      assert.deepStrictEqual(sutterHospital.ambulancesOffloading, 1);
       assert.deepStrictEqual(sutterHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(sutterHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
 
@@ -37,6 +39,8 @@ describe('/api/hospitalstatuses', () => {
       assert(cpmcHospital.updateDateTimeLocal);
       assert.deepStrictEqual(cpmcHospital.openEdBedCount, 10);
       assert.deepStrictEqual(cpmcHospital.divertStatusIndicator, false);
+      assert.deepStrictEqual(sutterHospital.ambulancesEnroute, 1);
+      assert.deepStrictEqual(sutterHospital.ambulancesOffloading, 0);
       assert.deepStrictEqual(cpmcHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(cpmcHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(cpmcHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
