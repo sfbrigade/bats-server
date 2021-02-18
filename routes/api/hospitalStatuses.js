@@ -10,9 +10,11 @@ function createResponse(hsu) {
   const { id, openEdBedCount, openPsychBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDateTimeLocal } = hsu;
   const response = {
     id,
-    hospital: {
+    hospital: { // TODO - I feel like we should just flatten this
       id: hsu.Hospital.id,
       name: hsu.Hospital.name,
+      ambulancesEnroute: hsu.ambulancesEnroute,
+      ambulancesOffloading: hsu.ambulancesOffloading,
     },
     openEdBedCount,
     openPsychBedCount,
@@ -28,6 +30,12 @@ function createResponse(hsu) {
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
   try {
+    // TODO
+    // - for enroute need something like:
+    // -    select id, count(*) from patientdelivery where deliverystatus = 'RINGDOWN SENT' or deliverystatus = 'RINGDOWN RECEIVED' group by id;
+    // - for offloading need:
+    // -    select id, count(*) from patientdelivery where deliverystatus = 'ARRIVED' group by id;
+    // - see if it's possible to do a join on hospitalstatusupdate and just make this 1 big query
     const statusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({
       include: [models.Hospital],
     });
