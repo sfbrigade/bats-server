@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './DiversionPopup.scss';
 
 const DiversionPopupConfirmation = (props) => {
   return (
