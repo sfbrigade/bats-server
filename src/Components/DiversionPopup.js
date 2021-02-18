@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import './DiversionPopup.scss';
 
 const DiversionPopup = (props) => {
   return (
-    <div className="diversionPopup">
+    <div className="DiversionPopup">
       <div class="usa-alert usa-alert--warning" >
   <div class="usa-alert__body">
     <h3 class="usa-alert__heading">Change divert status?</h3>

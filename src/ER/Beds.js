@@ -100,9 +100,9 @@ const TogglePopupConfirmation = () => {
           <div style={container2} className="usa-fieldset">
           <div className="grid-row height-7 width-card-lg">
     {!diversion && <div className="grid-col-1 beds_diversion_style" ></div>}
-    {!diversion && <div className="grid-col-8">Not On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
+    {!diversion && <div className="grid-col-8 margin-1">Not On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
     {diversion && <div className="grid-col-1 beds_diversion_style_2" ></div>}
-    {diversion && <div className="grid-col-8">On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
+    {diversion && <div className="grid-col-8 margin-1">On Diversion{popup}<button className="usa-button--unstyled" onClick={TogglePopup}>Change status</button></div>}
     {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
     {PopupConfirmation && <DiversionPopupConfirmation ok={TogglePopupConfirmation} />}
     </div>
