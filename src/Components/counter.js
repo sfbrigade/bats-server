@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Counter.scss';
 
 const Counter = (props) => {
   const [count, setCount] = useState(0);
@@ -14,21 +15,21 @@ const Counter = (props) => {
   };
 
   return (
-    <div className="Beds_Counter_Container">
+    <div className="counter_container">
       <div className="grid-container">
         <div className="grid-row">
-          <div className="grid-col-7 Beds_Counter_Title">{props.CountTitle}</div>
+          <div className="grid-col-7 margin-0 counter_title">{props.CountTitle}</div>
           <div className="grid-col-auto">
-            <button className="usa-button Beds_Counter_Button circle-2px margin-1 padding-2" onClick={handleDecrement}>
-              <span className="font-alt-lg Beds_Counter_Button_Text">-</span>
+            <button className="usa-button counter_button circle-2px margin-1 padding-2" onClick={handleDecrement}>
+              <span className="font-alt-lg counter_button_text">-</span>
             </button>
           </div>
-          <div className="grid-col-auto Beds_Counter_Number_Box">
+          <div className="grid-col-auto counter_number_box">
             <div className="margin-0 position-absolute bottom-05 left-2">{count}</div>
           </div>
           <div className="grid-col-auto">
-            <button className="usa-button Beds_Counter_Button circle-2px margin-1 padding-2" onClick={handleIncrement}>
-              <span className="font-alt-lg Beds_Counter_Button_Text">+</span>
+            <button className="usa-button counter_button circle-2px margin-1 padding-2" onClick={handleIncrement}>
+              <span className="font-alt-lg counter_button_text">+</span>
             </button>
           </div>
         </div>
