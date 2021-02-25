@@ -1,6 +1,26 @@
 import PropTypes from 'prop-types';
 
+const DeliveryStatus = {
+  RINGDOWN_SENT: 'RINGDOWN SENT',
+  RINGDOWN_RECEIVED: 'RINGDOWN RECEIVED',
+  ARRIVED: 'ARRIVED',
+  OFFLOADED: 'OFFLOADED',
+  RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
+};
+DeliveryStatus.ALL_STATUSES = [
+  DeliveryStatus.RINGDOWN_SENT,
+  DeliveryStatus.RINGDOWN_RECEIVED,
+  DeliveryStatus.ARRIVED,
+  DeliveryStatus.OFFLOADED,
+  DeliveryStatus.RETURNED_TO_SERVICE,
+];
+Object.freeze(DeliveryStatus);
+
 class Ringdown {
+  static get Status() {
+    return DeliveryStatus;
+  }
+
   constructor() {
     this.ambulanceIdentifier = null;
     this.dispatchCallNumber = null;
