@@ -1,20 +1,20 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-custom-mixins';
 
-.beds_diversion_style{
-    background-color: #005ea2;
-    width: 5px;
-    height: 55.5px;
-  }
-
-.beds_diversion_style_2{
-    background-color: #ffbe2e;
-    width: 5px;
-    height: 55.5px;
-  }
-.beds_er_conditions{
-    @include h4-bold;
+.beds_diversion_style {
+  background-color: #005ea2;
+  width: 5px;
+  height: 55.5px;
 }
-.beds_er_conditions_optional{
-    @include h4;
+
+.beds_diversion_style_2 {
+  background-color: #ffbe2e;
+  width: 5px;
+  height: 55.5px;
+}
+.beds_er_conditions {
+  @include h4-bold;
+}
+.beds_er_conditions_optional {
+  @include h4;
 }

@@ -2,33 +2,32 @@
 @import '../../theme/uswds-theme-custom-mixins';
 
 .counter_container {
-    margin: 0.7em;
-    padding: 0.7em;
+  margin: 0.7em;
+  padding: 0.7em;
 }
 .counter_title {
-    font-size: 20px;
-    @include h4;
+  font-size: 20px;
+  @include h4;
 }
 .counter_button_text {
-    font-size: 38px;
-    position: relative;
-    top: -0.56em;
-    left: -0.34em;
+  font-size: 38px;
+  position: relative;
+  top: -0.56em;
+  left: -0.34em;
 }
 .counter_button {
-    position: relative;
-    top: 0em;
+  position: relative;
+  top: 0em;
 }
-.counter_number_box  {
-    position: relative;
-    top: 1.2em;
-    border: 0.5px solid black;
-    border-radius: 11%;
-    width: 2em;
-    height: 1.3em;
-    text-align: center;
-    padding: 6%;
-    font-size: 30px;
-    margin: -9% 0% 0% 0%;
-    
+.counter_number_box {
+  position: relative;
+  top: 1.2em;
+  border: 0.5px solid black;
+  border-radius: 11%;
+  width: 2em;
+  height: 1.3em;
+  text-align: center;
+  padding: 6%;
+  font-size: 30px;
+  margin: -9% 0% 0% 0%;
 }

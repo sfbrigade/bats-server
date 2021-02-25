@@ -1,16 +1,16 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-custom-mixins';
 
-.banner_title{
-    @include h1;
+.banner_title {
+  @include h1;
 }
-.banner_update_info{
-    @include h4;
-    color: grey;
+.banner_update_info {
+  @include h4;
+  color: grey;
 }
-.beds_er_conditions{
-    @include h4-bold;
+.beds_er_conditions {
+  @include h4-bold;
 }
-.beds_er_conditions_optional{
-    @include h4;
+.beds_er_conditions_optional {
+  @include h4;
 }
