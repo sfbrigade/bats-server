@@ -16,17 +16,13 @@ const PatientInfo = () => {
         </div>
         <div className="display-table-row height-5">
           <div className="display-table-cell ...">
-            ETA: {time} <button className="usa-button--unstyled">More info</button>
+            ETA: {time} <button type="button" className="usa-button--unstyled">More info</button>
           </div>
         </div>
       </div>
-      <div></div>
+      <div />
     </div>
   );
 };
 
 export default PatientInfo;
-
-const MoreInfo = () => {
-  return <div>Hello</div>;
-};

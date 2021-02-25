@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './DiversionPopup.scss';
+import PropTypes from 'prop-types';
 
-const DiversionPopup = (props) => {
+const DiversionPopup = ({keep, update}) => {
+
   return (
     <div className="DiversionPopup">
-      <div class="usa-alert usa-alert--warning">
-        <div class="usa-alert__body">
-          <h3 class="usa-alert__heading">Change divert status?</h3>
-          <p class="usa-alert__text">Ambulances will be notified.</p>
+      <div className="usa-alert usa-alert--warning">
+        <div className="usa-alert__body">
+          <h3 className="usa-alert__heading">Change divert status?</h3>
+          <p className="usa-alert__text">Ambulances will be notified.</p>
         </div>
-        <button className="usa-button--outline" onClick={props.keep}>
+        <button type="button" className="usa-button--outline" onClick={keep}>
           Keep status
         </button>{' '}
-        <button className="usa-button--secondary" onClick={props.update}>
+        <button type="button" className="usa-button--secondary" onClick={update}>
           Update status
         </button>
       </div>
     </div>
   );
+};
+
+
+DiversionPopup.propTypes = {
+  keep: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
 };
 
 export default DiversionPopup;

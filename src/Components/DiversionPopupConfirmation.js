@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './DiversionPopup.scss';
+import PropTypes from 'prop-types';
 
-const DiversionPopupConfirmation = (props) => {
+const DiversionPopupConfirmation = ({ok}) => {
   return (
     <div className="DiversionPopup">
-      <div class="usa-alert usa-alert--success">
-        <div class="usa-alert__body">
-          <h3 class="usa-alert__heading">Divert status updated</h3>
-          <p class="usa-alert__text">Ambulances will be notified.</p>
+      <div className="usa-alert usa-alert--success">
+        <div className="usa-alert__body">
+          <h3 className="usa-alert__heading">Divert status updated</h3>
+          <p className="usa-alert__text">Ambulances will be notified.</p>
         </div>
-        <button className="usa-button" onClick={props.ok}>
+        <button type="button" className="usa-button" onClick={ok}>
           Back to form
         </button>
       </div>
     </div>
   );
+};
+
+DiversionPopupConfirmation.propTypes = {
+  ok: PropTypes.func.isRequired
 };
 
 export default DiversionPopupConfirmation;

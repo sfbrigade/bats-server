@@ -37,6 +37,7 @@ function RingdownForm({ className }) {
         setRingdowns([response.data]);
       })
       .catch((error) => {
+        // eslint-disable-next-line no-console
         console.log(error);
       });
   }

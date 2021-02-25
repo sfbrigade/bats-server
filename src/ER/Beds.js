@@ -24,7 +24,7 @@ const Beds = () => {
     const TimeString = date.toTimeString();
     const TimeArray = TimeString.split(' ');
     setBedTimeUpdate(TimeArray[0]);
-    setBedDateUpdate(date.getMonth() + 1 + '/' + DateArray[2] + '/' + DateArray[3]);
+    setBedDateUpdate(`${date.getMonth() + 1}/${DateArray[2]}/${DateArray[3]}`);
   };
 
   const handleNotesUpdate = () => {
@@ -34,7 +34,7 @@ const Beds = () => {
     const TimeString = date.toTimeString();
     const TimeArray = TimeString.split(' ');
     setNotesTimeUpdate(TimeArray[0]);
-    setNotesDateUpdate(date.getMonth() + 1 + '/' + DateArray[2] + '/' + DateArray[3]);
+    setNotesDateUpdate(`${date.getMonth() + 1}/${DateArray[2]}/${DateArray[3]}`);
   };
 
   const handleDiversionUpdate = () => {
@@ -44,7 +44,7 @@ const Beds = () => {
     const TimeString = date.toTimeString();
     const TimeArray = TimeString.split(' ');
     setDiversionTimeUpdate(TimeArray[0]);
-    setDiversionDateUpdate(date.getMonth() + 1 + '/' + DateArray[2] + '/' + DateArray[3]);
+    setDiversionDateUpdate(`${date.getMonth() + 1}/${DateArray[2]}/${DateArray[3]}`);
     setDiversion(!diversion);
     setPopup(!popup);
     setPopupConfirmation(!PopupConfirmation);
@@ -91,20 +91,20 @@ const Beds = () => {
 
         <div style={container2} className="usa-fieldset">
           <div className="grid-row height-7 width-card-lg">
-            {!diversion && <div className="grid-col-1 beds_diversion_style"></div>}
+            {!diversion && <div className="grid-col-1 beds_diversion_style" />}
             {!diversion && (
               <div className="grid-col-8 margin-1">
                 Not On Diversion{popup}
-                <button className="usa-button--unstyled" onClick={TogglePopup}>
+                <button type="button" className="usa-button--unstyled" onClick={TogglePopup}>
                   Change status
                 </button>
               </div>
             )}
-            {diversion && <div className="grid-col-1 beds_diversion_style_2"></div>}
+            {diversion && <div className="grid-col-1 beds_diversion_style_2" />}
             {diversion && (
               <div className="grid-col-8 margin-1">
                 On Diversion{popup}
-                <button className="usa-button--unstyled" onClick={TogglePopup}>
+                <button type="button" className="usa-button--unstyled" onClick={TogglePopup}>
                   Change status
                 </button>
               </div>
