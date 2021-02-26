@@ -228,6 +228,12 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(response.body.patient.sex, 'FEMALE');
       assert.deepStrictEqual(response.body.patient.otherObservationNotes, 'in stable condition');
       assert.deepStrictEqual(response.body.patientDelivery.etaMinutes, 15);
+
+      const patientDelivery = await models.PatientDelivery.findByPk('8b95ea8a-0171-483a-be74-ec17bbc12247');
+      const patient = await patientDelivery.getPatient();
+      assert.deepStrictEqual(patient.age, 99);
+      assert.deepStrictEqual(patient.sex, 'FEMALE');
+      assert.deepStrictEqual(patient.otherObservationNotes, 'in stable condition');
     });
   });
 });

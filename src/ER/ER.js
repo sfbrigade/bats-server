@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
+import useWebSocket from 'react-use-websocket';
 
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
 import IncomingRingdown from './IncomingRingdown';
 
-import ApiService from '../ApiService';
 import Context from '../Context';
 
 import Beds from './Beds';
@@ -12,6 +12,8 @@ import RingDown from './RingDown';
 
 export default function ER() {
   const { hospital } = useContext(Context);
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.id}`;
+  const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
   const [selectedTab, setSelectedTab] = useState(0);
   const [ringdowns, setRingdowns] = useState([]);
@@ -23,15 +25,14 @@ export default function ER() {
   }
 
   useEffect(() => {
-    if (hospital) {
-      ApiService.ringdowns.get(hospital.id).then((response) => {
-        const newRingdowns = response.data.sort((a, b) => a.patientDelivery.etaMinutes - b.patientDelivery.etaMinutes);
-        const newIncomingRingdowns = response.data.filter((r) => r.patientDelivery.deliveryStatus === 'RINGDOWN SENT');
-        setRingdowns(newRingdowns);
-        setIncomingRingdowns(newIncomingRingdowns);
-      });
+    if (lastMessage?.data) {
+      const data = JSON.parse(lastMessage.data);
+      const newRingdowns = data.ringdowns.sort((a, b) => a.patientDelivery.etaMinutes - b.patientDelivery.etaMinutes);
+      const newIncomingRingdowns = data.ringdowns.filter((r) => r.patientDelivery.deliveryStatus === 'RINGDOWN SENT');
+      setRingdowns(newRingdowns);
+      setIncomingRingdowns(newIncomingRingdowns);
     }
-  }, [hospital, setIncomingRingdowns]);
+  }, [lastMessage, setRingdowns, setIncomingRingdowns]);
 
   return (
     <>
