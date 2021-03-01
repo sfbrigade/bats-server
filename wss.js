@@ -109,7 +109,7 @@ const configure = (server, app) => {
           break;
         case '/hospital':
           /// ensure valid hospital
-          if (query.id) {
+          if (query.id && query.id !== 'undefined') {
             req.hospital = await models.Hospital.findByPk(query.id);
           }
           if (!req.hospital) {

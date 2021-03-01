@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Card from '../Components/Card';
+import RingdownCard from '../Components/RingdownCard';
 import Ringdown from '../Models/Ringdown';
 
 function Ringdowns({ ringdowns }) {
@@ -22,14 +22,7 @@ function Ringdowns({ ringdowns }) {
           <>
             <h3 className="usa-accordion__heading">Waiting</h3>
             {waiting.map((r) => (
-              <Card
-                className="margin-x-3 margin-y-2"
-                header={`Incident #${r.emsCall.dispatchCallNumber}`}
-                accordianTitle="More Info"
-                accordianContent="1---Random words within here"
-              >
-                {r.patient.chiefComplaintDescription}
-              </Card>
+              <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} />
             ))}
           </>
         )}
@@ -37,14 +30,7 @@ function Ringdowns({ ringdowns }) {
           <>
             <h3 className="usa-accordion__heading">En route</h3>
             {enroute.map((r) => (
-              <Card
-                className="margin-x-3 margin-y-2"
-                header={`Incident #${r.emsCall.dispatchCallNumber}`}
-                accordianTitle="More Info"
-                accordianContent="1---Random words within here"
-              >
-                {r.patient.chiefComplaintDescription}
-              </Card>
+              <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} />
             ))}
           </>
         )}
