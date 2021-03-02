@@ -136,7 +136,7 @@ $spinner-border-width-sm: 0.2em;
 .status-list-item__icon {
   height: 4.5rem;
   position: relative;
-  width: 2.375rem;
+  width: 2.875rem;
 }
 
 .status-list-item__icon::before {
@@ -163,11 +163,14 @@ $spinner-border-width-sm: 0.2em;
   width: 1.375rem;
 }
 
-.status-list-item__text span {
-  @include h4;
-  color: color($theme-color-base-light);
-  display: block;
-  position: absolute;
+.status-list-item__text {
+  flex-grow: 1;
+  span {
+    @include h4;
+    color: color($theme-color-base-light);
+    display: block;
+    position: absolute;
+  }
 }
 
 .status-list-item:first-child .status-list-item__icon::before {

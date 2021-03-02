@@ -1,17 +1,24 @@
 import PropTypes from 'prop-types';
 
-const RingdownStatus = {
+const DeliveryStatus = {
   RINGDOWN_SENT: 'RINGDOWN SENT',
   RINGDOWN_RECEIVED: 'RINGDOWN RECEIVED',
   ARRIVED: 'ARRIVED',
   OFFLOADED: 'OFFLOADED',
   RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
 };
-Object.freeze(RingdownStatus);
+DeliveryStatus.ALL_STATUSES = [
+  DeliveryStatus.RINGDOWN_SENT,
+  DeliveryStatus.RINGDOWN_RECEIVED,
+  DeliveryStatus.ARRIVED,
+  DeliveryStatus.OFFLOADED,
+  DeliveryStatus.RETURNED_TO_SERVICE,
+];
+Object.freeze(DeliveryStatus);
 
 class Ringdown {
   static get Status() {
-    return RingdownStatus;
+    return DeliveryStatus;
   }
 
   constructor() {
@@ -173,7 +180,7 @@ Ringdown.propTypes = {
   otherObservationNotes: PropTypes.string,
   // Status
   etaMinutes: PropTypes.number.isRequired,
-  deliveryStatus: PropTypes.oneOf(['RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE']),
+  deliveryStatus: PropTypes.oneOf(DeliveryStatus.ALL_STATUSES),
   ringdownSentDateTimeLocal: PropTypes.instanceOf(Date),
   ringdownReceivedDateTimeLocal: PropTypes.instanceOf(Date),
   arrivedDateTimeLocal: PropTypes.instanceOf(Date),

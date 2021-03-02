@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import Ringdown from '../Models/Ringdown';
 
-function RingdownStatus({ className, ringdown }) {
+function RingdownStatus({ className, onStatusChange, ringdown }) {
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
@@ -38,17 +38,72 @@ function RingdownStatus({ className, ringdown }) {
                 )}
               </div>
             </li>
-            <li className="status-list-item">
+            <li
+              className={classNames('status-list-item', {
+                'status-list-item--completed':
+                  Ringdown.Status.ALL_STATUSES.indexOf(ringdown.patientDelivery.deliveryStatus) >=
+                  Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED),
+              })}
+            >
               <div className="status-list-item__icon" />
-              <div className="status-list-item__text">Arrived at ED</div>
+              <div className="status-list-item__text">
+                {ringdown.patientDelivery.deliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED && (
+                  <button
+                    onClick={() => onStatusChange(ringdown, Ringdown.Status.ARRIVED)}
+                    className="usa-button usa-button--primary width-full"
+                    type="button"
+                  >
+                    Mark arrived
+                  </button>
+                )}
+                {ringdown.patientDelivery.deliveryStatus !== Ringdown.Status.RINGDOWN_RECEIVED && 'Arrived at ED'}
+                {ringdown.patientDelivery.arrivedDateTimeLocal && (
+                  <span>
+                    {DateTime.fromISO(ringdown.patientDelivery.arrivedDateTimeLocal).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                  </span>
+                )}
+              </div>
+            </li>
+            <li
+              className={classNames('status-list-item', {
+                'status-list-item--completed':
+                  Ringdown.Status.ALL_STATUSES.indexOf(ringdown.patientDelivery.deliveryStatus) >=
+                  Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.OFFLOADED),
+              })}
+            >
+              <div className="status-list-item__icon" />
+              <div className="status-list-item__text">
+                {ringdown.patientDelivery.deliveryStatus === Ringdown.Status.ARRIVED && (
+                  <button
+                    onClick={() => onStatusChange(ringdown, Ringdown.Status.OFFLOADED)}
+                    className="usa-button usa-button--primary width-full"
+                    type="button"
+                  >
+                    Mark offloaded
+                  </button>
+                )}
+                {ringdown.patientDelivery.deliveryStatus !== Ringdown.Status.ARRIVED && 'Patient offloaded'}
+                {ringdown.patientDelivery.offloadedDateTimeLocal && (
+                  <span>
+                    {DateTime.fromISO(ringdown.patientDelivery.offloadedDateTimeLocal).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                  </span>
+                )}
+              </div>
             </li>
             <li className="status-list-item">
               <div className="status-list-item__icon" />
-              <div className="status-list-item__text">Patient offloaded</div>
-            </li>
-            <li className="status-list-item">
-              <div className="status-list-item__icon" />
-              <div className="status-list-item__text">Returned to service</div>
+              <div className="status-list-item__text">
+                {ringdown.patientDelivery.deliveryStatus === Ringdown.Status.OFFLOADED && (
+                  <button
+                    onClick={() => onStatusChange(ringdown, Ringdown.Status.RETURNED_TO_SERVICE)}
+                    className="usa-button usa-button--primary width-full"
+                    type="button"
+                  >
+                    Return to service
+                  </button>
+                )}
+                {ringdown.patientDelivery.deliveryStatus !== Ringdown.Status.OFFLOADED && 'Return to service'}
+              </div>
             </li>
           </ol>
         </fieldset>
@@ -67,7 +122,9 @@ function RingdownStatus({ className, ringdown }) {
 
 RingdownStatus.propTypes = {
   className: PropTypes.string,
-  ringdown: PropTypes.instanceOf(Ringdown).isRequired,
+  onStatusChange: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  ringdown: PropTypes.object.isRequired,
 };
 
 RingdownStatus.defaultProps = {
