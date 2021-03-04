@@ -6,3 +6,12 @@
   @include h4-italic;
   color: color($theme-color-base-light);
 }
+
+.ringdown-card--offloaded {
+  &.usa-card__container {
+    background-color: color($theme-color-success-lighter);
+  }
+  .ringdown-card__eta {
+    color: color($theme-color-base-ink);
+  }
+}

@@ -3,20 +3,16 @@ import PropTypes from 'prop-types';
 
 import './Accordian.css';
 
-function Accordion(props) {
+function Accordion({ title, content }) {
   const [setActive, setActiveState] = useState('');
   const [setHeight, setHeightState] = useState('0px');
   const [setAriaExpanded, setExpandedState] = useState('false');
 
-  const content = useRef(null);
-  // const { content: { body } = {} } = props;
-  // body['id'] = useRef(null);
-  const { title } = props;
-  // const sanitizer = dompurify.sanitize;
+  const contentRef = useRef(null);
 
   function toggleAccordion() {
     setActiveState(setActive === '' ? 'active' : '');
-    setHeightState(setActive === 'active' ? '0px' : `${content.current.scrollHeight}px`);
+    setHeightState(setActive === 'active' ? '0px' : `${contentRef.current.scrollHeight}px`);
     setExpandedState(setActive === 'active' ? 'false' : 'true');
   }
 
@@ -31,8 +27,8 @@ function Accordion(props) {
       >
         <p className="accordian-title"> {title} </p>
       </button>
-      <div ref={content} style={{ maxHeight: `${setHeight}` }} className="accordian-content">
-        <div className="accordian-text" dangerouslySetInnerHTML={{ __html: props.content }} />
+      <div ref={contentRef} style={{ maxHeight: `${setHeight}` }} className="accordian-content">
+        <div className="accordian-text" dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </div>
   );
