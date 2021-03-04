@@ -12,12 +12,14 @@
 
   td {
     padding-left: 0.75rem;
+    text-align: left;
   }
 
   th {
     color: color($theme-color-base-light);
     text-align: right;
     padding-right: 0;
+    vertical-align: top;
   }
 
   th[colspan='2'] {

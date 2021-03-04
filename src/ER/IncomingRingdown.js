@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import ApiService from '../ApiService';
+import RingdownDetails from '../Components/RingdownDetails';
 import RingdownEta from '../Components/RingdownEta';
 import Ringdown from '../Models/Ringdown';
 import './IncomingRingdown.scss';
@@ -23,7 +24,7 @@ const IncomingRingDown = ({ onConfirm, ringdown }) => {
       <div className="incoming-ringdown">
         {isViewed && (
           <>
-            <p>TODO: Display Ringdown details</p>
+            <RingdownDetails ringdown={ringdown} />
             <button className="usa-button width-full" onClick={confirm} type="button">
               Confirm Receipt
             </button>

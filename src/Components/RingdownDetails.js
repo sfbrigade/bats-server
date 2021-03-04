@@ -38,6 +38,71 @@ function RingdownDetails({ className, ringdown }) {
           <th>Vitals</th>
           <td>{ringdown.patient.stableIndicator ? 'Stable' : 'Unstable'}</td>
         </tr>
+        <tr>
+          <th colSpan="2">Vitals</th>
+        </tr>
+        <tr>
+          <th>BP</th>
+          <td>
+            {ringdown.patient.systolicBloodPressure}/{ringdown.patient.diastolicBloodPressure}
+          </td>
+        </tr>
+        <tr>
+          <th>Pulse</th>
+          <td>{ringdown.patient.heartRateBpm}&nbsp;bpm</td>
+        </tr>
+        <tr>
+          <th>RR</th>
+          <td>{ringdown.patient.respiratoryRate}&nbsp;breath/m</td>
+        </tr>
+        <tr>
+          <th>Sp02</th>
+          <td>
+            {ringdown.patient.oxygenSaturation}%<br />
+            {ringdown.patient.lowOxygenResponseType}
+            {ringdown.patient.lowOxygenResponseType === 'SUPPLEMENTAL OXYGEN' && (
+              <>&nbsp;{ringdown.patient.supplementalOxygenAmount}&nbsp;L</>
+            )}
+          </td>
+        </tr>
+        <tr>
+          <th>Temp</th>
+          <td>{ringdown.patient.temperature}&nbsp;&deg;F</td>
+        </tr>
+        <tr>
+          <th colSpan="2">Additional notes</th>
+        </tr>
+        <tr>
+          <th>ETOH</th>
+          <td>{ringdown.patient.etohSuspectedIndicator && 'Suspected'}</td>
+        </tr>
+        <tr>
+          <th>Drugs</th>
+          <td>{ringdown.patient.drugsSuspectedIndicator && 'Suspected'}</td>
+        </tr>
+        <tr>
+          <th>Psych</th>
+          <td>{ringdown.patient.psychIndicator && 'Yes'}</td>
+        </tr>
+        <tr>
+          <th>Combative</th>
+          <td>
+            {ringdown.patient.combativeBehaviorIndicator && 'Yes'}
+            {ringdown.patient.restraintIndicator && <>&nbsp;Restrained</>}
+          </td>
+        </tr>
+        <tr>
+          <th>COVID-19</th>
+          <td>{ringdown.patient.covid19SuspectedIndicator && 'Yes'}</td>
+        </tr>
+        <tr>
+          <th>IV</th>
+          <td>{ringdown.patient.ivIndicator && 'Started'}</td>
+        </tr>
+        <tr>
+          <th>Other</th>
+          <td>{ringdown.patient.otherObservationNotes}</td>
+        </tr>
       </tbody>
     </table>
   );

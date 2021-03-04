@@ -75,7 +75,7 @@ class Ringdown {
   set lowOxygenResponseType(newValue) {
     this._lowOxygenResponseType = newValue;
     if (newValue !== 'SUPPLEMENTAL OXYGEN') {
-      this.supplementalOxygenAmount = '';
+      this.supplementalOxygenAmount = null;
     }
   }
 
