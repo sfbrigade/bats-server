@@ -1,0 +1,8 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+@import '../../theme/uswds-theme-color';
+
+.ringdown-card__eta {
+  @include h4-italic;
+  color: color($theme-color-base-light);
+}

@@ -247,6 +247,28 @@ $spinner-border-width-sm: 0.2em;
   color: color($theme-color-secondary);
 }
 
+.usa-card__container {
+  border: 0;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.usa-card__header {
+  @include h4;
+  color: color($theme-color-base-light);
+  padding: 1rem 1.5rem 0;
+}
+
+.usa-card__body {
+  @include h3;
+  padding: 0 1.5rem 1rem;
+}
+
+.usa-card__footer {
+  border-top: 1px solid color($theme-color-base-lighter);
+  padding: 1rem 1.5rem;
+}
+
 .usa-checkbox__label,
 .usa-radio__label {
   margin-top: 1.5rem;

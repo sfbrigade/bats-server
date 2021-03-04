@@ -1,10 +1,9 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 
 import './Accordian.css';
 
 function Accordion(props) {
-
   const [setActive, setActiveState] = useState('');
   const [setHeight, setHeightState] = useState('0px');
   const [setAriaExpanded, setExpandedState] = useState('false');
@@ -23,7 +22,8 @@ function Accordion(props) {
 
   return (
     <div className="accordian-section">
-      <button type='button'
+      <button
+        type="button"
         className={`usa-accordion__button ${setActive}`}
         onClick={toggleAccordion}
         aria-expanded={setAriaExpanded}
@@ -38,9 +38,9 @@ function Accordion(props) {
   );
 }
 
-Accordion.propTypes = { 
+Accordion.propTypes = {
   title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired, 
+  content: PropTypes.string.isRequired,
 };
 
 export default Accordion;
