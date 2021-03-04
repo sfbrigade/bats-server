@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import Card from './Card';
+import Drawer from './Drawer';
 import Ringdown from '../Models/Ringdown';
 import RingdownEta from './RingdownEta';
 import './RingdownCard.scss';
@@ -18,11 +19,12 @@ function RingdownCard({ className, ringdown }) {
       header={`Incident #${ringdown.emsCall.dispatchCallNumber}`}
       body={ringdown.patient.chiefComplaintDescription}
     >
-      <RingdownEta
-        className="ringdown-card__eta"
-        prefix={ringdown.patientDelivery.deliveryStatus === Ringdown.Status.OFFLOADED ? 'Offloaded: ' : undefined}
-        ringdown={ringdown}
-      />
+      {ringdown.patientDelivery.deliveryStatus === Ringdown.Status.OFFLOADED && (
+        <RingdownEta className="ringdown-card__eta" prefix="Offloaded: " ringdown={ringdown} />
+      )}
+      {ringdown.patientDelivery.deliveryStatus !== Ringdown.Status.OFFLOADED && (
+        <Drawer title={<RingdownEta className="ringdown-card__eta" ringdown={ringdown} />}>Drawer Content</Drawer>
+      )}
     </Card>
   );
 }

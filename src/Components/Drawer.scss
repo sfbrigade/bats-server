@@ -1,0 +1,31 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+@import '../../theme/uswds-theme-color';
+
+.drawer__content {
+  display: none;
+}
+
+.drawer__handle {
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.drawer__prompt {
+  @include h4;
+  color: color($theme-color-primary);
+  font-weight: 600;
+}
+
+.drawer--opened {
+  .drawer__content {
+    display: block;
+  }
+
+  .drawer__handle {
+    border-top: 1px solid color($theme-color-base-lighter);
+  }
+}
