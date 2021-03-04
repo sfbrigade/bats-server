@@ -271,6 +271,12 @@ $spinner-border-width-sm: 0.2em;
 .usa-card__footer {
   border-top: 1px solid color($theme-color-base-lighter);
   padding: 1rem 1.5rem;
+
+  &:first-child {
+    border-top: 0;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+  }
 }
 
 .usa-checkbox__label,

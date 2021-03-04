@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import './Drawer.scss';
 
-function Drawer({ title, children }) {
-  const [isOpened, setOpened] = useState(false);
-
+function Drawer({ title, children, isOpened, onToggle }) {
   return (
     <div className={classNames('drawer', { 'drawer--opened': isOpened })}>
       <div className="drawer__content">{children}</div>
       <div
         className="drawer__handle"
-        onClick={() => setOpened(!isOpened)}
+        onClick={() => onToggle()}
         onKeyDown={(event) => {
-          if (event.key === 'Enter') setOpened(!isOpened);
+          if (event.key === 'Enter') onToggle();
         }}
         role="button"
         tabIndex={0}
@@ -40,6 +38,8 @@ function Drawer({ title, children }) {
 Drawer.propTypes = {
   title: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
+  isOpened: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired,
 };
 
 export default Drawer;

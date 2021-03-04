@@ -2,6 +2,24 @@
 @import '../../theme/uswds-theme-custom-mixins';
 @import '../../theme/uswds-theme-color';
 
+.ringdown-card {
+  .drawer {
+    margin: -1rem -1.5rem;
+  }
+
+  .ringdown-details tr:first-child {
+    td,
+    th {
+      &:first-child {
+        border-top-left-radius: 0.25rem;
+      }
+      &:last-child {
+        border-top-right-radius: 0.25rem;
+      }
+    }
+  }
+}
+
 .ringdown-card__eta {
   @include h4-italic;
   color: color($theme-color-base-light);
@@ -14,8 +32,4 @@
   .ringdown-card__eta {
     color: color($theme-color-base-ink);
   }
-}
-
-.ringdown-card .drawer {
-  margin: -1rem -1.5rem;
 }

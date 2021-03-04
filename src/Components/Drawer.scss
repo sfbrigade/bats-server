@@ -12,6 +12,11 @@
   display: flex;
   justify-content: space-between;
   padding: 1rem 1.5rem;
+
+  &:focus {
+    border: inherit;
+    outline: inherit;
+  }
 }
 
 .drawer__prompt {
