@@ -23,6 +23,10 @@ body > .grid-container > .grid-row > div > #root {
   justify-content: center;
 }
 
+.incoming-ringdown-container--viewed {
+  justify-content: flex-start;
+}
+
 .incoming-ringdown {
   padding: 1rem;
   text-align: center;
@@ -35,4 +39,9 @@ body > .grid-container > .grid-row > div > #root {
   h2 {
     color: color($theme-color-base-light);
   }
+}
+
+.incoming-ringdown__details {
+  border-bottom: 1px solid color($theme-color-base-lighter);
+  margin: -1rem -1rem 1rem;
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import ApiService from '../ApiService';
 import RingdownDetails from '../Components/RingdownDetails';
@@ -20,11 +21,13 @@ const IncomingRingDown = ({ onConfirm, ringdown }) => {
   }
 
   return (
-    <div className="incoming-ringdown-container">
+    <div className={classNames('incoming-ringdown-container', { 'incoming-ringdown-container--viewed': isViewed })}>
       <div className="incoming-ringdown">
         {isViewed && (
           <>
-            <RingdownDetails ringdown={ringdown} />
+            <div className="incoming-ringdown__details">
+              <RingdownDetails isIncoming ringdown={ringdown} />
+            </div>
             <button className="usa-button width-full" onClick={confirm} type="button">
               Confirm Receipt
             </button>
