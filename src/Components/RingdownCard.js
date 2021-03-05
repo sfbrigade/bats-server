@@ -16,16 +16,16 @@ function RingdownCard({ className, ringdown }) {
     <Card
       className={classNames(
         'ringdown-card',
-        { 'ringdown-card--offloaded': ringdown.patientDelivery.deliveryStatus === Ringdown.Status.OFFLOADED },
+        { 'ringdown-card--offloaded': ringdown.deliveryStatus === Ringdown.Status.OFFLOADED },
         className
       )}
-      header={isExpanded ? null : `Incident #${ringdown.emsCall.dispatchCallNumber}`}
-      body={isExpanded ? null : ringdown.patient.chiefComplaintDescription}
+      header={isExpanded ? null : `Incident #${ringdown.dispatchCallNumber}`}
+      body={isExpanded ? null : ringdown.chiefComplaintDescription}
     >
-      {ringdown.patientDelivery.deliveryStatus === Ringdown.Status.OFFLOADED && (
+      {ringdown.deliveryStatus === Ringdown.Status.OFFLOADED && (
         <RingdownEta className="ringdown-card__eta" prefix="Offloaded: " ringdown={ringdown} />
       )}
-      {ringdown.patientDelivery.deliveryStatus !== Ringdown.Status.OFFLOADED && (
+      {ringdown.deliveryStatus !== Ringdown.Status.OFFLOADED && (
         <Drawer
           title={<RingdownEta className="ringdown-card__eta" ringdown={ringdown} />}
           isOpened={isExpanded}
@@ -40,8 +40,7 @@ function RingdownCard({ className, ringdown }) {
 
 RingdownCard.propTypes = {
   className: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  ringdown: PropTypes.object.isRequired,
+  ringdown: PropTypes.instanceOf(Ringdown).isRequired,
 };
 
 RingdownCard.defaultProps = {

@@ -5,14 +5,12 @@ import RingdownCard from '../Components/RingdownCard';
 import Ringdown from '../Models/Ringdown';
 
 function Ringdowns({ ringdowns }) {
-  const waiting = ringdowns.filter(
-    (r) => r.patientDelivery.deliveryStatus === Ringdown.Status.ARRIVED || r.patientDelivery.deliveryStatus === Ringdown.Status.OFFLOADED
-  );
+  const waiting = ringdowns.filter((r) => r.deliveryStatus === Ringdown.Status.ARRIVED || r.deliveryStatus === Ringdown.Status.OFFLOADED);
   const enroute = ringdowns.filter(
     (r) =>
-      r.patientDelivery.deliveryStatus !== Ringdown.Status.ARRIVED &&
-      r.patientDelivery.deliveryStatus !== Ringdown.Status.OFFLOADED &&
-      r.patientDelivery.deliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
+      r.deliveryStatus !== Ringdown.Status.ARRIVED &&
+      r.deliveryStatus !== Ringdown.Status.OFFLOADED &&
+      r.deliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
   );
 
   return (
@@ -40,7 +38,7 @@ function Ringdowns({ ringdowns }) {
 }
 
 Ringdowns.propTypes = {
-  ringdowns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  ringdowns: PropTypes.arrayOf(PropTypes.instanceOf(Ringdown)).isRequired,
 };
 
 export default Ringdowns;

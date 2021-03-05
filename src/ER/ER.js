@@ -6,6 +6,7 @@ import TabBar from '../Components/TabBar';
 import IncomingRingdown from './IncomingRingdown';
 
 import Context from '../Context';
+import Ringdown from '../Models/Ringdown';
 
 import Beds from './Beds';
 import RingDowns from './Ringdowns';
@@ -27,8 +28,9 @@ export default function ER() {
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
-      const newRingdowns = data.ringdowns.sort((a, b) => a.patientDelivery.etaMinutes - b.patientDelivery.etaMinutes);
-      const newIncomingRingdowns = data.ringdowns.filter((r) => r.patientDelivery.deliveryStatus === 'RINGDOWN SENT');
+      data.ringdowns = data.ringdowns.map((r) => new Ringdown(r));
+      const newRingdowns = data.ringdowns.sort((a, b) => a.etaDateTimeLocalObj.toMillis() - b.etaDateTimeLocalObj.toMillis());
+      const newIncomingRingdowns = data.ringdowns.filter((r) => r.deliveryStatus === Ringdown.Status.RINGDOWN_SENT);
       setRingdowns(newRingdowns);
       setIncomingRingdowns(newIncomingRingdowns);
     }
