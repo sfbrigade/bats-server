@@ -1,7 +1,36 @@
 const { Model } = require('sequelize');
 
+const PatientParams = [
+  'age',
+  'sex',
+  'emergencyServiceResponseType',
+  'chiefComplaintDescription',
+  'stableIndicator',
+  'systolicBloodPressure',
+  'diastolicBloodPressure',
+  'heartRateBpm',
+  'respiratoryRate',
+  'oxygenSaturation',
+  'lowOxygenResponseType',
+  'supplementalOxygenAmount',
+  'temperature',
+  'etohSuspectedIndicator',
+  'drugsSuspectedIndicator',
+  'psychIndicator',
+  'combativeBehaviorIndicator',
+  'restraintIndicator',
+  'covid19SuspectedIndicator',
+  'ivIndicator',
+  'otherObservationNotes',
+];
+Object.freeze(PatientParams);
+
 module.exports = (sequelize, DataTypes) => {
   class Patient extends Model {
+    static get Params() {
+      return PatientParams;
+    }
+
     static associate(models) {
       Patient.belongsTo(models.EmergencyMedicalServiceCall);
       Patient.hasOne(models.PatientDelivery);
