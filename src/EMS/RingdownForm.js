@@ -1,6 +1,8 @@
 import classNames from 'classnames';
+import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
+import useWebSocket from 'react-use-websocket';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -12,19 +14,20 @@ import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
 
 function RingdownForm({ className }) {
-  const { ringdowns, setRingdowns } = useContext(Context);
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/user`;
+  const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
+  const { ringdowns, setRingdowns } = useContext(Context);
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
   const [version, setVersion] = useState(0);
 
   useEffect(() => {
-    // hit the users endpoint to ensure authenticated
-    ApiService.ringdowns.mine().then((response) => {
-      // save the user data into the context
-      setRingdowns(response.data);
-    });
-  }, [setRingdowns]);
+    if (lastMessage?.data) {
+      const data = JSON.parse(lastMessage.data);
+      setRingdowns(data.ringdowns);
+    }
+  }, [lastMessage, setRingdowns]);
 
   function next() {
     setStep(1);
@@ -35,6 +38,8 @@ function RingdownForm({ className }) {
       .create(ringdown.toJSON())
       .then((response) => {
         setRingdowns([response.data]);
+        setRingdown(new Ringdown());
+        setStep(0);
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
@@ -53,6 +58,30 @@ function RingdownForm({ className }) {
   function onChange(property, value) {
     ringdown[property] = value;
     setVersion(version + 1);
+  }
+
+  function onStatusChange(rd, status) {
+    // submit to server
+    const now = new Date();
+    ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
+    // update local object for immediate feedback
+    rd.patientDelivery.deliveryStatus = status;
+    const isoNow = DateTime.fromJSDate(now).toISO();
+    switch (status) {
+      case Ringdown.Status.ARRIVED:
+        rd.patientDelivery.arrivedDateTimeLocal = isoNow;
+        break;
+      case Ringdown.Status.OFFLOADED:
+        rd.patientDelivery.offloadedDateTimeLocal = isoNow;
+        break;
+      case Ringdown.Status.RETURNED_TO_SERVICE:
+        // remove from list so that we go back to the ringdown form
+        setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
+        return;
+      default:
+        break;
+    }
+    setRingdowns([...ringdowns]);
   }
 
   return (
@@ -92,7 +121,9 @@ function RingdownForm({ className }) {
           </fieldset>
         </form>
       )}
-      {ringdowns && ringdowns.length > 0 && <RingdownStatus className={className} ringdown={ringdowns[0]} />}
+      {ringdowns && ringdowns.length > 0 && (
+        <RingdownStatus className={className} onStatusChange={onStatusChange} ringdown={ringdowns[0]} />
+      )}
       {!ringdowns && (
         <div className={classNames('padding-9', className)}>
           <Spinner />

@@ -5,61 +5,9 @@ const _ = require('lodash');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
+const { dispatchRingdownUpdate } = require('../../wss');
 
 const router = express.Router();
-
-const patientParams = [
-  'age',
-  'sex',
-  'emergencyServiceResponseType',
-  'chiefComplaintDescription',
-  'stableIndicator',
-  'systolicBloodPressure',
-  'diastolicBloodPressure',
-  'heartRateBpm',
-  'respiratoryRate',
-  'oxygenSaturation',
-  'lowOxygenResponseType',
-  'supplementalOxygenAmount',
-  'temperature',
-  'etohSuspectedIndicator',
-  'drugsSuspectedIndicator',
-  'psychIndicator',
-  'combativeBehaviorIndicator',
-  'restraintIndicator',
-  'covid19SuspectedIndicator',
-  'ivIndicator',
-  'otherObservationNotes',
-];
-
-const patientDeliveryParams = [
-  'deliveryStatus',
-  'etaMinutes',
-  'ringdownSentDateTimeLocal',
-  'ringdownReceivedDateTimeLocal',
-  'arrivedDateTimeLocal',
-  'offloadedDateTimeLocal',
-  'returnToServiceDateTimeLocal',
-];
-
-function createRingdownResponse(ambulance, emsCall, hospital, patient, patientDelivery) {
-  const ringdownResponse = {
-    id: patientDelivery.id,
-    ambulance: {
-      ambulanceIdentifier: ambulance.ambulanceIdentifier,
-    },
-    emsCall: {
-      dispatchCallNumber: emsCall.dispatchCallNumber,
-    },
-    hospital: {
-      id: hospital.id,
-      name: hospital.name,
-    },
-    patient: _.pick(patient, patientParams),
-    patientDelivery: _.pick(patientDelivery, patientDeliveryParams),
-  };
-  return ringdownResponse;
-}
 
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {
@@ -101,13 +49,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
       include: { all: true },
       where: queryFilter,
     });
-    const response = await Promise.all(
-      patientDeliveries.map(async (pd) => {
-        const ems = await pd.Patient.getEmergencyMedicalServiceCall();
-        const ringdown = createRingdownResponse(pd.Ambulance, ems, pd.Hospital, pd.Patient, pd);
-        return ringdown;
-      })
-    );
+    const response = await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON()));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
@@ -141,13 +83,14 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       );
       const patient = await models.Patient.create(
         {
-          ..._.pick(req.body.patient, patientParams),
+          ..._.pick(req.body.patient, models.Patient.Params),
           EmergencyMedicalServiceCallId: emsCall.id,
           CreatedById: req.user.id,
           UpdatedById: req.user.id,
         },
         { transaction }
       );
+      patient.EmergencyMedicalServiceCall = emsCall;
       const [ambulance] = await models.Ambulance.findOrCreate({
         where: {
           OrganizationId: req.user.OrganizationId,
@@ -174,8 +117,11 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
         },
         { transaction }
       );
-      const response = createRingdownResponse(ambulance, emsCall, hospital, patient, patientDelivery);
-      res.status(HttpStatus.CREATED).json(response);
+      patientDelivery.Ambulance = ambulance;
+      patientDelivery.Patient = patient;
+      patientDelivery.Hospital = hospital;
+      res.status(HttpStatus.CREATED).json(await patientDelivery.toRingdownJSON({ transaction }));
+      dispatchRingdownUpdate(patientDelivery.id);
     });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
@@ -217,15 +163,8 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
       }
       // save and acknowledge
       await patientDelivery.save();
-      const emsCall = await patientDelivery.Patient.getEmergencyMedicalServiceCall({ transaction });
-      const response = createRingdownResponse(
-        patientDelivery.Ambulance,
-        emsCall,
-        patientDelivery.Hospital,
-        patientDelivery.Patient,
-        patientDelivery
-      );
-      res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(await patientDelivery.toRingdownJSON({ transaction }));
+      dispatchRingdownUpdate(patientDelivery.id);
     });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
@@ -283,7 +222,8 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       }
 
       if (req.body.patient) {
-        Object.assign(patientDelivery.Patient, _.pick(req.body.patient, patientParams));
+        Object.assign(patientDelivery.Patient, _.pick(req.body.patient, models.Patient.Params));
+        await patientDelivery.Patient.save({ transaction });
       }
 
       if (req.body.patientDelivery) {
@@ -292,14 +232,8 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       }
 
       await patientDelivery.save({ transaction });
-      const response = createRingdownResponse(
-        patientDelivery.Ambulance,
-        emsCall,
-        patientDelivery.Hospital,
-        patientDelivery.Patient,
-        patientDelivery
-      );
-      res.status(HttpStatus.OK).json(response);
+      res.status(HttpStatus.OK).json(await patientDelivery.toRingdownJSON({ transaction }));
+      dispatchRingdownUpdate(patientDelivery.id);
     });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import ApiService from '../ApiService';
+import RingdownDetails from '../Components/RingdownDetails';
+import RingdownEta from '../Components/RingdownEta';
 import Ringdown from '../Models/Ringdown';
 import './IncomingRingdown.scss';
 
@@ -19,11 +22,13 @@ const IncomingRingDown = ({ onConfirm, ringdown }) => {
   }
 
   return (
-    <div className="incoming-ringdown-container">
+    <div className={classNames('incoming-ringdown-container', { 'incoming-ringdown-container--viewed': isViewed })}>
       <div className="incoming-ringdown">
         {isViewed && (
           <>
-            <p>TODO: Display Ringdown details</p>
+            <div className="incoming-ringdown__details">
+              <RingdownDetails isIncoming ringdown={ringdown} />
+            </div>
             <button className="usa-button width-full" onClick={confirm} type="button">
               Confirm Receipt
             </button>
@@ -36,7 +41,9 @@ const IncomingRingDown = ({ onConfirm, ringdown }) => {
               <br />
               Ringdown
             </h1>
-            <h2>ETA: {ringdown.patientDelivery.etaMinutes}</h2>
+            <h2>
+              <RingdownEta ringdown={ringdown} />
+            </h2>
             <button className="usa-button width-full" onClick={() => setIsViewed(true)} type="button">
               View ringdown
             </button>
