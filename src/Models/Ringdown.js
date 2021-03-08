@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 
 const DeliveryStatus = {
@@ -21,63 +22,318 @@ class Ringdown {
     return DeliveryStatus;
   }
 
-  constructor() {
-    this.ambulanceIdentifier = null;
-    this.dispatchCallNumber = null;
-    this.hospitalId = null;
-    // Patient Info
-    this.age = null;
-    this.sex = null;
-    this.emergencyServiceResponseType = null;
-    this.chiefComplaintDescription = null;
-    this.stableIndicator = null;
-    // Vitals
-    this.systolicBloodPressure = null;
-    this.diastolicBloodPressure = null;
-    this.heartRateBpm = null;
-    this.respiratoryRate = null;
-    this.oxygenSaturation = null;
-    this._lowOxygenResponseType = null;
-    this.supplementalOxygenAmount = null;
-    this.temperature = null;
-    // Addtl. Notes
-    this.etohSuspectedIndicator = false;
-    this.drugsSuspectedIndicator = false;
-    this.psychIndicator = false;
-    this._combativeBehaviorIndicator = false;
-    this.restraintIndicator = false;
-    this.covid19SuspectedIndicator = false;
-    this.ivIndicator = false;
-    this.otherObservationNotes = null;
-    // Status
-    this.etaMinutes = null;
-    this.deliveryStatus = null;
-    this.ringdownSentDateTimeLocal = null;
-    this.ringdownReceivedDateTimeLocal = null;
-    this.arrivedDateTimeLocal = null;
-    this.offloadedDateTimeLocal = null;
-    this.returnToServiceDateTimeLocal = null;
+  constructor(payload) {
+    this.payload = payload || {};
+    this.payload.ambulance = this.payload.ambulance || {};
+    this.payload.emsCall = this.payload.emsCall || {};
+    this.payload.hospital = this.payload.hospital || {};
+    this.payload.patient = this.payload.patient || {};
+    this.payload.patientDelivery = this.payload.patientDelivery || {};
   }
 
-  get combativeBehaviorIndicator() {
-    return this._combativeBehaviorIndicator;
+  get id() {
+    return this.payload.id;
   }
 
-  set combativeBehaviorIndicator(newValue) {
-    this._combativeBehaviorIndicator = newValue;
-    this.restraintIndicator = this._combativeBehaviorIndicator && this.restraintIndicator;
+  // Ambulance
+
+  get ambulanceIdentifier() {
+    return this.payload.ambulance.ambulanceIdentifier ?? null;
+  }
+
+  set ambulanceIdentifier(newValue) {
+    this.payload.ambulance.ambulanceIdentifier = newValue;
+  }
+
+  // EMS Call
+
+  get dispatchCallNumber() {
+    return this.payload.emsCall.dispatchCallNumber ?? null;
+  }
+
+  set dispatchCallNumber(newValue) {
+    this.payload.emsCall.dispatchCallNumber = newValue;
+  }
+
+  // Hospital
+
+  get hospitalId() {
+    return this.payload.hospital.id ?? null;
+  }
+
+  set hospitalId(newValue) {
+    this.payload.hospital.id = newValue;
+  }
+
+  // Patient Info
+
+  get age() {
+    return this.payload.patient.age ?? null;
+  }
+
+  set age(newValue) {
+    this.payload.patient.age = newValue;
+  }
+
+  get sex() {
+    return this.payload.patient.sex ?? null;
+  }
+
+  set sex(newValue) {
+    this.payload.patient.sex = newValue;
+  }
+
+  get emergencyServiceResponseType() {
+    return this.payload.patient.emergencyServiceResponseType ?? null;
+  }
+
+  set emergencyServiceResponseType(newValue) {
+    this.payload.patient.emergencyServiceResponseType = newValue;
+  }
+
+  get chiefComplaintDescription() {
+    return this.payload.patient.chiefComplaintDescription ?? null;
+  }
+
+  set chiefComplaintDescription(newValue) {
+    this.payload.patient.chiefComplaintDescription = newValue;
+  }
+
+  get stableIndicator() {
+    return this.payload.patient.stableIndicator ?? null;
+  }
+
+  set stableIndicator(newValue) {
+    this.payload.patient.stableIndicator = newValue;
+  }
+
+  // Vitals
+
+  get systolicBloodPressure() {
+    return this.payload.patient.systolicBloodPressure ?? null;
+  }
+
+  set systolicBloodPressure(newValue) {
+    this.payload.patient.systolicBloodPressure = newValue;
+  }
+
+  get diastolicBloodPressure() {
+    return this.payload.patient.diastolicBloodPressure ?? null;
+  }
+
+  set diastolicBloodPressure(newValue) {
+    this.payload.patient.diastolicBloodPressure = newValue;
+  }
+
+  get heartRateBpm() {
+    return this.payload.patient.heartRateBpm ?? null;
+  }
+
+  set heartRateBpm(newValue) {
+    this.payload.patient.heartRateBpm = newValue;
+  }
+
+  get respiratoryRate() {
+    return this.payload.patient.respiratoryRate ?? null;
+  }
+
+  set respiratoryRate(newValue) {
+    this.payload.patient.respiratoryRate = newValue;
+  }
+
+  get oxygenSaturation() {
+    return this.payload.patient.oxygenSaturation ?? null;
+  }
+
+  set oxygenSaturation(newValue) {
+    this.payload.patient.oxygenSaturation = newValue;
   }
 
   get lowOxygenResponseType() {
-    return this._lowOxygenResponseType;
+    return this.payload.patient.lowOxygenResponseType ?? null;
   }
 
   set lowOxygenResponseType(newValue) {
-    this._lowOxygenResponseType = newValue;
+    this.payload.patient.lowOxygenResponseType = newValue;
     if (newValue !== 'SUPPLEMENTAL OXYGEN') {
-      this.supplementalOxygenAmount = '';
+      this.supplementalOxygenAmount = null;
     }
   }
+
+  get supplementalOxygenAmount() {
+    return this.payload.patient.supplementalOxygenAmount ?? null;
+  }
+
+  set supplementalOxygenAmount(newValue) {
+    this.payload.patient.supplementalOxygenAmount = newValue;
+  }
+
+  get temperature() {
+    return this.payload.patient.temperature ?? null;
+  }
+
+  set temperature(newValue) {
+    this.payload.patient.temperature = newValue;
+  }
+
+  get hasVitals() {
+    return (
+      this.systolicBloodPressure ||
+      this.diastolicBloodPressure ||
+      this.heartRateBpm ||
+      this.respiratoryRate ||
+      this.oxygenSaturation ||
+      this.lowOxygenResponseType ||
+      this.supplementalOxygenAmount ||
+      this.temperature
+    );
+  }
+
+  // Addtl Notes
+
+  get etohSuspectedIndicator() {
+    return this.payload.patient.etohSuspectedIndicator ?? false;
+  }
+
+  set etohSuspectedIndicator(newValue) {
+    this.payload.patient.etohSuspectedIndicator = newValue;
+  }
+
+  get drugsSuspectedIndicator() {
+    return this.payload.patient.drugsSuspectedIndicator ?? false;
+  }
+
+  set drugsSuspectedIndicator(newValue) {
+    this.payload.patient.drugsSuspectedIndicator = newValue;
+  }
+
+  get psychIndicator() {
+    return this.payload.patient.psychIndicator ?? false;
+  }
+
+  set psychIndicator(newValue) {
+    this.payload.patient.psychIndicator = newValue;
+  }
+
+  get combativeBehaviorIndicator() {
+    return this.payload.patient.combativeBehaviorIndicator ?? false;
+  }
+
+  set combativeBehaviorIndicator(newValue) {
+    this.payload.patient.combativeBehaviorIndicator = newValue;
+    this.restraintIndicator = newValue && this.restraintIndicator;
+  }
+
+  get restraintIndicator() {
+    return this.payload.patient.restraintIndicator ?? false;
+  }
+
+  set restraintIndicator(newValue) {
+    this.payload.patient.restraintIndicator = newValue;
+  }
+
+  get covid19SuspectedIndicator() {
+    return this.payload.patient.covid19SuspectedIndicator ?? false;
+  }
+
+  set covid19SuspectedIndicator(newValue) {
+    this.payload.patient.covid19SuspectedIndicator = newValue;
+  }
+
+  get ivIndicator() {
+    return this.payload.patient.ivIndicator ?? false;
+  }
+
+  set ivIndicator(newValue) {
+    this.payload.patient.ivIndicator = newValue;
+  }
+
+  get otherObservationNotes() {
+    return this.payload.patient.otherObservationNotes ?? null;
+  }
+
+  set otherObservationNotes(newValue) {
+    this.payload.patient.otherObservationNotes = newValue;
+  }
+
+  get hasAdditionalNotes() {
+    return (
+      this.etohSuspectedIndicator ||
+      this.drugsSuspectedIndicator ||
+      this.psychIndicator ||
+      this.combativeBehaviorIndicator ||
+      this.restraintIndicator ||
+      this.covid19SuspectedIndicator ||
+      this.ivIndicator ||
+      this.otherObservationNotes
+    );
+  }
+
+  // Delivery Status
+
+  get etaDateTimeLocalObj() {
+    return DateTime.fromISO(this.ringdownSentDateTimeLocal).plus({
+      minutes: this.etaMinutes,
+    });
+  }
+
+  get etaMinutes() {
+    return this.payload.patientDelivery.etaMinutes ?? null;
+  }
+
+  set etaMinutes(newValue) {
+    this.payload.patientDelivery.etaMinutes = newValue;
+  }
+
+  get deliveryStatus() {
+    return this.payload.patientDelivery.deliveryStatus ?? null;
+  }
+
+  set deliveryStatus(newValue) {
+    this.payload.patientDelivery.deliveryStatus = newValue;
+  }
+
+  get ringdownSentDateTimeLocal() {
+    return this.payload.patientDelivery.ringdownSentDateTimeLocal ?? null;
+  }
+
+  set ringdownSentDateTimeLocal(newValue) {
+    this.payload.patientDelivery.ringdownSentDateTimeLocal = newValue;
+  }
+
+  get ringdownReceivedDateTimeLocal() {
+    return this.payload.patientDelivery.ringdownReceivedDateTimeLocal ?? null;
+  }
+
+  set ringdownReceivedDateTimeLocal(newValue) {
+    this.payload.patientDelivery.ringdownReceivedDateTimeLocal = newValue;
+  }
+
+  get arrivedDateTimeLocal() {
+    return this.payload.patientDelivery.arrivedDateTimeLocal ?? null;
+  }
+
+  set arrivedDateTimeLocal(newValue) {
+    this.payload.patientDelivery.arrivedDateTimeLocal = newValue;
+  }
+
+  get offloadedDateTimeLocal() {
+    return this.payload.patientDelivery.offloadedDateTimeLocal ?? null;
+  }
+
+  set offloadedDateTimeLocal(newValue) {
+    this.payload.patientDelivery.offloadedDateTimeLocal = newValue;
+  }
+
+  get returnToServiceDateTimeLocal() {
+    return this.payload.patientDelivery.returnToServiceDateTimeLocal ?? null;
+  }
+
+  set returnToServiceDateTimeLocal(newValue) {
+    this.payload.patientDelivery.returnToServiceDateTimeLocal = newValue;
+  }
+
+  // Validators
 
   get isPatientValid() {
     return (
@@ -102,51 +358,7 @@ class Ringdown {
   }
 
   toJSON() {
-    return {
-      ambulance: {
-        ambulanceIdentifier: this.ambulanceIdentifier,
-      },
-      emsCall: {
-        dispatchCallNumber: this.dispatchCallNumber,
-      },
-      hospital: {
-        id: this.hospitalId,
-      },
-      patient: {
-        age: this.age,
-        sex: this.sex,
-        emergencyServiceResponseType: this.emergencyServiceResponseType,
-        chiefComplaintDescription: this.chiefComplaintDescription,
-        stableIndicator: this.stableIndicator,
-        // Vitals
-        systolicBloodPressure: this.systolicBloodPressure,
-        diastolicBloodPressure: this.diastolicBloodPressure,
-        heartRateBpm: this.heartRateBpm,
-        respiratoryRate: this.respiratoryRate,
-        oxygenSaturation: this.oxygenSaturation,
-        lowOxygenResponseType: this.lowOxygenResponseType,
-        supplementalOxygenAmount: this.supplementalOxygenAmount,
-        temperature: this.temperature,
-        // Addtl. Notes
-        etohSuspectedIndicator: this.etohSuspectedIndicator,
-        drugsSuspectedIndicator: this.drugsSuspectedIndicator,
-        psychIndicator: this.psychIndicator,
-        combativeBehaviorIndicator: this.combativeBehaviorIndicator,
-        restraintIndicator: this.restraintIndicator,
-        covid19SuspectedIndicator: this.covid19SuspectedIndicator,
-        ivIndicator: this.ivIndicator,
-        otherObservationNotes: this.otherObservationNotes,
-      },
-      patientDelivery: {
-        etaMinutes: this.etaMinutes,
-        deliveryStatus: this.deliveryStatus,
-        ringdownSentDateTimeLocal: this.ringdownSentDateTimeLocal,
-        ringdownReceivedDateTimeLocal: this.ringdownReceivedDateTimeLocal,
-        arrivedDateTimeLocal: this.arrivedDateTimeLocal,
-        offloadedDateTimeLocal: this.offloadedDateTimeLocal,
-        returnToServiceDateTimeLocal: this.returnToServiceDateTimeLocal,
-      },
-    };
+    return this.payload;
   }
 }
 
@@ -180,7 +392,7 @@ Ringdown.propTypes = {
   otherObservationNotes: PropTypes.string,
   // Status
   etaMinutes: PropTypes.number.isRequired,
-  deliveryStatus: PropTypes.oneOf(['RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE']),
+  deliveryStatus: PropTypes.oneOf(DeliveryStatus.ALL_STATUSES),
   ringdownSentDateTimeLocal: PropTypes.instanceOf(Date),
   ringdownReceivedDateTimeLocal: PropTypes.instanceOf(Date),
   arrivedDateTimeLocal: PropTypes.instanceOf(Date),

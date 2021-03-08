@@ -1,0 +1,45 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+@import '../../theme/uswds-theme-color';
+
+.ringdown-details {
+  margin: 0;
+  td,
+  th {
+    @include h4;
+    border-color: color($theme-color-base-lighter);
+  }
+
+  td {
+    padding-left: 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    color: color($theme-color-base-light);
+    text-align: right;
+    padding-right: 0;
+    vertical-align: top;
+  }
+
+  th[colspan='2'] {
+    @include h4-bold;
+    border-bottom-color: color($theme-color-base-ink);
+    color: color($theme-color-base-ink);
+    text-align: left;
+    padding: 1rem 1.5rem 0.5rem;
+  }
+
+  tr:first-child {
+    td,
+    th {
+      border-top: 0;
+    }
+  }
+  tr:last-child {
+    td,
+    th {
+      border-bottom: 0;
+    }
+  }
+}
