@@ -2,8 +2,7 @@ import React from 'react';
 import './DiversionPopup.scss';
 import PropTypes from 'prop-types';
 
-const DiversionPopup = ({keep, update}) => {
-
+const DiversionPopup = ({ keep, update }) => {
   return (
     <div className="DiversionPopup">
       <div className="usa-alert usa-alert--warning">
@@ -21,7 +20,6 @@ const DiversionPopup = ({keep, update}) => {
     </div>
   );
 };
-
 
 DiversionPopup.propTypes = {
   keep: PropTypes.func.isRequired,

@@ -2,7 +2,7 @@ import React from 'react';
 import './DiversionPopup.scss';
 import PropTypes from 'prop-types';
 
-const DiversionPopupConfirmation = ({ok}) => {
+const DiversionPopupConfirmation = ({ ok }) => {
   return (
     <div className="DiversionPopup">
       <div className="usa-alert usa-alert--success">
@@ -19,7 +19,7 @@ const DiversionPopupConfirmation = ({ok}) => {
 };
 
 DiversionPopupConfirmation.propTypes = {
-  ok: PropTypes.func.isRequired
+  ok: PropTypes.func.isRequired,
 };
 
 export default DiversionPopupConfirmation;

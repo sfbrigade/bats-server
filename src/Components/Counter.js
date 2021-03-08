@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Counter.scss';
 import PropTypes from 'prop-types';
 
-const Counter = ({update, CountTitle,  }) => {
+const Counter = ({ update, CountTitle }) => {
   const [count, setCount] = useState(0);
 
   const handleIncrement = () => {
@@ -41,7 +41,7 @@ const Counter = ({update, CountTitle,  }) => {
 
 Counter.propTypes = {
   update: PropTypes.func.isRequired,
-  CountTitle: PropTypes.string.isRequired
+  CountTitle: PropTypes.string.isRequired,
 };
 
 export default Counter;
