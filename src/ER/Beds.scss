@@ -18,3 +18,12 @@
 .beds_er_conditions_optional {
   @include h4;
 }
+
+.beds__additional-notes {
+  padding-top: 0.25rem;
+
+  .usa-button {
+    margin: 0.75rem 0 0;
+    min-width: 33%;
+  }
+}

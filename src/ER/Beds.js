@@ -3,7 +3,8 @@ import { DateTime } from 'luxon';
 
 import Counter from '../Components/Counter';
 import Heading from '../Components/Heading';
-import ButtonRight from '../Components/ButtonRight';
+import FormTextArea from '../Components/FormTextArea';
+
 import DiversionPopup from '../Components/DiversionPopup';
 import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
 
@@ -11,7 +12,10 @@ import './Beds.scss';
 
 function Beds() {
   const [bedDateTime, setBedDateTime] = useState();
+
   const [notesDateTime, setNotesDateTime] = useState();
+  const [additionalNotes, setAdditionalNotes] = useState();
+
   const [diversionDateTime, setDiversionDateTime] = useState();
 
   const [diversion, setDiversion] = useState(false);
@@ -33,10 +37,6 @@ function Beds() {
     setPopupConfirmation(!PopupConfirmation);
   };
 
-  const container = {
-    margin: '0.7em',
-    padding: '0.7em',
-  };
   const container2 = {
     margin: '0.9em',
     padding: '0em',
@@ -69,13 +69,25 @@ function Beds() {
         subtitle={`Updated ${notesDateTime ? DateTime.fromISO(notesDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
       />
       <div className="usa-accordion__content">
-        <div style={container} className="usa-fieldset">
-          <label htmlFor="erNotes" className="beds_er_conditions">
-            ER conditions <span className="beds_er_conditions_optional">(optional)</span>
-            <textarea id="erNotes" name="erNotes" rows="4" cols="50" require="true" />
-          </label>
-          <ButtonRight ButtonTitle="Update" update={handleNotesUpdate} />
-        </div>
+        <form className="usa-form">
+          <fieldset className="usa-fieldset beds__additional-notes">
+            <FormTextArea
+              label={
+                <>
+                  ER conditions <span>(optional)</span>
+                </>
+              }
+              property="additionalNotes"
+              value={additionalNotes}
+              onChange={(property, value) => setAdditionalNotes(value)}
+            />
+            <div className="text-right">
+              <button className="usa-button" type="button" onClick={handleNotesUpdate}>
+                Update
+              </button>
+            </div>
+          </fieldset>
+        </form>
       </div>
 
       <Heading
