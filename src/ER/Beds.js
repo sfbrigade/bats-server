@@ -1,50 +1,33 @@
 import React, { useState } from 'react';
+import { DateTime } from 'luxon';
+
 import Counter from '../Components/Counter';
 import Heading from '../Components/Heading';
 import ButtonRight from '../Components/ButtonRight';
 import DiversionPopup from '../Components/DiversionPopup';
 import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
+
 import './Beds.scss';
 
 function Beds() {
-  const [BedTimeBanner, setBedTimeUpdate] = useState('pending');
-  const [BedDateBanner, setBedDateUpdate] = useState('pending');
-  const [NotesTimeBanner, setNotesTimeUpdate] = useState('pending');
-  const [NotesDateBanner, setNotesDateUpdate] = useState('pending');
-  const [DiversionTimeBanner, setDiversionTimeUpdate] = useState('19:09:35');
-  const [DiversionDateBanner, setDiversionDateUpdate] = useState('11/29/2020');
+  const [bedDateTime, setBedDateTime] = useState();
+  const [notesDateTime, setNotesDateTime] = useState();
+  const [diversionDateTime, setDiversionDateTime] = useState();
+
   const [diversion, setDiversion] = useState(false);
   const [popup, setPopup] = useState(false);
   const [PopupConfirmation, setPopupConfirmation] = useState(false);
 
   const handleBedUpdate = () => {
-    const date = new Date();
-    const DateString = date.toString();
-    const DateArray = DateString.split(' ');
-    const TimeString = date.toTimeString();
-    const TimeArray = TimeString.split(' ');
-    setBedTimeUpdate(TimeArray[0]);
-    setBedDateUpdate(`${date.getMonth() + 1}/${DateArray[2]}/${DateArray[3]}`);
+    setBedDateTime(DateTime.local().toISO());
   };
 
   const handleNotesUpdate = () => {
-    const date = new Date();
-    const DateString = date.toString();
-    const DateArray = DateString.split(' ');
-    const TimeString = date.toTimeString();
-    const TimeArray = TimeString.split(' ');
-    setNotesTimeUpdate(TimeArray[0]);
-    setNotesDateUpdate(`${date.getMonth() + 1}/${DateArray[2]}/${DateArray[3]}`);
+    setNotesDateTime(DateTime.local().toISO());
   };
 
   const handleDiversionUpdate = () => {
-    const date = new Date();
-    const DateString = date.toString();
-    const DateArray = DateString.split(' ');
-    const TimeString = date.toTimeString();
-    const TimeArray = TimeString.split(' ');
-    setDiversionTimeUpdate(TimeArray[0]);
-    setDiversionDateUpdate(`${date.getMonth() + 1}/${DateArray[2]}/${DateArray[3]}`);
+    setDiversionDateTime(DateTime.local().toISO());
     setDiversion(!diversion);
     setPopup(!popup);
     setPopupConfirmation(!PopupConfirmation);
@@ -68,7 +51,10 @@ function Beds() {
   };
   return (
     <div className="usa-accordion">
-      <Heading title="Bed availability" subtitle={`Updated ${BedDateBanner} @ ${BedTimeBanner}`} />
+      <Heading
+        title="Bed availability"
+        subtitle={`Updated ${bedDateTime ? DateTime.fromISO(bedDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
+      />
       <div className="usa-accordion__content">
         <div id="erCountButtons" className="usa-fieldset">
           <Counter CountTitle="ER Beds" update={handleBedUpdate} />
@@ -78,7 +64,10 @@ function Beds() {
         </div>
       </div>
 
-      <Heading title="Additional Notes" subtitle={`Updated ${NotesDateBanner} @ ${NotesTimeBanner}`} />
+      <Heading
+        title="Additional Notes"
+        subtitle={`Updated ${notesDateTime ? DateTime.fromISO(notesDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
+      />
       <div className="usa-accordion__content">
         <div style={container} className="usa-fieldset">
           <label htmlFor="erNotes" className="beds_er_conditions">
@@ -89,7 +78,10 @@ function Beds() {
         </div>
       </div>
 
-      <Heading title="Diversion status" subtitle={`Updated ${DiversionDateBanner} @ ${DiversionTimeBanner}`} />
+      <Heading
+        title="Diversion status"
+        subtitle={`Updated ${diversionDateTime ? DateTime.fromISO(diversionDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
+      />
       <div className="usa-accordion__content">
         <div style={container2} className="usa-fieldset">
           <div className="grid-row height-7 width-card-lg">
