@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Counter from '../Components/Counter';
-import Banner from '../Components/Banner';
+import Heading from '../Components/Heading';
 import ButtonRight from '../Components/ButtonRight';
 import DiversionPopup from '../Components/DiversionPopup';
 import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
 import './Beds.scss';
 
-const Beds = () => {
+function Beds() {
   const [BedTimeBanner, setBedTimeUpdate] = useState('pending');
   const [BedDateBanner, setBedDateUpdate] = useState('pending');
   const [NotesTimeBanner, setNotesTimeUpdate] = useState('pending');
@@ -68,8 +68,7 @@ const Beds = () => {
   };
   return (
     <div className="usa-accordion">
-      <Banner BannerTitle="Bed availability" date={BedDateBanner} time={BedTimeBanner} />
-
+      <Heading title="Bed availability" subtitle={`Updated ${BedDateBanner} @ ${BedTimeBanner}`} />
       <div className="usa-accordion__content">
         <div id="erCountButtons" className="usa-fieldset">
           <Counter CountTitle="ER Beds" update={handleBedUpdate} />
@@ -77,8 +76,10 @@ const Beds = () => {
         <div id="psychCountButtons" className="usa-fieldset">
           <Counter CountTitle="Psych Beds" update={handleBedUpdate} />
         </div>
-        <Banner BannerTitle="Addtl. Notes" date={NotesDateBanner} time={NotesTimeBanner} />
+      </div>
 
+      <Heading title="Additional Notes" subtitle={`Updated ${NotesDateBanner} @ ${NotesTimeBanner}`} />
+      <div className="usa-accordion__content">
         <div style={container} className="usa-fieldset">
           <label htmlFor="erNotes" className="beds_er_conditions">
             ER conditions <span className="beds_er_conditions_optional">(optional)</span>
@@ -86,9 +87,10 @@ const Beds = () => {
           </label>
           <ButtonRight ButtonTitle="Update" update={handleNotesUpdate} />
         </div>
+      </div>
 
-        <Banner BannerTitle="Diversion status" date={DiversionDateBanner} time={DiversionTimeBanner} />
-
+      <Heading title="Diversion status" subtitle={`Updated ${DiversionDateBanner} @ ${DiversionTimeBanner}`} />
+      <div className="usa-accordion__content">
         <div style={container2} className="usa-fieldset">
           <div className="grid-row height-7 width-card-lg">
             {!diversion && <div className="grid-col-1 beds_diversion_style" />}
@@ -116,6 +118,6 @@ const Beds = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Beds;
