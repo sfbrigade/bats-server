@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { DateTime } from 'luxon';
+import classNames from 'classnames';
 
 import Counter from '../Components/Counter';
 import Heading from '../Components/Heading';
@@ -35,12 +36,6 @@ function Beds() {
     setDiversion(!diversion);
     setPopup(!popup);
     setPopupConfirmation(!PopupConfirmation);
-  };
-
-  const container2 = {
-    margin: '0.9em',
-    padding: '0em',
-    boxShadow: '0em 0em 0.4em gray',
   };
 
   const TogglePopup = () => {
@@ -95,26 +90,13 @@ function Beds() {
         subtitle={`Updated ${diversionDateTime ? DateTime.fromISO(diversionDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
       />
       <div className="usa-accordion__content">
-        <div style={container2} className="usa-fieldset">
-          <div className="grid-row height-7 width-card-lg">
-            {!diversion && <div className="grid-col-1 beds_diversion_style" />}
-            {!diversion && (
-              <div className="grid-col-8 margin-1">
-                Not On Diversion{popup}
-                <button type="button" className="usa-button--unstyled" onClick={TogglePopup}>
-                  Change status
-                </button>
-              </div>
-            )}
-            {diversion && <div className="grid-col-1 beds_diversion_style_2" />}
-            {diversion && (
-              <div className="grid-col-8 margin-1">
-                On Diversion{popup}
-                <button type="button" className="usa-button--unstyled" onClick={TogglePopup}>
-                  Change status
-                </button>
-              </div>
-            )}
+        <div className="usa-fieldset">
+          <div className={classNames('beds__diversion', { 'beds__diversion--on': diversion })}>
+            {diversion && <>On diversion</>}
+            {!diversion && <>Not on diversion</>}
+            <button type="button" className="usa-button--unstyled beds__change-status" onClick={TogglePopup}>
+              Change status
+            </button>
             {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
             {PopupConfirmation && <DiversionPopupConfirmation ok={TogglePopupConfirmation} />}
           </div>
