@@ -15,6 +15,8 @@ class HospitalStatus {
     this.divertStatusIndicator = divertStatusIndicator;
     this.updateDateTimeLocal = updateDateTimeLocal;
     this.additionalServiceAvailabilityNotes = additionalServiceAvailabilityNotes || '';
+    this.ambulancesEnRoute = (hospital && hospital.ambulancesEnRoute) || null;
+    this.ambulancesOffloading = (hospital && hospital.ambulancesOffloading) || null;
   }
 
   get isValid() {
@@ -25,7 +27,9 @@ class HospitalStatus {
       this.openPsychBedCount !== null &&
       this.divertStatusIndicator !== null &&
       this.updateDateTimeLocal !== null &&
-      this.additionalServiceAvailabilityNotes !== null
+      this.additionalServiceAvailabilityNotes !== null &&
+      this.ambulancesEnRoute !== null &&
+      this.ambulancesOffloading !== null
     );
   }
 }

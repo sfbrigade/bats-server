@@ -1,20 +1,21 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
+const { Op } = require('sequelize');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
 
 const router = express.Router();
 
-function createResponse(hsu) {
+function createResponse(hsu, deliveries) {
   const { id, openEdBedCount, openPsychBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDateTimeLocal } = hsu;
   const response = {
     id,
-    hospital: { // TODO - I feel like we should just flatten this
+    hospital: {
       id: hsu.Hospital.id,
       name: hsu.Hospital.name,
-      ambulancesEnroute: hsu.ambulancesEnroute,
-      ambulancesOffloading: hsu.ambulancesOffloading,
+      ambulancesEnRoute: (deliveries && deliveries.enRoute) || 0,
+      ambulancesOffloading: (deliveries && deliveries.offloading) || 0,
     },
     openEdBedCount,
     openPsychBedCount,
@@ -30,17 +31,46 @@ function createResponse(hsu) {
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
   try {
-    // TODO
-    // - for enroute need something like:
-    // -    select id, count(*) from patientdelivery where deliverystatus = 'RINGDOWN SENT' or deliverystatus = 'RINGDOWN RECEIVED' group by id;
-    // - for offloading need:
-    // -    select id, count(*) from patientdelivery where deliverystatus = 'ARRIVED' group by id;
-    // - see if it's possible to do a join on hospitalstatusupdate and just make this 1 big query
+    // NOTE: processing the ambulances enroute and offloading in memory here because it was easier
+    // than figuring it out in Sequelize. We can probably use a raw SQL query if this ever becomes
+    // a performance issue.
+    const activeDeliveries = await models.PatientDelivery.findAll({
+      include: [models.Hospital],
+      where: {
+        [Op.and]: [
+          {
+            // TODO - it would be nice to import these constansts instead
+            deliveryStatus: { [Op.ne]: 'OFFLOADED' },
+          },
+          {
+            deliveryStatus: { [Op.ne]: 'RETURNED TO SERVICE' },
+          },
+        ],
+      },
+    });
+
+    const deliveriesByHospitalId = activeDeliveries.reduce((accumulator, delivery) => {
+      const hospitalData = {
+        enRoute: (accumulator[delivery.HospitalId] && accumulator[delivery.HospitalId].enRoute) || 0,
+        offloading: (accumulator[delivery.HospitalId] && accumulator[delivery.HospitalId].offloading) || 0,
+      };
+
+      if (delivery.deliveryStatus === 'RINGDOWN SENT' || delivery.deliveryStatus === 'RINGDOWN RECEIVED') {
+        hospitalData.enRoute += 1;
+      } else if (delivery.deliveryStatus === 'ARRIVED') {
+        hospitalData.offloading += 1;
+      }
+
+      accumulator[delivery.HospitalId] = hospitalData;
+
+      return accumulator;
+    }, {});
+
     const statusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({
       include: [models.Hospital],
     });
     statusUpdates.sort((a, b) => a.Hospital.sortSequenceNumber - b.Hospital.sortSequenceNumber);
-    const response = statusUpdates.map((statusUpdate) => createResponse(statusUpdate));
+    const response = statusUpdates.map((statusUpdate) => createResponse(statusUpdate, deliveriesByHospitalId[statusUpdate.HospitalId]));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
