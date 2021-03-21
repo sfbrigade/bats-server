@@ -1,9 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import ApiService from '../ApiService';
+
+
 
 function FormInput({ children, disabled, label, onChange, isWrapped, property, required, showRequiredHint, size, type, unit, value }) {
   const [focused, setFocused] = useState(false);
+
+  function useDebounce(value, delay) {
+    // State and setters for debounced value
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    useEffect(
+      () => {
+        // Set debouncedValue to value (passed in) after the specified delay
+        const handler = setTimeout(() => {
+          setDebouncedValue(value);
+        }, delay);
+        return () => {
+          clearTimeout(handler);
+        };
+      },
+      [value] 
+    );
+  
+    return debouncedValue;
+  }
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isNotValidId, setIsNotValidId] = useState(false);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  useEffect(
+    () => {
+      // Make sure we have a value (user has entered something in input)
+      if (debouncedSearchTerm && debouncedSearchTerm.id == "dispatchCallNumber") {
+        SearchCharacters(debouncedSearchTerm.value)
+      } 
+    },
+    [debouncedSearchTerm.value]
+  );
+
+  function SearchCharacters(search) {
+    let dispatchCallNumber;
+    if (search) {
+      ApiService.ringdowns.checkValidRingdown(search).then((r2) => {
+        dispatchCallNumber = r2.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    } 
+    // using window.setTimeout before setting setIsValidId and calling dispatchcallNumber because we're using 
+    // Debouncing so the dispatchCallNumber returns undefined originally. 
+    window.setTimeout(function() { 
+      if (dispatchCallNumber) {
+        setIsNotValidId(true);
+      }
+      else { 
+        setIsNotValidId(false);
+      }
+    }, 200)
+  }
+  
 
   function typedValue(stringValue) {
     if (type === 'number') {
@@ -23,7 +82,7 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
         disabled={disabled}
         value={value || ''}
         onBlur={() => setFocused(false)}
-        onChange={(e) => onChange(property, typedValue(e.target.value))}
+        onChange={(e) => onChange(property, typedValue(e.target.value), setSearchTerm(e.target))}
         onFocus={() => setFocused(true)}
         required={required}
         type={type}
@@ -32,8 +91,10 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
           'usa-input--small': size === 'small',
         })}
       />
+      {isNotValidId ? <span style={{color:'red', display:'flex'}}>&nbsp;&nbsp;Incident # already exists, please use a different one.</span> : null}
       {unit && <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;{unit}</span>}
       {children}
+      
     </>
   );
   if (isWrapped) {
