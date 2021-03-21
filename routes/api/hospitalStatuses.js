@@ -50,18 +50,18 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
     });
 
     const deliveriesByHospitalId = activeDeliveries.reduce((accumulator, delivery) => {
-      const hospitalData = {
+      const deliveries = {
         enRoute: (accumulator[delivery.HospitalId] && accumulator[delivery.HospitalId].enRoute) || 0,
         offloading: (accumulator[delivery.HospitalId] && accumulator[delivery.HospitalId].offloading) || 0,
       };
 
       if (delivery.deliveryStatus === 'RINGDOWN SENT' || delivery.deliveryStatus === 'RINGDOWN RECEIVED') {
-        hospitalData.enRoute += 1;
+        deliveries.enRoute += 1;
       } else if (delivery.deliveryStatus === 'ARRIVED') {
-        hospitalData.offloading += 1;
+        deliveries.offloading += 1;
       }
 
-      accumulator[delivery.HospitalId] = hospitalData;
+      accumulator[delivery.HospitalId] = deliveries;
 
       return accumulator;
     }, {});
