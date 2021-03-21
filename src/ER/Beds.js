@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { DateTime } from 'luxon';
 import classNames from 'classnames';
 
+import Alert from '../Components/Alert';
 import Counter from '../Components/Counter';
-import Heading from '../Components/Heading';
 import FormTextArea from '../Components/FormTextArea';
-
-import DiversionPopup from '../Components/DiversionPopup';
-import DiversionPopupConfirmation from '../Components/DiversionPopupConfirmation';
+import Heading from '../Components/Heading';
 
 import './Beds.scss';
 
@@ -19,9 +17,9 @@ function Beds() {
 
   const [diversionDateTime, setDiversionDateTime] = useState();
 
-  const [diversion, setDiversion] = useState(false);
-  const [popup, setPopup] = useState(false);
-  const [PopupConfirmation, setPopupConfirmation] = useState(false);
+  const [onDiversion, setOnDiversion] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
+  const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
 
   const handleBedUpdate = () => {
     setBedDateTime(DateTime.local().toISO());
@@ -33,17 +31,11 @@ function Beds() {
 
   const handleDiversionUpdate = () => {
     setDiversionDateTime(DateTime.local().toISO());
-    setDiversion(!diversion);
-    setPopup(!popup);
-    setPopupConfirmation(!PopupConfirmation);
+    setOnDiversion(!onDiversion);
+    setShowUpdate(false);
+    setShowConfirmUpdate(true);
   };
 
-  const TogglePopup = () => {
-    setPopup(!popup);
-  };
-  const TogglePopupConfirmation = () => {
-    setPopupConfirmation(!PopupConfirmation);
-  };
   return (
     <div className="usa-accordion">
       <Heading
@@ -91,14 +83,32 @@ function Beds() {
       />
       <div className="usa-accordion__content">
         <div className="usa-fieldset">
-          <div className={classNames('beds__diversion', { 'beds__diversion--on': diversion })}>
-            {diversion && <>On diversion</>}
-            {!diversion && <>Not on diversion</>}
-            <button type="button" className="usa-button--unstyled beds__change-status" onClick={TogglePopup}>
+          <div className={classNames('beds__diversion', { 'beds__diversion--on': onDiversion })}>
+            {onDiversion && <>On diversion</>}
+            {!onDiversion && <>Not on diversion</>}
+            <button type="button" className="usa-button--unstyled beds__change-status" onClick={() => setShowUpdate(true)}>
               Change status
             </button>
-            {popup && <DiversionPopup update={handleDiversionUpdate} keep={TogglePopup} />}
-            {PopupConfirmation && <DiversionPopupConfirmation ok={TogglePopupConfirmation} />}
+            {showUpdate && (
+              <Alert
+                type="warning"
+                title="Update divert status?"
+                message="Ambulances will be notified."
+                cancel="Keep status"
+                destructive="Update status"
+                onDestructive={handleDiversionUpdate}
+                onCancel={() => setShowUpdate(false)}
+              />
+            )}
+            {showConfirmUpdate && (
+              <Alert
+                type="success"
+                title="Divert status updated"
+                message="Ambulances will be notified."
+                primary="Return to form"
+                onPrimary={() => setShowConfirmUpdate(false)}
+              />
+            )}
           </div>
         </div>
       </div>
