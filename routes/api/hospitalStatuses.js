@@ -1,6 +1,7 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 const { Op } = require('sequelize');
+const { DeliveryStatus } = require('../../constants');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
@@ -39,11 +40,10 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
       where: {
         [Op.and]: [
           {
-            // TODO - it would be nice to import these constansts instead
-            deliveryStatus: { [Op.ne]: 'OFFLOADED' },
+            deliveryStatus: { [Op.ne]: DeliveryStatus.OFFLOADED },
           },
           {
-            deliveryStatus: { [Op.ne]: 'RETURNED TO SERVICE' },
+            deliveryStatus: { [Op.ne]: DeliveryStatus.RETURNED_TO_SERVICE },
           },
         ],
       },
@@ -55,9 +55,9 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
         offloading: (accumulator[delivery.HospitalId] && accumulator[delivery.HospitalId].offloading) || 0,
       };
 
-      if (delivery.deliveryStatus === 'RINGDOWN SENT' || delivery.deliveryStatus === 'RINGDOWN RECEIVED') {
+      if (delivery.deliveryStatus === DeliveryStatus.RINGDOWN_SENT || delivery.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED) {
         deliveries.enRoute += 1;
-      } else if (delivery.deliveryStatus === 'ARRIVED') {
+      } else if (delivery.deliveryStatus === DeliveryStatus.ARRIVED) {
         deliveries.offloading += 1;
       }
 

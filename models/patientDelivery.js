@@ -1,13 +1,5 @@
 const { Model } = require('sequelize');
-
-const DeliveryStatus = {
-  RINGDOWN_SENT: 'RINGDOWN SENT',
-  RINGDOWN_RECEIVED: 'RINGDOWN RECEIVED',
-  ARRIVED: 'ARRIVED',
-  OFFLOADED: 'OFFLOADED',
-  RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
-};
-Object.freeze(DeliveryStatus);
+const { DeliveryStatus } = require('../constants');
 
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
