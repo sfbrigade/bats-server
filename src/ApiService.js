@@ -26,6 +26,9 @@ export default {
     create(data) {
       return instance.post('/api/ringdowns', data);
     },
+    checkValidRingdown(rindownId) {
+      return instance.get(`/api/ringdowns/checkvalidringdown/${rindownId}`);
+    },
     get(hospitalId) {
       return instance.get('/api/ringdowns', { params: { hospitalId } });
     },
