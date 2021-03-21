@@ -8,20 +8,19 @@ import ApiService from '../ApiService';
 function FormInput({ children, disabled, label, onChange, isWrapped, property, required, showRequiredHint, size, type, unit, value }) {
   const [focused, setFocused] = useState(false);
 
-  function useDebounce(value, delay) {
+  function useDebounce(searchValue, delay) {
     // State and setters for debounced value
-    const [debouncedValue, setDebouncedValue] = useState(value);
+    const [debouncedValue, setDebouncedValue] = useState(searchValue);
     useEffect(
       () => {
         // Set debouncedValue to value (passed in) after the specified delay
         const handler = setTimeout(() => {
-          setDebouncedValue(value);
+          setDebouncedValue(searchValue);
         }, delay);
         return () => {
           clearTimeout(handler);
         };
-      },
-      [value] 
+      }
     );
   
     return debouncedValue;
@@ -31,16 +30,6 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
   const [isNotValidId, setIsNotValidId] = useState(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  useEffect(
-    () => {
-      // Make sure we have a value (user has entered something in input)
-      if (debouncedSearchTerm && debouncedSearchTerm.id == "dispatchCallNumber") {
-        SearchCharacters(debouncedSearchTerm.value)
-      } 
-    },
-    [debouncedSearchTerm.value]
-  );
-
   function SearchCharacters(search) {
     let dispatchCallNumber;
     if (search) {
@@ -48,12 +37,14 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
         dispatchCallNumber = r2.data;
       })
       .catch((error) => {
+        /* eslint-disable no-console */
         console.log(error);
       })
     } 
-    // using window.setTimeout before setting setIsValidId and calling dispatchcallNumber because we're using 
+    // using setTimeout before setting setIsValidId and calling dispatchcallNumber because we're using 
     // Debouncing so the dispatchCallNumber returns undefined originally. 
-    window.setTimeout(function() { 
+      
+    setTimeout(() => { 
       if (dispatchCallNumber) {
         setIsNotValidId(true);
       }
@@ -63,6 +54,14 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
     }, 200)
   }
   
+  useEffect(
+    () => {
+      // Make sure we have a value (user has entered something in input)
+      if (debouncedSearchTerm && debouncedSearchTerm.id === "dispatchCallNumber") {
+        SearchCharacters(debouncedSearchTerm.value)
+      } 
+    }
+  );
 
   function typedValue(stringValue) {
     if (type === 'number') {

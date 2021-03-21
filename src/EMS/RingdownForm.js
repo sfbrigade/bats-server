@@ -42,6 +42,7 @@ function RingdownForm({ className }) {
         setStep(0);
       })
       .catch((error) => {
+        /* eslint-disable no-console */
         console.log(error);
       });
   }
