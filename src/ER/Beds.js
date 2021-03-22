@@ -11,6 +11,8 @@ import './Beds.scss';
 
 function Beds() {
   const [bedDateTime, setBedDateTime] = useState();
+  const [erBedsCount, setErBedsCount] = useState(0);
+  const [psychBedsCount, setPsychBedsCount] = useState(0);
 
   const [notesDateTime, setNotesDateTime] = useState();
   const [additionalNotes, setAdditionalNotes] = useState();
@@ -21,20 +23,25 @@ function Beds() {
   const [showUpdate, setShowUpdate] = useState(false);
   const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
 
-  const handleBedUpdate = () => {
+  function handleBedUpdate(event) {
     setBedDateTime(DateTime.local().toISO());
-  };
+    if (event.target.name === 'erBedsCount') {
+      setErBedsCount(event.target.value);
+    } else if (event.target.name === 'psychBedsCount') {
+      setPsychBedsCount(event.target.value);
+    }
+  }
 
-  const handleNotesUpdate = () => {
+  function handleNotesUpdate() {
     setNotesDateTime(DateTime.local().toISO());
-  };
+  }
 
-  const handleDiversionUpdate = () => {
+  function handleDiversionUpdate() {
     setDiversionDateTime(DateTime.local().toISO());
     setOnDiversion(!onDiversion);
     setShowUpdate(false);
     setShowConfirmUpdate(true);
-  };
+  }
 
   return (
     <div className="usa-accordion">
@@ -43,21 +50,20 @@ function Beds() {
         subtitle={`Updated ${bedDateTime ? DateTime.fromISO(bedDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
       />
       <div className="usa-accordion__content">
-        <div id="erCountButtons" className="usa-fieldset">
-          <Counter CountTitle="ER Beds" update={handleBedUpdate} />
-        </div>
-        <div id="psychCountButtons" className="usa-fieldset">
-          <Counter CountTitle="Psych Beds" update={handleBedUpdate} />
-        </div>
+        <form className="usa-form">
+          <fieldset className="usa-fieldset beds__availability">
+            <Counter label="ER Beds" name="erBedsCount" min={0} onChange={handleBedUpdate} value={erBedsCount} />
+            <Counter label="Psych Beds" name="psychBedsCount" min={0} onChange={handleBedUpdate} value={psychBedsCount} />
+          </fieldset>
+        </form>
       </div>
-
       <Heading
         title="Additional Notes"
         subtitle={`Updated ${notesDateTime ? DateTime.fromISO(notesDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
       />
       <div className="usa-accordion__content">
         <form className="usa-form">
-          <fieldset className="usa-fieldset beds__additional-notes">
+          <fieldset className="usa-fieldset beds__notes">
             <FormTextArea
               label={
                 <>

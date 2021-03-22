@@ -1,7 +1,11 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-custom-mixins';
 
-.beds__additional-notes {
+.beds__availability {
+  padding: 1rem 1.5rem 0;
+}
+
+.beds__notes {
   padding-top: 0.25rem;
 
   .usa-button {
