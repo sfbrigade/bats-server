@@ -31,3 +31,16 @@
   @include h4;
   display: block;
 }
+
+.beds__updated {
+  position: absolute;
+  left: 3em;
+  top: 31.8em;
+  color: #00A91C;
+  font-size: 21px;
+}
+
+.beds__check-icon {
+  position: absolute;
+  left: -1.5em;
+}

@@ -7,6 +7,8 @@ import Counter from '../Components/Counter';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
 
+import CheckIcon from './checkIcon.png';
+
 import './Beds.scss';
 
 function Beds() {
@@ -16,6 +18,7 @@ function Beds() {
 
   const [notesDateTime, setNotesDateTime] = useState();
   const [additionalNotes, setAdditionalNotes] = useState();
+  const [updatedNotes, setUpdatedNotes] = useState(false);
 
   const [diversionDateTime, setDiversionDateTime] = useState();
 
@@ -34,6 +37,7 @@ function Beds() {
 
   function handleNotesUpdate() {
     setNotesDateTime(DateTime.local().toISO());
+    setUpdatedNotes(true);
   }
 
   function handleDiversionUpdate() {
@@ -75,6 +79,12 @@ function Beds() {
               onChange={(property, value) => setAdditionalNotes(value)}
             />
             <div className="text-right">
+              {updatedNotes && (
+                <span className="beds__updated">
+                <img className="beds__check-icon" src={CheckIcon} alt="check icon" width="25" height="30" /> 
+                Updated
+                </span>
+              )}
               <button className="usa-button" type="button" onClick={handleNotesUpdate}>
                 Update
               </button>
