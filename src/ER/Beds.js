@@ -81,8 +81,8 @@ function Beds() {
             <div className="text-right">
               {updatedNotes && (
                 <span className="beds__updated">
-                <img className="beds__check-icon" src={CheckIcon} alt="check icon" width="25" height="30" /> 
-                Updated
+                  <img className="beds__check-icon" src={CheckIcon} alt="check icon" width="25" height="30" />
+                  Updated
                 </span>
               )}
               <button className="usa-button" type="button" onClick={handleNotesUpdate}>
