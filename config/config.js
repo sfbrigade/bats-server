@@ -14,5 +14,10 @@ module.exports = {
     use_env_variable: 'DATABASE_URL',
     logging: false,
     dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false, // false === allow self-signed SSL certs
+      },
+    },
   },
 };
