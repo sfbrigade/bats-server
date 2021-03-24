@@ -1,8 +1,24 @@
+const _ = require('lodash');
 const { Model } = require('sequelize');
 const { DeliveryStatus } = require('../constants');
 
+const PatientDeliveryParams = [
+  'deliveryStatus',
+  'etaMinutes',
+  'ringdownSentDateTimeLocal',
+  'ringdownReceivedDateTimeLocal',
+  'arrivedDateTimeLocal',
+  'offloadedDateTimeLocal',
+  'returnToServiceDateTimeLocal',
+];
+Object.freeze(PatientDeliveryParams);
+
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
+    static get Params() {
+      return PatientDeliveryParams;
+    }
+
     static get Status() {
       return DeliveryStatus;
     }
@@ -58,6 +74,25 @@ module.exports = (sequelize, DataTypes) => {
       }
       // otherwise, throw an exception
       throw new Error();
+    }
+
+    async toRingdownJSON(options) {
+      const ambulance = this.Ambulance || (await this.getAmbulance(options));
+      const hospital = this.Hospital || (await this.getHospital(options));
+      const patient = this.Patient || (await this.getPatient(options));
+      const emsCall = patient.EmergencyMedicalServiceCall || (await patient.getEmergencyMedicalServiceCall(options));
+      return {
+        id: this.id,
+        ambulance: {
+          ambulanceIdentifier: ambulance.ambulanceIdentifier,
+        },
+        emsCall: {
+          dispatchCallNumber: emsCall.dispatchCallNumber,
+        },
+        hospital: _.pick(hospital, ['id', 'name']),
+        patient: _.pick(patient, sequelize.models.Patient.Params),
+        patientDelivery: _.pick(this, PatientDeliveryParams),
+      };
     }
   }
   PatientDelivery.init(

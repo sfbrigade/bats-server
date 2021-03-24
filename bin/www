@@ -30,6 +30,13 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 /**
+ * Create WebSocket server, handle session authentication on upgrade/connection
+ */
+
+const {configure} = require('../wss');
+configure(server, app);
+
+/**
  * Normalize a port into a number, string, or false.
  */
 

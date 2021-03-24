@@ -1,0 +1,23 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+@import '../../theme/uswds-theme-color';
+
+.ringdowns {
+  .usa-accordion__heading {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.ringdowns__count {
+  @include h4;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: color($theme-color-primary);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1px;
+}
