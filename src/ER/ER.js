@@ -16,7 +16,7 @@ export default function ER() {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [ringdowns, setRingdowns] = useState([]);
   const [incomingRingdowns, setIncomingRingdowns] = useState([]);
 
@@ -30,7 +30,7 @@ export default function ER() {
       const data = JSON.parse(lastMessage.data);
       data.ringdowns = data.ringdowns.map((r) => new Ringdown(r));
       const newRingdowns = data.ringdowns.sort((a, b) => a.etaDateTimeLocalObj.toMillis() - b.etaDateTimeLocalObj.toMillis());
-      const newIncomingRingdowns = data.ringdowns.filter((r) => r.deliveryStatus === Ringdown.Status.RINGDOWN_SENT);
+      const newIncomingRingdowns = data.ringdowns.filter((r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT);
       setRingdowns(newRingdowns);
       setIncomingRingdowns(newIncomingRingdowns);
     }

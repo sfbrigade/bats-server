@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
+import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 
 import Card from './Card';
@@ -16,16 +17,19 @@ function RingdownCard({ className, ringdown }) {
     <Card
       className={classNames(
         'ringdown-card',
-        { 'ringdown-card--offloaded': ringdown.deliveryStatus === Ringdown.Status.OFFLOADED },
+        { 'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED },
         className
       )}
       header={isExpanded ? null : `Incident #${ringdown.dispatchCallNumber}`}
       body={isExpanded ? null : ringdown.chiefComplaintDescription}
     >
-      {ringdown.deliveryStatus === Ringdown.Status.OFFLOADED && (
-        <RingdownEta className="ringdown-card__eta" prefix="Offloaded: " ringdown={ringdown} />
+      {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
+        <span className="ringdown-eta ringdown-card__eta">
+          <span className="ringdown-eta__prefix">Offloaded: </span>
+          {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+        </span>
       )}
-      {ringdown.deliveryStatus !== Ringdown.Status.OFFLOADED && (
+      {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED && (
         <Drawer
           title={<RingdownEta className="ringdown-card__eta" ringdown={ringdown} />}
           isOpened={isExpanded}

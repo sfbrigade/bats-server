@@ -6,12 +6,14 @@ import RingdownCard from '../Components/RingdownCard';
 import Ringdown from '../Models/Ringdown';
 
 function Ringdowns({ ringdowns }) {
-  const waiting = ringdowns.filter((r) => r.deliveryStatus === Ringdown.Status.ARRIVED || r.deliveryStatus === Ringdown.Status.OFFLOADED);
+  const waiting = ringdowns.filter(
+    (r) => r.currentDeliveryStatus === Ringdown.Status.ARRIVED || r.currentDeliveryStatus === Ringdown.Status.OFFLOADED
+  );
   const enroute = ringdowns.filter(
     (r) =>
-      r.deliveryStatus !== Ringdown.Status.ARRIVED &&
-      r.deliveryStatus !== Ringdown.Status.OFFLOADED &&
-      r.deliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
+      r.currentDeliveryStatus !== Ringdown.Status.ARRIVED &&
+      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+      r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
   );
 
   return (

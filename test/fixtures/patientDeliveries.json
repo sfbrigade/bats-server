@@ -7,13 +7,9 @@
       "PatientId": "136cf75e-55e8-4c31-a6bb-a90434ca9f28",
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
       "ParamedicUserId": "6737fc42-f815-460f-888a-10435af12f08",
-      "deliveryStatus": "RETURNED TO SERVICE",
+      "currentDeliveryStatus": "RETURNED TO SERVICE",
+      "currentDeliveryStatusDateTimeLocal": "2004-10-19 10:27:54+02",
       "etaMinutes": 10,
-      "ringdownSentDateTimeLocal": "2004-10-19 10:23:54+02",
-      "ringdownReceivedDateTimeLocal": "2004-10-19 10:24:54+02",
-      "arrivedDateTimeLocal": "2004-10-19 10:25:54+02",
-      "offloadedDateTimeLocal": "2004-10-19 10:26:54+02",
-      "returnToServiceDateTimeLocal": "2004-10-19 10:27:54+02",
       "CreatedById": "6737fc42-f815-460f-888a-10435af12f08",
       "UpdatedById": "6737fc42-f815-460f-888a-10435af12f08"
     }
@@ -26,9 +22,9 @@
       "PatientId": "c264cc57-60da-41ae-8cfb-b1dd34321c48",
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
       "ParamedicUserId": "ed05b7c3-2cac-4642-9498-02bc5ef04c13",
-      "deliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
       "etaMinutes": 11,
-      "ringdownSentDateTimeLocal": "2004-10-19 10:23:54+02",
       "CreatedById": "ed05b7c3-2cac-4642-9498-02bc5ef04c13",
       "UpdatedById": "ed05b7c3-2cac-4642-9498-02bc5ef04c13"
     }
@@ -41,9 +37,9 @@
       "PatientId": "799eb391-4bb0-4e22-944a-842d0904766e",
       "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
       "ParamedicUserId": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
-      "deliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
       "etaMinutes": 12,
-      "ringdownSentDateTimeLocal": "2004-10-19 10:23:54+02",
       "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
       "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
     }
