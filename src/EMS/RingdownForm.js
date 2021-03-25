@@ -25,7 +25,7 @@ function RingdownForm({ className }) {
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
-      setRingdowns(data.ringdowns);
+      setRingdowns(data.ringdowns.map((r) => new Ringdown(r)));
     }
   }, [lastMessage, setRingdowns]);
 
@@ -42,6 +42,7 @@ function RingdownForm({ className }) {
         setStep(0);
       })
       .catch((error) => {
+        // eslint-disable-next-line no-console
         console.log(error);
       });
   }
@@ -64,21 +65,15 @@ function RingdownForm({ className }) {
     const now = new Date();
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
-    rd.patientDelivery.deliveryStatus = status;
+    rd.currentDeliveryStatus = status;
     const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
-      case Ringdown.Status.ARRIVED:
-        rd.patientDelivery.arrivedDateTimeLocal = isoNow;
-        break;
-      case Ringdown.Status.OFFLOADED:
-        rd.patientDelivery.offloadedDateTimeLocal = isoNow;
-        break;
       case Ringdown.Status.RETURNED_TO_SERVICE:
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
         return;
       default:
-        break;
+        rd.timestamps[status] = isoNow;
     }
     setRingdowns([...ringdowns]);
   }

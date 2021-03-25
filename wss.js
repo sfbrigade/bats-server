@@ -14,7 +14,7 @@ userServer.on('connection', async (ws, req) => {
     include: { all: true },
     where: {
       ParamedicUserId: req.user.id,
-      deliveryStatus: {
+      currentDeliveryStatus: {
         [Op.lt]: 'RETURNED TO SERVICE',
       },
     },
@@ -34,7 +34,7 @@ hospitalServer.on('connection', async (ws, req) => {
     include: { all: true },
     where: {
       HospitalId: req.hospital.id,
-      deliveryStatus: {
+      currentDeliveryStatus: {
         [Op.lt]: 'RETURNED TO SERVICE',
       },
     },
@@ -53,7 +53,7 @@ const dispatchRingdownUpdate = async (patientDeliveryId) => {
     include: { all: true },
     where: {
       ParamedicUserId: userId,
-      deliveryStatus: {
+      currentDeliveryStatus: {
         [Op.lt]: 'RETURNED TO SERVICE',
       },
     },
@@ -72,7 +72,7 @@ const dispatchRingdownUpdate = async (patientDeliveryId) => {
     include: { all: true },
     where: {
       HospitalId: hospitalId,
-      deliveryStatus: {
+      currentDeliveryStatus: {
         [Op.lt]: 'RETURNED TO SERVICE',
       },
     },
