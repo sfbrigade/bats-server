@@ -1,4 +1,5 @@
 const express = require('express');
+const _ = require('lodash');
 const HttpStatus = require('http-status-codes');
 const { Op } = require('sequelize');
 const { DeliveryStatus } = require('../../constants');
@@ -15,8 +16,8 @@ function createResponse(hsu, deliveries) {
     hospital: {
       id: hsu.Hospital.id,
       name: hsu.Hospital.name,
-      ambulancesEnRoute: (deliveries && deliveries.enRoute) || 0,
-      ambulancesOffloading: (deliveries && deliveries.offloading) || 0,
+      ambulancesEnRoute: _.get(deliveries, 'enRoute', 0),
+      ambulancesOffloading: _.get(deliveries, 'offloading', 0),
     },
     openEdBedCount,
     openPsychBedCount,
@@ -51,8 +52,8 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
 
     const deliveriesByHospitalId = activeDeliveries.reduce((accumulator, delivery) => {
       const deliveries = {
-        enRoute: (accumulator[delivery.HospitalId] && accumulator[delivery.HospitalId].enRoute) || 0,
-        offloading: (accumulator[delivery.HospitalId] && accumulator[delivery.HospitalId].offloading) || 0,
+        enRoute: _.get(accumulator, `${delivery.HospitalId}.enRoute`, 0),
+        offloading: _.get(accumulator, `${delivery.HospitalId}.offloading`, 0),
       };
 
       if (delivery.deliveryStatus === DeliveryStatus.RINGDOWN_SENT || delivery.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED) {
