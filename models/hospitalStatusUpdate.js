@@ -46,15 +46,27 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      bedCountUpdateDateTimeLocal: {
+        field: 'bedcountupdatedatetimelocal',
+        type: DataTypes.DATE,
+      },
       divertStatusIndicator: {
         field: 'divertstatusindicator',
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
+      divertStatusUpdateDateTimeLocal: {
+        field: 'divertstatusupdatedatetimelocal',
+        type: DataTypes.DATE,
+      },
       additionalServiceAvailabilityNotes: {
         field: 'additionalserviceavailabilitynotes',
         type: DataTypes.TEXT,
         allowNull: true,
+      },
+      notesUpdateDateTimeLocal: {
+        field: 'notesupdatedatetimelocal',
+        type: DataTypes.DATE,
       },
       createdAt: {
         field: 'recordcreatetimestamp',
