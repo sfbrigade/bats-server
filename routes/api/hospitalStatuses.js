@@ -41,10 +41,10 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
       where: {
         [Op.and]: [
           {
-            deliveryStatus: { [Op.ne]: DeliveryStatus.OFFLOADED },
+            currentDeliveryStatus: { [Op.ne]: DeliveryStatus.OFFLOADED },
           },
           {
-            deliveryStatus: { [Op.ne]: DeliveryStatus.RETURNED_TO_SERVICE },
+            currentDeliveryStatus: { [Op.ne]: DeliveryStatus.RETURNED_TO_SERVICE },
           },
         ],
       },
@@ -56,9 +56,12 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
         offloading: _.get(accumulator, `${delivery.HospitalId}.offloading`, 0),
       };
 
-      if (delivery.deliveryStatus === DeliveryStatus.RINGDOWN_SENT || delivery.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED) {
+      if (
+        delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
+        delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED
+      ) {
         deliveries.enRoute += 1;
-      } else if (delivery.deliveryStatus === DeliveryStatus.ARRIVED) {
+      } else if (delivery.currentDeliveryStatus === DeliveryStatus.ARRIVED) {
         deliveries.offloading += 1;
       }
 

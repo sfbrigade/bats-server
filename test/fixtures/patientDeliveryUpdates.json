@@ -70,7 +70,7 @@
     }
   },
   {
-    "model": "PatientDelivery",
+    "model": "PatientDeliveryUpdate",
     "data": {
       "PatientDeliveryId": "f8f948ac-719f-11eb-9439-0242ac130002",
       "deliveryStatus": "RINGDOWN SENT",
@@ -80,7 +80,7 @@
     }
   },
   {
-    "model": "PatientDelivery",
+    "model": "PatientDeliveryUpdate",
     "data": {
       "PatientDeliveryId": "f3ad9b22-719f-11eb-9439-0242ac130002",
       "deliveryStatus": "ARRIVED",

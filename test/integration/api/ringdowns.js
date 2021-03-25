@@ -20,6 +20,7 @@ describe('/api/ringdowns', () => {
       'hospitalUsers',
       'patients',
       'patientDeliveries',
+      'patientDeliveryUpdates',
     ]);
 
     testSession = session(app);

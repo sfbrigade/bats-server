@@ -19,6 +19,7 @@ describe('/api/hospitalstatuses', () => {
       'emergencyMedicalServiceCalls',
       'patients',
       'patientDeliveries',
+      'patientDeliveryUpdates',
     ]);
     testSession = session(app);
     await testSession
