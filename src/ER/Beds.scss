@@ -1,0 +1,46 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+
+.beds__availability {
+  padding: 1rem 1.5rem 0;
+}
+
+.beds__notes {
+  padding-top: 0.25rem;
+
+  .usa-button {
+    margin: 0.75rem 0 0;
+    min-width: 33%;
+  }
+}
+
+.beds__diversion {
+  @include h3;
+  background: white;
+  border-left: 4px solid color($theme-color-primary);
+  border-radius: 4px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+  padding: 0.5625rem 1rem 0.5625rem 0.5625rem;
+}
+
+.beds__diversion--on {
+  border-left-color: color($theme-color-warning);
+}
+
+.beds__change-status {
+  @include h4;
+  display: block;
+}
+
+.beds__updated {
+  position: absolute;
+  left: 2.5em;
+  top: 31.8em;
+  color: #00a91c;
+  font-size: 21px;
+}
+
+.beds__check-icon {
+  position: absolute;
+  left: -1.5em;
+}

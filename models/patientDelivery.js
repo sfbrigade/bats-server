@@ -1,32 +1,12 @@
 const _ = require('lodash');
 const { Model } = require('sequelize');
+const { DeliveryStatus } = require('../constants');
 
-const DeliveryStatus = {
-  RINGDOWN_SENT: 'RINGDOWN SENT',
-  RINGDOWN_RECEIVED: 'RINGDOWN RECEIVED',
-  ARRIVED: 'ARRIVED',
-  OFFLOADED: 'OFFLOADED',
-  RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
-};
-Object.freeze(DeliveryStatus);
-
-const PatientDeliveryParams = [
-  'deliveryStatus',
-  'etaMinutes',
-  'ringdownSentDateTimeLocal',
-  'ringdownReceivedDateTimeLocal',
-  'arrivedDateTimeLocal',
-  'offloadedDateTimeLocal',
-  'returnToServiceDateTimeLocal',
-];
+const PatientDeliveryParams = ['currentDeliveryStatus', 'currentDeliveryStatusDateTimeLocal', 'etaMinutes'];
 Object.freeze(PatientDeliveryParams);
 
 module.exports = (sequelize, DataTypes) => {
   class PatientDelivery extends Model {
-    static get Params() {
-      return PatientDeliveryParams;
-    }
-
     static get Status() {
       return DeliveryStatus;
     }
@@ -36,52 +16,113 @@ module.exports = (sequelize, DataTypes) => {
       PatientDelivery.belongsTo(models.Ambulance);
       PatientDelivery.belongsTo(models.Hospital);
       PatientDelivery.belongsTo(models.User, { as: 'ParamedicUser' });
-
       PatientDelivery.belongsTo(models.User, { as: 'CreatedBy' });
       PatientDelivery.belongsTo(models.User, { as: 'UpdatedBy' });
+      PatientDelivery.hasMany(models.PatientDeliveryUpdate);
     }
 
-    setDeliveryStatus(deliveryStatus, dateTimeLocal) {
+    static async createRingdown(ambulanceId, patientId, hospitalId, paramedicId, dateTimeLocal, etaMinutes, options) {
+      const patientDelivery = await PatientDelivery.create(
+        {
+          AmbulanceId: ambulanceId,
+          PatientId: patientId,
+          HospitalId: hospitalId,
+          ParamedicUserId: paramedicId,
+          currentDeliveryStatus: DeliveryStatus.RINGDOWN_SENT,
+          currentDeliveryStatusDateTimeLocal: dateTimeLocal,
+          etaMinutes,
+          CreatedById: paramedicId,
+          UpdatedById: paramedicId,
+        },
+        options
+      );
+      await sequelize.models.PatientDeliveryUpdate.create(
+        {
+          PatientDeliveryId: patientDelivery.id,
+          deliveryStatus: DeliveryStatus.RINGDOWN_SENT,
+          deliveryStatusDateTimeLocal: dateTimeLocal,
+          CreatedById: paramedicId,
+          UpdatedById: paramedicId,
+        },
+        options
+      );
+      return patientDelivery;
+    }
+
+    async createDeliveryStatusUpdate(userId, deliveryStatus, dateTimeLocal, options) {
       // if we're already in the specified state, just return
-      if (this.deliveryStatus === deliveryStatus) {
-        return;
+      if (this.currentDeliveryStatus === deliveryStatus) {
+        return sequelize.models.PatientDeliveryUpdate.findOne({
+          where: {
+            PatientDeliveryId: this.id,
+            deliveryStatus,
+          },
+          transaction: options?.transaction,
+        });
       }
       // otherwise, check for a valid state transition
       switch (deliveryStatus) {
         case DeliveryStatus.RINGDOWN_RECEIVED:
-          if (this.deliveryStatus === DeliveryStatus.RINGDOWN_SENT) {
-            this.deliveryStatus = deliveryStatus;
-            this.ringdownReceivedDateTimeLocal = dateTimeLocal;
-            return;
+          if (this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT) {
+            break;
           }
-          break;
+          throw new Error();
         case DeliveryStatus.ARRIVED:
-          if (this.deliveryStatus === DeliveryStatus.RINGDOWN_SENT || this.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED) {
-            this.deliveryStatus = deliveryStatus;
-            this.arrivedDateTimeLocal = dateTimeLocal;
-            return;
+          if (
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED
+          ) {
+            break;
           }
-          break;
+          throw new Error();
         case DeliveryStatus.OFFLOADED:
-          if (this.deliveryStatus === DeliveryStatus.ARRIVED) {
-            this.deliveryStatus = deliveryStatus;
-            this.offloadedDateTimeLocal = dateTimeLocal;
-            return;
+          if (this.currentDeliveryStatus === DeliveryStatus.ARRIVED) {
+            break;
           }
-          break;
+          throw new Error();
         case DeliveryStatus.RETURNED_TO_SERVICE:
-          if (this.deliveryStatus === DeliveryStatus.OFFLOADED) {
-            this.deliveryStatus = deliveryStatus;
-            this.returnToServiceDateTimeLocal = dateTimeLocal;
-            return;
+          if (this.currentDeliveryStatus === DeliveryStatus.OFFLOADED) {
+            break;
           }
-          break;
+          throw new Error();
+        case DeliveryStatus.CANCEL_ACKNOWLEDGED:
+          if (this.currentDeliveryStatus === DeliveryStatus.CANCELLED) {
+            break;
+          }
+          throw new Error();
+        case DeliveryStatus.REDIRECTED:
+          if (
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+            this.currentDeliveryStatus === DeliveryStatus.ARRIVED
+          ) {
+            break;
+          }
+          throw new Error();
+        case DeliveryStatus.REDIRECT_ACKNOWLEDGED:
+          if (this.currentDeliveryStatus === DeliveryStatus.REDIRECTED) {
+            break;
+          }
+          throw new Error();
         default:
           // fallthrough...
           break;
       }
-      // otherwise, throw an exception
-      throw new Error();
+      const patientDeliveryUpdate = await sequelize.models.PatientDeliveryUpdate.create(
+        {
+          PatientDeliveryId: this.id,
+          deliveryStatus,
+          deliveryStatusDateTimeLocal: dateTimeLocal,
+          CreatedById: userId,
+          UpdatedById: userId,
+        },
+        options
+      );
+      this.currentDeliveryStatus = deliveryStatus;
+      this.currentDeliveryStatusDateTimeLocal = dateTimeLocal;
+      this.UpdatedById = userId;
+      await this.save(options);
+      return patientDeliveryUpdate;
     }
 
     async toRingdownJSON(options) {
@@ -89,7 +130,7 @@ module.exports = (sequelize, DataTypes) => {
       const hospital = this.Hospital || (await this.getHospital(options));
       const patient = this.Patient || (await this.getPatient(options));
       const emsCall = patient.EmergencyMedicalServiceCall || (await patient.getEmergencyMedicalServiceCall(options));
-      return {
+      const json = {
         id: this.id,
         ambulance: {
           ambulanceIdentifier: ambulance.ambulanceIdentifier,
@@ -101,6 +142,12 @@ module.exports = (sequelize, DataTypes) => {
         patient: _.pick(patient, sequelize.models.Patient.Params),
         patientDelivery: _.pick(this, PatientDeliveryParams),
       };
+      json.patientDelivery.timestamps = {};
+      const patientDeliveryUpdates = this.PatientDeliveryUpdates || (await this.getPatientDeliveryUpdates(options));
+      patientDeliveryUpdates.forEach((pdu) => {
+        json.patientDelivery.timestamps[pdu.deliveryStatus] = pdu.deliveryStatusDateTimeLocal;
+      });
+      return json;
     }
   }
   PatientDelivery.init(
@@ -131,34 +178,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      deliveryStatus: {
-        field: 'deliverystatusenum',
-        type: DataTypes.ENUM('RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE'),
+      currentDeliveryStatus: {
+        field: 'currentdeliverystatusenum',
+        type: DataTypes.ENUM(DeliveryStatus.ALL_STATUSES),
         allowNull: false,
+      },
+      currentDeliveryStatusDateTimeLocal: {
+        field: 'currentdeliverystatusdatetimelocal',
+        type: DataTypes.DATE,
       },
       etaMinutes: {
         field: 'etaminutes',
         type: DataTypes.INTEGER,
-      },
-      ringdownSentDateTimeLocal: {
-        field: 'ringdownsentdatetimelocal',
-        type: DataTypes.DATE,
-      },
-      ringdownReceivedDateTimeLocal: {
-        field: 'ringdownreceiveddatetimelocal',
-        type: DataTypes.DATE,
-      },
-      arrivedDateTimeLocal: {
-        field: 'arriveddatetimelocal',
-        type: DataTypes.DATE,
-      },
-      offloadedDateTimeLocal: {
-        field: 'offloadeddatetimelocal',
-        type: DataTypes.DATE,
-      },
-      returnToServiceDateTimeLocal: {
-        field: 'returntoservicedatetimelocal',
-        type: DataTypes.DATE,
       },
       createdAt: {
         field: 'recordcreatetimestamp',

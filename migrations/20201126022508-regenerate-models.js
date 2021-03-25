@@ -10,7 +10,7 @@ module.exports = {
         -- ER/Studio Data Architect SQL Code Generation
         -- Project :      BATS Logical Data Model.DM1
         --
-        -- Date Created : Friday, November 27, 2020 18:58:54
+        -- Date Created : Wednesday, December 16, 2020 21:55:36
         -- Target DBMS : PostgreSQL 10.x-12.x
         --
         
@@ -32,9 +32,7 @@ module.exports = {
             recordcreatetimestamp    timestamp      NOT NULL,
             recordcreateuser_uuid    uuid           NOT NULL,
             recordupdatetimestamp    timestamp      NOT NULL,
-            recordupdateuser_uuid    uuid           NOT NULL,
-            CONSTRAINT ambulance_pk PRIMARY KEY (ambulance_uuid),
-             UNIQUE (emsorganization_uuid, ambulanceidentifier)
+            recordupdateuser_uuid    uuid           NOT NULL
         )
         ;
         
@@ -60,9 +58,7 @@ module.exports = {
             recordcreatetimestamp          timestamp       NOT NULL,
             recordcreateuser_uuid          uuid            NOT NULL,
             recordupdatetimestamp          timestamp       NOT NULL,
-            recordupdateuser_uuid          uuid            NOT NULL,
-            CONSTRAINT batsuser_pk PRIMARY KEY (user_uuid),
-             UNIQUE (email)
+            recordupdateuser_uuid          uuid            NOT NULL
         )
         ;
         alter table batsuser alter column email type citext;
@@ -79,9 +75,7 @@ module.exports = {
             recordcreatetimestamp               timestamp                      NOT NULL,
             recordcreateuser_uuid               uuid                           NOT NULL,
             recordupdatetimestamp               timestamp                      NOT NULL,
-            recordupdateuser_uuid               uuid                           NOT NULL,
-            CONSTRAINT emergencymedicalservicecall_pk PRIMARY KEY (emergencymedicalservicecall_uuid),
-             UNIQUE (dispatchcallnumber)
+            recordupdateuser_uuid               uuid                           NOT NULL
         )
         ;
         
@@ -100,9 +94,7 @@ module.exports = {
             recordcreatetimestamp          timestamp      NOT NULL,
             recordcreateuser_uuid          uuid           NOT NULL,
             recordupdatetimestamp          timestamp      NOT NULL,
-            recordupdateuser_uuid          uuid           NOT NULL,
-            CONSTRAINT hospital_pk PRIMARY KEY (hospital_uuid),
-             UNIQUE (hospitalname)
+            recordupdateuser_uuid          uuid           NOT NULL
         )
         ;
         
@@ -119,14 +111,15 @@ module.exports = {
             edadminuser_uuid                      uuid                           NOT NULL,
             openedbedcount                        smallint                       NOT NULL,
             openpsychbedcount                     smallint                       NOT NULL,
+            bedcountupdatedatetimelocal           timestamp without time zone    NULL,
             divertstatusindicator                 boolean                        NOT NULL,
+            divertstatusupdatedatetimelocal       timestamp without time zone    NULL,
             additionalserviceavailabilitynotes    varchar(1000),
+            notesupdatedatetimelocal              timestamp without time zone    NULL,
             recordcreatetimestamp                 timestamp                      NOT NULL,
             recordcreateuser_uuid                 uuid                           NOT NULL,
             recordupdatetimestamp                 timestamp                      NOT NULL,
-            recordupdateuser_uuid                 uuid                           NOT NULL,
-            CONSTRAINT hospitalstatusupdate_pk PRIMARY KEY (hospitalstatusupdate_uuid),
-             UNIQUE (hospital_uuid, updatedatetimelocal)
+            recordupdateuser_uuid                 uuid                           NOT NULL
         )
         ;
         
@@ -144,9 +137,7 @@ module.exports = {
             recordcreatetimestamp    timestamp    NOT NULL,
             recordcreateuser_uuid    uuid         NOT NULL,
             recordupdatetimestamp    timestamp    NOT NULL,
-            recordupdateuser_uuid    uuid         NOT NULL,
-            CONSTRAINT hospitaluser_pk PRIMARY KEY (hospitaluser_uuid),
-             UNIQUE (hospital_uuid, edadminuser_uuid)
+            recordupdateuser_uuid    uuid         NOT NULL
         )
         ;
         
@@ -165,9 +156,7 @@ module.exports = {
             recordcreatetimestamp    timestamp       NOT NULL,
             recordcreateuser_uuid    uuid            NOT NULL,
             recordupdatetimestamp    timestamp       NOT NULL,
-            recordupdateuser_uuid    uuid            NOT NULL,
-            CONSTRAINT organization_pk PRIMARY KEY (organization_uuid),
-             UNIQUE (organizationname)
+            recordupdateuser_uuid    uuid            NOT NULL
         )
         ;
         CREATE TYPE organizationtype AS ENUM ('EMS', 'HEALTHCARE', 'C4SF');
@@ -206,8 +195,7 @@ module.exports = {
             recordcreatetimestamp               timestamp        NOT NULL,
             recordcreateuser_uuid               uuid             NOT NULL,
             recordupdatetimestamp               timestamp        NOT NULL,
-            recordupdateuser_uuid               uuid             NOT NULL,
-            CONSTRAINT patient_pk PRIMARY KEY (patient_uuid)
+            recordupdateuser_uuid               uuid             NOT NULL
         )
         ;
         CREATE TYPE emergencyserviceresponsetype AS ENUM ('CODE 2', 'CODE 3');
@@ -228,30 +216,195 @@ module.exports = {
         --
         
         CREATE TABLE patientdelivery(
-            patientdelivery_uuid             uuid                           DEFAULT gen_random_uuid() NOT NULL,
-            ambulance_uuid                   uuid                           NOT NULL,
-            patient_uuid                     uuid                           NOT NULL,
-            hospital_uuid                    uuid                           NOT NULL,
-            paramedicuser_uuid               uuid                           NOT NULL,
-            deliverystatusenum               varchar(50)                    NOT NULL,
-            etaminutes                       int2,
-            ringdownsentdatetimelocal        timestamp without time zone,
-            ringdownreceiveddatetimelocal    timestamp without time zone,
-            arriveddatetimelocal             timestamp without time zone,
-            offloadeddatetimelocal           timestamp without time zone,
-            returntoservicedatetimelocal     timestamp without time zone,
-            recordcreatetimestamp            timestamp                      NOT NULL,
-            recordcreateuser_uuid            uuid                           NOT NULL,
-            recordupdatetimestamp            timestamp                      NOT NULL,
-            recordupdateuser_uuid            uuid                           NOT NULL,
-            CONSTRAINT patientdelivery_pk PRIMARY KEY (patientdelivery_uuid),
-             UNIQUE (ambulance_uuid, patient_uuid, hospital_uuid)
+            patientdelivery_uuid                  uuid                           DEFAULT gen_random_uuid() NOT NULL,
+            ambulance_uuid                        uuid                           NOT NULL,
+            patient_uuid                          uuid                           NOT NULL,
+            hospital_uuid                         uuid                           NOT NULL,
+            paramedicuser_uuid                    uuid                           NOT NULL,
+            currentdeliverystatusenum             varchar(50)                    NOT NULL,
+            currentdeliverystatusdatetimelocal    timestamp without time zone,
+            etaminutes                            int2,
+            recordcreatetimestamp                 timestamp                      NOT NULL,
+            recordcreateuser_uuid                 uuid                           NOT NULL,
+            recordupdatetimestamp                 timestamp                      NOT NULL,
+            recordupdateuser_uuid                 uuid                           NOT NULL
         )
         ;
-        CREATE TYPE deliverystatus AS ENUM ('RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE');
+        CREATE TYPE deliverystatus AS ENUM ('RINGDOWN SENT', 'RINGDOWN RECEIVED', 'ARRIVED', 'OFFLOADED', 'RETURNED TO SERVICE', 'CANCELLED', 'CANCEL ACKNOWLEGED', 'REDIRECTED', 'REDIRECT ACKNOWLEGED');
         alter table patientdelivery 
+           alter column currentdeliverystatusenum type deliverystatus 
+           using currentdeliverystatusenum::deliverystatus;
+        
+        -- 
+        -- TABLE: patientdeliveryupdate 
+        --
+        
+        CREATE TABLE patientdeliveryupdate(
+            patientdeliveryupdate_uuid     uuid                           DEFAULT gen_random_uuid() NOT NULL,
+            patientdelivery_uuid           uuid                           DEFAULT gen_random_uuid() NOT NULL,
+            deliverystatusdatetimelocal    timestamp without time zone    NOT NULL,
+            deliverystatusenum             varchar(50)                    NOT NULL,
+            recordcreatetimestamp          timestamp                      NOT NULL,
+            recordcreateuser_uuid          uuid                           DEFAULT gen_random_uuid() NOT NULL,
+            recordupdatetimestamp          timestamp                      NOT NULL,
+            recordupdateuser_uuid          uuid                           DEFAULT gen_random_uuid() NOT NULL
+        )
+        ;
+        alter table patientdeliveryupdate 
            alter column deliverystatusenum type deliverystatus 
            using deliverystatusenum::deliverystatus;
+        
+        -- 
+        -- TABLE: ambulance 
+        --
+        
+        ALTER TABLE ambulance ADD 
+            CONSTRAINT ambulance_pk PRIMARY KEY (ambulance_uuid)
+        ;
+        
+        -- 
+        -- TABLE: batsuser 
+        --
+        
+        ALTER TABLE batsuser ADD 
+            CONSTRAINT batsuser_pk PRIMARY KEY (user_uuid)
+        ;
+        
+        -- 
+        -- TABLE: emergencymedicalservicecall 
+        --
+        
+        ALTER TABLE emergencymedicalservicecall ADD 
+            CONSTRAINT emergencymedicalservicecall_pk PRIMARY KEY (emergencymedicalservicecall_uuid)
+        ;
+        
+        -- 
+        -- TABLE: hospital 
+        --
+        
+        ALTER TABLE hospital ADD 
+            CONSTRAINT hospital_pk PRIMARY KEY (hospital_uuid)
+        ;
+        
+        -- 
+        -- TABLE: hospitalstatusupdate 
+        --
+        
+        ALTER TABLE hospitalstatusupdate ADD 
+            CONSTRAINT hospitalstatusupdate_pk PRIMARY KEY (hospitalstatusupdate_uuid)
+        ;
+        
+        -- 
+        -- TABLE: hospitaluser 
+        --
+        
+        ALTER TABLE hospitaluser ADD 
+            CONSTRAINT hospitaluser_pk PRIMARY KEY (hospitaluser_uuid)
+        ;
+        
+        -- 
+        -- TABLE: organization 
+        --
+        
+        ALTER TABLE organization ADD 
+            CONSTRAINT organization_pk PRIMARY KEY (organization_uuid)
+        ;
+        
+        -- 
+        -- TABLE: patient 
+        --
+        
+        ALTER TABLE patient ADD 
+            CONSTRAINT patient_pk PRIMARY KEY (patient_uuid)
+        ;
+        
+        -- 
+        -- TABLE: patientdelivery 
+        --
+        
+        ALTER TABLE patientdelivery ADD 
+            CONSTRAINT patientdelivery_pk PRIMARY KEY (patientdelivery_uuid)
+        ;
+        
+        -- 
+        -- TABLE: patientdeliveryupdate 
+        --
+        
+        ALTER TABLE patientdeliveryupdate ADD 
+            CONSTRAINT patientdeliveryupdate_pk PRIMARY KEY (patientdeliveryupdate_uuid)
+        ;
+        
+        -- 
+        -- TABLE: ambulance 
+        --
+        
+        ALTER TABLE ambulance ADD 
+            CONSTRAINT ambulance_uk UNIQUE (emsorganization_uuid, ambulanceidentifier)
+        ;
+        
+        -- 
+        -- TABLE: batsuser 
+        --
+        
+        ALTER TABLE batsuser ADD 
+            CONSTRAINT batsuser_uk UNIQUE (email)
+        ;
+        
+        -- 
+        -- TABLE: emergencymedicalservicecall 
+        --
+        
+        ALTER TABLE emergencymedicalservicecall ADD 
+            CONSTRAINT emergencymedicalservicecall_uk UNIQUE (dispatchcallnumber)
+        ;
+        
+        -- 
+        -- TABLE: hospital 
+        --
+        
+        ALTER TABLE hospital ADD 
+            CONSTRAINT hospital_uk UNIQUE (hospitalname)
+        ;
+        
+        -- 
+        -- TABLE: hospitalstatusupdate 
+        --
+        
+        ALTER TABLE hospitalstatusupdate ADD 
+            CONSTRAINT hospitalstatusupdate_uk UNIQUE (hospital_uuid, updatedatetimelocal)
+        ;
+        
+        -- 
+        -- TABLE: hospitaluser 
+        --
+        
+        ALTER TABLE hospitaluser ADD 
+            CONSTRAINT hospitaluser_uk UNIQUE (hospital_uuid, edadminuser_uuid)
+        ;
+        
+        -- 
+        -- TABLE: organization 
+        --
+        
+        ALTER TABLE organization ADD 
+            CONSTRAINT organization_uk UNIQUE (organizationname)
+        ;
+        
+        -- 
+        -- TABLE: patientdelivery 
+        --
+        
+        ALTER TABLE patientdelivery ADD 
+            CONSTRAINT patientdelivery_uk UNIQUE (ambulance_uuid, patient_uuid, hospital_uuid)
+        ;
+        
+        -- 
+        -- TABLE: patientdeliveryupdate 
+        --
+        
+        ALTER TABLE patientdeliveryupdate ADD 
+            CONSTRAINT patientdeliveryupdate_uk UNIQUE (patientdelivery_uuid, deliverystatusdatetimelocal)
+        ;
         
         -- 
         -- TABLE: ambulance 
@@ -450,6 +603,26 @@ module.exports = {
         ALTER TABLE patientdelivery ADD CONSTRAINT patientdelivery_patient_fk 
             FOREIGN KEY (patient_uuid)
             REFERENCES patient(patient_uuid)
+        ;
+        
+        
+        -- 
+        -- TABLE: patientdeliveryupdate 
+        --
+        
+        ALTER TABLE patientdeliveryupdate ADD CONSTRAINT patientdeliverystatus_batsuser_recordupdate_fk 
+            FOREIGN KEY (recordupdateuser_uuid)
+            REFERENCES batsuser(user_uuid)
+        ;
+        
+        ALTER TABLE patientdeliveryupdate ADD CONSTRAINT patientdeliverystatus_patientdelivery_fk 
+            FOREIGN KEY (patientdelivery_uuid)
+            REFERENCES patientdelivery(patientdelivery_uuid)
+        ;
+        
+        ALTER TABLE patientdeliveryupdate ADD CONSTRAINT patientdeliveryupdate_batsuser_recordcreate_fk 
+            FOREIGN KEY (recordcreateuser_uuid)
+            REFERENCES batsuser(user_uuid)
         ;
         `,
         { transaction }

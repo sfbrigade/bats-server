@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const models = require('../models');
+const { DeliveryStatus } = require('../constants');
 
 async function createRingdown(
   email,
@@ -47,34 +48,33 @@ async function createRingdown(
     }),
     { transaction }
   );
-  const patientDeliveryData = {
-    AmbulanceId: ambulance.id,
-    PatientId: patient.id,
-    HospitalId: hospital.id,
-    ParamedicUserId: user.id,
-    deliveryStatus,
-    etaMinutes,
-    ringdownSentDateTimeLocal: now,
-    CreatedById: user.id,
-    UpdatedById: user.id,
-  };
-  switch (deliveryStatus) {
-    case models.PatientDelivery.Status.RETURNED_TO_SERVICE:
-      patientDeliveryData.returnToServiceDateTimeLocal = now;
-    // fall through
-    case models.PatientDelivery.Status.OFFLOADED:
-      patientDeliveryData.offloadedDateTimeLocal = now;
-    // fall through
-    case models.PatientDelivery.Status.ARRIVED:
-      patientDeliveryData.arrivedDateTimeLocal = now;
-    // fall through
-    case models.PatientDelivery.Status.RINGDOWN_RECEIVED:
-      patientDeliveryData.ringdownReceivedDateTimeLocal = now;
-    // fall through
-    default:
-      patientDeliveryData.ringdownSentDateTimeLocal = now;
+  const patientDelivery = await models.PatientDelivery.create(
+    {
+      AmbulanceId: ambulance.id,
+      PatientId: patient.id,
+      HospitalId: hospital.id,
+      ParamedicUserId: user.id,
+      currentDeliveryStatus: deliveryStatus,
+      currentDeliveryStatusDateTimeLocal: now,
+      etaMinutes,
+      CreatedById: user.id,
+      UpdatedById: user.id,
+    },
+    { transaction }
+  );
+  for (let i = DeliveryStatus.ALL_STATUSES.indexOf(deliveryStatus); i >= 0; i -= 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await models.PatientDeliveryUpdate.create(
+      {
+        PatientDeliveryId: patientDelivery.id,
+        deliveryStatus: DeliveryStatus.ALL_STATUSES[i],
+        deliveryStatusDateTimeLocal: new Date(now.getTime() - i * 10000),
+        CreatedById: user.id,
+        UpdatedById: user.id,
+      },
+      { transaction }
+    );
   }
-  await models.PatientDelivery.create(patientDeliveryData, { transaction });
 }
 
 module.exports = {
