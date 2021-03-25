@@ -68,5 +68,25 @@
       "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
       "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
     }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "PatientDeliveryId": "f8f948ac-719f-11eb-9439-0242ac130002",
+      "deliveryStatus": "RINGDOWN SENT",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "PatientDeliveryId": "f3ad9b22-719f-11eb-9439-0242ac130002",
+      "deliveryStatus": "ARRIVED",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
+    }
   }
 ]
