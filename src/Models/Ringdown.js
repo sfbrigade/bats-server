@@ -329,6 +329,52 @@ class Ringdown {
     );
   }
 
+  get isFieldPresent(field){
+    //helper for isMissingFields
+    if (this.payload.field !== Null && this.payload.field !== '')
+      return true;
+    return false;
+  }
+
+  get isMissingFields(currentField){
+    //just a rough draft of a possible solution to 
+    //form validation logic
+    let missingFields = [];
+    const fieldOrder = [
+      this.ambulanceIdentifier,
+      this.dispatchCallNumber,
+      this.age,
+      this.sex,
+      this.emergencyServiceResponseType,
+      this.stableIndicator
+    ];
+    const fieldPosition = {
+      'ambulanceIdentifier': 0,
+      'dispatchCallNumber': 1,
+      'age': 2,
+      'sex': 3,
+      'emergencyServiceResponseType': 4,
+      'stableIndicator': 5
+    };
+    const stop = fieldPosition[currentField];
+
+    for (let i = 0; i < stop ; i++){
+      if (this.isFieldPresent(fieldOrder[i])){
+        if (missingFields[0] === fieldOrder[i]){
+          missingFields.shift();
+          continue;
+        }
+      }else{
+        if (missingFields[0] === fieldOrder[i]){
+          continue;
+        } else {
+          missingFields.push(fieldOrder[i]);
+        }
+      }
+    }
+    return missingFields;
+  }
+
   get isValid() {
     return this.isPatientValid && this.hospitalId !== null && this.etaMinutes !== null;
   }
