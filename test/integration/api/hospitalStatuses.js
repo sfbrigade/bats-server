@@ -67,7 +67,10 @@ describe('/api/hospitalstatuses', () => {
           hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
           openEdBedCount: 5,
           openPsychBedCount: 3,
+          bedCountUpdateDateTimeLocal: '2021-03-25 10:23:54',
           divertStatusIndicator: false,
+          divertStatusUpdateDateTimeLocal: '2021-03-25 10:23:54',
+          updateDateTimeLocal: '2021-03-25 10:23:54',
         })
         .expect(HttpStatus.CREATED);
 
@@ -75,7 +78,10 @@ describe('/api/hospitalstatuses', () => {
       assert.deepStrictEqual(response.body.hospital.id, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
       assert.deepStrictEqual(response.body.openEdBedCount, 5);
       assert.deepStrictEqual(response.body.openPsychBedCount, 3);
+      assert.deepStrictEqual(response.body.bedCountUpdateDateTimeLocal, '2021-03-25T10:23:54.000Z');
       assert.deepStrictEqual(response.body.divertStatusIndicator, false);
+      assert.deepStrictEqual(response.body.divertStatusUpdateDateTimeLocal, '2021-03-25T10:23:54.000Z');
+      assert.deepStrictEqual(response.body.updateDateTimeLocal, '2021-03-25T10:23:54.000Z');
       assert.deepStrictEqual(response.body.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(response.body.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(response.body.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');

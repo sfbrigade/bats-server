@@ -9,28 +9,6 @@ const models = require('../../models');
 
 const router = express.Router();
 
-function createResponse(hsu, deliveries) {
-  const { id, openEdBedCount, openPsychBedCount, divertStatusIndicator, additionalServiceAvailabilityNotes, updateDateTimeLocal } = hsu;
-  const response = {
-    id,
-    hospital: {
-      id: hsu.Hospital.id,
-      name: hsu.Hospital.name,
-      ambulancesEnRoute: _.get(deliveries, 'enRoute', 0),
-      ambulancesOffloading: _.get(deliveries, 'offloading', 0),
-    },
-    openEdBedCount,
-    openPsychBedCount,
-    divertStatusIndicator,
-    additionalServiceAvailabilityNotes,
-    updateDateTimeLocal,
-    edAdminUserId: hsu.EdAdminUserId,
-    createdById: hsu.CreatedById,
-    updatedById: hsu.UpdatedById,
-  };
-  return response;
-}
-
 router.get('/', middleware.isAuthenticated, async (req, res) => {
   try {
     // NOTE: processing the ambulances enroute and offloading in memory here because it was easier
@@ -74,7 +52,12 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
       include: [models.Hospital],
     });
     statusUpdates.sort((a, b) => a.Hospital.sortSequenceNumber - b.Hospital.sortSequenceNumber);
-    const response = statusUpdates.map((statusUpdate) => createResponse(statusUpdate, deliveriesByHospitalId[statusUpdate.HospitalId]));
+    const response = await Promise.all(
+      statusUpdates.map((statusUpdate) => {
+        statusUpdate.Hospital.ambulanceCounts = deliveriesByHospitalId[statusUpdate.HospitalId];
+        return statusUpdate.toJSON();
+      })
+    );
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
@@ -103,16 +86,17 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       HospitalId: req.body.hospitalId,
       openEdBedCount: req.body.openEdBedCount,
       openPsychBedCount: req.body.openPsychBedCount,
+      bedCountUpdateDateTimeLocal: req.body.bedCountUpdateDateTimeLocal,
       divertStatusIndicator: req.body.divertStatusIndicator,
+      divertStatusUpdateDateTimeLocal: req.body.divertStatusUpdateDateTimeLocal,
       additionalServiceAvailabilityNotes: req.body.additionalServiceAvailabilityNotes,
-      updateDateTimeLocal: new Date(), // TODO - use local timezone
+      notesUpdateDateTimeLocal: req.body.notesUpdateDateTimeLocal,
+      updateDateTimeLocal: req.body.updateDateTimeLocal,
       EdAdminUserId: req.user.id,
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });
-    statusUpdate.Hospital = await statusUpdate.getHospital();
-    const response = createResponse(statusUpdate);
-    res.status(HttpStatus.CREATED).json(response);
+    res.status(HttpStatus.CREATED).json(await statusUpdate.toJSON());
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }

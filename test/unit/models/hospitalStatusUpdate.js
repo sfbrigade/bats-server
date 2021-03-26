@@ -4,7 +4,18 @@ const models = require('../../../models');
 
 describe('models.HospitalStatusUpdate', () => {
   beforeEach(async () => {
-    await helper.loadFixtures(['organizations', 'users', 'hospitals', 'hospitalUsers', 'hospitalStatusUpdates']);
+    await helper.loadFixtures([
+      'organizations',
+      'users',
+      'hospitals',
+      'hospitalUsers',
+      'hospitalStatusUpdates',
+      'ambulances',
+      'emergencyMedicalServiceCalls',
+      'patients',
+      'patientDeliveries',
+      'patientDeliveryUpdates',
+    ]);
   });
 
   it('creates a new HospitalStatusUpdate record', async () => {
@@ -14,16 +25,24 @@ describe('models.HospitalStatusUpdate', () => {
       updateDateTimeLocal: '2004-10-19 10:23:54+02',
       openEdBedCount: 1,
       openPsychBedCount: 3,
+      bedCountUpdateDateTimeLocal: '2004-10-19 10:23:54+02',
       divertStatusIndicator: false,
+      divertStatusUpdateDateTimeLocal: '2004-10-19 10:23:54+02',
+      additionalServiceAvailabilityNotes: 'Notes',
+      notesUpdateDateTimeLocal: '2004-10-19 10:23:54+02',
       CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
       UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
     });
     assert(hospitalStatusUpdate);
     assert(hospitalStatusUpdate.id);
-    assert(hospitalStatusUpdate.updateDateTimeLocal);
+    assert.deepStrictEqual(hospitalStatusUpdate.updateDateTimeLocal, new Date('2004-10-19T08:23:54.000Z'));
     assert.deepStrictEqual(hospitalStatusUpdate.openEdBedCount, 1);
     assert.deepStrictEqual(hospitalStatusUpdate.openPsychBedCount, 3);
+    assert.deepStrictEqual(hospitalStatusUpdate.bedCountUpdateDateTimeLocal, new Date('2004-10-19T08:23:54.000Z'));
     assert.deepStrictEqual(hospitalStatusUpdate.divertStatusIndicator, false);
+    assert.deepStrictEqual(hospitalStatusUpdate.divertStatusUpdateDateTimeLocal, new Date('2004-10-19T08:23:54.000Z'));
+    assert.deepStrictEqual(hospitalStatusUpdate.additionalServiceAvailabilityNotes, 'Notes');
+    assert.deepStrictEqual(hospitalStatusUpdate.notesUpdateDateTimeLocal, new Date('2004-10-19T08:23:54.000Z'));
     assert(hospitalStatusUpdate.createdAt);
     assert(hospitalStatusUpdate.updatedAt);
 
@@ -54,6 +73,33 @@ describe('models.HospitalStatusUpdate', () => {
       assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies Campus');
       assert.deepStrictEqual(hospitalStatusUpdates[1].updateDateTimeLocal.getFullYear(), 2005);
+    });
+  });
+
+  describe('toJSON()', () => {
+    it('serializes out the status update with hospital ambulance counts', async () => {
+      const hospitalStatusUpdate = await models.HospitalStatusUpdate.findByPk('9169fb04-b262-42ee-9c81-da1bb6818e6b');
+      const json = await hospitalStatusUpdate.toJSON();
+      assert.deepStrictEqual(json, {
+        id: '9169fb04-b262-42ee-9c81-da1bb6818e6b',
+        openEdBedCount: 10,
+        openPsychBedCount: 2,
+        bedCountUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),
+        divertStatusIndicator: false,
+        divertStatusUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),
+        additionalServiceAvailabilityNotes: null,
+        notesUpdateDateTimeLocal: null,
+        updateDateTimeLocal: new Date('2005-10-19T10:23:54.000Z'),
+        edAdminUserId: '449b1f54-7583-417c-8c25-8da7dde65f6d',
+        createdById: '449b1f54-7583-417c-8c25-8da7dde65f6d',
+        updatedById: '449b1f54-7583-417c-8c25-8da7dde65f6d',
+        hospital: {
+          id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
+          name: 'CPMC Davies Campus',
+          ambulancesEnRoute: 1,
+          ambulancesOffloading: 1,
+        },
+      });
     });
   });
 });

@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -8,6 +9,29 @@ module.exports = (sequelize, DataTypes) => {
 
       HospitalStatusUpdate.belongsTo(models.User, { as: 'CreatedBy' });
       HospitalStatusUpdate.belongsTo(models.User, { as: 'UpdatedBy' });
+    }
+
+    async toJSON(options) {
+      const json = _.pick(this, [
+        'id',
+        'openEdBedCount',
+        'openPsychBedCount',
+        'bedCountUpdateDateTimeLocal',
+        'divertStatusIndicator',
+        'divertStatusUpdateDateTimeLocal',
+        'additionalServiceAvailabilityNotes',
+        'notesUpdateDateTimeLocal',
+        'updateDateTimeLocal',
+      ]);
+      json.edAdminUserId = this.EdAdminUserId;
+      json.createdById = this.CreatedById;
+      json.updatedById = this.UpdatedById;
+      const hospital = this.Hospital || (await this.getHospital(options));
+      json.hospital = _.pick(hospital, ['id', 'name']);
+      const ambulanceCounts = hospital.ambulanceCounts || (await hospital.getAmbulanceCounts(options));
+      json.hospital.ambulancesEnRoute = ambulanceCounts.enRoute;
+      json.hospital.ambulancesOffloading = ambulanceCounts.offloading;
+      return json;
     }
   }
   HospitalStatusUpdate.init(
