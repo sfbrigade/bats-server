@@ -12,7 +12,11 @@ class HospitalStatus {
     notesUpdateDateTimeLocal,
   }) {
     this.id = id;
-    this.hospitalName = (hospital && hospital.name) || null;
+    this.hospital = hospital;
+    this.hospitalId = hospital?.id;
+    this.hospitalName = hospital?.name;
+    this.ambulancesEnRoute = hospital?.ambulancesEnRoute;
+    this.ambulancesOffloading = hospital?.ambulancesOffloading;
     this.openEdBedCount = openEdBedCount;
     this.openPsychBedCount = openPsychBedCount;
     this.bedCountUpdateDateTimeLocal = bedCountUpdateDateTimeLocal;
@@ -21,8 +25,6 @@ class HospitalStatus {
     this.updateDateTimeLocal = updateDateTimeLocal;
     this.additionalServiceAvailabilityNotes = additionalServiceAvailabilityNotes || '';
     this.notesUpdateDateTimeLocal = notesUpdateDateTimeLocal;
-    this.ambulancesEnRoute = (hospital && hospital.ambulancesEnRoute) || null;
-    this.ambulancesOffloading = (hospital && hospital.ambulancesOffloading) || null;
   }
 
   get isValid() {
@@ -37,6 +39,20 @@ class HospitalStatus {
       this.ambulancesEnRoute !== null &&
       this.ambulancesOffloading !== null
     );
+  }
+
+  toJSON() {
+    return {
+      hospitalId: this.hospitalId,
+      openEdBedCount: this.openEdBedCount,
+      openPsychBedCount: this.openPsychBedCount,
+      bedCountUpdateDateTimeLocal: this.bedCountUpdateDateTimeLocal,
+      additionalServiceAvailabilityNotes: this.additionalServiceAvailabilityNotes,
+      notesUpdateDateTimeLocal: this.notesUpdateDateTimeLocal,
+      divertStatusIndicator: this.divertStatusIndicator,
+      divertStatusUpdateDateTimeLocal: this.divertStatusUpdateDateTimeLocal,
+      updateDateTimeLocal: this.updateDateTimeLocal,
+    };
   }
 }
 

@@ -21,6 +21,9 @@ export default {
     get() {
       return instance.get('/api/hospitalstatuses');
     },
+    create(data) {
+      return instance.post('/api/hospitalstatuses', data);
+    },
   },
   ringdowns: {
     create(data) {

@@ -3,6 +3,8 @@ import { DateTime } from 'luxon';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
+import ApiService from '../ApiService';
+
 import Alert from '../Components/Alert';
 import Counter from '../Components/Counter';
 import FormTextArea from '../Components/FormTextArea';
@@ -19,20 +21,24 @@ function Beds({ statusUpdate, onStatusUpdate }) {
 
   function handleBedUpdate(event) {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
-    newStatusUpdate.bedCountUpdateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.updateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.bedCountUpdateDateTimeLocal = newStatusUpdate.updateDateTimeLocal;
     if (event.target.name === 'erBedsCount') {
       newStatusUpdate.openEdBedCount = event.target.value;
     } else if (event.target.name === 'psychBedsCount') {
       newStatusUpdate.openPsychBedCount = event.target.value;
     }
     onStatusUpdate(newStatusUpdate);
+    ApiService.hospitalStatuses.create(newStatusUpdate.toJSON());
   }
 
   function handleNotesUpdate() {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
-    newStatusUpdate.notesUpdateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.updateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.notesUpdateDateTimeLocal = newStatusUpdate.updateDateTimeLocal;
     newStatusUpdate.additionalServiceAvailabilityNotes = additionalNotes;
     onStatusUpdate(newStatusUpdate);
+    ApiService.hospitalStatuses.create(newStatusUpdate.toJSON());
     setAdditionalNotes(null);
     setShowNotesUpdated(true);
     setTimeout(() => {
@@ -42,9 +48,11 @@ function Beds({ statusUpdate, onStatusUpdate }) {
 
   function handleDiversionUpdate() {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
-    newStatusUpdate.divertStatusUpdateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.updateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.divertStatusUpdateDateTimeLocal = newStatusUpdate.updateDateTimeLocal;
     newStatusUpdate.divertStatusIndicator = !newStatusUpdate.divertStatusIndicator;
     onStatusUpdate(newStatusUpdate);
+    ApiService.hospitalStatuses.create(newStatusUpdate.toJSON());
     setShowUpdate(false);
     setShowConfirmUpdate(true);
   }
