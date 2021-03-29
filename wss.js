@@ -39,8 +39,14 @@ hospitalServer.on('connection', async (ws, req) => {
       },
     },
   });
+  const statusUpdate = await models.HospitalStatusUpdate.scope('latest').findOne({
+    where: {
+      HospitalId: req.hospital.id,
+    },
+  });
   const data = JSON.stringify({
     ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
+    statusUpdate: await statusUpdate.toJSON(),
   });
   ws.send(data);
 });

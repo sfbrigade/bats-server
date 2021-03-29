@@ -1,48 +1,49 @@
 import React, { useState } from 'react';
 import { DateTime } from 'luxon';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 import Alert from '../Components/Alert';
 import Counter from '../Components/Counter';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
 
-import CheckIcon from './checkIcon.png';
-
 import './Beds.scss';
 
-function Beds() {
-  const [bedDateTime, setBedDateTime] = useState();
-  const [erBedsCount, setErBedsCount] = useState(0);
-  const [psychBedsCount, setPsychBedsCount] = useState(0);
-
-  const [notesDateTime, setNotesDateTime] = useState();
-  const [additionalNotes, setAdditionalNotes] = useState();
-  const [updatedNotes, setUpdatedNotes] = useState(false);
-
-  const [diversionDateTime, setDiversionDateTime] = useState();
-
-  const [onDiversion, setOnDiversion] = useState(false);
+function Beds({ statusUpdate, onStatusUpdate }) {
+  const [additionalNotes, setAdditionalNotes] = useState(null);
+  const [showNotesUpdated, setShowNotesUpdated] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
   const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
 
   function handleBedUpdate(event) {
-    setBedDateTime(DateTime.local().toISO());
+    const newStatusUpdate = { ...statusUpdate };
+    newStatusUpdate.bedCountUpdateDateTimeLocal = DateTime.local().toISO();
     if (event.target.name === 'erBedsCount') {
-      setErBedsCount(event.target.value);
+      newStatusUpdate.openEdBedCount = event.target.value;
     } else if (event.target.name === 'psychBedsCount') {
-      setPsychBedsCount(event.target.value);
+      newStatusUpdate.openPsychBedCount = event.target.value;
     }
+    onStatusUpdate(newStatusUpdate);
   }
 
   function handleNotesUpdate() {
-    setNotesDateTime(DateTime.local().toISO());
-    setUpdatedNotes(true);
+    const newStatusUpdate = { ...statusUpdate };
+    newStatusUpdate.notesUpdateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.additionalServiceAvailabilityNotes = additionalNotes;
+    onStatusUpdate(newStatusUpdate);
+    setAdditionalNotes(null);
+    setShowNotesUpdated(true);
+    setTimeout(() => {
+      setShowNotesUpdated(false);
+    }, 1000);
   }
 
   function handleDiversionUpdate() {
-    setDiversionDateTime(DateTime.local().toISO());
-    setOnDiversion(!onDiversion);
+    const newStatusUpdate = { ...statusUpdate };
+    newStatusUpdate.divertStatusUpdateDateTimeLocal = DateTime.local().toISO();
+    newStatusUpdate.divertStatusIndicator = !newStatusUpdate.divertStatusIndicator;
+    onStatusUpdate(newStatusUpdate);
     setShowUpdate(false);
     setShowConfirmUpdate(true);
   }
@@ -51,19 +52,25 @@ function Beds() {
     <div className="usa-accordion">
       <Heading
         title="Bed availability"
-        subtitle={`Updated ${bedDateTime ? DateTime.fromISO(bedDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
+        subtitle={`Updated ${DateTime.fromISO(statusUpdate.bedCountUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
       />
       <div className="usa-accordion__content">
         <form className="usa-form">
           <fieldset className="usa-fieldset beds__availability">
-            <Counter label="ER Beds" name="erBedsCount" min={0} onChange={handleBedUpdate} value={erBedsCount} />
-            <Counter label="Psych Beds" name="psychBedsCount" min={0} onChange={handleBedUpdate} value={psychBedsCount} />
+            <Counter label="ER Beds" name="erBedsCount" min={0} onChange={handleBedUpdate} value={statusUpdate.openEdBedCount} />
+            <Counter
+              label="Behavioral Beds"
+              name="psychBedsCount"
+              min={0}
+              onChange={handleBedUpdate}
+              value={statusUpdate.openPsychBedCount}
+            />
           </fieldset>
         </form>
       </div>
       <Heading
         title="Additional Notes"
-        subtitle={`Updated ${notesDateTime ? DateTime.fromISO(notesDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
+        subtitle={`Updated ${DateTime.fromISO(statusUpdate.notesUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
       />
       <div className="usa-accordion__content">
         <form className="usa-form">
@@ -75,17 +82,19 @@ function Beds() {
                 </>
               }
               property="additionalNotes"
-              value={additionalNotes}
+              value={additionalNotes == null ? statusUpdate.additionalServiceAvailabilityNotes : additionalNotes}
               onChange={(property, value) => setAdditionalNotes(value)}
             />
-            <div className="text-right">
-              {updatedNotes && (
-                <span className="beds__updated">
-                  <img className="beds__check-icon" src={CheckIcon} alt="check icon" width="25" height="30" />
-                  Updated
-                </span>
-              )}
-              <button className="usa-button" type="button" onClick={handleNotesUpdate}>
+            <div className="beds__notes-controls">
+              <span className="beds__updated">
+                {showNotesUpdated && (
+                  <>
+                    <i className="fas fa-check-circle" />
+                    &nbsp;Updated
+                  </>
+                )}
+              </span>
+              <button disabled={additionalNotes == null} className="usa-button" type="button" onClick={handleNotesUpdate}>
                 Update
               </button>
             </div>
@@ -95,13 +104,13 @@ function Beds() {
 
       <Heading
         title="Diversion status"
-        subtitle={`Updated ${diversionDateTime ? DateTime.fromISO(diversionDateTime).toFormat('M/d/yyyy @ H:mm') : '(pending)'}`}
+        subtitle={`Updated ${DateTime.fromISO(statusUpdate.divertStatusUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
       />
       <div className="usa-accordion__content">
         <div className="usa-fieldset">
-          <div className={classNames('beds__diversion', { 'beds__diversion--on': onDiversion })}>
-            {onDiversion && <>On diversion</>}
-            {!onDiversion && <>Not on diversion</>}
+          <div className={classNames('beds__diversion', { 'beds__diversion--on': statusUpdate.divertStatusIndicator })}>
+            {statusUpdate.divertStatusIndicator && <>On diversion</>}
+            {!statusUpdate.divertStatusIndicator && <>Not on diversion</>}
             <button type="button" className="usa-button--unstyled beds__change-status" onClick={() => setShowUpdate(true)}>
               Change status
             </button>
@@ -131,5 +140,11 @@ function Beds() {
     </div>
   );
 }
+
+Beds.propTypes = {
+  onStatusUpdate: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  statusUpdate: PropTypes.object.isRequired,
+};
 
 export default Beds;
