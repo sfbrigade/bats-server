@@ -50,7 +50,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       UpdatedById: req.user.id,
     });
     res.status(HttpStatus.CREATED).json(await statusUpdate.toJSON());
-    dispatchStatusUpdate(req.body.hospitalId);
+    await dispatchStatusUpdate(req.body.hospitalId);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
