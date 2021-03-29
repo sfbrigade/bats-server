@@ -76,6 +76,23 @@ describe('models.HospitalStatusUpdate', () => {
     });
   });
 
+  describe('getLatestUpdatesWithAmbulanceCounts()', () => {
+    it('returns the latest status update for all hospitals, with ambulance counts', async () => {
+      const hospitalStatusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts();
+      // should only return one update per the 2 hospitals
+      assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
+      // each update should reflect the latest (test data year 2005 vs 2004)
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'Sutter Hospital');
+      assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.ambulanceCounts.enRoute, 2);
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.ambulanceCounts.offloading, 0);
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies Campus');
+      assert.deepStrictEqual(hospitalStatusUpdates[1].updateDateTimeLocal.getFullYear(), 2005);
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.enRoute, 1);
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.offloading, 1);
+    });
+  });
+
   describe('toJSON()', () => {
     it('serializes out the status update with hospital ambulance counts', async () => {
       const hospitalStatusUpdate = await models.HospitalStatusUpdate.findByPk('9169fb04-b262-42ee-9c81-da1bb6818e6b');

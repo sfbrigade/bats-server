@@ -6,56 +6,25 @@ const WebSocket = require('ws');
 const models = require('./models');
 
 const userServer = new WebSocket.Server({ noServer: true });
-
 userServer.on('connection', async (ws, req) => {
   // eslint-disable-next-line no-param-reassign
   ws.info = { userId: req.user.id };
-  const patientDeliveries = await models.PatientDelivery.findAll({
-    include: { all: true },
-    where: {
-      ParamedicUserId: req.user.id,
-      currentDeliveryStatus: {
-        [Op.lt]: 'RETURNED TO SERVICE',
-      },
-    },
-  });
-  const data = JSON.stringify({
-    ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
-  });
+  // eslint-disable-next-line no-use-before-define
+  const data = await getRingdownData(req.user.id);
   ws.send(data);
 });
 
 const hospitalServer = new WebSocket.Server({ noServer: true });
-
 hospitalServer.on('connection', async (ws, req) => {
   // eslint-disable-next-line no-param-reassign
   ws.info = { userId: req.user.id, hospitalId: req.hospital.id };
-  const patientDeliveries = await models.PatientDelivery.findAll({
-    include: { all: true },
-    where: {
-      HospitalId: req.hospital.id,
-      currentDeliveryStatus: {
-        [Op.lt]: 'RETURNED TO SERVICE',
-      },
-    },
-  });
-  const statusUpdate = await models.HospitalStatusUpdate.scope('latest').findOne({
-    where: {
-      HospitalId: req.hospital.id,
-    },
-  });
-  const data = JSON.stringify({
-    ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
-    statusUpdate: await statusUpdate.toJSON(),
-  });
+  // eslint-disable-next-line no-use-before-define
+  const data = await getStatusUpdateData(req.hospital.id);
   ws.send(data);
 });
 
-const dispatchRingdownUpdate = async (patientDeliveryId) => {
-  /// dispatch to all clients watching this user's ringdowns
-  const patientDelivery = await models.PatientDelivery.findByPk(patientDeliveryId);
-  const userId = patientDelivery.ParamedicUserId;
-  let patientDeliveries = await models.PatientDelivery.findAll({
+async function getRingdownData(userId, cachedStatusUpdates) {
+  const patientDeliveries = await models.PatientDelivery.findAll({
     include: { all: true },
     where: {
       ParamedicUserId: userId,
@@ -64,17 +33,20 @@ const dispatchRingdownUpdate = async (patientDeliveryId) => {
       },
     },
   });
-  let data = JSON.stringify({
+  const data = JSON.stringify({
     ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
+    statusUpdates:
+      cachedStatusUpdates ||
+      (await Promise.all(
+        (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
+      )),
   });
-  userServer.clients.forEach((ws) => {
-    if (ws.info.userId === userId) {
-      ws.send(data);
-    }
-  });
+  return data;
+}
+
+async function getStatusUpdateData(hospitalId) {
   /// dispatch to all clients watching this hospital's ringdowns
-  const hospitalId = patientDelivery.HospitalId;
-  patientDeliveries = await models.PatientDelivery.findAll({
+  const patientDeliveries = await models.PatientDelivery.findAll({
     include: { all: true },
     where: {
       HospitalId: hospitalId,
@@ -83,17 +55,56 @@ const dispatchRingdownUpdate = async (patientDeliveryId) => {
       },
     },
   });
-  data = JSON.stringify({
-    ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
+  const statusUpdate = await models.HospitalStatusUpdate.scope('latest').findOne({
+    where: {
+      HospitalId: hospitalId,
+    },
   });
+  const data = JSON.stringify({
+    ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
+    statusUpdate: await statusUpdate.toJSON(),
+  });
+  return data;
+}
+
+async function dispatchStatusUpdate(hospitalId) {
+  // dispatch to all user clients
+  const cachedStatusUpdates = await Promise.all(
+    (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
+  );
+  const userPromises = [];
+  userServer.clients.forEach((ws) => {
+    userPromises.push(
+      getRingdownData(ws.info.userId, cachedStatusUpdates).then((data) => {
+        ws.send(data);
+      })
+    );
+  });
+  await Promise.all(userPromises);
+  // dispatch to all clients watching this hospital's ringdowns
+  const data = await getStatusUpdateData(hospitalId);
   hospitalServer.clients.forEach((ws) => {
-    if (ws.info.hospitalId === hospitalId) {
+    if (ws.info.hospitalId === hospitalServer) {
       ws.send(data);
     }
   });
-};
+}
 
-const configure = (server, app) => {
+async function dispatchRingdownUpdate(patientDeliveryId) {
+  // dispatch to all clients watching this user's ringdowns
+  const patientDelivery = await models.PatientDelivery.findByPk(patientDeliveryId);
+  const userId = patientDelivery.ParamedicUserId;
+  const data = await getRingdownData(userId);
+  userServer.clients.forEach((ws) => {
+    if (ws.info.userId === userId) {
+      ws.send(data);
+    }
+  });
+  // dispatch to all clients watching this hospital's ringdowns
+  await dispatchStatusUpdate(patientDelivery.hospitalId);
+}
+
+function configure(server, app) {
   server.on('upgrade', (req, socket, head) => {
     app.sessionParser(req, {}, async () => {
       const query = querystring.parse(url.parse(req.url).query);
@@ -131,9 +142,10 @@ const configure = (server, app) => {
       }
     });
   });
-};
+}
 
 module.exports = {
   configure,
   dispatchRingdownUpdate,
+  dispatchStatusUpdate,
 };

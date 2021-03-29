@@ -1,63 +1,16 @@
 const express = require('express');
-const _ = require('lodash');
 const HttpStatus = require('http-status-codes');
-const { Op } = require('sequelize');
-const { DeliveryStatus } = require('../../constants');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
+const { dispatchStatusUpdate } = require('../../wss');
 
 const router = express.Router();
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
   try {
-    // NOTE: processing the ambulances enroute and offloading in memory here because it was easier
-    // than figuring it out in Sequelize. We can probably use a raw SQL query if this ever becomes
-    // a performance issue.
-    const activeDeliveries = await models.PatientDelivery.findAll({
-      include: [models.Hospital],
-      where: {
-        [Op.and]: [
-          {
-            currentDeliveryStatus: { [Op.ne]: DeliveryStatus.OFFLOADED },
-          },
-          {
-            currentDeliveryStatus: { [Op.ne]: DeliveryStatus.RETURNED_TO_SERVICE },
-          },
-        ],
-      },
-    });
-
-    const deliveriesByHospitalId = activeDeliveries.reduce((accumulator, delivery) => {
-      const deliveries = {
-        enRoute: _.get(accumulator, `${delivery.HospitalId}.enRoute`, 0),
-        offloading: _.get(accumulator, `${delivery.HospitalId}.offloading`, 0),
-      };
-
-      if (
-        delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
-        delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED
-      ) {
-        deliveries.enRoute += 1;
-      } else if (delivery.currentDeliveryStatus === DeliveryStatus.ARRIVED) {
-        deliveries.offloading += 1;
-      }
-
-      accumulator[delivery.HospitalId] = deliveries;
-
-      return accumulator;
-    }, {});
-
-    const statusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({
-      include: [models.Hospital],
-    });
-    statusUpdates.sort((a, b) => a.Hospital.sortSequenceNumber - b.Hospital.sortSequenceNumber);
-    const response = await Promise.all(
-      statusUpdates.map((statusUpdate) => {
-        statusUpdate.Hospital.ambulanceCounts = deliveriesByHospitalId[statusUpdate.HospitalId];
-        return statusUpdate.toJSON();
-      })
-    );
+    const statusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts();
+    const response = await Promise.all(statusUpdates.map((statusUpdate) => statusUpdate.toJSON()));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
@@ -97,6 +50,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       UpdatedById: req.user.id,
     });
     res.status(HttpStatus.CREATED).json(await statusUpdate.toJSON());
+    dispatchStatusUpdate(req.body.hospitalId);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }

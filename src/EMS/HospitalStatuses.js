@@ -1,26 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+
+import Context from '../Context';
 
 import HospitalStatusRow from './HospitalStatusRow';
 import HospitalStatusHeader from './HospitalStatusHeader';
-import HospitalStatus from '../Models/HospitalStatus';
-import ApiService from '../ApiService';
 
 const HospitalStatuses = ({ className, onReturn }) => {
-  const [hospitalStatusResponse, setHospitalStatusResponse] = useState([]);
-
-  useEffect(() => {
-    ApiService.hospitalStatuses.get().then((response) => {
-      setHospitalStatusResponse(response.data);
-    });
-  }, []);
+  const { statusUpdates } = useContext(Context);
 
   return (
     <div className={className}>
       <HospitalStatusHeader />
       <div className="grid-container">
-        {hospitalStatusResponse.map((hsData) => {
-          const hs = new HospitalStatus(hsData);
+        {statusUpdates?.map((hs) => {
           return <HospitalStatusRow key={hs.id} hospitalStatus={hs} />;
         })}
       </div>
