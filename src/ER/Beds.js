@@ -7,6 +7,7 @@ import Alert from '../Components/Alert';
 import Counter from '../Components/Counter';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
+import HospitalStatus from '../Models/HospitalStatus';
 
 import './Beds.scss';
 
@@ -17,7 +18,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
   const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
 
   function handleBedUpdate(event) {
-    const newStatusUpdate = { ...statusUpdate };
+    const newStatusUpdate = new HospitalStatus(statusUpdate);
     newStatusUpdate.bedCountUpdateDateTimeLocal = DateTime.local().toISO();
     if (event.target.name === 'erBedsCount') {
       newStatusUpdate.openEdBedCount = event.target.value;
@@ -28,7 +29,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
   }
 
   function handleNotesUpdate() {
-    const newStatusUpdate = { ...statusUpdate };
+    const newStatusUpdate = new HospitalStatus(statusUpdate);
     newStatusUpdate.notesUpdateDateTimeLocal = DateTime.local().toISO();
     newStatusUpdate.additionalServiceAvailabilityNotes = additionalNotes;
     onStatusUpdate(newStatusUpdate);
@@ -40,7 +41,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
   }
 
   function handleDiversionUpdate() {
-    const newStatusUpdate = { ...statusUpdate };
+    const newStatusUpdate = new HospitalStatus(statusUpdate);
     newStatusUpdate.divertStatusUpdateDateTimeLocal = DateTime.local().toISO();
     newStatusUpdate.divertStatusIndicator = !newStatusUpdate.divertStatusIndicator;
     onStatusUpdate(newStatusUpdate);
@@ -143,8 +144,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
 
 Beds.propTypes = {
   onStatusUpdate: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  statusUpdate: PropTypes.object.isRequired,
+  statusUpdate: PropTypes.instanceOf(HospitalStatus).isRequired,
 };
 
 export default Beds;

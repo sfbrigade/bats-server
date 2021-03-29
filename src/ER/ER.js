@@ -7,6 +7,7 @@ import IncomingRingdown from './IncomingRingdown';
 
 import Context from '../Context';
 import Ringdown from '../Models/Ringdown';
+import HospitalStatus from '../Models/HospitalStatus';
 
 import Beds from './Beds';
 import RingDowns from './Ringdowns';
@@ -38,7 +39,7 @@ export default function ER() {
       const newIncomingRingdowns = data.ringdowns.filter((r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT);
       setRingdowns(newRingdowns);
       setIncomingRingdowns(newIncomingRingdowns);
-      setStatusUpdate(data.statusUpdate);
+      setStatusUpdate(new HospitalStatus(data.statusUpdate));
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
 
