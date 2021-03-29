@@ -5,13 +5,9 @@
   padding: 1rem 1.5rem 0;
 }
 
-.beds__notes {
-  padding-top: 0.25rem;
-
-  .usa-button {
-    margin: 0.75rem 0 0;
-    min-width: 33%;
-  }
+.beds__change-status {
+  @include h4;
+  display: block;
 }
 
 .beds__diversion {
@@ -27,17 +23,31 @@
   border-left-color: color($theme-color-warning);
 }
 
-.beds__change-status {
-  @include h4;
-  display: block;
+.beds__notes {
+  padding-top: 0.25rem;
+}
+
+.beds__notes-controls {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+
+  .usa-button {
+    margin: 0;
+    width: 33%;
+  }
 }
 
 .beds__updated {
-  position: absolute;
-  left: 2.5em;
-  top: 31.8em;
+  @include h4;
+  align-items: center;
   color: #00a91c;
-  font-size: 21px;
+  display: flex;
+
+  .fas {
+    font-size: 0.75rem;
+  }
 }
 
 .beds__check-icon {
