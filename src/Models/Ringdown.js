@@ -340,6 +340,7 @@ class Ringdown {
     //just a rough draft of a possible solution to 
     //form validation logic
     let missingFields = [];
+    let fixedMissing = [];
     const fieldOrder = [
       this.ambulanceIdentifier,
       this.dispatchCallNumber,
@@ -361,6 +362,7 @@ class Ringdown {
     for (let i = 0; i < stop ; i++){
       if (this.isFieldPresent(fieldOrder[i])){
         if (missingFields[0] === fieldOrder[i]){
+          fixedMissing.push(missingFields[0]);
           missingFields.shift();
           continue;
         }
@@ -372,7 +374,7 @@ class Ringdown {
         }
       }
     }
-    return missingFields;
+    return [missingFields, fixedMissing];
   }
 
   get isValid() {
