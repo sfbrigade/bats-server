@@ -84,7 +84,7 @@ async function dispatchStatusUpdate(hospitalId) {
   // dispatch to all clients watching this hospital's ringdowns
   const data = await getStatusUpdateData(hospitalId);
   hospitalServer.clients.forEach((ws) => {
-    if (ws.info.hospitalId === hospitalServer) {
+    if (ws.info.hospitalId === hospitalId) {
       ws.send(data);
     }
   });
@@ -101,7 +101,7 @@ async function dispatchRingdownUpdate(patientDeliveryId) {
     }
   });
   // dispatch to all clients watching this hospital's ringdowns
-  await dispatchStatusUpdate(patientDelivery.hospitalId);
+  await dispatchStatusUpdate(patientDelivery.HospitalId);
 }
 
 function configure(server, app) {
