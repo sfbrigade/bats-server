@@ -3,26 +3,22 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ApiService from '../ApiService';
 
-
-
 function FormInput({ children, disabled, label, onChange, isWrapped, property, required, showRequiredHint, size, type, unit, value }) {
   const [focused, setFocused] = useState(false);
 
   function useDebounce(searchValue, delay) {
     // State and setters for debounced value
     const [debouncedValue, setDebouncedValue] = useState(searchValue);
-    useEffect(
-      () => {
-        // Set debouncedValue to value (passed in) after the specified delay
-        const handler = setTimeout(() => {
-          setDebouncedValue(searchValue);
-        }, delay);
-        return () => {
-          clearTimeout(handler);
-        };
-      }
-    );
-  
+    useEffect(() => {
+      // Set debouncedValue to value (passed in) after the specified delay
+      const handler = setTimeout(() => {
+        setDebouncedValue(searchValue);
+      }, delay);
+      return () => {
+        clearTimeout(handler);
+      };
+    });
+
     return debouncedValue;
   }
 
@@ -33,35 +29,34 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
   function SearchCharacters(search) {
     let dispatchCallNumber;
     if (search) {
-      ApiService.ringdowns.checkValidRingdown(search).then((r2) => {
-        dispatchCallNumber = r2.data;
-      })
-      .catch((error) => {
-        /* eslint-disable no-console */
-        console.log(error);
-      })
-    } 
-    // using setTimeout before setting setIsValidId and calling dispatchcallNumber because we're using 
-    // Debouncing so the dispatchCallNumber returns undefined originally. 
-      
-    setTimeout(() => { 
+      ApiService.ringdowns
+        .checkValidRingdown(search)
+        .then((r2) => {
+          dispatchCallNumber = r2.data;
+        })
+        .catch((error) => {
+          /* eslint-disable no-console */
+          console.log(error);
+        });
+    }
+    // using setTimeout before setting setIsValidId and calling dispatchcallNumber because we're using
+    // Debouncing so the dispatchCallNumber returns undefined originally.
+
+    setTimeout(() => {
       if (dispatchCallNumber) {
         setIsNotValidId(true);
-      }
-      else { 
+      } else {
         setIsNotValidId(false);
       }
-    }, 200)
+    }, 200);
   }
-  
-  useEffect(
-    () => {
-      // Make sure we have a value (user has entered something in input)
-      if (debouncedSearchTerm && debouncedSearchTerm.id === "dispatchCallNumber") {
-        SearchCharacters(debouncedSearchTerm.value)
-      } 
+
+  useEffect(() => {
+    // Make sure we have a value (user has entered something in input)
+    if (debouncedSearchTerm && debouncedSearchTerm.id === 'dispatchCallNumber') {
+      SearchCharacters(debouncedSearchTerm.value);
     }
-  );
+  });
 
   function typedValue(stringValue) {
     if (type === 'number') {
@@ -90,10 +85,11 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
           'usa-input--small': size === 'small',
         })}
       />
-      {isNotValidId ? <span style={{color:'red', display:'flex'}}>&nbsp;&nbsp;Incident # already exists, please use a different one.</span> : null}
+      {isNotValidId ? (
+        <span style={{ color: 'red', display: 'flex' }}>&nbsp;&nbsp;Incident # already exists, please use a different one.</span>
+      ) : null}
       {unit && <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;{unit}</span>}
       {children}
-      
     </>
   );
   if (isWrapped) {

@@ -18,7 +18,7 @@ router.get('/checkValidRingdown/:ringdownId', middleware.isAuthenticated, async 
   });
   res.status(HttpStatus.CREATED).json(dispatchCallNumber);
 });
- 
+
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {
     currentDeliveryStatus: {
@@ -48,7 +48,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
     } else if (!req.user.isSuperUser) {
       // must be a superuser to see ringdowns for ALL hospitals
       throw new Error();
-    } 
+    }
   } catch (error) {
     res.status(HttpStatus.FORBIDDEN).end();
   }
@@ -196,7 +196,6 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
           transaction,
         });
         if (!hospitalUser || !req.user.isOperationalUser) {
-          
           res.status(HttpStatus.FORBIDDEN).end();
           return;
         }
@@ -245,6 +244,5 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
-
 
 module.exports = router;
