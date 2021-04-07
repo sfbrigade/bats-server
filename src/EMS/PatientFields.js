@@ -5,13 +5,14 @@ import FormCheckbox from '../Components/FormCheckbox';
 import FormInput from '../Components/FormInput';
 import FormRadio from '../Components/FormRadio';
 import FormTextArea from '../Components/FormTextArea';
+import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 
 function PatientFields({ ringdown, onChange }) {
   return (
     <>
       <div className="usa-accordion">
-        <h3 className="usa-accordion__heading">Unit Info</h3>
+        <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormInput
@@ -33,7 +34,7 @@ function PatientFields({ ringdown, onChange }) {
             />
           </fieldset>
         </div>
-        <h3 className="usa-accordion__heading">Patient Info</h3>
+        <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormInput
@@ -105,9 +106,7 @@ function PatientFields({ ringdown, onChange }) {
             />
           </fieldset>
         </div>
-        <h3 className="usa-accordion__heading">
-          Vitals <span>(optional)</span>
-        </h3>
+        <Heading title="Vitals" subtitle="(optional)" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormInput
@@ -199,9 +198,7 @@ function PatientFields({ ringdown, onChange }) {
             />
           </fieldset>
         </div>
-        <h3 className="usa-accordion__heading">
-          Additional notes <span>(optional)</span>
-        </h3>
+        <Heading title="Additional notes" subtitle="(optional)" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             <FormCheckbox

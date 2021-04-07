@@ -233,8 +233,8 @@ $spinner-border-width-sm: 0.2em;
   padding: 0;
 }
 
-.usa-alert::before {
-  display: none;
+.usa-alert__heading {
+  @include h2;
 }
 
 .usa-alert--info {
@@ -302,6 +302,10 @@ $spinner-border-width-sm: 0.2em;
 .usa-form {
   @include at-media('mobile-lg') {
     max-width: none;
+  }
+
+  .usa-alert::before {
+    display: none;
   }
 
   .usa-button {

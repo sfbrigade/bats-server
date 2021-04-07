@@ -37,6 +37,10 @@ class Ringdown {
 
   // Ambulance
 
+  get ambulance() {
+    return this.payload.ambulance ?? {};
+  }
+
   get ambulanceIdentifier() {
     return this.payload.ambulance.ambulanceIdentifier ?? null;
   }
@@ -47,6 +51,10 @@ class Ringdown {
 
   // EMS Call
 
+  get emsCall() {
+    return this.payload.emsCall ?? {};
+  }
+
   get dispatchCallNumber() {
     return this.payload.emsCall.dispatchCallNumber ?? null;
   }
@@ -56,6 +64,10 @@ class Ringdown {
   }
 
   // Hospital
+
+  get hospital() {
+    return this.payload.hospital ?? {};
+  }
 
   get hospitalId() {
     return this.payload.hospital.id ?? null;
@@ -272,7 +284,7 @@ class Ringdown {
   // Delivery Status
 
   get etaDateTimeLocalObj() {
-    return DateTime.fromISO(this.ringdownSentDateTimeLocal).plus({
+    return DateTime.fromISO(this.timestamps[DeliveryStatus.RINGDOWN_SENT]).plus({
       minutes: this.etaMinutes,
     });
   }
@@ -285,52 +297,16 @@ class Ringdown {
     this.payload.patientDelivery.etaMinutes = newValue;
   }
 
-  get deliveryStatus() {
-    return this.payload.patientDelivery.deliveryStatus ?? null;
+  get currentDeliveryStatus() {
+    return this.payload.patientDelivery.currentDeliveryStatus ?? null;
   }
 
-  set deliveryStatus(newValue) {
-    this.payload.patientDelivery.deliveryStatus = newValue;
+  set currentDeliveryStatus(newValue) {
+    this.payload.patientDelivery.currentDeliveryStatus = newValue;
   }
 
-  get ringdownSentDateTimeLocal() {
-    return this.payload.patientDelivery.ringdownSentDateTimeLocal ?? null;
-  }
-
-  set ringdownSentDateTimeLocal(newValue) {
-    this.payload.patientDelivery.ringdownSentDateTimeLocal = newValue;
-  }
-
-  get ringdownReceivedDateTimeLocal() {
-    return this.payload.patientDelivery.ringdownReceivedDateTimeLocal ?? null;
-  }
-
-  set ringdownReceivedDateTimeLocal(newValue) {
-    this.payload.patientDelivery.ringdownReceivedDateTimeLocal = newValue;
-  }
-
-  get arrivedDateTimeLocal() {
-    return this.payload.patientDelivery.arrivedDateTimeLocal ?? null;
-  }
-
-  set arrivedDateTimeLocal(newValue) {
-    this.payload.patientDelivery.arrivedDateTimeLocal = newValue;
-  }
-
-  get offloadedDateTimeLocal() {
-    return this.payload.patientDelivery.offloadedDateTimeLocal ?? null;
-  }
-
-  set offloadedDateTimeLocal(newValue) {
-    this.payload.patientDelivery.offloadedDateTimeLocal = newValue;
-  }
-
-  get returnToServiceDateTimeLocal() {
-    return this.payload.patientDelivery.returnToServiceDateTimeLocal ?? null;
-  }
-
-  set returnToServiceDateTimeLocal(newValue) {
-    this.payload.patientDelivery.returnToServiceDateTimeLocal = newValue;
+  get timestamps() {
+    return this.payload.patientDelivery.timestamps ?? {};
   }
 
   // Validators
@@ -392,12 +368,9 @@ Ringdown.propTypes = {
   otherObservationNotes: PropTypes.string,
   // Status
   etaMinutes: PropTypes.number.isRequired,
-  deliveryStatus: PropTypes.oneOf(DeliveryStatus.ALL_STATUSES),
-  ringdownSentDateTimeLocal: PropTypes.instanceOf(Date),
-  ringdownReceivedDateTimeLocal: PropTypes.instanceOf(Date),
-  arrivedDateTimeLocal: PropTypes.instanceOf(Date),
-  offloadedDateTimeLocal: PropTypes.instanceOf(Date),
-  returnToServiceDateTimeLocal: PropTypes.instanceOf(Date),
+  currentDeliveryStatus: PropTypes.oneOf(DeliveryStatus.ALL_STATUSES),
+  currentDeliveryStatusDateTimeLocal: PropTypes.instanceOf(Date),
+  timestamps: PropTypes.objectOf(PropTypes.instanceOf(Date)),
 };
 
 export default Ringdown;

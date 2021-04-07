@@ -1,0 +1,22 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+
+.alert {
+  background-color: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  .usa-button-group {
+    margin-top: 3rem;
+  }
+}
+
+.alert__content {
+  max-width: 400px;
+  margin: auto;
+}

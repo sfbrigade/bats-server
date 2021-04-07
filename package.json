@@ -65,7 +65,9 @@
     "test:server": "mocha --recursive",
     "eject": "react-scripts eject",
     "lint": "eslint .",
-    "format": "yarn prettier --write ."
+    "lint:changed": "eslint $(git diff --name-only | xargs)",
+    "format": "yarn prettier --write .",
+    "format:changed": "prettier --write $(git diff --name-only | xargs)"
   },
   "eslintConfig": {
     "extends": [

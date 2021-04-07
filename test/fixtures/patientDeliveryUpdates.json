@@ -1,0 +1,92 @@
+[
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "8b95ea8a-0171-483a-be74-ec17bbc12247",
+      "deliveryStatus": "RINGDOWN SENT",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "6737fc42-f815-460f-888a-10435af12f08",
+      "UpdatedById": "6737fc42-f815-460f-888a-10435af12f08"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "8b95ea8a-0171-483a-be74-ec17bbc12247",
+      "deliveryStatus": "RINGDOWN RECEIVED",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:24:54+02",
+      "CreatedById": "6737fc42-f815-460f-888a-10435af12f08",
+      "UpdatedById": "6737fc42-f815-460f-888a-10435af12f08"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "8b95ea8a-0171-483a-be74-ec17bbc12247",
+      "deliveryStatus": "ARRIVED",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:25:54+02",
+      "CreatedById": "6737fc42-f815-460f-888a-10435af12f08",
+      "UpdatedById": "6737fc42-f815-460f-888a-10435af12f08"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "8b95ea8a-0171-483a-be74-ec17bbc12247",
+      "deliveryStatus": "OFFLOADED",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:26:54+02",
+      "CreatedById": "6737fc42-f815-460f-888a-10435af12f08",
+      "UpdatedById": "6737fc42-f815-460f-888a-10435af12f08"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "8b95ea8a-0171-483a-be74-ec17bbc12247",
+      "deliveryStatus": "RETURNED TO SERVICE",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:27:54+02",
+      "CreatedById": "6737fc42-f815-460f-888a-10435af12f08",
+      "UpdatedById": "6737fc42-f815-460f-888a-10435af12f08"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "d4fd2478-ecd6-4571-9fb3-842bfc64b511",
+      "deliveryStatus": "RINGDOWN SENT",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "ed05b7c3-2cac-4642-9498-02bc5ef04c13",
+      "UpdatedById": "ed05b7c3-2cac-4642-9498-02bc5ef04c13"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "4889b0c8-ce48-474a-ac5b-c5aca708451c",
+      "deliveryStatus": "RINGDOWN SENT",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "f8f948ac-719f-11eb-9439-0242ac130002",
+      "deliveryStatus": "RINGDOWN SENT",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
+    }
+  },
+  {
+    "model": "PatientDeliveryUpdate",
+    "data": {
+      "PatientDeliveryId": "f3ad9b22-719f-11eb-9439-0242ac130002",
+      "deliveryStatus": "ARRIVED",
+      "deliveryStatusDateTimeLocal": "2004-10-19 10:23:54+02",
+      "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
+      "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
+    }
+  }
+]

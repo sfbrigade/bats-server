@@ -28,4 +28,25 @@ describe('models.Hospital', () => {
     assert(updatedBy);
     assert.deepStrictEqual(updatedBy.name, 'Super User');
   });
+
+  describe('.getAmbulanceCounts()', () => {
+    beforeEach(async () => {
+      await helper.loadFixtures([
+        'hospitals',
+        'hospitalUsers',
+        'hospitalStatusUpdates',
+        'ambulances',
+        'emergencyMedicalServiceCalls',
+        'patients',
+        'patientDeliveries',
+        'patientDeliveryUpdates',
+      ]);
+    });
+
+    it('returns enRoute/offloading counts for the associated hospital', async () => {
+      const hospital = await models.Hospital.findByPk('7f666fe4-dbdd-4c7f-ab44-d9157379a680');
+      const deliveries = await hospital.getAmbulanceCounts();
+      assert.deepStrictEqual(deliveries, { enRoute: 1, offloading: 1 });
+    });
+  });
 });

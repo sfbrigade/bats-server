@@ -7,6 +7,7 @@ import IncomingRingdown from './IncomingRingdown';
 
 import Context from '../Context';
 import Ringdown from '../Models/Ringdown';
+import HospitalStatus from '../Models/HospitalStatus';
 
 import Beds from './Beds';
 import RingDowns from './Ringdowns';
@@ -19,10 +20,15 @@ export default function ER() {
   const [selectedTab, setSelectedTab] = useState(0);
   const [ringdowns, setRingdowns] = useState([]);
   const [incomingRingdowns, setIncomingRingdowns] = useState([]);
+  const [statusUpdate, setStatusUpdate] = useState({});
 
   function onConfirm(ringdown) {
     const newIncomingRingdowns = incomingRingdowns.filter((r) => r.id !== ringdown.id);
     setIncomingRingdowns(newIncomingRingdowns);
+  }
+
+  function onStatusUpdate(newStatusUpdate) {
+    setStatusUpdate(newStatusUpdate);
   }
 
   useEffect(() => {
@@ -30,11 +36,12 @@ export default function ER() {
       const data = JSON.parse(lastMessage.data);
       data.ringdowns = data.ringdowns.map((r) => new Ringdown(r));
       const newRingdowns = data.ringdowns.sort((a, b) => a.etaDateTimeLocalObj.toMillis() - b.etaDateTimeLocalObj.toMillis());
-      const newIncomingRingdowns = data.ringdowns.filter((r) => r.deliveryStatus === Ringdown.Status.RINGDOWN_SENT);
+      const newIncomingRingdowns = data.ringdowns.filter((r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT);
       setRingdowns(newRingdowns);
       setIncomingRingdowns(newIncomingRingdowns);
+      setStatusUpdate(new HospitalStatus(data.statusUpdate));
     }
-  }, [lastMessage, setRingdowns, setIncomingRingdowns]);
+  }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
 
   return (
     <>
@@ -45,7 +52,7 @@ export default function ER() {
       </Header>
       {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
       {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
-      {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds />}
+      {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />}
     </>
   );
 }

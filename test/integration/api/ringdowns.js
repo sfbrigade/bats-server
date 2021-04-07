@@ -5,6 +5,7 @@ const session = require('supertest-session');
 const helper = require('../../helper');
 const app = require('../../../app');
 const models = require('../../../models');
+const { DeliveryStatus } = require('../../../constants');
 
 describe('/api/ringdowns', () => {
   let testSession;
@@ -19,6 +20,7 @@ describe('/api/ringdowns', () => {
       'hospitalUsers',
       'patients',
       'patientDeliveries',
+      'patientDeliveryUpdates',
     ]);
 
     testSession = session(app);
@@ -33,7 +35,7 @@ describe('/api/ringdowns', () => {
         .expect(HttpStatus.OK);
 
       const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
-      assert.deepStrictEqual(response.body.length, 2);
+      assert.deepStrictEqual(response.body.length, 4);
       const ids = response.body.map((ringdown) => ringdown.id).sort();
       assert.deepStrictEqual(ids[0], '4889b0c8-ce48-474a-ac5b-c5aca708451c');
       assert.deepStrictEqual(ids[1], 'd4fd2478-ecd6-4571-9fb3-842bfc64b511');
@@ -51,7 +53,7 @@ describe('/api/ringdowns', () => {
         .query({ hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680' })
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK);
-      assert.deepStrictEqual(response.body.length, 1);
+      assert.deepStrictEqual(response.body.length, 2);
       assert.deepStrictEqual(response.body[0].id, 'd4fd2478-ecd6-4571-9fb3-842bfc64b511');
     });
 
@@ -124,7 +126,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 1234);
       assert.deepStrictEqual(response.body.hospital.id, '00752f60-068f-11eb-adc1-0242ac120002');
       assert.deepStrictEqual(response.body.patient, patientData);
-      assert.deepStrictEqual(response.body.patientDelivery.deliveryStatus, 'RINGDOWN SENT');
+      assert.deepStrictEqual(response.body.patientDelivery.currentDeliveryStatus, 'RINGDOWN SENT');
       assert.deepStrictEqual(response.body.patientDelivery.etaMinutes, 15);
     });
 
@@ -178,14 +180,14 @@ describe('/api/ringdowns', () => {
         .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
         .set('Accept', 'application/json')
         .send({
-          deliveryStatus: models.PatientDelivery.Status.RINGDOWN_RECEIVED,
+          deliveryStatus: DeliveryStatus.RINGDOWN_RECEIVED,
           dateTimeLocal: now,
         })
         .expect(HttpStatus.OK);
 
       const patientDelivery = await models.PatientDelivery.findByPk('d4fd2478-ecd6-4571-9fb3-842bfc64b511');
-      assert.deepStrictEqual(patientDelivery.deliveryStatus, models.PatientDelivery.Status.RINGDOWN_RECEIVED);
-      assert.deepStrictEqual(patientDelivery.ringdownReceivedDateTimeLocal, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_RECEIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
     });
   });
 

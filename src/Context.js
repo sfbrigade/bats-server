@@ -6,9 +6,14 @@ const Context = createContext();
 function ContextProvider({ children }) {
   const [user, setUser] = useState();
   const [ringdowns, setRingdowns] = useState();
+  const [statusUpdates, setStatusUpdates] = useState();
   const [hospital, setHospital] = useState();
 
-  return <Context.Provider value={{ user, setUser, ringdowns, setRingdowns, hospital, setHospital }}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={{ user, setUser, ringdowns, setRingdowns, statusUpdates, setStatusUpdates, hospital, setHospital }}>
+      {children}
+    </Context.Provider>
+  );
 }
 ContextProvider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,

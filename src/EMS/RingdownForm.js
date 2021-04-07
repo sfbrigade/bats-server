@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
-import useWebSocket from 'react-use-websocket';
+import React, { useContext, useState } from 'react';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -14,20 +13,10 @@ import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
 
 function RingdownForm({ className }) {
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/user`;
-  const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
-
   const { ringdowns, setRingdowns } = useContext(Context);
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
   const [version, setVersion] = useState(0);
-
-  useEffect(() => {
-    if (lastMessage?.data) {
-      const data = JSON.parse(lastMessage.data);
-      setRingdowns(data.ringdowns);
-    }
-  }, [lastMessage, setRingdowns]);
 
   function next() {
     setStep(1);
@@ -37,12 +26,12 @@ function RingdownForm({ className }) {
     ApiService.ringdowns
       .create(ringdown.toJSON())
       .then((response) => {
-        setRingdowns([response.data]);
+        setRingdowns([new Ringdown(response.data)]);
         setRingdown(new Ringdown());
         setStep(0);
       })
       .catch((error) => {
-        /* eslint-disable no-console */
+        // eslint-disable-next-line no-console
         console.log(error);
       });
   }
@@ -65,21 +54,15 @@ function RingdownForm({ className }) {
     const now = new Date();
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
-    rd.patientDelivery.deliveryStatus = status;
+    rd.currentDeliveryStatus = status;
     const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
-      case Ringdown.Status.ARRIVED:
-        rd.patientDelivery.arrivedDateTimeLocal = isoNow;
-        break;
-      case Ringdown.Status.OFFLOADED:
-        rd.patientDelivery.offloadedDateTimeLocal = isoNow;
-        break;
       case Ringdown.Status.RETURNED_TO_SERVICE:
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
         return;
       default:
-        break;
+        rd.timestamps[status] = isoNow;
     }
     setRingdowns([...ringdowns]);
   }

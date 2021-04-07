@@ -28,5 +28,25 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "f1c8d886-71a0-11eb-9439-0242ac130002",
+      "EmergencyMedicalServiceCallId": "3b685fd4-71a1-11eb-9439-0242ac130002",
+      "emergencyServiceResponseType": "CODE 2",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "ed1f60fc-71a0-11eb-9439-0242ac130002",
+      "EmergencyMedicalServiceCallId": "466b2736-71a1-11eb-9439-0242ac130002",
+      "emergencyServiceResponseType": "CODE 2",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]

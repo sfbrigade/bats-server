@@ -6,6 +6,7 @@ const _ = require('lodash');
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
 const { dispatchRingdownUpdate } = require('../../wss');
+const { DeliveryStatus } = require('../../constants');
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.get('/checkValidRingdown/:ringdownId', middleware.isAuthenticated, async 
  
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {
-    deliveryStatus: {
+    currentDeliveryStatus: {
       [Op.lt]: 'RETURNED TO SERVICE',
     },
   };
@@ -79,6 +80,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
     res.status(HttpStatus.FORBIDDEN).end();
   }
   try {
+    let patientDelivery;
     await models.sequelize.transaction(async (transaction) => {
       const emsCall = await models.EmergencyMedicalServiceCall.create(
         {
@@ -111,26 +113,21 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
         transaction,
       });
       const hospital = await models.Hospital.findByPk(req.body.hospital.id, { transaction });
-      const patientDelivery = await models.PatientDelivery.create(
-        {
-          AmbulanceId: ambulance.id,
-          PatientId: patient.id,
-          HospitalId: hospital.id,
-          ParamedicUserId: req.user.id,
-          deliveryStatus: 'RINGDOWN SENT',
-          etaMinutes: req.body.patientDelivery.etaMinutes,
-          ringdownSentDateTimeLocal: new Date(),
-          CreatedById: req.user.id,
-          UpdatedById: req.user.id,
-        },
+      patientDelivery = await models.PatientDelivery.createRingdown(
+        ambulance.id,
+        patient.id,
+        hospital.id,
+        req.user.id,
+        req.body.patientDelivery.dateTimeLocal || new Date(),
+        req.body.patientDelivery.etaMinutes,
         { transaction }
       );
       patientDelivery.Ambulance = ambulance;
       patientDelivery.Patient = patient;
       patientDelivery.Hospital = hospital;
       res.status(HttpStatus.CREATED).json(await patientDelivery.toRingdownJSON({ transaction }));
-      dispatchRingdownUpdate(patientDelivery.id);
     });
+    await dispatchRingdownUpdate(patientDelivery.id);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
@@ -138,14 +135,15 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
 
 router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res) => {
   try {
+    let patientDelivery;
     await models.sequelize.transaction(async (transaction) => {
-      const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
+      patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
         include: { all: true },
         rejectOnEmpty: true,
         transaction,
       });
       // check if calling user is allowed to modify this record
-      if (req.body.deliveryStatus === models.PatientDelivery.Status.RINGDOWN_RECEIVED) {
+      if (req.body.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED) {
         // check if user is in the receiving hospital ED
         const hospitalUser = await models.HospitalUser.findOne({
           where: {
@@ -164,16 +162,14 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
       }
       // update status
       try {
-        patientDelivery.setDeliveryStatus(req.body.deliveryStatus, req.body.dateTimeLocal);
+        await patientDelivery.createDeliveryStatusUpdate(req.user.id, req.body.deliveryStatus, req.body.dateTimeLocal);
       } catch (error) {
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
         return;
       }
-      // save and acknowledge
-      await patientDelivery.save();
       res.status(HttpStatus.OK).json(await patientDelivery.toRingdownJSON({ transaction }));
-      dispatchRingdownUpdate(patientDelivery.id);
     });
+    await dispatchRingdownUpdate(patientDelivery.id);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
@@ -181,8 +177,9 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
 
 router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
   try {
+    let patientDelivery;
     await models.sequelize.transaction(async (transaction) => {
-      const patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
+      patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
         include: { all: true },
         rejectOnEmpty: true,
         transaction,
@@ -242,8 +239,8 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
 
       await patientDelivery.save({ transaction });
       res.status(HttpStatus.OK).json(await patientDelivery.toRingdownJSON({ transaction }));
-      dispatchRingdownUpdate(patientDelivery.id);
     });
+    await dispatchRingdownUpdate(patientDelivery.id);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }

@@ -26,7 +26,7 @@ function FormInput({ label, onChange, property, required, showRequiredHint, valu
   );
 }
 FormInput.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
   onChange: PropTypes.func.isRequired,
   property: PropTypes.string.isRequired,
   required: PropTypes.bool,

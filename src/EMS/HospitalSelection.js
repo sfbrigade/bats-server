@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import FormInput from '../Components/FormInput';
 import FormRadio from '../Components/FormRadio';
+import Heading from '../Components/Heading';
 
 import Ringdown from '../Models/Ringdown';
 
@@ -20,7 +21,7 @@ function HospitalSelection({ ringdown, onChange }) {
   return (
     <>
       <div className="usa-accordion">
-        <h3 className="usa-accordion__heading">Hospital Selection</h3>
+        <Heading title="Hospital Selection" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
             {hospitalStatuses.map((hsu) => (

@@ -1,0 +1,31 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+
+.counter {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.counter__control {
+  align-items: center;
+  display: flex;
+}
+
+.counter__input {
+  text-align: center;
+}
+
+.counter__button {
+  align-items: center;
+  border-radius: 0.75rem;
+  display: flex;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  height: 1.5rem;
+  justify-content: center;
+  margin: 0 0.5rem !important;
+  padding: 0;
+  width: 1.5rem;
+}
