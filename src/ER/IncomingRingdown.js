@@ -16,11 +16,7 @@ const IncomingRingDown = ({ onConfirm, ringdown }) => {
       const response = await ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
       onConfirm(response.data);
     } catch (error) {
-<<<<<<< HEAD
-      /* eslint-disable no-console */
-=======
       // eslint-disable-next-line no-console
->>>>>>> master
       console.log(error);
     }
   }
