@@ -2,7 +2,20 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-function FormInput({ children, disabled, label, onChange, isWrapped, property, required, showRequiredHint, size, type, unit, value }) {
+function FormInput({
+  children,
+  disabled,
+  label,
+  onChange,
+  isWrapped,
+  property,
+  required,
+  showRequiredHint,
+  size,
+  type,
+  unit,
+  value,
+}) {
   const [focused, setFocused] = useState(false);
 
   function typedValue(stringValue) {

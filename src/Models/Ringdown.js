@@ -29,6 +29,7 @@ class Ringdown {
     this.payload.hospital = this.payload.hospital || {};
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
+    this.payload.formValidation = this.payload.formValidation || {};
   }
 
   get id() {
@@ -329,49 +330,116 @@ class Ringdown {
     );
   }
 
-  get isFieldPresent(field){
-    //helper for isMissingFields
-    if (this.payload.field !== Null && this.payload.field !== '')
-      return true;
-    return false;
+  get formValidation() {
+    return this.payload.formValidation;
   }
 
-  get isMissingFields(currentField){
-    //just a rough draft of a possible solution to 
-    //form validation logic
-    let missingFields = [];
-    let fixedMissing = [];
-    const fieldOrder = [
+  get currentField() {
+    return this.payload.formValidation.currentField;
+  }
+
+  set currentField(value) {
+    this.payload.formValidation.currentField = value;
+  }
+
+  get missingFields() {
+    return this.payload.formValidation.missingFields;
+  }
+
+  set missingFields(value) {
+    this.payload.formValidation.missingFields = value;
+  }
+
+  get fixedFields() {
+    return this.payload.formValidation.fixedFields;
+  }
+
+  set fixedFields(value) {
+    this.payload.formValidation.fixedFields = value;
+  }
+
+  set ambulanceIdentifierValidator(value) {
+    this.payload.formValidation.ambulanceIdentifierValidator = value;
+  }
+
+  get ambulanceIdentifierValidator() {
+    return this.payload.formValidation.ambulanceIdentifierValidator;
+  }
+
+  set dispatchCallNumberValidator(value) {
+    this.payload.formValidation.dispatchCallNumberValidator = value;
+  }
+
+  get dispatchCallNumberValidator() {
+    return this.payload.formValidation.dispatchCallNumberValidator;
+  }
+
+  set ageValidator(value) {
+    this.payload.formValidation.ageValidator = value;
+  }
+
+  get ageValidator() {
+    return this.payload.formValidation.ageValidator;
+  }
+
+  set sexValidator(value) {
+    this.payload.formValidation.sexValidator = value;
+  }
+
+  get sexValidator() {
+    return this.payload.formValidation.sexValidator;
+  }
+
+  set emergencyServiceResponseTypeValidator(value) {
+    this.payload.formValidation.emergencyServiceResponseTypeValidator = value;
+  }
+
+  get emergencyServiceResponseTypeValidator() {
+    return this.payload.formValidation.emergencyServiceResponseTypeValidator;
+  }
+
+  set stableIndicatorValidator(value) {
+    this.payload.formValidation.stableIndicatorValidator = value;
+  }
+
+  get stableIndicatorValidator() {
+    return this.payload.formValidation.stableIndicatorValidator;
+  }
+
+  get getErrorAndSuccesFields() {
+    // just a rough draft of a possible solution to
+    // form validation logic
+    const missingFields = this.missingFields || [];
+    const fixedMissing = this.fixedFields || [];
+    const fields = [
       this.ambulanceIdentifier,
       this.dispatchCallNumber,
       this.age,
       this.sex,
       this.emergencyServiceResponseType,
-      this.stableIndicator
+      this.stableIndicator,
     ];
+    const fieldNames = ['ambulanceIdentifier', 'dispatchCallNumber', 'age', 'sex', 'emergencyServiceResponseType', 'stableIndicator'];
     const fieldPosition = {
-      'ambulanceIdentifier': 0,
-      'dispatchCallNumber': 1,
-      'age': 2,
-      'sex': 3,
-      'emergencyServiceResponseType': 4,
-      'stableIndicator': 5
+      ambulanceIdentifier: 0,
+      dispatchCallNumber: 1,
+      age: 2,
+      sex: 3,
+      emergencyServiceResponseType: 4,
+      stableIndicator: 5,
     };
-    const stop = fieldPosition[currentField];
+    const stop = fieldPosition[this.currentField];
 
-    for (let i = 0; i < stop ; i++){
-      if (this.isFieldPresent(fieldOrder[i])){
-        if (missingFields[0] === fieldOrder[i]){
-          fixedMissing.push(missingFields[0]);
-          missingFields.shift();
-          continue;
+    for (let i = 0; i < stop; i += 1) {
+      if (fields[i]) {
+        for (let j = 0; j < missingFields.length; j += 1) {
+          if (missingFields[j] === fieldNames[i]) {
+            fixedMissing.push(missingFields[j]);
+            missingFields.splice(j, 1);
+          }
         }
-      }else{
-        if (missingFields[0] === fieldOrder[i]){
-          continue;
-        } else {
-          missingFields.push(fieldOrder[i]);
-        }
+      } else if (!missingFields.includes(fieldNames[i])) {
+        missingFields.push(fieldNames[i]);
       }
     }
     return [missingFields, fixedMissing];

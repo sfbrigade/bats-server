@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
@@ -8,72 +8,103 @@ import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 
+import './PatientFields.scss';
+
 function PatientFields({ ringdown, onChange }) {
+  const [changeStatus, setChangeStatus] = useState(false);
+
+  function handleClick(field) {
+    ringdown.currentField = field;
+    const invalidValidStatus = ringdown.getErrorAndSuccesFields;
+    ringdown.missingFields = invalidValidStatus[0];
+    ringdown.fixedFields = invalidValidStatus[1];
+
+    for (let i = 0; i < invalidValidStatus[0].length; i += 1) {
+      const validator = `${invalidValidStatus[0][i]  }Validator`;
+      ringdown[validator] = `${invalidValidStatus[0][i]  }_red`;
+    }
+    for (let i = 0; i < invalidValidStatus[1].length; i += 1) {
+      const validator = `${invalidValidStatus[1][i]  }Validator`;
+      ringdown[validator] = `${invalidValidStatus[1][i]  }_fixed`;
+    }
+
+    setChangeStatus(!changeStatus);
+  }
   return (
     <>
       <div className="usa-accordion">
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <FormInput
-              label="Unit #"
-              onChange={onChange}
-              property="ambulanceIdentifier"
-              required
-              size="medium"
-              value={ringdown.ambulanceIdentifier}
-            />
-            <FormInput
-              label="Incident #"
-              onChange={onChange}
-              property="dispatchCallNumber"
-              required
-              size="medium"
-              type="number"
-              value={ringdown.dispatchCallNumber}
-            />
+            <div className={ringdown.ambulanceIdentifierValidator}>
+              <FormInput
+                label="Unit #"
+                onChange={onChange}
+                property="ambulanceIdentifier"
+                required
+                size="medium"
+                value={ringdown.ambulanceIdentifier}
+              />
+            </div>
+            <div role="alert" className={ringdown.dispatchCallNumberValidator} onClick={() => handleClick('dispatchCallNumber')}>
+              <FormInput
+                label="Incident #"
+                onChange={onChange}
+                property="dispatchCallNumber"
+                required
+                size="medium"
+                type="number"
+                value={ringdown.dispatchCallNumber}
+              />
+            </div>
           </fieldset>
         </div>
         <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <FormInput
-              label="Age (estim.)"
-              onChange={onChange}
-              property="age"
-              required
-              size="small"
-              type="number"
-              unit="years"
-              value={ringdown.age}
-            />
+            <div role="alert" className={ringdown.ageValidator} onClick={() => handleClick('age')}>
+              <FormInput
+                label="Age (estim.)"
+                onChange={onChange}
+                property="age"
+                required
+                size="small"
+                type="number"
+                unit="years"
+                value={ringdown.age}
+              />
+            </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <label className="usa-label usa-label--required" htmlFor="sex">
-              Gender Identity
-            </label>
-            <FormRadio currentValue={ringdown.sex} label="Male" onChange={onChange} property="sex" value="MALE" />
-            <FormRadio currentValue={ringdown.sex} label="Female" onChange={onChange} property="sex" value="FEMALE" />
-            <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={onChange} property="sex" value="NON-BINARY" />
+            <div role="alert" className={ringdown.sexValidator} onClick={() => handleClick('sex')}>
+              <label className="usa-label usa-label--required" htmlFor="sex">
+                Gender Identity
+              </label>
+              <FormRadio currentValue={ringdown.sex} label="Male" onChange={onChange} property="sex" value="MALE" />
+              <FormRadio currentValue={ringdown.sex} label="Female" onChange={onChange} property="sex" value="FEMALE" />
+              <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={onChange} property="sex" value="NON-BINARY" />
+            </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
-              Urgency
-            </label>
-            <FormRadio
-              currentValue={ringdown.emergencyServiceResponseType}
-              label="Code 2"
-              onChange={onChange}
-              property="emergencyServiceResponseType"
-              value="CODE 2"
-            />
-            <FormRadio
-              currentValue={ringdown.emergencyServiceResponseType}
-              label="Code 3"
-              onChange={onChange}
-              property="emergencyServiceResponseType"
-              value="CODE 3"
-            />
+            <div role="alert" className={ringdown.emergencyServiceResponseTypeValidator} onClick={() => handleClick('emergencyServiceResponseType')}>
+              <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
+                Urgency
+              </label>
+              <FormRadio
+                currentValue={ringdown.emergencyServiceResponseType}
+                label="Code 2"
+                onChange={onChange}
+                property="emergencyServiceResponseType"
+                value="CODE 2"
+              />
+              <FormRadio
+                currentValue={ringdown.emergencyServiceResponseType}
+                label="Code 3"
+                onChange={onChange}
+                property="emergencyServiceResponseType"
+                value="CODE 3"
+              />
+            </div>
           </fieldset>
           <fieldset className="usa-fieldset">
             <FormTextArea
@@ -87,23 +118,25 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <label className="usa-label usa-label--required" htmlFor="stableIndicator">
-              Vitals Stability
-            </label>
-            <FormRadio
-              currentValue={ringdown.stableIndicator}
-              label="Vitals stable"
-              onChange={onChange}
-              property="stableIndicator"
-              value={true}
-            />
-            <FormRadio
-              currentValue={ringdown.stableIndicator}
-              label="Vitals not stable"
-              onChange={onChange}
-              property="stableIndicator"
-              value={false}
-            />
+            <div role="alert" className={ringdown.stableIndicatorValidator} onClick={() => handleClick('stableIndicator')}>
+              <label className="usa-label usa-label--required" htmlFor="stableIndicator">
+                Vitals Stability
+              </label>
+              <FormRadio
+                currentValue={ringdown.stableIndicator}
+                label="Vitals stable"
+                onChange={onChange}
+                property="stableIndicator"
+                value={true}
+              />
+              <FormRadio
+                currentValue={ringdown.stableIndicator}
+                label="Vitals not stable"
+                onChange={onChange}
+                property="stableIndicator"
+                value={false}
+              />
+            </div>
           </fieldset>
         </div>
         <Heading title="Vitals" subtitle="(optional)" />
