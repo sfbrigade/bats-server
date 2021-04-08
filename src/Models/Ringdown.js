@@ -324,8 +324,8 @@ class Ringdown {
       this.sex !== '' &&
       this.emergencyServiceResponseType !== null &&
       this.emergencyServiceResponseType !== '' &&
-      this.chiefComplaintDescription !== null &&
-      this.chiefComplaintDescription !== '' &&
+      // this.chiefComplaintDescription !== null &&
+      // this.chiefComplaintDescription !== '' &&
       this.stableIndicator !== null
     );
   }
