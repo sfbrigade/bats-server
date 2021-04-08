@@ -324,11 +324,21 @@ class Ringdown {
       this.sex !== '' &&
       this.emergencyServiceResponseType !== null &&
       this.emergencyServiceResponseType !== '' &&
-      // this.chiefComplaintDescription !== null &&
-      // this.chiefComplaintDescription !== '' &&
+      this.chiefComplaintDescription !== null &&
+      this.chiefComplaintDescription !== '' &&
       this.stableIndicator !== null
     );
   }
+
+  get isValid() {
+    return this.isPatientValid && this.hospitalId !== null && this.etaMinutes !== null;
+  }
+
+  toJSON() {
+    return this.payload;
+  }
+
+  // form validation
 
   get formValidation() {
     return this.payload.formValidation;
@@ -340,6 +350,20 @@ class Ringdown {
 
   set currentField(value) {
     this.payload.formValidation.currentField = value;
+  }
+
+  get stop() {
+    if (!this.payload.formValidation.stop){
+      this.payload.formValidation.stop = 0
+    }
+    return this.payload.formValidation.stop;
+  }
+
+  set stop(value) {
+    console.log("stop value", value);
+    if (this.stop < value) {
+      this.payload.formValidation.stop = value;
+    } 
   }
 
   get missingFields() {
@@ -398,6 +422,14 @@ class Ringdown {
     return this.payload.formValidation.emergencyServiceResponseTypeValidator;
   }
 
+  set chiefComplaintDescriptionValidator(value) {
+    this.payload.formValidation.chiefComplaintDescriptionValidator = value;
+  }
+
+  get chiefComplaintDescriptionValidator() {
+    return this.payload.formValidation.chiefComplaintDescriptionValidator;
+  }
+
   set stableIndicatorValidator(value) {
     this.payload.formValidation.stableIndicatorValidator = value;
   }
@@ -417,20 +449,33 @@ class Ringdown {
       this.age,
       this.sex,
       this.emergencyServiceResponseType,
+      this.chiefComplaintDescription,
       this.stableIndicator,
     ];
-    const fieldNames = ['ambulanceIdentifier', 'dispatchCallNumber', 'age', 'sex', 'emergencyServiceResponseType', 'stableIndicator'];
+    const fieldNames = [
+      'ambulanceIdentifier',
+      'dispatchCallNumber',
+      'age',
+      'sex',
+      'emergencyServiceResponseType',
+      'chiefComplaintDescription',
+      'stableIndicator',
+    ];
     const fieldPosition = {
       ambulanceIdentifier: 0,
       dispatchCallNumber: 1,
       age: 2,
       sex: 3,
       emergencyServiceResponseType: 4,
-      stableIndicator: 5,
+      chiefComplaintDescription: 5,
+      stableIndicator: 6,
+      end: 7,
     };
-    const stop = fieldPosition[this.currentField];
+    this.stop = fieldPosition[this.currentField];
+    console.log("stop", this.stop, fieldPosition[this.currentField]);
 
-    for (let i = 0; i < stop; i += 1) {
+    for (let i = 0; i < this.stop; i += 1) {
+      console.log('fields', fields[i], i);
       if (fields[i]) {
         for (let j = 0; j < missingFields.length; j += 1) {
           if (missingFields[j] === fieldNames[i]) {
@@ -439,18 +484,12 @@ class Ringdown {
           }
         }
       } else if (!missingFields.includes(fieldNames[i])) {
+        console.log(missingFields);
         missingFields.push(fieldNames[i]);
       }
     }
+    console.log(missingFields);
     return [missingFields, fixedMissing];
-  }
-
-  get isValid() {
-    return this.isPatientValid && this.hospitalId !== null && this.etaMinutes !== null;
-  }
-
-  toJSON() {
-    return this.payload;
   }
 }
 

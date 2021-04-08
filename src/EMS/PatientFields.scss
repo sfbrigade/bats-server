@@ -79,9 +79,25 @@
   padding: 2%;
   width: 513px;
 }
+.chiefComplaintDescription_red {
+  background-color: hsl(0, 53%, 88%);
+  height: 282px;
+  position: relative;
+  left: -25px;
+  padding: 2%;
+  width: 513px;
+}
+.chiefComplaintDescription_fixed {
+  background-color: hsl(124, 54%, 88%);
+  height: 282px;
+  position: relative;
+  left: -25px;
+  padding: 2%;
+  width: 513px;
+}
 .stableIndicator_red {
   background-color: hsl(0, 53%, 88%);
-  height: 88px;
+  height: 151px;
   position: relative;
   left: -25px;
   padding: 2%;
@@ -89,7 +105,7 @@
 }
 .stableIndicator_fixed {
   background-color: hsl(124, 54%, 88%);
-  height: 88px;
+  height: 151px;
   position: relative;
   left: -25px;
   padding: 2%;
