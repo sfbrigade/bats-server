@@ -47,7 +47,7 @@ function ascendingByOrder(a, b) {
 function PatientFields({ ringdown, onChange }) {
   const [changeStatus, setChangeStatus] = useState(false);
 
-  const [fieldData, setFieldData] = useState({
+  const [validationData, setValidationData] = useState({
     ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, InputState.NO_INPUT),
     dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, InputState.NO_INPUT),
     age: new PatientFieldData('age', 2, InputState.NO_INPUT),
@@ -93,15 +93,12 @@ function PatientFields({ ringdown, onChange }) {
    * @param {*} updatedField the field that was interacted with
    */
   function handleUserInput(updatedField, inputValue) {
-    console.log(`UPDATED FIELD IS ${updatedField}`);
-    console.log(`INPUT VALUE IS ${inputValue}`);
     // call the callback passed in from the parent component
     onChange();
 
     // update field states
-    const updatedData = updateFieldData(updatedField, fieldData);
-    console.log(`UPDATED FIELD DATA IS \n ${JSON.stringify(updatedData)}`);
-    setFieldData(updatedData);
+    const updatedData = updateFieldData(updatedField, validationData);
+    setValidationData(updatedData);
   }
 
   /**
@@ -146,7 +143,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div className={stateToClassName(fieldData.ambulanceIdentifier.inputState)}>
+            <div className={stateToClassName(validationData.ambulanceIdentifier.inputState)}>
               <FormInput
                 label="Unit #"
                 onChange={handleUserInput}
@@ -156,7 +153,7 @@ function PatientFields({ ringdown, onChange }) {
                 value={ringdown.ambulanceIdentifier}
               />
             </div>
-            <div role="alert" className={stateToClassName(fieldData.dispatchCallNumber.inputState)}>
+            <div role="alert" className={stateToClassName(validationData.dispatchCallNumber.inputState)}>
               <FormInput
                 label="Incident #"
                 onChange={handleUserInput}
@@ -172,7 +169,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div role="alert" className={stateToClassName(fieldData.age.inputState)}>
+            <div role="alert" className={stateToClassName(validationData.age.inputState)}>
               <FormInput
                 label="Age (estim.)"
                 onChange={handleUserInput}
