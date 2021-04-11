@@ -9,12 +9,121 @@ import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 
 import './PatientFields.scss';
+import '../Components/FormInput.scss';
+
+// Constants that represent the possible states for an input field
+const InputState = {
+  NO_INPUT: 'NO_INPUT',
+  ERROR: 'ERROR',
+  FIXED: 'FIXED',
+};
+Object.freeze(InputState);
+
+// Data object that stores all of the info required to validate an input field
+class PatientFieldData {
+  constructor(fieldName, fieldOrder, inputState) {
+    this.name = fieldName;
+    this.order = fieldOrder;
+    this.inputState = inputState;
+  }
+}
+
+/**
+ * Compare function used to sort an array of PatientFieldData
+ * @param {*} a the first PatientFieldData object
+ * @param {*} b the second PatientFieldData object
+ * @return -1 if a comes before b, 0 if a equals b, 1 if b comes before a
+ */
+function ascendingByOrder(a, b) {
+  if (a.order < b.order) {
+    return -1;
+  }
+  if (a.order === b.order) {
+    return 0;
+  }
+  return 1;
+}
 
 function PatientFields({ ringdown, onChange }) {
   const [changeStatus, setChangeStatus] = useState(false);
 
+  const [fieldData, setFieldData] = useState({
+    ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, InputState.NO_INPUT),
+    dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, InputState.NO_INPUT),
+    age: new PatientFieldData('age', 2, InputState.NO_INPUT),
+    // TODO - add the rest
+  });
+
+  /**
+   * Given an updated input field and a dictionary the current state of all fields, output the
+   * new state for all fields
+   *
+   * @param {*} updatedField The field that was updated
+   * @param {*} fieldData A dictionary containing all PatientFieldData objects
+   * @returns A new dictionary containing the updated PatientFieldData objects
+   */
+  function updateFieldData(updatedField, fieldData) {
+    const updatedData = { ...fieldData };
+
+    // 1. Handle the updated field
+    //  - if status was ERROR, then set it to fixed
+    //  - if status was NO_INPUT or FIXED, no need to do anything
+    if (updatedData[updatedField].inputState === InputState.ERROR) {
+      updatedData[updatedField].inputState = InputState.FIXED;
+    }
+
+    // 2. Possibly update the input state for fields before the updated field
+    //  - Sort the fields in ascending order
+    //  - Start at the field before the current field and iterate through the fields in descending order
+    //  - if input state is NO_INPUT, set it to error
+    //  - if status was ERROR or FIXED, no need to do anything
+    const partition = updatedData[updatedField].order - 1;
+    const sorted = Object.values(updatedData).sort(ascendingByOrder);
+    for (let i = partition; i >= 0; i--) {
+      if (sorted[i].inputState === InputState.NO_INPUT) {
+        const fieldName = sorted[i].name;
+        updatedData[fieldName].inputState = InputState.ERROR;
+      }
+    }
+    return updatedData;
+  }
+
+  /**
+   * Update the UI based on the user interaction
+   * @param {*} updatedField the field that was interacted with
+   */
+  function handleUserInput(updatedField, inputValue) {
+    console.log(`UPDATED FIELD IS ${updatedField}`);
+    console.log(`INPUT VALUE IS ${inputValue}`);
+    // call the callback passed in from the parent component
+    onChange();
+
+    // update field states
+    const updatedData = updateFieldData(updatedField, fieldData);
+    console.log(`UPDATED FIELD DATA IS \n ${JSON.stringify(updatedData)}`);
+    setFieldData(updatedData);
+  }
+
+  /**
+   * Convert a PatientFieldState to a FormInput class name
+   * @param {*} patientFieldState the current PatientFieldState
+   * @returns the class name that should be applied
+   */
+  function stateToClassName(inputFieldState) {
+    switch (inputFieldState) {
+      case InputState.FIXED:
+        // TODO - replace this with a success case
+        return '';
+      case InputState.ERROR:
+        return 'forminput__error';
+      default:
+        return '';
+    }
+  }
+
   function handleClick(field) {
     ringdown.currentField = field;
+
     const invalidValidStatus = ringdown.getErrorAndSuccesFields;
     ringdown.missingFields = invalidValidStatus[0];
     ringdown.fixedFields = invalidValidStatus[1];
@@ -30,26 +139,27 @@ function PatientFields({ ringdown, onChange }) {
 
     setChangeStatus(!changeStatus);
   }
+
   return (
     <>
       <div className="usa-accordion">
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div className={ringdown.ambulanceIdentifierValidator} onClick={() => handleClick('ambulanceIdentifier')}>
+            <div className={stateToClassName(fieldData.ambulanceIdentifier.inputState)}>
               <FormInput
                 label="Unit #"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="ambulanceIdentifier"
                 required
                 size="medium"
                 value={ringdown.ambulanceIdentifier}
               />
             </div>
-            <div role="alert" className={ringdown.dispatchCallNumberValidator} onClick={() => handleClick('dispatchCallNumber')}>
+            <div role="alert" className={stateToClassName(fieldData.dispatchCallNumber.inputState)}>
               <FormInput
                 label="Incident #"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="dispatchCallNumber"
                 required
                 size="medium"
@@ -62,10 +172,10 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.ageValidator} onClick={() => handleClick('age')}>
+            <div role="alert" className={stateToClassName(fieldData.age.inputState)}>
               <FormInput
                 label="Age (estim.)"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="age"
                 required
                 size="small"
