@@ -472,11 +472,12 @@ class Ringdown {
       end: 7,
     };
     this.stop = fieldPosition[this.currentField];
+
     console.log('stop', this.stop, fieldPosition[this.currentField]);
 
     for (let i = 0; i < this.stop; i += 1) {
-      console.log('fields', fields[i], i);
       if (fields[i]) {
+        // need solution for when stableIndicator === false
         for (let j = 0; j < missingFields.length; j += 1) {
           if (missingFields[j] === fieldNames[i]) {
             fixedMissing.push(missingFields[j]);
