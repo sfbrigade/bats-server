@@ -79,7 +79,7 @@ function PatientFields({ ringdown, onChange }) {
     //  - if status was ERROR or FIXED, no need to do anything
     const partition = updatedData[updatedField].order - 1;
     const sorted = Object.values(updatedData).sort(ascendingByOrder);
-    for (let i = partition; i >= 0; i--) {
+    for (let i = partition; i >= 0; i -= 1) {
       if (sorted[i].inputState === InputState.NO_INPUT) {
         const fieldName = sorted[i].name;
         updatedData[fieldName].inputState = InputState.ERROR;
