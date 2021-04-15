@@ -7,6 +7,7 @@ const password = document.getElementById('password');
 function checkPassword() {
   if (password.value === '') {
     password.classList.add('password_error');
+    password.classList.remove('success');
     passwordErrorMessage.classList.remove('password_message');
     passwordErrorMessage.classList.remove('passwordMessageSuccess');
     passwordErrorMessage.classList.add('password_message_error');
@@ -22,7 +23,7 @@ function checkPassword() {
     document.getElementById('login_submit').style.backgroundColor = 'blue';
   }
 }
-password.addEventListener('input', checkPassword);
+password.addEventListener('change', checkPassword);
 loginBtn.addEventListener('click', checkPassword);
 
 const email = document.getElementById('email');
