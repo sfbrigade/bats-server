@@ -12,7 +12,7 @@ function checkPassword() {
     passwordErrorMessage.classList.add('password_message_error');
     passwordErrorMessage.classList.remove('password_message');
     passwordErrorMessage.classList.remove('password_message_success');
-    
+
     passwordMessageSuccess.classList.remove('password_message_success');
     passwordMessageSuccess.classList.add('password_message');
 
@@ -30,10 +30,10 @@ function checkPassword() {
 
     passwordErrorMessage.classList.remove('password_message_error');
     passwordErrorMessage.classList.add('password_message');
-    
+
     passwordLabel.classList.remove('password-label-error');
     passwordLabel.classList.add('password-label-success');
-    
+
     loginBtn.classList.remove('not-submitable');
     loginBtn.classList.add('submitable');
   }
