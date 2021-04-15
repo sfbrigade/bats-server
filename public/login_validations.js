@@ -1,5 +1,5 @@
 const loginBtn = document.getElementById('login_submit');
-const passwordErrorMessage = document.getElementById('password-error-message');
+const passwordErrorMessage = document.getElementById('password_error_message');
 const passwordMessageSuccess = document.getElementById('password_message_success');
 const passwordLabel = document.getElementById('password-label');
 const password = document.getElementById('password');
@@ -8,9 +8,11 @@ function checkPassword() {
   if (password.value === '') {
     password.classList.add('password_error');
     password.classList.remove('success');
-    passwordErrorMessage.classList.remove('password_message');
-    passwordErrorMessage.classList.remove('passwordMessageSuccess');
+
     passwordErrorMessage.classList.add('password_message_error');
+    passwordErrorMessage.classList.remove('password_message');
+    passwordErrorMessage.classList.remove('password_message_success');
+    
   }
   if (password.value !== '') {
     password.classList.add('success');
