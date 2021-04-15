@@ -13,16 +13,29 @@ function checkPassword() {
     passwordErrorMessage.classList.remove('password_message');
     passwordErrorMessage.classList.remove('password_message_success');
     
+    passwordMessageSuccess.classList.remove('password_message_success');
+    passwordMessageSuccess.classList.add('password_message');
+
+    passwordLabel.classList.remove('password-label-success');
+    passwordLabel.classList.add('password-label-error');
+
+    loginBtn.classList.remove('submitable');
+    loginBtn.classList.add('not-submitable');
   }
   if (password.value !== '') {
     password.classList.add('success');
+
     passwordMessageSuccess.classList.remove('password_message');
+    passwordMessageSuccess.classList.add('password_message_success');
+
     passwordErrorMessage.classList.remove('password_message_error');
     passwordErrorMessage.classList.add('password_message');
-    passwordMessageSuccess.classList.add('password_message_success');
-    passwordLabel.classList.add('password-label');
-    document.getElementById('login_submit').style.backgroundColor = null;
-    document.getElementById('login_submit').style.backgroundColor = 'blue';
+    
+    passwordLabel.classList.remove('password-label-error');
+    passwordLabel.classList.add('password-label-success');
+    
+    loginBtn.classList.remove('not-submitable');
+    loginBtn.classList.add('submitable');
   }
 }
 password.addEventListener('change', checkPassword);
