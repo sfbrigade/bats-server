@@ -43,7 +43,10 @@ export default {
     },
     cancel(patientDeliveryId){
       return instance.delete(`/api/ringdowns/${patientDeliveryId}`);
-    }
+    },
+    // redirect(patientDeliveryId, hospitalId, data){
+    //   return instance.get('/api/')
+    // }
   },
   users: {
     me() {
