@@ -94,11 +94,10 @@ function PatientFields({ ringdown, onChange }) {
    */
   function handleUserInput(updatedField, inputValue) {
     // call the callback passed in from the parent component
-    onChange();
+    onChange(updatedField, inputValue);
 
     // update field states
-    const updatedData = updateFieldData(updatedField, validationData);
-    setValidationData(updatedData);
+    ringdown.validateData(updatedField);
   }
 
   /**
@@ -143,7 +142,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div className={stateToClassName(validationData.ambulanceIdentifier.inputState)}>
+            <div className={ringdown.getClassName("ambulanceIdentifier")}>
               <FormInput
                 label="Unit #"
                 onChange={handleUserInput}
@@ -153,7 +152,7 @@ function PatientFields({ ringdown, onChange }) {
                 value={ringdown.ambulanceIdentifier}
               />
             </div>
-            <div role="alert" className={stateToClassName(validationData.dispatchCallNumber.inputState)}>
+            <div role="alert" className={ringdown.getClassName("dispatchCallNumber")}>
               <FormInput
                 label="Incident #"
                 onChange={handleUserInput}
@@ -169,7 +168,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div role="alert" className={stateToClassName(validationData.age.inputState)}>
+            <div role="alert" className={ringdown.getClassName("age")}>
               <FormInput
                 label="Age (estim.)"
                 onChange={handleUserInput}

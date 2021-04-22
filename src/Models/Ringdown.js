@@ -17,6 +17,23 @@ DeliveryStatus.ALL_STATUSES = [
 ];
 Object.freeze(DeliveryStatus);
 
+//
+const InputState = {
+  NO_INPUT: 'NO_INPUT',
+  ERROR: 'ERROR',
+  FIXED: 'FIXED',
+};
+Object.freeze(InputState);
+
+class PatientFieldData {
+  constructor(fieldName, fieldOrder, inputState) {
+    this.name = fieldName;
+    this.order = fieldOrder;
+    this.inputState = inputState;
+  }
+}
+//
+
 class Ringdown {
   static get Status() {
     return DeliveryStatus;
@@ -29,7 +46,12 @@ class Ringdown {
     this.payload.hospital = this.payload.hospital || {};
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
-    this.payload.formValidation = this.payload.formValidation || {};
+    // this.payload.formValidation = this.payload.formValidation || {};
+    this.validationData = {
+      ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, InputState.NO_INPUT),
+      dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, InputState.NO_INPUT),
+      age: new PatientFieldData('age', 2, InputState.NO_INPUT),
+    }
   }
 
   get id() {
@@ -340,158 +362,53 @@ class Ringdown {
 
   // form validation
 
-  get formValidation() {
-    return this.payload.formValidation;
-  }
+  validateData(updatedField) {
 
-  get currentField() {
-    return this.payload.formValidation.currentField;
-  }
-
-  set currentField(value) {
-    this.payload.formValidation.currentField = value;
-  }
-
-  get stop() {
-    if (!this.payload.formValidation.stop) {
-      this.payload.formValidation.stop = 0;
+    function ascendingByOrder(a, b) {
+      if (a.order < b.order) {
+        return -1;
+      }
+      if (a.order === b.order) {
+        return 0;
+      }
+      return 1;
     }
-    return this.payload.formValidation.stop;
-  }
 
-  set stop(value) {
-    console.log('stop value', value);
-    if (this.stop < value) {
-      this.payload.formValidation.stop = value;
+    // 1. Handle the updated field
+    //  - if status was ERROR, then set it to fixed
+    //  - if status was NO_INPUT or FIXED, no need to do anything
+    if (this.validationData[updatedField].inputState === InputState.ERROR) {
+      this.validationData[updatedField].inputState = InputState.FIXED;
     }
-  }
 
-  get missingFields() {
-    return this.payload.formValidation.missingFields;
-  }
-
-  set missingFields(value) {
-    this.payload.formValidation.missingFields = value;
-  }
-
-  get fixedFields() {
-    return this.payload.formValidation.fixedFields;
-  }
-
-  set fixedFields(value) {
-    this.payload.formValidation.fixedFields = value;
-  }
-
-  set ambulanceIdentifierValidator(value) {
-    this.payload.formValidation.ambulanceIdentifierValidator = value;
-  }
-
-  get ambulanceIdentifierValidator() {
-    return this.payload.formValidation.ambulanceIdentifierValidator;
-  }
-
-  set dispatchCallNumberValidator(value) {
-    this.payload.formValidation.dispatchCallNumberValidator = value;
-  }
-
-  get dispatchCallNumberValidator() {
-    return this.payload.formValidation.dispatchCallNumberValidator;
-  }
-
-  set ageValidator(value) {
-    this.payload.formValidation.ageValidator = value;
-  }
-
-  get ageValidator() {
-    return this.payload.formValidation.ageValidator;
-  }
-
-  set sexValidator(value) {
-    this.payload.formValidation.sexValidator = value;
-  }
-
-  get sexValidator() {
-    return this.payload.formValidation.sexValidator;
-  }
-
-  set emergencyServiceResponseTypeValidator(value) {
-    this.payload.formValidation.emergencyServiceResponseTypeValidator = value;
-  }
-
-  get emergencyServiceResponseTypeValidator() {
-    return this.payload.formValidation.emergencyServiceResponseTypeValidator;
-  }
-
-  set chiefComplaintDescriptionValidator(value) {
-    this.payload.formValidation.chiefComplaintDescriptionValidator = value;
-  }
-
-  get chiefComplaintDescriptionValidator() {
-    return this.payload.formValidation.chiefComplaintDescriptionValidator;
-  }
-
-  set stableIndicatorValidator(value) {
-    this.payload.formValidation.stableIndicatorValidator = value;
-  }
-
-  get stableIndicatorValidator() {
-    return this.payload.formValidation.stableIndicatorValidator;
-  }
-
-  get getErrorAndSuccesFields() {
-    // just a rough draft of a possible solution to
-    // form validation logic
-    const missingFields = this.missingFields || [];
-    const fixedMissing = this.fixedFields || [];
-    const fields = [
-      this.ambulanceIdentifier,
-      this.dispatchCallNumber,
-      this.age,
-      this.sex,
-      this.emergencyServiceResponseType,
-      this.chiefComplaintDescription,
-      this.stableIndicator,
-    ];
-    const fieldNames = [
-      'ambulanceIdentifier',
-      'dispatchCallNumber',
-      'age',
-      'sex',
-      'emergencyServiceResponseType',
-      'chiefComplaintDescription',
-      'stableIndicator',
-    ];
-    const fieldPosition = {
-      ambulanceIdentifier: 0,
-      dispatchCallNumber: 1,
-      age: 2,
-      sex: 3,
-      emergencyServiceResponseType: 4,
-      chiefComplaintDescription: 5,
-      stableIndicator: 6,
-      end: 7,
-    };
-    this.stop = fieldPosition[this.currentField];
-
-    console.log('stop', this.stop, fieldPosition[this.currentField]);
-
-    for (let i = 0; i < this.stop; i += 1) {
-      if (fields[i]) {
-        // need solution for when stableIndicator === false
-        for (let j = 0; j < missingFields.length; j += 1) {
-          if (missingFields[j] === fieldNames[i]) {
-            fixedMissing.push(missingFields[j]);
-            missingFields.splice(j, 1);
-          }
-        }
-      } else if (!missingFields.includes(fieldNames[i])) {
-        console.log(missingFields);
-        missingFields.push(fieldNames[i]);
+    // 2. Possibly update the input state for fields before the updated field
+    //  - Sort the fields in ascending order
+    //  - Start at the field before the current field and iterate through the fields in descending order
+    //  - if input state is NO_INPUT, set it to error
+    //  - if status was ERROR or FIXED, no need to do anything
+    const partition = this.validationData[updatedField].order - 1;
+    const sorted = Object.values(this.validationData).sort(ascendingByOrder);
+    for (let i = partition; i >= 0; i -= 1) {
+      if (sorted[i].inputState === InputState.NO_INPUT) {
+        const fieldName = sorted[i].name;
+        this.validationData[fieldName].inputState = InputState.ERROR;
       }
     }
-    console.log(missingFields);
-    return [missingFields, fixedMissing];
   }
+
+  getClassName(fieldName){
+    
+    switch (this.validationData[fieldName].inputState) {
+      case InputState.FIXED:
+        // TODO - replace this with a success case
+        return 'forminput__fixed';
+      case InputState.ERROR:
+        return 'forminput__error';
+      default:
+        return '';
+    }
+  }
+  
 }
 
 Ringdown.propTypes = {
