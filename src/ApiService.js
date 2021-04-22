@@ -41,6 +41,9 @@ export default {
     update(patientDeliveryId, data) {
       return instance.patch(`/api/ringdowns/${patientDeliveryId}`, data);
     },
+    cancel(patientDeliveryId){
+      return instance.delete(`/api/ringdowns/${patientDeliveryId}`);
+    }
   },
   users: {
     me() {
