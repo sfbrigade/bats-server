@@ -46,7 +46,6 @@ class Ringdown {
     this.payload.hospital = this.payload.hospital || {};
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
-    // this.payload.formValidation = this.payload.formValidation || {};
     this.validationData = {
       ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, InputState.NO_INPUT),
       dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, InputState.NO_INPUT),
@@ -374,18 +373,10 @@ class Ringdown {
       return 1;
     }
 
-    // 1. Handle the updated field
-    //  - if status was ERROR, then set it to fixed
-    //  - if status was NO_INPUT or FIXED, no need to do anything
     if (this.validationData[updatedField].inputState === InputState.ERROR) {
       this.validationData[updatedField].inputState = InputState.FIXED;
     }
 
-    // 2. Possibly update the input state for fields before the updated field
-    //  - Sort the fields in ascending order
-    //  - Start at the field before the current field and iterate through the fields in descending order
-    //  - if input state is NO_INPUT, set it to error
-    //  - if status was ERROR or FIXED, no need to do anything
     const partition = this.validationData[updatedField].order - 1;
     const sorted = Object.values(this.validationData).sort(ascendingByOrder);
     for (let i = partition; i >= 0; i -= 1) {
@@ -400,7 +391,6 @@ class Ringdown {
     
     switch (this.validationData[fieldName].inputState) {
       case InputState.FIXED:
-        // TODO - replace this with a success case
         return 'forminput__fixed';
       case InputState.ERROR:
         return 'forminput__error';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
@@ -11,129 +11,14 @@ import Ringdown from '../Models/Ringdown';
 import './PatientFields.scss';
 import '../Components/FormInput.scss';
 
-// Constants that represent the possible states for an input field
-const InputState = {
-  NO_INPUT: 'NO_INPUT',
-  ERROR: 'ERROR',
-  FIXED: 'FIXED',
-};
-Object.freeze(InputState);
-
-// Data object that stores all of the info required to validate an input field
-class PatientFieldData {
-  constructor(fieldName, fieldOrder, inputState) {
-    this.name = fieldName;
-    this.order = fieldOrder;
-    this.inputState = inputState;
-  }
-}
-
-/**
- * Compare function used to sort an array of PatientFieldData
- * @param {*} a the first PatientFieldData object
- * @param {*} b the second PatientFieldData object
- * @return -1 if a comes before b, 0 if a equals b, 1 if b comes before a
- */
-function ascendingByOrder(a, b) {
-  if (a.order < b.order) {
-    return -1;
-  }
-  if (a.order === b.order) {
-    return 0;
-  }
-  return 1;
-}
-
 function PatientFields({ ringdown, onChange }) {
-  const [changeStatus, setChangeStatus] = useState(false);
+  
 
-  const [validationData, setValidationData] = useState({
-    ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, InputState.NO_INPUT),
-    dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, InputState.NO_INPUT),
-    age: new PatientFieldData('age', 2, InputState.NO_INPUT),
-    // TODO - add the rest
-  });
-
-  /**
-   * Given an updated input field and a dictionary the current state of all fields, output the
-   * new state for all fields
-   *
-   * @param {*} updatedField The field that was updated
-   * @param {*} fieldData A dictionary containing all PatientFieldData objects
-   * @returns A new dictionary containing the updated PatientFieldData objects
-   */
-  function updateFieldData(updatedField, fieldData) {
-    const updatedData = { ...fieldData };
-
-    // 1. Handle the updated field
-    //  - if status was ERROR, then set it to fixed
-    //  - if status was NO_INPUT or FIXED, no need to do anything
-    if (updatedData[updatedField].inputState === InputState.ERROR) {
-      updatedData[updatedField].inputState = InputState.FIXED;
-    }
-
-    // 2. Possibly update the input state for fields before the updated field
-    //  - Sort the fields in ascending order
-    //  - Start at the field before the current field and iterate through the fields in descending order
-    //  - if input state is NO_INPUT, set it to error
-    //  - if status was ERROR or FIXED, no need to do anything
-    const partition = updatedData[updatedField].order - 1;
-    const sorted = Object.values(updatedData).sort(ascendingByOrder);
-    for (let i = partition; i >= 0; i -= 1) {
-      if (sorted[i].inputState === InputState.NO_INPUT) {
-        const fieldName = sorted[i].name;
-        updatedData[fieldName].inputState = InputState.ERROR;
-      }
-    }
-    return updatedData;
-  }
-
-  /**
-   * Update the UI based on the user interaction
-   * @param {*} updatedField the field that was interacted with
-   */
   function handleUserInput(updatedField, inputValue) {
-    // call the callback passed in from the parent component
+    
     onChange(updatedField, inputValue);
 
-    // update field states
     ringdown.validateData(updatedField);
-  }
-
-  /**
-   * Convert a PatientFieldState to a FormInput class name
-   * @param {*} patientFieldState the current PatientFieldState
-   * @returns the class name that should be applied
-   */
-  function stateToClassName(inputFieldState) {
-    switch (inputFieldState) {
-      case InputState.FIXED:
-        // TODO - replace this with a success case
-        return '';
-      case InputState.ERROR:
-        return 'forminput__error';
-      default:
-        return '';
-    }
-  }
-
-  function handleClick(field) {
-    ringdown.currentField = field;
-
-    const invalidValidStatus = ringdown.getErrorAndSuccesFields;
-    ringdown.missingFields = invalidValidStatus[0];
-    ringdown.fixedFields = invalidValidStatus[1];
-
-    for (let i = 0; i < invalidValidStatus[0].length; i += 1) {
-      const validator = `${invalidValidStatus[0][i]}Validator`;
-      ringdown[validator] = `${invalidValidStatus[0][i]}_red`;
-    }
-    for (let i = 0; i < invalidValidStatus[1].length; i += 1) {
-      const validator = `${invalidValidStatus[1][i]}Validator`;
-      ringdown[validator] = `${invalidValidStatus[1][i]}_fixed`;
-    }
-
-    setChangeStatus(!changeStatus);
   }
 
   return (
@@ -142,7 +27,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div className={ringdown.getClassName("ambulanceIdentifier")}>
+            <div className={ringdown.getClassName("ambulanceIdentifier")}>``
               <FormInput
                 label="Unit #"
                 onChange={handleUserInput}
@@ -182,7 +67,7 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.sexValidator} onClick={() => handleClick('sex')}>
+            <div role="alert" >
               <label className="usa-label usa-label--required" htmlFor="sex">
                 Gender Identity
               </label>
@@ -192,11 +77,7 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div
-              role="alert"
-              className={ringdown.emergencyServiceResponseTypeValidator}
-              onClick={() => handleClick('emergencyServiceResponseType')}
-            >
+            <div role="alert">
               <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
                 Urgency
               </label>
@@ -217,11 +98,7 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div
-              role="alert"
-              className={ringdown.chiefComplaintDescriptionValidator}
-              onClick={() => handleClick('chiefComplaintDescription')}
-            >
+            <div role="alert">
               <label className="usa-label usa-label--required" htmlFor="chiefComplaintDescription">
                 Chief Complaint
               </label>
@@ -232,7 +109,7 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.stableIndicatorValidator} onClick={() => handleClick('stableIndicator')}>
+            <div role="alert">
               <label className="usa-label usa-label--required" htmlFor="stableIndicator">
                 Vitals Stability
               </label>
@@ -253,7 +130,7 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
         </div>
-        <div type="alert" onClick={() => handleClick('end')}>
+        <div type="alert">
           <Heading title="Vitals" subtitle="(optional)" />
           <div className="usa-accordion__content">
             <fieldset className="usa-fieldset">
