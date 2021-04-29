@@ -50,6 +50,11 @@ class Ringdown {
       ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, InputState.NO_INPUT),
       dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, InputState.NO_INPUT),
       age: new PatientFieldData('age', 2, InputState.NO_INPUT),
+      sex: new PatientFieldData('sex', 3, InputState.NO_INPUT),
+      emergencyServiceResponseType: new PatientFieldData('emergencyServiceResponseType', 4, InputState.NO_INPUT),
+      chiefComplaintDescription: new PatientFieldData('chiefComplaintDescription', 5, InputState.NO_INPUT),
+      stableIndicator: new PatientFieldData('stableIndicator', 6, InputState.NO_INPUT),
+      catchAll: new PatientFieldData('catchAll', 7, InputState.NO_INPUT)
     }
   }
 
@@ -376,7 +381,7 @@ class Ringdown {
     if (this.validationData[updatedField].inputState === InputState.ERROR) {
       this.validationData[updatedField].inputState = InputState.FIXED;
     }
-
+    
     const partition = this.validationData[updatedField].order - 1;
     const sorted = Object.values(this.validationData).sort(ascendingByOrder);
     for (let i = partition; i >= 0; i -= 1) {

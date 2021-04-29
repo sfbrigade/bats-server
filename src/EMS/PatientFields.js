@@ -17,8 +17,12 @@ function PatientFields({ ringdown, onChange }) {
   function handleUserInput(updatedField, inputValue) {
     
     onChange(updatedField, inputValue);
-
-    ringdown.validateData(updatedField);
+  
+    if (ringdown.validationData[updatedField]){
+      ringdown.validateData(updatedField);
+    } else {
+      ringdown.validateData("catchAll");
+    }
   }
 
   return (
@@ -67,63 +71,63 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert" >
+            <div role="alert" className={ringdown.getClassName("sex")}>
               <label className="usa-label usa-label--required" htmlFor="sex">
                 Gender Identity
               </label>
-              <FormRadio currentValue={ringdown.sex} label="Male" onChange={onChange} property="sex" value="MALE" />
-              <FormRadio currentValue={ringdown.sex} label="Female" onChange={onChange} property="sex" value="FEMALE" />
-              <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={onChange} property="sex" value="NON-BINARY" />
+              <FormRadio currentValue={ringdown.sex} label="Male" onChange={handleUserInput} property="sex" value="MALE" />
+              <FormRadio currentValue={ringdown.sex} label="Female" onChange={handleUserInput} property="sex" value="FEMALE" />
+              <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={handleUserInput} property="sex" value="NON-BINARY" />
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert">
+            <div role="alert" className={ringdown.getClassName("emergencyServiceResponseType")}>
               <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
                 Urgency
               </label>
               <FormRadio
                 currentValue={ringdown.emergencyServiceResponseType}
                 label="Code 2"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="emergencyServiceResponseType"
                 value="CODE 2"
               />
               <FormRadio
                 currentValue={ringdown.emergencyServiceResponseType}
                 label="Code 3"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="emergencyServiceResponseType"
                 value="CODE 3"
               />
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert">
+            <div role="alert" className={ringdown.getClassName("chiefComplaintDescription")}>
               <label className="usa-label usa-label--required" htmlFor="chiefComplaintDescription">
                 Chief Complaint
               </label>
-              <FormTextArea label="" onChange={onChange} property="chiefComplaintDescription" value={ringdown.chiefComplaintDescription} />
+              <FormTextArea label="" onChange={handleUserInput} property="chiefComplaintDescription" value={ringdown.chiefComplaintDescription} />
               <div className="usa-hint usa-hint--important">
                 <i className="fas fa-info-circle" /> Exclude identifying information.
               </div>
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert">
+            <div role="alert" className={ringdown.getClassName("stableIndicator")}>
               <label className="usa-label usa-label--required" htmlFor="stableIndicator">
                 Vitals Stability
               </label>
               <FormRadio
                 currentValue={ringdown.stableIndicator}
                 label="Vitals stable"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="stableIndicator"
                 value={true}
               />
               <FormRadio
                 currentValue={ringdown.stableIndicator}
                 label="Vitals not stable"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="stableIndicator"
                 value={false}
               />
@@ -136,7 +140,7 @@ function PatientFields({ ringdown, onChange }) {
             <fieldset className="usa-fieldset">
               <FormInput
                 label="Blood Pressure"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="systolicBloodPressure"
                 size="small"
                 type="number"
@@ -145,7 +149,7 @@ function PatientFields({ ringdown, onChange }) {
               >
                 &nbsp;&nbsp;
                 <FormInput
-                  onChange={onChange}
+                  onChange={handleUserInput}
                   isWrapped={false}
                   property="diastolicBloodPressure"
                   size="small"
@@ -156,7 +160,7 @@ function PatientFields({ ringdown, onChange }) {
               </FormInput>
               <FormInput
                 label="Pulse"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="heartRateBpm"
                 size="small"
                 type="number"
@@ -165,7 +169,7 @@ function PatientFields({ ringdown, onChange }) {
               />
               <FormInput
                 label="Respiratory Rate"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="respiratoryRate"
                 size="small"
                 type="number"
@@ -174,7 +178,7 @@ function PatientFields({ ringdown, onChange }) {
               />
               <FormInput
                 label="SpO2"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="oxygenSaturation"
                 size="small"
                 type="number"
@@ -186,7 +190,7 @@ function PatientFields({ ringdown, onChange }) {
                   currentValue={ringdown.lowOxygenResponseType}
                   disabled={ringdown.oxygenSaturation === null || ringdown.oxygenSaturation === ''}
                   label="RA"
-                  onChange={onChange}
+                  onChange={handleUserInput}
                   property="lowOxygenResponseType"
                   value="ROOM AIR"
                 />
@@ -195,14 +199,14 @@ function PatientFields({ ringdown, onChange }) {
                     currentValue={ringdown.lowOxygenResponseType}
                     disabled={ringdown.oxygenSaturation === null || ringdown.oxygenSaturation === ''}
                     label="O2"
-                    onChange={onChange}
+                    onChange={handleUserInput}
                     property="lowOxygenResponseType"
                     value="SUPPLEMENTAL OXYGEN"
                   />
                   <div className="margin-left-4">
                     <FormInput
                       disabled={ringdown.lowOxygenResponseType !== 'SUPPLEMENTAL OXYGEN'}
-                      onChange={onChange}
+                      onChange={handleUserInput}
                       property="supplementalOxygenAmount"
                       size="small"
                       type="number"
@@ -214,7 +218,7 @@ function PatientFields({ ringdown, onChange }) {
               </div>
               <FormInput
                 label="Temp."
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="temperature"
                 size="small"
                 type="number"
@@ -229,28 +233,28 @@ function PatientFields({ ringdown, onChange }) {
               <FormCheckbox
                 currentValue={ringdown.etohSuspectedIndicator}
                 label="ETOH suspected"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="etohSuspectedIndicator"
                 value={true}
               />
               <FormCheckbox
                 currentValue={ringdown.drugsSuspectedIndicator}
                 label="Drugs suspected"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="drugsSuspectedIndicator"
                 value={true}
               />
               <FormCheckbox
                 currentValue={ringdown.psychIndicator}
                 label="Psych patient"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="psychIndicator"
                 value={true}
               />
               <FormCheckbox
                 currentValue={ringdown.combativeBehaviorIndicator}
                 label="Combative"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="combativeBehaviorIndicator"
                 value={true}
               />
@@ -259,7 +263,7 @@ function PatientFields({ ringdown, onChange }) {
                   currentValue={ringdown.restraintIndicator}
                   disabled={ringdown.combativeBehaviorIndicator !== true}
                   label="4-point restraint"
-                  onChange={onChange}
+                  onChange={handleUserInput}
                   property="restraintIndicator"
                   value={true}
                 />
@@ -267,14 +271,14 @@ function PatientFields({ ringdown, onChange }) {
               <FormCheckbox
                 currentValue={ringdown.covid19SuspectedIndicator}
                 label="COVID-19 suspected"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="covid19SuspectedIndicator"
                 value={true}
               />
               <FormCheckbox
                 currentValue={ringdown.ivIndicator}
                 label="IV started"
-                onChange={onChange}
+                onChange={handleUserInput}
                 property="ivIndicator"
                 value={true}
               />
