@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Ringdown from './Models/Ringdown';
+
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
@@ -42,9 +43,11 @@ export default {
       return instance.patch(`/api/ringdowns/${patientDeliveryId}`, data);
     },
     cancel(patientDeliveryId, dateTimeLocal) {
-      return instance.patch(`/api/ringdowns/${patientDeliveryId}/deliveryStatus`, {deliveryStatus: Ringdown.Status.CANCELLED, dateTimeLocal});
+      return instance.patch(`/api/ringdowns/${patientDeliveryId}/deliveryStatus`, {
+        deliveryStatus: Ringdown.Status.CANCELLED,
+        dateTimeLocal,
+      });
     },
-   
   },
   users: {
     me() {
