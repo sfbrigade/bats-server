@@ -7,8 +7,11 @@ module.exports = new LocalStrategy(async (username, password, done) => {
   try {
     const user = await models.User.findOne({
       where: { email: username },
-      rejectOnEmpty: true,
     });
+    if (!user) {
+      done(null, user);
+      return;
+    }
     const result = await bcrypt.compare(password, user.hashedPassword);
     if (result) {
       done(null, user);

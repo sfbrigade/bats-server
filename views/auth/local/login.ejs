@@ -13,21 +13,17 @@
         </div>
       <% } %>
       <form method="post" action="/auth/local/login" class="usa-form">
-        <div class="usa-form-group margin-bottom-3">
-          <label for="username" class="usa-label usa-label--required" id="email-label" >Email</label>
+        <div class="usa-form-group margin-bottom-4">
+          <label for="username" class="usa-label usa-label--required">Email</label>
           <input type="email" id="email" name="username" value="<%= locals.username %>" placeholder="name@email.com" class="usa-input" />
         </div>
         <div class="usa-form-group margin-bottom-1">
-          <label for="password" class="usa-label usa-label--required" id="password-label">Password</label>
+          <label for="password" class="usa-label usa-label--required">Password</label>
           <input type="password" name="password" class="usa-input" id="password" />
-          <h6 id="password_error_message" class="password_message">This is a required section</h6>
-          <h6 id="password_message_success" class="password_message">Success</h6>
         </div>
-        <button id="login_submit" class="usa-button margin-0" type="submit">Login</button>
-        <!-- <p class="text-center">or</p>
-        <p class="text-center"><a href="/auth/saml/login">Log in using SAML SSO</a></p> -->
+        <button disabled class="usa-button margin-0" type="submit">Login</button>
       </form>
     </div>
   </div>
-  <script src="/login_validations.js"></script>
+  <script src="/scripts/login.js"></script>
 </div>
