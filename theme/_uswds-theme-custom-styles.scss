@@ -343,9 +343,12 @@ $spinner-border-width-sm: 0.2em;
 
 .usa-label--required {
   color: inherit;
+  position: relative;
   &::before {
     @include u-text($theme-color-secondary-dark);
-    content: '* ';
+    content: '*\00a0';
+    position: absolute;
+    right: 100%;
   }
 }
 

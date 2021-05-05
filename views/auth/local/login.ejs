@@ -1,38 +1,29 @@
-<div class="grid-container login-block">
-  <div class="grid-row ">
-    <div class="tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
+<div class="grid-container">
+  <div class="grid-row">
+    <div class="grid-col-10 grid-offset-1 tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
       <div class="text-center">
         <h1 class="hospital-dest-title margin-y-5">Hospital<br />destination tool</h1>
         <h4 class="text-base-light margin-y-4">Start by entering your<br />email and password below.</h4>
       </div>
+      <% if (locals.unauthorized) { %>
+        <div class="usa-alert usa-alert--error usa-alert--slim usa-alert--no-icon margin-bottom-3" >
+          <div class="usa-alert__body">
+            <p class="usa-alert__text">Invalid email and/or password.</p>
+          </div>
+        </div>
+      <% } %>
       <form method="post" action="/auth/local/login" class="usa-form">
-        <div class="usa-form-group">
-          <label for="username" class="usa-label" id="email-label" ><h6 style="color:red; padding:0; display: inline; padding-right:0.5%">*</h6>Email</label>
+        <div class="usa-form-group margin-bottom-3">
+          <label for="username" class="usa-label usa-label--required" id="email-label" >Email</label>
           <input type="email" id="email" name="username" value="<%= locals.username %>" placeholder="name@email.com" class="usa-input" />
         </div>
-        <div class="usa-form-group">
-          <label for="password" class="usa-label" id="password-label"><h6 style="color:red; padding:0; display: inline; padding-right:0.5%">*</h6> Password</label>
+        <div class="usa-form-group margin-bottom-1">
+          <label for="password" class="usa-label usa-label--required" id="password-label">Password</label>
           <input type="password" name="password" class="usa-input" id="password" />
+          <h6 id="password_error_message" class="password_message">This is a required section</h6>
+          <h6 id="password_message_success" class="password_message">Success</h6>
         </div>
-        <div class="login-submit-btn-div">
-          <div>
-            <h6 id="password_error_message" class="password_message">This is a required section</h6>
-            <h6 id="password_message_success" class="password_message">Success</h6>
-            <% if (locals.unauthorized) { %>
-              <div class="alert alert-danger">
-                Invalid email and/or password.
-              </div>
-            <% } %>
-            <% if (locals.ok) { %>
-              <div class="alert alert-danger">
-                success
-              </div>
-            <% } %>
-          </div>
-          <div class="button-container">
-            <button id="login_submit" class="usa-button" type="submit">Login</button>
-          </div>
-        </div>
+        <button id="login_submit" class="usa-button margin-0" type="submit">Login</button>
         <!-- <p class="text-center">or</p>
         <p class="text-center"><a href="/auth/saml/login">Log in using SAML SSO</a></p> -->
       </form>
