@@ -52,8 +52,7 @@ h4,
 
 input,
 select,
-textarea,
-button {
+textarea {
   &:not([disabled]):not(.usa-input--error):not(.usa-input--success):focus {
     @include focus-shadow();
   }
