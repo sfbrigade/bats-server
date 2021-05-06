@@ -57,7 +57,8 @@ function RingdownForm({ className }) {
     rd.currentDeliveryStatus = status;
     const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
-      case Ringdown.Status.RETURNED_TO_SERVICE:
+      case Ringdown.Status.RETURNED_TO_SERVICE: 
+      case Ringdown.Status.CANCELLED:
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
         return;

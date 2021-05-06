@@ -2,10 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
-
+import ApiService from '../ApiService.js'
 import Ringdown from '../Models/Ringdown';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
+
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
@@ -111,7 +112,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           <button className="usa-button usa-button--outline usa-button--secondary width-full" type="button">
             Redirect patient
           </button>
-          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button">
+          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" 
+            onClick={() => onStatusChange(ringdown, Ringdown.Status.CANCELLED)}>
             Cancel delivery
           </button>
         </fieldset>

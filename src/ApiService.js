@@ -42,12 +42,7 @@ export default {
     update(patientDeliveryId, data) {
       return instance.patch(`/api/ringdowns/${patientDeliveryId}`, data);
     },
-    cancel(patientDeliveryId, dateTimeLocal) {
-      return instance.patch(`/api/ringdowns/${patientDeliveryId}/deliveryStatus`, {
-        deliveryStatus: Ringdown.Status.CANCELLED,
-        dateTimeLocal,
-      });
-    },
+
   },
   users: {
     me() {
