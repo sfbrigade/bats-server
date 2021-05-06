@@ -9,13 +9,9 @@ import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 
 import './PatientFields.scss';
-import '../Components/FormInput.scss';
 
 function PatientFields({ ringdown, onChange }) {
-  
-
   function handleUserInput(updatedField, inputValue) {
-    
     onChange(updatedField, inputValue);
   
     if (ringdown.validationData[updatedField]){
@@ -31,7 +27,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div className={ringdown.getClassName("ambulanceIdentifier")}>``
+            <div className={ringdown.getClassName("ambulanceIdentifier")}>
               <FormInput
                 label="Unit #"
                 onChange={handleUserInput}

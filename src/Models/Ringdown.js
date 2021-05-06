@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
+import { PatientFieldData, InputState } from './PatientFieldData';
 
 const DeliveryStatus = {
   RINGDOWN_SENT: 'RINGDOWN SENT',
@@ -8,6 +9,7 @@ const DeliveryStatus = {
   OFFLOADED: 'OFFLOADED',
   RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
 };
+
 DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.RINGDOWN_SENT,
   DeliveryStatus.RINGDOWN_RECEIVED,
@@ -15,24 +17,8 @@ DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.OFFLOADED,
   DeliveryStatus.RETURNED_TO_SERVICE,
 ];
+
 Object.freeze(DeliveryStatus);
-
-//
-const InputState = {
-  NO_INPUT: 'NO_INPUT',
-  ERROR: 'ERROR',
-  FIXED: 'FIXED',
-};
-Object.freeze(InputState);
-
-class PatientFieldData {
-  constructor(fieldName, fieldOrder, inputState) {
-    this.name = fieldName;
-    this.order = fieldOrder;
-    this.inputState = inputState;
-  }
-}
-//
 
 class Ringdown {
   static get Status() {
@@ -393,7 +379,6 @@ class Ringdown {
   }
 
   getClassName(fieldName){
-    
     switch (this.validationData[fieldName].inputState) {
       case InputState.FIXED:
         return 'forminput__fixed';
@@ -403,7 +388,6 @@ class Ringdown {
         return '';
     }
   }
-  
 }
 
 Ringdown.propTypes = {

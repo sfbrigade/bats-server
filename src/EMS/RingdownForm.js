@@ -80,7 +80,7 @@ function RingdownForm({ className }) {
 
   return (
     <>
-      {ringdowns && ringdowns.length !== 0 && (
+      {ringdowns && ringdowns.length === 0 && (
         <form className={classNames('usa-form', className)}>
           <div className="usa-alert usa-alert--info usa-alert--slim usa-alert--no-icon">
             <div className="usa-alert__body">
@@ -115,7 +115,7 @@ function RingdownForm({ className }) {
           </fieldset>
         </form>
       )}
-      {ringdowns && ringdowns.length < 0 && (
+      {ringdowns && ringdowns.length > 0 && (
         <RingdownStatus className={className} onStatusChange={onStatusChange} ringdown={ringdowns[0]} />
       )}
       {!ringdowns && (

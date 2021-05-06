@@ -1,4 +1,4 @@
-.patientfields__form-error {
+.forminput__error {
   background-color: hsl(0, 53%, 88%);
   height: 88px;
   position: relative;
@@ -7,126 +7,9 @@
   width: 513px;
 }
 
-.ambulanceIdentifier_red {
-  background-color: hsl(0, 53%, 88%);
-  height: 88px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.ambulanceIdentifier_fixed {
+.forminput__fixed {
   background-color: hsl(124, 54%, 88%);
   height: 88px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.dispatchCallNumber_red {
-  background-color: hsl(0, 53%, 88%);
-  height: 88px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.dispatchCallNumber_fixed {
-  background-color: hsl(124, 54%, 88%);
-  height: 88px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.age_red {
-  background-color: hsl(0, 53%, 88%);
-  height: 88px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.age_fixed {
-  background-color: hsl(124, 54%, 88%);
-  height: 88px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.sex_red {
-  background-color: hsl(0, 53%, 88%);
-  height: 196px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.sex_fixed {
-  background-color: hsl(124, 54%, 88%);
-  height: 196px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.emergencyServiceResponseType_red {
-  background-color: hsl(0, 53%, 88%);
-  height: 147px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.emergencyServiceResponseType_fixed {
-  background-color: hsl(124, 54%, 88%);
-  height: 147px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.chiefComplaintDescription_red {
-  background-color: hsl(0, 53%, 88%);
-  height: 282px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.chiefComplaintDescription_fixed {
-  background-color: hsl(124, 54%, 88%);
-  height: 282px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.stableIndicator_red {
-  background-color: hsl(0, 53%, 88%);
-  height: 151px;
-  position: relative;
-  left: -25px;
-  padding: 2%;
-  width: 513px;
-}
-
-.stableIndicator_fixed {
-  background-color: hsl(124, 54%, 88%);
-  height: 151px;
   position: relative;
   left: -25px;
   padding: 2%;
