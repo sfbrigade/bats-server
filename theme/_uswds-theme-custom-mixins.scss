@@ -44,3 +44,13 @@
   outline: none;
   border: 2px solid color($theme-color-primary-vivid);
 }
+
+@mixin error-shadow {
+  outline: none;
+  border: 2px solid color($theme-color-error);
+}
+
+@mixin success-shadow {
+  outline: none;
+  border: 2px solid color($theme-color-success);
+}

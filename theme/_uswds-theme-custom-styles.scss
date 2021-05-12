@@ -52,12 +52,15 @@ h4,
 
 input,
 select,
-textarea,
-button {
-  &:not([disabled]) {
-    &:focus {
-      @include focus-shadow();
-    }
+textarea {
+  &:not([disabled]):not(.usa-input--error):not(.usa-input--success):focus {
+    @include focus-shadow();
+  }
+  &.usa-input--error:not([disabled]):focus {
+    @include error-shadow();
+  }
+  &.usa-input--success:not([disabled]):focus {
+    @include success-shadow();
   }
 }
 
@@ -284,6 +287,16 @@ $spinner-border-width-sm: 0.2em;
   margin-top: 1.5rem;
 }
 
+.usa-error-message {
+  color: color($theme-color-error);
+  font-weight: normal;
+}
+
+.usa-error-message,
+.usa-success-message {
+  position: absolute;
+}
+
 .usa-fieldset {
   padding: 1.5rem;
 }
@@ -331,6 +344,14 @@ $spinner-border-width-sm: 0.2em;
   & + div.usa-hint {
     margin-top: 0.125rem;
   }
+
+  &.usa-input--error {
+    @include error-shadow();
+  }
+
+  &.usa-input--success {
+    @include success-shadow();
+  }
 }
 
 .usa-label {
@@ -339,16 +360,34 @@ $spinner-border-width-sm: 0.2em;
   &:first-child {
     margin-top: 0;
   }
+
+  &.usa-label--error {
+    color: color($theme-color-error);
+  }
+
+  &.usa-label--success {
+    color: color($theme-color-success);
+  }
 }
 
 .usa-label--required {
   color: inherit;
+  position: relative;
   &::before {
     @include u-text($theme-color-secondary-dark);
-    content: '* ';
+    content: '*\00a0';
+    position: absolute;
+    right: 100%;
   }
 }
 
 .usa-label--focused {
   color: color($theme-color-primary-vivid);
+}
+
+.usa-success-message {
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
+  color: color($theme-color-success);
+  display: block;
 }
