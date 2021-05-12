@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Ringdown from './Models/Ringdown';
+
 
 const instance = axios.create({
   headers: {
@@ -42,7 +42,6 @@ export default {
     update(patientDeliveryId, data) {
       return instance.patch(`/api/ringdowns/${patientDeliveryId}`, data);
     },
-
   },
   users: {
     me() {

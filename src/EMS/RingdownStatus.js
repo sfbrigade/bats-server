@@ -1,4 +1,4 @@
-import React,{useState}  from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showUpdate, setShowUpdate] = useState(false);
   function handleDiversionUpdate() {
     setShowUpdate(false);
-    onStatusChange(ringdown, Ringdown.Status.CANCELLED)
+    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
   return (
     <div className={classNames('usa-accordion', className)}>
@@ -116,9 +116,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           <button className="usa-button usa-button--outline usa-button--secondary width-full" type="button">
             Redirect patient
           </button>
-          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" 
-            onClick={() => setShowUpdate(true)}
-            >
+          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowUpdate(true)}>
             Cancel delivery
           </button>
           {showUpdate && (
