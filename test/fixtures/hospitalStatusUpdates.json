@@ -2,12 +2,15 @@
   {
     "model": "HospitalStatusUpdate",
     "data": {
+      "id": "c1b0c5c5-3fc1-4a3a-ba76-a15257f517c5",
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
       "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
-      "updateDateTimeLocal": "2004-10-19 10:23:54",
+      "updateDateTimeLocal": "2004-10-19 10:22:54",
       "openEdBedCount": 1,
       "openPsychBedCount": 2,
+      "bedCountUpdateDateTimeLocal": "2004-10-19 10:22:54",
       "divertStatusIndicator": false,
+      "divertStatusUpdateDateTimeLocal": "2004-10-19 10:22:54",
       "CreatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "UpdatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d"
     }
@@ -15,12 +18,15 @@
   {
     "model": "HospitalStatusUpdate",
     "data": {
+      "id": "9169fb04-b262-42ee-9c81-da1bb6818e6b",
       "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
       "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "updateDateTimeLocal": "2005-10-19 10:23:54",
       "openEdBedCount": 10,
       "openPsychBedCount": 2,
+      "bedCountUpdateDateTimeLocal": "2004-10-19 10:23:54",
       "divertStatusIndicator": false,
+      "divertStatusUpdateDateTimeLocal": "2004-10-19 10:23:54",
       "CreatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "UpdatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d"
     }
@@ -28,12 +34,15 @@
   {
     "model": "HospitalStatusUpdate",
     "data": {
+      "id": "24479f18-ed59-4bfe-a814-1debb50f7f9b",
       "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
       "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "updateDateTimeLocal": "2004-10-20 10:23:54",
       "openEdBedCount": 20,
       "openPsychBedCount": 2,
+      "bedCountUpdateDateTimeLocal": "2004-10-20 10:23:54",
       "divertStatusIndicator": false,
+      "divertStatusUpdateDateTimeLocal": "2004-10-20 10:23:54",
       "CreatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "UpdatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d"
     }
@@ -41,12 +50,15 @@
   {
     "model": "HospitalStatusUpdate",
     "data": {
+      "id": "87cf9798-981a-463e-9203-d57f134efb02",
       "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
       "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "updateDateTimeLocal": "2005-10-19 10:23:54+02",
       "openEdBedCount": 0,
       "openPsychBedCount": 0,
+      "bedCountUpdateDateTimeLocal": "2004-10-19 10:23:54",
       "divertStatusIndicator": true,
+      "divertStatusUpdateDateTimeLocal": "2004-10-19 10:23:54",
       "CreatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "UpdatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d"
     }

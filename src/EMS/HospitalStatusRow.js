@@ -22,15 +22,13 @@ const HospitalStatusRow = ({ hospitalStatus }) => (
         <div className={`hospitalstatusrow__data ${hospitalStatus.openPsychBedCount === 0 ? 'text-secondary text-bold' : ''}`}>
           {hospitalStatus.openPsychBedCount}
         </div>
-        <div className="hospitalstatusrow__data">0</div>
-        <div className="hospitalstatusrow__data">0</div>
+        <div className="hospitalstatusrow__data">{hospitalStatus.ambulancesEnRoute || 0}</div>
+        <div className="hospitalstatusrow__data">{hospitalStatus.ambulancesOffloading || 0}</div>
       </div>
       <div className="hospitalstatusrow__notes">{hospitalStatus.additionalServiceAvailabilityNotes}</div>
     </div>
   </div>
 );
-
-// TODO - how to handle date updated and hospital status notes?
 
 HospitalStatusRow.propTypes = {
   hospitalStatus: PropTypes.instanceOf(HospitalStatus).isRequired,

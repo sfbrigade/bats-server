@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
-import useWebSocket from 'react-use-websocket';
+import React, { useContext, useState } from 'react';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -14,20 +13,10 @@ import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
 
 function RingdownForm({ className }) {
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/user`;
-  const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
-
   const { ringdowns, setRingdowns } = useContext(Context);
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
   const [version, setVersion] = useState(0);
-
-  useEffect(() => {
-    if (lastMessage?.data) {
-      const data = JSON.parse(lastMessage.data);
-      setRingdowns(data.ringdowns.map((r) => new Ringdown(r)));
-    }
-  }, [lastMessage, setRingdowns]);
 
   function next() {
     setStep(1);
@@ -37,7 +26,7 @@ function RingdownForm({ className }) {
     ApiService.ringdowns
       .create(ringdown.toJSON())
       .then((response) => {
-        setRingdowns([response.data]);
+        setRingdowns([new Ringdown(response.data)]);
         setRingdown(new Ringdown());
         setStep(0);
       })

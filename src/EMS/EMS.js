@@ -1,14 +1,30 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import useWebSocket from 'react-use-websocket';
 
+import Context from '../Context';
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
+import Ringdown from '../Models/Ringdown';
+import HospitalStatus from '../Models/HospitalStatus';
 
 import HospitalStatuses from './HospitalStatuses';
 import RingdownForm from './RingdownForm';
 
 export default function EMS() {
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/user`;
+  const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
+  const { setRingdowns, setStatusUpdates } = useContext(Context);
+
   const [selectedTab, setSelectedTab] = useState(0);
+
+  useEffect(() => {
+    if (lastMessage?.data) {
+      const data = JSON.parse(lastMessage.data);
+      setRingdowns(data.ringdowns.map((r) => new Ringdown(r)));
+      setStatusUpdates(data.statusUpdates.map((su) => new HospitalStatus(su)));
+    }
+  }, [lastMessage, setRingdowns, setStatusUpdates]);
 
   return (
     <>
