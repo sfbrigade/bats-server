@@ -23,7 +23,7 @@
     "model": "Organization",
     "data": {
       "id": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
-      "name": "City and County of San Francisco Fire Department",
+      "name": "San Francisco Fire Department",
       "type": "EMS",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
@@ -33,7 +33,7 @@
     "model": "Organization",
     "data": {
       "id": "7c9023ff-dd16-4e87-823a-80567a7b834a",
-      "name": "American Medical Response - San Francisco",
+      "name": "American Medical Response (AMR)",
       "type": "EMS",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
@@ -43,7 +43,7 @@
     "model": "Organization",
     "data": {
       "id": "0a276fb6-6766-4e2c-b735-cabc4da684ff",
-      "name": "King-American Ambulance Company",
+      "name": "King American",
       "type": "EMS",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
