@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
-import { PatientFieldData, InputState } from './PatientFieldData';
+import { PatientFieldData, ValidationState } from './PatientFieldData';
 
 const DeliveryStatus = {
   RINGDOWN_SENT: 'RINGDOWN SENT',
@@ -33,15 +33,15 @@ class Ringdown {
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
     this.validationData = {
-      ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, InputState.NO_INPUT),
-      dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, InputState.NO_INPUT),
-      age: new PatientFieldData('age', 2, InputState.NO_INPUT),
-      sex: new PatientFieldData('sex', 3, InputState.NO_INPUT),
-      emergencyServiceResponseType: new PatientFieldData('emergencyServiceResponseType', 4, InputState.NO_INPUT),
-      chiefComplaintDescription: new PatientFieldData('chiefComplaintDescription', 5, InputState.NO_INPUT),
-      stableIndicator: new PatientFieldData('stableIndicator', 6, InputState.NO_INPUT),
-      catchAll: new PatientFieldData('catchAll', 7, InputState.NO_INPUT)
-    }
+      ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, ValidationState.NO_INPUT),
+      dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, ValidationState.NO_INPUT),
+      age: new PatientFieldData('age', 2, ValidationState.NO_INPUT),
+      sex: new PatientFieldData('sex', 3, ValidationState.NO_INPUT),
+      emergencyServiceResponseType: new PatientFieldData('emergencyServiceResponseType', 4, ValidationState.NO_INPUT),
+      chiefComplaintDescription: new PatientFieldData('chiefComplaintDescription', 5, ValidationState.NO_INPUT),
+      stableIndicator: new PatientFieldData('stableIndicator', 6, ValidationState.NO_INPUT),
+      catchAll: new PatientFieldData('catchAll', 7, ValidationState.NO_INPUT),
+    };
   }
 
   get id() {
@@ -353,7 +353,6 @@ class Ringdown {
   // form validation
 
   validateData(updatedField) {
-
     function ascendingByOrder(a, b) {
       if (a.order < b.order) {
         return -1;
@@ -364,26 +363,30 @@ class Ringdown {
       return 1;
     }
 
-    if (this.validationData[updatedField].inputState === InputState.ERROR) {
-      this.validationData[updatedField].inputState = InputState.FIXED;
+    if (this.validationData[updatedField].validationState === ValidationState.ERROR) {
+      this.validationData[updatedField].validationState = ValidationState.FIXED;
     }
-    
+
     const partition = this.validationData[updatedField].order - 1;
     const sorted = Object.values(this.validationData).sort(ascendingByOrder);
     for (let i = partition; i >= 0; i -= 1) {
-      if (sorted[i].inputState === InputState.NO_INPUT) {
+      if (sorted[i].validationState === ValidationState.NO_INPUT) {
         const fieldName = sorted[i].name;
-        this.validationData[fieldName].inputState = InputState.ERROR;
+        this.validationData[fieldName].validationState = ValidationState.ERROR;
       }
     }
   }
 
-  getClassName(fieldName){
-    switch (this.validationData[fieldName].inputState) {
-      case InputState.FIXED:
-        return 'forminput__fixed';
-      case InputState.ERROR:
-        return 'forminput__error';
+  getValidationState(fieldName) {
+    return this.validationData[fieldName].validationState;
+  }
+
+  getClassName(fieldName) {
+    switch (this.validationData[fieldName].validationState) {
+      case ValidationState.FIXED:
+        return 'container__fixed';
+      case ValidationState.ERROR:
+        return 'container__error';
       default:
         return '';
     }

@@ -1,8 +1,26 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { ValidationState } from '../Models/PatientFieldData';
+import ValidationMessage from './ValidationMessage';
 
-function FormInput({ children, disabled, label, onChange, isWrapped, property, required, showRequiredHint, size, type, unit, value }) {
+import './FormInput.scss';
+
+function FormInput({
+  children,
+  disabled,
+  label,
+  onChange,
+  isWrapped,
+  property,
+  required,
+  showRequiredHint,
+  size,
+  type,
+  unit,
+  value,
+  validationState,
+}) {
   const [focused, setFocused] = useState(false);
 
   function typedValue(stringValue) {
@@ -28,6 +46,8 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
         required={required}
         type={type}
         className={classNames('usa-input', {
+          'usa-input--error': validationState === ValidationState.ERROR,
+          'usa-input--success': validationState === ValidationState.FIXED,
           'usa-input--medium': size === 'medium',
           'usa-input--small': size === 'small',
         })}
@@ -44,15 +64,20 @@ function FormInput({ children, disabled, label, onChange, isWrapped, property, r
       {label && (
         <label
           htmlFor={property}
-          className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required, 'usa-label--focused': focused })}
+          className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required,
+          'usa-label--focused': focused,
+          'usa-error-message': validationState === ValidationState.ERROR,
+          'usa-success-message': validationState === ValidationState.FIXED,
+         })}
         >
           {label}
         </label>
       )}
       {input}
-    </>
-  );
-}
+      <ValidationMessage validationState={validationState} />
+      </>
+  )
+      }
 FormInput.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   disabled: PropTypes.bool,
@@ -66,6 +91,7 @@ FormInput.propTypes = {
   type: PropTypes.oneOf(['number', 'text']),
   unit: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  validationState: PropTypes.oneOf([...ValidationState.ALL_STATES]),
 };
 FormInput.defaultProps = {
   children: null,
@@ -78,5 +104,6 @@ FormInput.defaultProps = {
   type: 'text',
   unit: null,
   value: '',
+  validationState: ValidationState.NO_INPUT,
 };
 export default FormInput;

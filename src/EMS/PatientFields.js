@@ -13,11 +13,11 @@ import './PatientFields.scss';
 function PatientFields({ ringdown, onChange }) {
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
-  
-    if (ringdown.validationData[updatedField]){
+
+    if (ringdown.validationData[updatedField]) {
       ringdown.validateData(updatedField);
     } else {
-      ringdown.validateData("catchAll");
+      ringdown.validateData('catchAll');
     }
   }
 
@@ -27,7 +27,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div className={ringdown.getClassName("ambulanceIdentifier")}>
+            <div role="alert">
               <FormInput
                 label="Unit #"
                 onChange={handleUserInput}
@@ -35,9 +35,10 @@ function PatientFields({ ringdown, onChange }) {
                 required
                 size="medium"
                 value={ringdown.ambulanceIdentifier}
+                validationState={ringdown.getValidationState('ambulanceIdentifier')}
               />
             </div>
-            <div role="alert" className={ringdown.getClassName("dispatchCallNumber")}>
+            <div role="alert">
               <FormInput
                 label="Incident #"
                 onChange={handleUserInput}
@@ -46,6 +47,7 @@ function PatientFields({ ringdown, onChange }) {
                 size="medium"
                 type="number"
                 value={ringdown.dispatchCallNumber}
+                validationState={ringdown.getValidationState('dispatchCallNumber')}
               />
             </div>
           </fieldset>
@@ -53,7 +55,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName("age")}>
+            <div role="alert">
               <FormInput
                 label="Age (estim.)"
                 onChange={handleUserInput}
@@ -63,11 +65,12 @@ function PatientFields({ ringdown, onChange }) {
                 type="number"
                 unit="years"
                 value={ringdown.age}
+                validationState={ringdown.getValidationState('age')}
               />
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName("sex")}>
+            <div role="alert" className={ringdown.getClassName('sex')}>
               <label className="usa-label usa-label--required" htmlFor="sex">
                 Gender Identity
               </label>
@@ -77,7 +80,7 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName("emergencyServiceResponseType")}>
+            <div role="alert" className={ringdown.getClassName('emergencyServiceResponseType')}>
               <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
                 Urgency
               </label>
@@ -98,18 +101,23 @@ function PatientFields({ ringdown, onChange }) {
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName("chiefComplaintDescription")}>
+            <div role="alert" className={ringdown.getClassName('chiefComplaintDescription')}>
               <label className="usa-label usa-label--required" htmlFor="chiefComplaintDescription">
                 Chief Complaint
               </label>
-              <FormTextArea label="" onChange={handleUserInput} property="chiefComplaintDescription" value={ringdown.chiefComplaintDescription} />
+              <FormTextArea
+                label=""
+                onChange={handleUserInput}
+                property="chiefComplaintDescription"
+                value={ringdown.chiefComplaintDescription}
+              />
               <div className="usa-hint usa-hint--important">
                 <i className="fas fa-info-circle" /> Exclude identifying information.
               </div>
             </div>
           </fieldset>
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName("stableIndicator")}>
+            <div role="alert" className={ringdown.getClassName('stableIndicator')}>
               <label className="usa-label usa-label--required" htmlFor="stableIndicator">
                 Vitals Stability
               </label>

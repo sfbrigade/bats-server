@@ -1,19 +1,17 @@
 class PatientFieldData {
-  constructor(fieldName, fieldOrder, inputState) {
+  constructor(fieldName, fieldOrder, validationState) {
     this.name = fieldName;
     this.order = fieldOrder;
-    this.inputState = inputState;
+    this.validationState = validationState;
   }
 }
 
-const InputState = {
+const ValidationState = {
   NO_INPUT: 'NO_INPUT',
   ERROR: 'ERROR',
   FIXED: 'FIXED',
 };
-Object.freeze(InputState);
+ValidationState.ALL_STATES = [ValidationState.NO_INPUT, ValidationState.ERROR, ValidationState.FIXED];
+Object.freeze(ValidationState);
 
-export { 
-  PatientFieldData,
-  InputState
-};
+export { PatientFieldData, ValidationState };
