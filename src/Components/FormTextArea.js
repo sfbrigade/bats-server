@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { ValidationState } from '../Models/PatientFieldData';
+import ValidationMessage from './ValidationMessage';
 
-function FormInput({ label, onChange, property, required, showRequiredHint, value }) {
+function FormTextArea({ label, onChange, property, required, showRequiredHint, value, validationState }) {
   const [focused, setFocused] = useState(false);
 
   return (
     <>
       <label
         htmlFor={property}
-        className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required, 'usa-label--focused': focused })}
+        className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required, 'usa-label--focused': focused,
+            'usa-label--error': validationState === ValidationState.ERROR,
+            'usa-label--success': validationState === ValidationState.FIXED,
+       })}
       >
         {label}
       </label>
@@ -20,22 +25,31 @@ function FormInput({ label, onChange, property, required, showRequiredHint, valu
         onChange={(e) => onChange(property, e.target.value)}
         onFocus={() => setFocused(true)}
         required={required}
-        className="usa-textarea"
+        className={classNames("usa-textarea", {
+          'usa-input--error': validationState === ValidationState.ERROR,
+          'usa-input--success': validationState === ValidationState.FIXED,
+})}
       />
+      <ValidationMessage validationState={validationState} />
     </>
   );
 }
-FormInput.propTypes = {
+
+FormTextArea.propTypes = {
   label: PropTypes.node.isRequired,
   onChange: PropTypes.func.isRequired,
   property: PropTypes.string.isRequired,
   required: PropTypes.bool,
   showRequiredHint: PropTypes.bool,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  validationState: PropTypes.oneOf([...ValidationState.ALL_STATES]),
 };
-FormInput.defaultProps = {
+
+FormTextArea.defaultProps = {
   required: false,
   showRequiredHint: true,
   value: '',
+  validationState: ValidationState.NO_INPUT,
 };
-export default FormInput;
+
+export default FormTextArea;

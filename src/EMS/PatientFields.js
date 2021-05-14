@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import FormCheckbox from '../Components/FormCheckbox';
 import FormInput from '../Components/FormInput';
 import FormRadio from '../Components/FormRadio';
+import FormRadioFieldSet from '../Components/FormRadioFieldSet';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
-
-import './PatientFields.scss';
 
 function PatientFields({ ringdown, onChange }) {
   function handleUserInput(updatedField, inputValue) {
@@ -27,7 +26,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div role="alert">
+            <div className="margin-bottom-4" role="alert">
               <FormInput
                 label="Unit #"
                 onChange={handleUserInput}
@@ -69,39 +68,42 @@ function PatientFields({ ringdown, onChange }) {
               />
             </div>
           </fieldset>
-          <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName('sex')}>
-              <label className="usa-label usa-label--required" htmlFor="sex">
-                Gender Identity
-              </label>
-              <FormRadio currentValue={ringdown.sex} label="Male" onChange={handleUserInput} property="sex" value="MALE" />
-              <FormRadio currentValue={ringdown.sex} label="Female" onChange={handleUserInput} property="sex" value="FEMALE" />
-              <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={handleUserInput} property="sex" value="NON-BINARY" />
-            </div>
-          </fieldset>
-          <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName('emergencyServiceResponseType')}>
-              <label className="usa-label usa-label--required" htmlFor="emergencyServiceResponseType">
-                Urgency
-              </label>
+          <FormRadioFieldSet
+            labelText="Gender Identity"
+            formRadios={[
+              <FormRadio currentValue={ringdown.sex} label="Male" onChange={handleUserInput} property="sex" value="MALE" />,
+              <FormRadio currentValue={ringdown.sex} label="Female" onChange={handleUserInput} property="sex" value="FEMALE" />,
+              <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={handleUserInput} property="sex" value="NON-BINARY" />,
+            ]}
+            property="sex"
+            isRequired
+            validationState={ringdown.getValidationState('sex')}
+
+          />
+          <FormRadioFieldSet
+            labelText="Urgency"
+            formRadios={[
               <FormRadio
                 currentValue={ringdown.emergencyServiceResponseType}
                 label="Code 2"
                 onChange={handleUserInput}
                 property="emergencyServiceResponseType"
                 value="CODE 2"
-              />
+              />,
               <FormRadio
                 currentValue={ringdown.emergencyServiceResponseType}
                 label="Code 3"
                 onChange={handleUserInput}
                 property="emergencyServiceResponseType"
                 value="CODE 3"
-              />
-            </div>
-          </fieldset>
+              />,
+            ]}
+            property="emergencyServiceResponseType"
+            isRequired
+            validationState={ringdown.getValidationState('emergencyServiceResponseType')}
+          />
           <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName('chiefComplaintDescription')}>
+            <div role="alert">
               <label className="usa-label usa-label--required" htmlFor="chiefComplaintDescription">
                 Chief Complaint
               </label>
@@ -110,24 +112,23 @@ function PatientFields({ ringdown, onChange }) {
                 onChange={handleUserInput}
                 property="chiefComplaintDescription"
                 value={ringdown.chiefComplaintDescription}
+                validationState={ringdown.getValidationState('chiefComplaintDescription')}
               />
               <div className="usa-hint usa-hint--important">
                 <i className="fas fa-info-circle" /> Exclude identifying information.
               </div>
             </div>
           </fieldset>
-          <fieldset className="usa-fieldset">
-            <div role="alert" className={ringdown.getClassName('stableIndicator')}>
-              <label className="usa-label usa-label--required" htmlFor="stableIndicator">
-                Vitals Stability
-              </label>
+          <FormRadioFieldSet
+            labelText="Vitals Stability"
+            formRadios={[
               <FormRadio
                 currentValue={ringdown.stableIndicator}
                 label="Vitals stable"
                 onChange={handleUserInput}
                 property="stableIndicator"
                 value={true}
-              />
+              />,
               <FormRadio
                 currentValue={ringdown.stableIndicator}
                 label="Vitals not stable"
@@ -135,8 +136,11 @@ function PatientFields({ ringdown, onChange }) {
                 property="stableIndicator"
                 value={false}
               />
-            </div>
-          </fieldset>
+            ]}
+            property="stableIndicator"
+            isRequired
+            validationState={ringdown.getValidationState('stableIndicator')}
+          />
         </div>
         <div type="alert">
           <Heading title="Vitals" subtitle="(optional)" />
@@ -151,7 +155,6 @@ function PatientFields({ ringdown, onChange }) {
                 unit="/"
                 value={ringdown.systolicBloodPressure}
               >
-                &nbsp;&nbsp;
                 <FormInput
                   onChange={handleUserInput}
                   isWrapped={false}

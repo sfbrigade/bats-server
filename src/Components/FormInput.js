@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
 
-import './FormInput.scss';
-
 function FormInput({
   children,
   disabled,
@@ -56,28 +54,32 @@ function FormInput({
       {children}
     </>
   );
+
   if (isWrapped) {
     input = <div className="grid-row flex-align-center">{input}</div>;
   }
+
   return (
     <>
       {label && (
         <label
           htmlFor={property}
-          className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required,
-          'usa-label--focused': focused,
-          'usa-error-message': validationState === ValidationState.ERROR,
-          'usa-success-message': validationState === ValidationState.FIXED,
-         })}
+          className={classNames('usa-label', {
+            'usa-label--required': showRequiredHint && required,
+            'usa-label--focused': focused,
+            'usa-label--error': validationState === ValidationState.ERROR,
+            'usa-label--success': validationState === ValidationState.FIXED,
+          })}
         >
           {label}
         </label>
       )}
       {input}
       <ValidationMessage validationState={validationState} />
-      </>
-  )
-      }
+    </>
+  );
+}
+
 FormInput.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   disabled: PropTypes.bool,
@@ -93,6 +95,7 @@ FormInput.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   validationState: PropTypes.oneOf([...ValidationState.ALL_STATES]),
 };
+
 FormInput.defaultProps = {
   children: null,
   disabled: false,
@@ -106,4 +109,5 @@ FormInput.defaultProps = {
   value: '',
   validationState: ValidationState.NO_INPUT,
 };
+
 export default FormInput;
