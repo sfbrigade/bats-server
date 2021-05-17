@@ -8,6 +8,7 @@ class PatientFieldData {
 
 const ValidationState = {
   NO_INPUT: 'NO_INPUT',
+  INPUT: 'INPUT',
   ERROR: 'ERROR',
   FIXED: 'FIXED',
 };

@@ -365,9 +365,12 @@ class Ringdown {
 
     if (this.validationData[updatedField].validationState === ValidationState.ERROR) {
       this.validationData[updatedField].validationState = ValidationState.FIXED;
+    } else if (this.validationData[updatedField].name) {
+      this.validationData[updatedField].validationState = ValidationState.INPUT
+      console.log(this.validationData[updatedField].validationState)
     }
 
-    const partition = this.validationData[updatedField].order - 1;
+    const partition = this.validationData[updatedField].order -1;
     const sorted = Object.values(this.validationData).sort(ascendingByOrder);
     for (let i = partition; i >= 0; i -= 1) {
       if (sorted[i].validationState === ValidationState.NO_INPUT) {
