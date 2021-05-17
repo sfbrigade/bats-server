@@ -365,6 +365,7 @@ class Ringdown {
       return 1;
     }
 
+    console.log(this.payload.updatedField, this.ambulanceIdentifier)
     
     if (this.validationData[updatedField].validationState === ValidationState.ERROR) {
       this.validationData[updatedField].validationState = ValidationState.FIXED;
@@ -379,7 +380,6 @@ class Ringdown {
         const fieldName = sorted[i].name;
         this.validationData[fieldName].validationState = ValidationState.ERROR;
       }
-      // console.log("state and name, then i: ", sorted[i].validationState, sorted[i].name, i)
     }
   }
 
