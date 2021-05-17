@@ -353,6 +353,8 @@ class Ringdown {
   // form validation
 
   validateData(updatedField) {
+    const fieldInfo = "this." + updatedField;
+
     function ascendingByOrder(a, b) {
       if (a.order < b.order) {
         return -1;
@@ -363,20 +365,21 @@ class Ringdown {
       return 1;
     }
 
+    
     if (this.validationData[updatedField].validationState === ValidationState.ERROR) {
       this.validationData[updatedField].validationState = ValidationState.FIXED;
-    } else if (this.validationData[updatedField].name) {
+    } else if (this.validationData[updatedField].validationState === ValidationState.NO_INPUT) {
       this.validationData[updatedField].validationState = ValidationState.INPUT
-      console.log(this.validationData[updatedField].validationState)
-    }
+    } 
 
-    const partition = this.validationData[updatedField].order -1;
+    const partition = this.validationData[updatedField].order;
     const sorted = Object.values(this.validationData).sort(ascendingByOrder);
     for (let i = partition; i >= 0; i -= 1) {
       if (sorted[i].validationState === ValidationState.NO_INPUT) {
         const fieldName = sorted[i].name;
         this.validationData[fieldName].validationState = ValidationState.ERROR;
       }
+      // console.log("state and name, then i: ", sorted[i].validationState, sorted[i].name, i)
     }
   }
 
