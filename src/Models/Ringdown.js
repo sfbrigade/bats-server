@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
