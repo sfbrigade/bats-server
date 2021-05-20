@@ -4,27 +4,29 @@ import { ValidationState } from '../Models/PatientFieldData';
 
 const ValidationMessage = ({ validationState }) => {
   const errorHtml = (
-    <span className="usa-error-message">
+    <div className="usa-error-message">
       <i className="fas fa-exclamation-circle" /> This is a required section
-    </span>
+    </div>
   );
   const successHtml = (
-    <span className="usa-success-message">
+    <div className="usa-success-message">
       <i className="fas fa-check-circle" /> Success
-    </span>
+    </div>
   );
+
   if (validationState === ValidationState.ERROR) {
     return errorHtml;
   }
   if (validationState === ValidationState.FIXED) {
     return successHtml;
   }
-  return <span />;
+  return <></>;
 };
 
 ValidationMessage.propTypes = {
   validationState: PropTypes.oneOfType([...ValidationState.ALL_STATES]),
 };
+
 ValidationMessage.defaultProps = {
   validationState: ValidationState.NO_INPUT,
 };
