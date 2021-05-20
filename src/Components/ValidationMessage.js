@@ -4,12 +4,12 @@ import { ValidationState } from '../Models/PatientFieldData';
 
 const ValidationMessage = ({ validationState }) => {
   const errorHtml = (
-    <div className="usa-error-message">
+    <div className="usa-error-message margin-top-1">
       <i className="fas fa-exclamation-circle" /> This is a required section
     </div>
   );
   const successHtml = (
-    <div className="usa-success-message">
+    <div className="usa-success-message margin-top-1">
       <i className="fas fa-check-circle" /> Success
     </div>
   );

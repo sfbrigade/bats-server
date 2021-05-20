@@ -9,7 +9,7 @@ import './FormRadioFieldSet.scss';
 function FormRadioFieldSet({ formRadios, labelText, property, isRequired, validationState }) {
   return (
     <fieldset
-      className={classNames('usa-fieldset', {
+      className={classNames('usa-fieldset padding-top-neg-8', {
         'form-radio-field-set__error': validationState === ValidationState.ERROR,
         'form-radio-field-set__success': validationState === ValidationState.FIXED,
       })}
@@ -20,7 +20,9 @@ function FormRadioFieldSet({ formRadios, labelText, property, isRequired, valida
         </label>
         {formRadios}
       </div>
-      <ValidationMessage validationState={validationState} />
+      <div className="margin-bottom-2">
+        <ValidationMessage validationState={validationState} />
+      </div>
     </fieldset>
   );
 }

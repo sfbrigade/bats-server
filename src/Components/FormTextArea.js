@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
 
-function FormTextArea({ label, onChange, property, required, showRequiredHint, value, validationState }) {
+function FormTextArea({ label, onChange, property, required, showRequiredHint, customHint, value, validationState }) {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -32,6 +32,7 @@ function FormTextArea({ label, onChange, property, required, showRequiredHint, v
           'usa-input--success': validationState === ValidationState.FIXED,
         })}
       />
+      <div className="usa-hint usa-hint--important">{customHint}</div>
       <ValidationMessage validationState={validationState} />
     </>
   );
@@ -43,6 +44,7 @@ FormTextArea.propTypes = {
   property: PropTypes.string.isRequired,
   required: PropTypes.bool,
   showRequiredHint: PropTypes.bool,
+  customHint: PropTypes.element,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   validationState: PropTypes.oneOf([...ValidationState.ALL_STATES]),
 };
@@ -50,6 +52,7 @@ FormTextArea.propTypes = {
 FormTextArea.defaultProps = {
   required: false,
   showRequiredHint: true,
+  customHint: null,
   value: '',
   validationState: ValidationState.NO_INPUT,
 };

@@ -26,7 +26,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div className="margin-bottom-4" role="alert">
+            <div role="alert" className="margin-bottom-5">
               <FormInput
                 label="Unit #"
                 onChange={handleUserInput}
@@ -54,7 +54,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <div role="alert">
+            <div role="alert" className="margin-bottom-3">
               <FormInput
                 label="Age (estim.)"
                 onChange={handleUserInput}
@@ -101,7 +101,7 @@ function PatientFields({ ringdown, onChange }) {
             isRequired
             validationState={ringdown.getValidationState('emergencyServiceResponseType')}
           />
-          <fieldset className="usa-fieldset">
+          <fieldset className="usa-fieldset margin-bottom-2">
             <div role="alert">
               <label className="usa-label usa-label--required" htmlFor="chiefComplaintDescription">
                 Chief Complaint
@@ -111,11 +111,13 @@ function PatientFields({ ringdown, onChange }) {
                 onChange={handleUserInput}
                 property="chiefComplaintDescription"
                 value={ringdown.chiefComplaintDescription}
+                customHint={
+                  <span>
+                    <i className="fas fa-info-circle" /> Exclude identifying information.
+                  </span>
+                }
                 validationState={ringdown.getValidationState('chiefComplaintDescription')}
               />
-              <div className="usa-hint usa-hint--important">
-                <i className="fas fa-info-circle" /> Exclude identifying information.
-              </div>
             </div>
           </fieldset>
           <FormRadioFieldSet
