@@ -352,7 +352,7 @@ class Ringdown {
 
   // form validation
 
-  validateData(updatedField) {
+  validateData(updatedField, inputValue) {
     function ascendingByOrder(a, b) {
       if (a.order < b.order) {
         return -1;
@@ -362,12 +362,15 @@ class Ringdown {
       }
       return 1;
     }
+    const state = this.validationData[updatedField].validationState;
     
-    if (this.validationData[updatedField].validationState === ValidationState.ERROR) {
+    if (state === ValidationState.ERROR) {
       this.validationData[updatedField].validationState = ValidationState.FIXED;
-    } else if (this.validationData[updatedField].validationState === ValidationState.NO_INPUT) {
+    } else if (state === ValidationState.NO_INPUT) {
       this.validationData[updatedField].validationState = ValidationState.INPUT
-    } 
+    } else if (state === ValidationState.FIXED && inputValue === '') {
+      this.validationData[updatedField].validationState = ValidationState.ERROR
+    }
 
     const partition = this.validationData[updatedField].order;
     const sorted = Object.values(this.validationData).sort(ascendingByOrder);
