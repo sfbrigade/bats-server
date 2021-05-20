@@ -13,11 +13,7 @@ function PatientFields({ ringdown, onChange }) {
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
 
-    if (ringdown.validationData[updatedField]) {
-      ringdown.validateData(updatedField, inputValue);
-    } else {
-      ringdown.validateData('catchAll');
-    }
+    ringdown.validatePatientFields(updatedField, inputValue);
   }
 
   return (

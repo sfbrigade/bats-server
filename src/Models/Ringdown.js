@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
@@ -40,7 +41,7 @@ class Ringdown {
       emergencyServiceResponseType: new PatientFieldData('emergencyServiceResponseType', 4, ValidationState.NO_INPUT),
       chiefComplaintDescription: new PatientFieldData('chiefComplaintDescription', 5, ValidationState.NO_INPUT),
       stableIndicator: new PatientFieldData('stableIndicator', 6, ValidationState.NO_INPUT),
-      catchAll: new PatientFieldData('catchAll', 7, ValidationState.NO_INPUT),
+      all: new PatientFieldData('all', 7, ValidationState.NO_INPUT),
     };
   }
 
@@ -350,7 +351,7 @@ class Ringdown {
     return this.payload;
   }
 
-  // form validation
+  // Form validation
 
   static ascendingByOrder(a, b) {
     if (a.order < b.order) {
@@ -362,29 +363,33 @@ class Ringdown {
     return 1;
   }
 
-  validateData(updatedField, inputValue) {
-    const state = this.validationData[updatedField].validationState;
-    this.validateCurrentField(state, updatedField, inputValue);
+  validatePatientFields(updatedField, inputValue) {
+    const updatedFieldHasValidations = updatedField in this.validationData;
 
-    const partition = this.validationData[updatedField].order;
-    const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
-    for (let i = partition; i >= 0; i -= 1) {
-      if (sorted[i].validationState === ValidationState.NO_INPUT) {
-        const fieldName = sorted[i].name;
-        this.validationData[fieldName].validationState = ValidationState.ERROR;
-      }
+    if (updatedFieldHasValidations) {
+      const currentState = this.validationData[updatedField].validationState;
+      this.setValidationStateForInput(updatedField, currentState, inputValue);
     }
+
+    const partition = updatedFieldHasValidations ? this.validationData[updatedField].order : this.validationData.all.order;
+    const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
+    const previousFields = sorted.slice(0, partition);
+    previousFields
+      .filter((fieldData) => fieldData.validationState === ValidationState.NO_INPUT)
+      .forEach((fieldData) => {
+        this.validationData[fieldData.name].validationState = ValidationState.ERROR;
+      });
   }
 
-  validateCurrentField(currentState, updatedField, inputValue) {
+  setValidationStateForInput(fieldName, currentState, inputValue) {
     if (currentState === ValidationState.ERROR) {
-      this.validationData[updatedField].validationState = ValidationState.FIXED;
+      this.validationData[fieldName].validationState = ValidationState.FIXED;
     } else if (currentState === ValidationState.NO_INPUT) {
-      this.validationData[updatedField].validationState = ValidationState.INPUT;
+      this.validationData[fieldName].validationState = ValidationState.INPUT;
     } else if (currentState === ValidationState.INPUT && !inputValue) {
-      this.validationData[updatedField].validationState = ValidationState.ERROR;
+      this.validationData[fieldName].validationState = ValidationState.ERROR;
     } else if (currentState === ValidationState.FIXED && !inputValue) {
-      this.validationData[updatedField].validationState = ValidationState.ERROR;
+      this.validationData[fieldName].validationState = ValidationState.ERROR;
     }
   }
 
