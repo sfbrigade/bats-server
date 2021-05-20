@@ -16,7 +16,6 @@ function PatientFields({ ringdown, onChange }) {
     if (ringdown.validationData[updatedField]) {
       ringdown.validateData(updatedField, inputValue);
     } else {
-      console.log("hello");
       ringdown.validateData('catchAll');
     }
   }
@@ -79,7 +78,6 @@ function PatientFields({ ringdown, onChange }) {
             property="sex"
             isRequired
             validationState={ringdown.getValidationState('sex')}
-
           />
           <FormRadioFieldSet
             labelText="Urgency"
@@ -136,7 +134,7 @@ function PatientFields({ ringdown, onChange }) {
                 onChange={handleUserInput}
                 property="stableIndicator"
                 value={false}
-              />
+              />,
             ]}
             property="stableIndicator"
             validationState={ringdown.getValidationState('stableIndicator')}

@@ -11,10 +11,12 @@ function FormTextArea({ label, onChange, property, required, showRequiredHint, v
     <>
       <label
         htmlFor={property}
-        className={classNames('usa-label', { 'usa-label--required': showRequiredHint && required, 'usa-label--focused': focused,
-            'usa-label--error': validationState === ValidationState.ERROR,
-            'usa-label--success': validationState === ValidationState.FIXED,
-       })}
+        className={classNames('usa-label', {
+          'usa-label--required': showRequiredHint && required,
+          'usa-label--focused': focused,
+          'usa-label--error': validationState === ValidationState.ERROR,
+          'usa-label--success': validationState === ValidationState.FIXED,
+        })}
       >
         {label}
       </label>
@@ -25,10 +27,10 @@ function FormTextArea({ label, onChange, property, required, showRequiredHint, v
         onChange={(e) => onChange(property, e.target.value)}
         onFocus={() => setFocused(true)}
         required={required}
-        className={classNames("usa-textarea", {
+        className={classNames('usa-textarea', {
           'usa-input--error': validationState === ValidationState.ERROR,
           'usa-input--success': validationState === ValidationState.FIXED,
-})}
+        })}
       />
       <ValidationMessage validationState={validationState} />
     </>

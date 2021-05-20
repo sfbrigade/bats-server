@@ -352,28 +352,22 @@ class Ringdown {
 
   // form validation
 
+  static ascendingByOrder(a, b) {
+    if (a.order < b.order) {
+      return -1;
+    }
+    if (a.order === b.order) {
+      return 0;
+    }
+    return 1;
+  }
+
   validateData(updatedField, inputValue) {
-    function ascendingByOrder(a, b) {
-      if (a.order < b.order) {
-        return -1;
-      }
-      if (a.order === b.order) {
-        return 0;
-      }
-      return 1;
-    }
     const state = this.validationData[updatedField].validationState;
-    
-    if (state === ValidationState.ERROR) {
-      this.validationData[updatedField].validationState = ValidationState.FIXED;
-    } else if (state === ValidationState.NO_INPUT) {
-      this.validationData[updatedField].validationState = ValidationState.INPUT
-    } else if (state === ValidationState.FIXED && inputValue === '') {
-      this.validationData[updatedField].validationState = ValidationState.ERROR
-    }
+    this.validateCurrentField(state, updatedField, inputValue);
 
     const partition = this.validationData[updatedField].order;
-    const sorted = Object.values(this.validationData).sort(ascendingByOrder);
+    const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
     for (let i = partition; i >= 0; i -= 1) {
       if (sorted[i].validationState === ValidationState.NO_INPUT) {
         const fieldName = sorted[i].name;
@@ -382,19 +376,20 @@ class Ringdown {
     }
   }
 
-  getValidationState(fieldName) {
-    return this.validationData[fieldName].validationState;
+  validateCurrentField(currentState, updatedField, inputValue) {
+    if (currentState === ValidationState.ERROR) {
+      this.validationData[updatedField].validationState = ValidationState.FIXED;
+    } else if (currentState === ValidationState.NO_INPUT) {
+      this.validationData[updatedField].validationState = ValidationState.INPUT;
+    } else if (currentState === ValidationState.INPUT && !inputValue) {
+      this.validationData[updatedField].validationState = ValidationState.ERROR;
+    } else if (currentState === ValidationState.FIXED && !inputValue) {
+      this.validationData[updatedField].validationState = ValidationState.ERROR;
+    }
   }
 
-  getClassName(fieldName) {
-    switch (this.validationData[fieldName].validationState) {
-      case ValidationState.FIXED:
-        return 'container__fixed';
-      case ValidationState.ERROR:
-        return 'container__error';
-      default:
-        return '';
-    }
+  getValidationState(fieldName) {
+    return this.validationData[fieldName].validationState;
   }
 }
 
