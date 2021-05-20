@@ -139,8 +139,8 @@ function PatientFields({ ringdown, onChange }) {
               />
             ]}
             property="stableIndicator"
-            isRequired
             validationState={ringdown.getValidationState('stableIndicator')}
+            isRequired
           />
         </div>
         <div type="alert">
