@@ -362,12 +362,14 @@ class Ringdown {
       }
       return 1;
     }
-
+    
     if (this.validationData[updatedField].validationState === ValidationState.ERROR) {
       this.validationData[updatedField].validationState = ValidationState.FIXED;
-    }
+    } else if (this.validationData[updatedField].validationState === ValidationState.NO_INPUT) {
+      this.validationData[updatedField].validationState = ValidationState.INPUT
+    } 
 
-    const partition = this.validationData[updatedField].order - 1;
+    const partition = this.validationData[updatedField].order;
     const sorted = Object.values(this.validationData).sort(ascendingByOrder);
     for (let i = partition; i >= 0; i -= 1) {
       if (sorted[i].validationState === ValidationState.NO_INPUT) {
