@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
@@ -9,7 +9,7 @@ import Alert from '../Components/Alert';
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showUpdate, setShowUpdate] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-  let history = useHistory();
+  const history = useHistory();
   function handleDiversionUpdate() {
     setShowUpdate(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
@@ -121,7 +121,11 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           </ol>
         </fieldset>
         <fieldset className="usa-fieldset border-top border-base-lighter">
-          <button className="usa-button usa-button--outline usa-button--secondary width-full" type="button" onClick={() => setShowRedirect(true)}>
+          <button
+            className="usa-button usa-button--outline usa-button--secondary width-full"
+            type="button"
+            onClick={() => setShowRedirect(true)}
+          >
             Redirect patient
           </button>
           <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowUpdate(true)}>
