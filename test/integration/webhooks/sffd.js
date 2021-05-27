@@ -28,6 +28,9 @@ describe('/webhooks/sffd', () => {
 
       const emsCalls = await models.EmergencyMedicalServiceCall.findAll();
       assert.deepStrictEqual(emsCalls.length, 92);
+
+      const emsCallsAmbulances = await models.EmergencyMedicalServiceCallAmbulance.findAll();
+      assert.deepStrictEqual(emsCallsAmbulances.length, 96);
     });
   });
 });

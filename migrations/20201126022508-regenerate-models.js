@@ -7,13 +7,18 @@ module.exports = {
       await queryInterface.sequelize.query(
         `
         --
-        -- ER/Studio Data Architect SQL Code Generation
+        -- ER/Studio Data Architect SQL Code Generation, plus some hacking by Bill Hoke for the latest change
         -- Project :      BATS Logical Data Model.DM1
         --
         -- Date Created : Wednesday, December 16, 2020 21:55:36
+        -- Date Modified: Wednesday, May 19, 2021 ... 5 months ... not bad for a run of stability
         -- Target DBMS : PostgreSQL 10.x-12.x
         --
-        
+        -- Change in this version: Added emergencymedicalservicecallambulance to capture the association of an emergency medical 
+        --                         service call ("incident") to an ambulance ("unit"), newly made available by a feed to be sent 
+        --                         by SFFD. This will enable the user interface to intelligently constrain calls (incident numbers)
+        --                         available for selection based on the established context of which unit is associated with the 
+        --                         current user.
         
         -- Assumes prior execution of: 
         --   - CREATE EXTENSION pgcrypto;
@@ -81,6 +86,27 @@ module.exports = {
         
         
         
+        --
+        -- TABLE: emergencymedicalservicecallambulance
+        --
+
+        CREATE TABLE emergencymedicalservicecallambulance(
+            emergencymedicalservicecallambulance_uuid   uuid DEFAULT gen_random_uuid() NOT NULL,
+            emergencymedicalservicecall_uuid            uuid                           NOT NULL,
+            ambulance_uuid                              uuid                           NOT NULL,
+        --    Including the following, additional specificity to the startdatetimelocal that is also in emergencymedicalservicecall
+        --    in case the associative data ever includes the addition of one or more units to a call after the initial unit is assigned,
+        --    in which case the start time for the secondary unit(s) might (hopefully) be after the initial unit.
+            startdatetimelocal                          timestamp without time zone    NOT NULL,
+            recordcreatetimestamp                       timestamp                      NOT NULL,
+            recordcreateuser_uuid                       uuid                           NOT NULL,
+            recordupdatetimestamp                       timestamp                      NOT NULL,
+            recordupdateuser_uuid                       uuid                           NOT NULL
+        )
+        ;
+
+
+
         -- 
         -- TABLE: hospital 
         --
@@ -464,6 +490,31 @@ module.exports = {
         ;
         
         
+        --
+        -- TABLE: emergencymedicalservicecallambulance
+        --
+
+        ALTER TABLE emergencymedicalservicecallambulance ADD CONSTRAINT emergencymedicalservicecallambulance_emergencymedicalservicecall_fk 
+            FOREIGN KEY (emergencymedicalservicecall_uuid)
+            REFERENCES emergencymedicalservicecall(emergencymedicalservicecall_uuid)
+        ;
+
+        ALTER TABLE emergencymedicalservicecallambulance ADD CONSTRAINT emergencymedicalservicecallambulance_ambulance_fk 
+            FOREIGN KEY (ambulance_uuid)
+            REFERENCES ambulance(ambulance_uuid)
+        ;
+
+        ALTER TABLE emergencymedicalservicecallambulance ADD CONSTRAINT emergencymedicalservicecallambulance_batsuser_fk 
+            FOREIGN KEY (recordupdateuser_uuid)
+            REFERENCES batsuser(user_uuid)
+        ;
+
+        ALTER TABLE emergencymedicalservicecallambulance ADD CONSTRAINT emergencymedicalservicecallambulance_batsuser_recordcreate_fk 
+            FOREIGN KEY (recordcreateuser_uuid)
+            REFERENCES batsuser(user_uuid)
+        ;
+
+
         -- 
         -- TABLE: hospital 
         --

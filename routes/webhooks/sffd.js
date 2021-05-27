@@ -31,8 +31,8 @@ router.post('/cad', async (req, res) => {
       where: { name: 'King American' },
       transaction,
     });
-    const units = [];
-    const incidents = [];
+    const units = {};
+    const incidents = {};
     // eslint-disable-next-line no-restricted-syntax
     for (const record of data) {
       const { UNIT, INC_NO, DISPATCH_DTTM } = record;
@@ -41,7 +41,7 @@ router.post('/cad', async (req, res) => {
         // eslint-disable-next-line no-continue
         continue;
       }
-      if (!units.includes(UNIT)) {
+      if (!units[UNIT]) {
         let org = null;
         if (UNIT_SFFD_REGEX.test(UNIT)) {
           org = sffd;
@@ -52,7 +52,7 @@ router.post('/cad', async (req, res) => {
         }
         if (org) {
           // eslint-disable-next-line no-await-in-loop
-          await models.Ambulance.findOrCreate({
+          const [unit] = await models.Ambulance.findOrCreate({
             where: {
               OrganizationId: org.id,
               ambulanceIdentifier: UNIT,
@@ -63,12 +63,12 @@ router.post('/cad', async (req, res) => {
             },
             transaction,
           });
+          units[UNIT] = unit;
         }
-        units.push(UNIT);
       }
-      if (!incidents.includes(INC_NO)) {
+      if (!incidents[INC_NO]) {
         // eslint-disable-next-line no-await-in-loop
-        await models.EmergencyMedicalServiceCall.findOrCreate({
+        const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
           where: {
             dispatchCallNumber: INC_NO,
             startDateTimeLocal: DISPATCH_DTTM,
@@ -79,7 +79,22 @@ router.post('/cad', async (req, res) => {
           },
           transaction,
         });
-        incidents.push(INC_NO);
+        incidents[INC_NO] = emsCall;
+      }
+      if (units[UNIT] && incidents[INC_NO]) {
+        // eslint-disable-next-line no-await-in-loop
+        await models.EmergencyMedicalServiceCallAmbulance.findOrCreate({
+          where: {
+            EmergencyMedicalServiceCallId: incidents[INC_NO].id,
+            AmbulanceId: units[UNIT].id,
+            startDateTimeLocal: DISPATCH_DTTM,
+          },
+          defaults: {
+            CreatedById: superUser.id,
+            UpdatedById: superUser.id,
+          },
+          transaction,
+        });
       }
     }
   });
