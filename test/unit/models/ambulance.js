@@ -24,6 +24,6 @@ describe('models.Ambulance', () => {
 
     const org = await ambulance.getOrganization();
     assert(org);
-    assert.deepStrictEqual(org.name, 'City and County of San Francisco Fire Department');
+    assert.deepStrictEqual(org.name, 'San Francisco Fire Department');
   });
 });
