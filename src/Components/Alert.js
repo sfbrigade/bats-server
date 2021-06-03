@@ -13,24 +13,24 @@ function Alert({ className, type, title, message, cancel, primary, destructive, 
             <h3 className="usa-alert__heading">{title}</h3>
             <p className="usa-alert__text">{message}</p>
           </div>
-          <ul className="usa-button-group">
+          <ul className="usa-button-group flex-column flex-align-stretch">
             {cancel && (
               <li className="usa-button-group__item">
-                <button type="button" className="usa-button usa-button--outline bg-white" onClick={onCancel}>
+                <button type="button" className="usa-button usa-button--outline bg-white width-full" onClick={onCancel}>
                   {cancel}
                 </button>
               </li>
             )}
             {destructive && (
               <li className="usa-button-group__item">
-                <button type="button" className="usa-button usa-button--secondary" onClick={onDestructive}>
+                <button type="button" className="usa-button usa-button--secondary width-full" onClick={onDestructive}>
                   {destructive}
                 </button>
               </li>
             )}
             {primary && (
               <li className="usa-button-group__item">
-                <button type="button" className="usa-button width-mobile" onClick={onPrimary}>
+                <button type="button" className="usa-button width-full" onClick={onPrimary}>
                   {primary}
                 </button>
               </li>
