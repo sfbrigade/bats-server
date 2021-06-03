@@ -1,25 +1,29 @@
 <div class="grid-container">
   <div class="grid-row">
-    <div class="tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
-      <h1 class="text-center">Log in</h1>
-      <% if (locals.unauthorized) { %>
-      <div class="alert alert-danger">
-        Invalid email and/or password.
+    <div class="grid-col-10 grid-offset-1 tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
+      <div class="text-center">
+        <h1 class="hospital-dest-title margin-y-5">Hospital<br />destination tool</h1>
+        <h4 class="text-base-light margin-y-4">Start by entering your<br />email and password below.</h4>
       </div>
+      <% if (locals.unauthorized) { %>
+        <div class="usa-alert usa-alert--error usa-alert--slim usa-alert--no-icon margin-bottom-3" >
+          <div class="usa-alert__body">
+            <p class="usa-alert__text">Invalid email and/or password.</p>
+          </div>
+        </div>
       <% } %>
       <form method="post" action="/auth/local/login" class="usa-form">
-        <div class="usa-form-group">
-          <label for="username" class="usa-label">Email</label>
-          <input type="email" name="username" value="<%= locals.username %>" class="usa-input" />
+        <div class="usa-form-group margin-bottom-4">
+          <label for="username" class="usa-label usa-label--required">Email</label>
+          <input type="email" id="email" name="username" value="<%= locals.username %>" placeholder="name@email.com" class="usa-input" />
         </div>
-        <div class="usa-form-group">
-          <label for="password" class="usa-label">Password</label>
-          <input type="password" name="password" class="usa-input" />
+        <div class="usa-form-group margin-bottom-1">
+          <label for="password" class="usa-label usa-label--required">Password</label>
+          <input type="password" name="password" class="usa-input" id="password" />
         </div>
-        <button class="usa-button" type="submit">Submit</button>
-        <p class="text-center">or</p>
-        <p class="text-center"><a href="/auth/saml/login">Log in using SAML SSO</a></p>
+        <button disabled class="usa-button margin-0 width-full" type="submit">Login</button>
       </form>
     </div>
   </div>
+  <script src="/scripts/login.js"></script>
 </div>
