@@ -124,8 +124,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               type="warning"
               title="Cancel Delivery?"
               message="Patient data will be erased and hospital will be notified."
-              cancel="Keep status"
-              destructive="Update status"
+              cancel="Maintain delivery"
+              destructive="Confirm cancel delivery"
               onDestructive={handleDiversionUpdate}
               onCancel={() => setShowUpdate(false)}
             />
