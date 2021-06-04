@@ -9,20 +9,23 @@ const router = express.Router();
 router.get('/dispatch-call-numbers', middleware.isAuthenticated, async (req, res) => {
   try {
     const queryId = req.query.ambulanceIdentifier;
-    const ambulanceIdentifierFilter = queryId ? { ambulanceidentifier: queryId } : {};
-    const emsAmbulances = await EmergencyMedicalServiceCallAmbulance.findAll({
-      include: [
-        {
-          model: Ambulance,
-          where: ambulanceIdentifierFilter,
-        },
-        {
-          model: EmergencyMedicalServiceCall,
-        },
-      ],
-    });
-    const dispatchCallNumbers = emsAmbulances.map((emsAmbulance) => emsAmbulance.EmergencyMedicalServiceCall.dispatchCallNumber);
-    res.status(HttpStatus.OK).json({ dispatchCallNumbers });
+    if (queryId) {
+      const emsAmbulances = await EmergencyMedicalServiceCallAmbulance.findAll({
+        include: [
+          {
+            model: Ambulance,
+            where: { ambulanceidentifier: queryId },
+          },
+          {
+            model: EmergencyMedicalServiceCall,
+          },
+        ],
+      });
+      const dispatchCallNumbers = emsAmbulances.map((emsAmbulance) => emsAmbulance.EmergencyMedicalServiceCall.dispatchCallNumber);
+      res.status(HttpStatus.OK).json({ dispatchCallNumbers });
+    } else {
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Missing ambulanceIdentifier query parameter' });
+    }
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
