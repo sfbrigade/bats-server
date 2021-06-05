@@ -9,8 +9,8 @@ const router = express.Router();
 router.get('/identifiers', middleware.isAuthenticated, async (req, res) => {
   try {
     const ambulances = await Ambulance.findAll();
-    const ambulanceIds = ambulances.map((ambulance) => ambulance.ambulanceIdentifier);
-    res.status(HttpStatus.OK).json({ ambulanceIds });
+    const ambulanceIdentifiers = ambulances.map((ambulance) => ambulance.ambulanceIdentifier);
+    res.status(HttpStatus.OK).json({ ambulanceIdentifiers });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
