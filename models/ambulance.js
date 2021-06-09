@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
       Ambulance.belongsTo(models.Organization);
 
       Ambulance.hasMany(models.PatientDelivery);
+      Ambulance.hasMany(models.EmergencyMedicalServiceCallAmbulance);
+      Ambulance.belongsToMany(models.EmergencyMedicalServiceCall, { through: models.EmergencyMedicalServiceCallAmbulance });
 
       Ambulance.belongsTo(models.User, { as: 'CreatedBy' });
       Ambulance.belongsTo(models.User, { as: 'UpdatedBy' });

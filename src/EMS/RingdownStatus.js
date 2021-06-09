@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
-
 import Ringdown from '../Models/Ringdown';
+import Alert from '../Components/Alert';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
+  const [showUpdate, setShowUpdate] = useState(false);
+  function handleDiversionUpdate() {
+    setShowUpdate(false);
+    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
+  }
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
@@ -111,9 +116,20 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           <button className="usa-button usa-button--outline usa-button--secondary width-full" type="button">
             Redirect patient
           </button>
-          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button">
+          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowUpdate(true)}>
             Cancel delivery
           </button>
+          {showUpdate && (
+            <Alert
+              type="warning"
+              title="Cancel Delivery?"
+              message="Patient data will be erased and hospital will be notified."
+              cancel="Maintain delivery"
+              destructive="Confirm cancel delivery"
+              onDestructive={handleDiversionUpdate}
+              onCancel={() => setShowUpdate(false)}
+            />
+          )}
         </fieldset>
       </div>
     </div>
