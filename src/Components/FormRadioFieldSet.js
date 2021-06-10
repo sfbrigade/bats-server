@@ -6,29 +6,27 @@ import ValidationMessage from './ValidationMessage';
 
 import './FormRadioFieldSet.scss';
 
-function FormRadioFieldSet({ formRadios, labelText, property, isRequired, validationState }) {
+function FormRadioFieldSet({ children, labelText, property, isRequired, validationState }) {
   return (
     <fieldset
-      className={classNames('usa-fieldset padding-top-neg-8', {
-        'form-radio-field-set__error': validationState === ValidationState.ERROR,
-        'form-radio-field-set__success': validationState === ValidationState.FIXED,
+      className={classNames('usa-fieldset form-radio-field-set', {
+        'form-radio-field-set--error': validationState === ValidationState.ERROR,
+        'form-radio-field-set--success': validationState === ValidationState.FIXED,
       })}
     >
-      <div role="alert">
+      <div className="form-radio-field-set__background">
         <label className={classNames('usa-label', { 'usa-label--required': isRequired })} htmlFor={property}>
           {labelText}
         </label>
-        {formRadios}
-      </div>
-      <div className="margin-bottom-2">
-        <ValidationMessage validationState={validationState} />
+        {children}
+        <ValidationMessage className="margin-top-1" validationState={validationState} />
       </div>
     </fieldset>
   );
 }
 
 FormRadioFieldSet.propTypes = {
-  formRadios: PropTypes.arrayOf(PropTypes.elementType).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
   labelText: PropTypes.string.isRequired,
   property: PropTypes.string.isRequired,
   isRequired: PropTypes.bool.isRequired,

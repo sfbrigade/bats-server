@@ -12,7 +12,7 @@ const ValidationState = {
   ERROR: 'ERROR',
   FIXED: 'FIXED',
 };
-ValidationState.ALL_STATES = [ValidationState.NO_INPUT, ValidationState.ERROR, ValidationState.FIXED];
+ValidationState.ALL_STATES = [ValidationState.NO_INPUT, ValidationState.INPUT, ValidationState.ERROR, ValidationState.FIXED];
 Object.freeze(ValidationState);
 
 export { PatientFieldData, ValidationState };

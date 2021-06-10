@@ -33,7 +33,7 @@ function FormTextArea({ label, onChange, property, required, showRequiredHint, c
         })}
       />
       <div className="usa-hint usa-hint--important">{customHint}</div>
-      <ValidationMessage validationState={validationState} />
+      <ValidationMessage className="" validationState={validationState} />
     </>
   );
 }

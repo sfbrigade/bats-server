@@ -1,7 +1,31 @@
-.form-radio-field-set__error {
-  background-color: hsl(0, 53%, 88%);
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+@import '../../theme/uswds-theme-color';
+
+.form-radio-field-set {
+  padding: 1rem 0;
+
+  .usa-error-message,
+  .usa-success-message {
+    position: relative;
+  }
 }
 
-.form-radio-field-set__success {
-  background-color: hsl(124, 54%, 88%);
+.form-radio-field-set__background {
+  padding: 0.5rem 1.5rem;
+}
+
+.form-radio-field-set {
+  & + .form-radio-field-set,
+  & + .usa-fieldset {
+    padding-top: 0;
+  }
+}
+
+.form-radio-field-set--error .form-radio-field-set__background {
+  background-color: color($theme-color-error-lighter);
+}
+
+.form-radio-field-set--success .form-radio-field-set__background {
+  background-color: color($theme-color-success-lighter);
 }
