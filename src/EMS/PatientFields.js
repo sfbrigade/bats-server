@@ -91,13 +91,12 @@ function PatientFields({ ringdown, onChange }) {
               property="chiefComplaintDescription"
               required
               value={ringdown.chiefComplaintDescription}
-              customHint={
-                <span>
-                  <i className="fas fa-info-circle" /> Exclude identifying information.
-                </span>
-              }
               validationState={ringdown.getValidationState('chiefComplaintDescription')}
-            />
+            >
+              <div className="usa-hint usa-hint--important">
+                <i className="fas fa-info-circle" /> Exclude identifying information.
+              </div>
+            </FormTextArea>
           </fieldset>
           <FormRadioFieldSet
             labelText="Vitals Stability"
