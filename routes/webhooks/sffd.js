@@ -71,9 +71,9 @@ router.post('/cad', async (req, res) => {
         const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
           where: {
             dispatchCallNumber: INC_NO,
-            startDateTimeLocal: DISPATCH_DTTM,
           },
           defaults: {
+            startDateTimeLocal: DISPATCH_DTTM,
             CreatedById: superUser.id,
             UpdatedById: superUser.id,
           },
