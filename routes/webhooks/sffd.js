@@ -67,6 +67,7 @@ router.post('/cad', async (req, res) => {
         }
       }
       if (!incidents[INC_NO]) {
+        console.log('!!!', INC_NO, DISPATCH_DTTM);
         // eslint-disable-next-line no-await-in-loop
         const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
           where: {
