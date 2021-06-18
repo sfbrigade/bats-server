@@ -56,7 +56,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.sequelize.transaction(async (transaction) => {
-      await models.HospitalUser.destroy({
+      await models.Ambulance.destroy({
         where: {
           ambulanceIdentifier: ['SFFD-1', 'SFFD-2', 'SFFD-3', 'SFFD-4'],
         },
