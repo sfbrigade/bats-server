@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
@@ -9,15 +8,19 @@ import Alert from '../Components/Alert';
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showUpdate, setShowUpdate] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-  const history = useHistory();
+
   function handleDiversionUpdate() {
     setShowUpdate(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
   function handleRedirectUpdate() {
     setShowRedirect(false);
-    // onStatusChange(ringdown, Ringdown.Status.CANCELLED);
-    history.goBack();
+    // const temp_ringdown = ringdown;
+    // console.log('ringdown', ringdown);
+    // cancel the ringdown
+    //  onStatusChange(ringdown, Ringdown.Status.CANCELLED);
+    // create a new one with the old ringdown info and a null hospital id.
+    // console.log(Ringdown.Status);
   }
   return (
     <div className={classNames('usa-accordion', className)}>

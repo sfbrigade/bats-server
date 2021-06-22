@@ -8,6 +8,7 @@ const DeliveryStatus = {
   OFFLOADED: 'OFFLOADED',
   RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
   CANCELLED: 'CANCELLED',
+  REDIRECTED: 'REDIRECTED',
 };
 DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.RINGDOWN_SENT,
@@ -16,6 +17,7 @@ DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.OFFLOADED,
   DeliveryStatus.RETURNED_TO_SERVICE,
   DeliveryStatus.CANCELLED,
+  DeliveryStatus.REDIRECTED,
 ];
 Object.freeze(DeliveryStatus);
 
