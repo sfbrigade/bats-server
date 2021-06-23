@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+// import axios from 'axios';
 import PropTypes from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
@@ -7,32 +8,50 @@ import FormRadio from '../Components/FormRadio';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
+import ComboBox from '../Components/ComboBox';
+
+
 
 function PatientFields({ ringdown, onChange }) {
+
+    
+    // const [data, setData] = useState(null)
+
+    // useEffect(async () => {
+    //   const result = await axios(
+    //     '/ambulance-ids',
+    //   );
+    //   setData(result.data);
+    // }, []);
+
+    // console.log(data)
+
+
+
   return (
     <>
       <div className="usa-accordion">
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
+         
           <fieldset className="usa-fieldset">
-            {/* test */}
-            <FormInput
+
+            <ComboBox
               label="Unit #"
-              onChange={onChange}
               property="ambulanceIdentifier"
               required
-              size="medium"
-              value={ringdown.ambulanceIdentifier}
-            />
-            <FormInput
-              label="Incident #"
               onChange={onChange}
+              value={ringdown.ambulanceIdentifier}
+              />
+              
+              <ComboBox
+              label="Incident #"
               property="dispatchCallNumber"
               required
-              size="medium"
-              type="number"
+              onChange={onChange}
               value={ringdown.dispatchCallNumber}
-            />
+              />
+          
           </fieldset>
         </div>
         <Heading title="Patient Info" />
