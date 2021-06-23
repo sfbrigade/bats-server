@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 
@@ -64,7 +64,7 @@ export default function ComboBox({ label, property, required, value, onChange })
             data-filter="{{numberFilter}}.*"
             onChange={onChange}
             > 
-            
+      
             {options}
             
             </select> 
@@ -75,16 +75,9 @@ export default function ComboBox({ label, property, required, value, onChange })
 }
 
 ComboBox.propTypes = {
-    // children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-    // disabled: PropTypes.bool,
-    // isWrapped: PropTypes.bool,
     label: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     property: PropTypes.string.isRequired,
     required: PropTypes.bool,
-    // showRequiredHint: PropTypes.bool,
-    // size: PropTypes.oneOf(['small', 'medium']),
-    // type: PropTypes.oneOf(['number', 'text']),
-    // unit: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };
