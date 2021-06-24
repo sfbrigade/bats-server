@@ -1,83 +1,78 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 
+import ApiService from '../ApiService';
 
-export default function ComboBox({ label, property, required, value, onChange }){
- 
-    const ambtempdata = [
-        "1234",
-        "3435",
-        "1325",
-        "1643",
-        "4563",
-        "2543",
-        "2314",
-        "3452",
-        "3612",
-        "3214",
-        "5678"
-      ];
+export default function ComboBox({ label, property, required, value, onChange }) {
+  
+  const [ambulancId, setAmbulanceId] = useState([]);
+  const [dispatchCall, setDispatchCall] = useState([]);
+  
 
-      const distempdata = [
-        "6734",
-        "5435",
-        "3225",
-        "1643",
-        "4563",
-        "6743",
-        "2314",
-        "3642",
-        "3782",
-        "3214",
-        "3278"
-      ];
+  // setTimeout(() => {
+  // // useEffect(() =>{
+  // //   ApiService.ambulances.getIdentifiers().then((response) => {
+  // //     setAmbulanceId(response.data.ambulanceIdentifiers);
+  // //   });
+  // //   ApiService.emsCalls.getDispatchCallNumbers("SFFD-1").then((response) => {
+  // //     setAmbulanceId(response.data);
+  // //   });
+  // //   console.log("rendered");
+  // // }, [])
+  // }, 200);
 
-      const options = [<option></option>]
-      
-      if (property === "ambulanceIdentifier"){
-        let ambId = fetch('/identifiers');
-        console.log("api", ambId);
-        for (let i = 0; i < ambtempdata.length; i += 1){
-            options.push(<option key={ambtempdata[i]} value={value}>{ambtempdata[i]}</option>)
-        }
-    } else if (property === "dispatchCallNumber"){ 
-        let unitIds = fetch('/dispatch-call-numbers');
-        console.log("api2", unitIds);
-        for (let i = 0; i < distempdata.length; i += 1){
-          options.push(<option key={distempdata[i]} value={value}>{distempdata[i]}</option>)
-      }
-    }
-   
+
+  useEffect(() =>{
+    ApiService.ambulances.getIdentifiers().then((response) => {
+      setAmbulanceId(response.data.ambulanceIdentifiers);
+    });
+    ApiService.emsCalls.getDispatchCallNumbers("SFFD-4").then((response) => {
+      setDispatchCall(response.data.dispatchCallNumbers);
+    });
+    console.log("rendered");
+  }, [])
+
+  const options = [<option />];
+
+  if (property === 'ambulanceIdentifier') {
     
-     
-    return (
-        <>
-        <label className='usa-label' htmlFor={property}>{label}</label>
-        <div className="usa-combo-box">
+    for (let i = 0; i < ambulancId.length; i += 1) {
+      options.push(
+        <option key={i} value={value}>
+          {ambulancId[i]}
+        </option>
+      );
+    }
+  } 
 
-          <select
-            className="usa-select usa-input--medium"
-            name={property}
-            id={property}
-            required={required}
-            data-number-filter="[0-9]"
-            data-filter="{{numberFilter}}.*"
-            onChange={onChange}
-            > 
-      
-            {options}
-            
-            </select> 
+  // console.log(options);
+  console.log(dispatchCall);
 
-        </div>
-        </>
-    )
+
+  return (
+    <>
+      <label className="usa-label" htmlFor={property}>
+        {label}
+      </label>
+      <div className="usa-combo-box">
+        <select
+          className="usa-select usa-input--medium"
+          name={property}
+          id={property}
+          required={required}
+          onBlur={onChange}
+        >
+          {options}
+        </select>
+      </div>
+    </>
+  );
 }
 
 ComboBox.propTypes = {
-    label: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    property: PropTypes.string.isRequired,
-    required: PropTypes.bool,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  };
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  property: PropTypes.string.isRequired,
+  required: PropTypes.bool.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
