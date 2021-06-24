@@ -7,6 +7,7 @@ import ApiService from '../ApiService';
 import Context from '../Context';
 import Ringdown from '../Models/Ringdown';
 import Spinner from '../Components/Spinner';
+import PatientSummary from '../Components/PatientSummary';
 
 import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
@@ -100,6 +101,7 @@ function RingdownForm({ className }) {
                 <button className="usa-button usa-button--outline width-full margin-top-4" type="button" onClick={edit}>
                   Edit Ringdown
                 </button>
+                <PatientSummary ringdown={ringdown} />
               </>
             )}
           </fieldset>
