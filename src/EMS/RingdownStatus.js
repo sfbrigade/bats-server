@@ -16,12 +16,12 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   function handleRedirectUpdate() {
     setShowRedirect(false);
     const tempRingDown = ringdown;
-    tempRingDown.hospital_id = null;
-    // console.log('ringdown', tempRingDown);
+    // tempRingDown.hospital_id = null;
+    console.log('ringdown', tempRingDown);
     // cancel the ringdown
-    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
+    onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
     // create a new one with the old ringdown info and a null hospital id.
-    // new Ringdown(tempRingDown);
+    // new Ringdown(ringdown.payload);
     // console.log(Ringdown.Status);
   }
   return (

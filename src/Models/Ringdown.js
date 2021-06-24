@@ -8,8 +8,11 @@ const DeliveryStatus = {
   OFFLOADED: 'OFFLOADED',
   RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
   CANCELLED: 'CANCELLED',
+  CANCEL_ACKNOWLEDGED: 'CANCEL ACKNOWLEGED',
   REDIRECTED: 'REDIRECTED',
+  REDIRECT_ACKNOWLEDGED: 'REDIRECT ACKNOWLEGED',
 };
+
 DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.RINGDOWN_SENT,
   DeliveryStatus.RINGDOWN_RECEIVED,
@@ -17,8 +20,11 @@ DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.OFFLOADED,
   DeliveryStatus.RETURNED_TO_SERVICE,
   DeliveryStatus.CANCELLED,
+  DeliveryStatus.CANCEL_ACKNOWLEDGED,
   DeliveryStatus.REDIRECTED,
+  DeliveryStatus.REDIRECT_ACKNOWLEDGED,
 ];
+
 Object.freeze(DeliveryStatus);
 
 class Ringdown {

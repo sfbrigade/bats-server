@@ -51,6 +51,7 @@ function RingdownForm({ className }) {
 
   function onStatusChange(rd, status) {
     // submit to server
+    console.log(rd, status)
     const now = new Date();
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
@@ -62,6 +63,7 @@ function RingdownForm({ className }) {
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
         return;
+      case Ringdown.Status.REDIRECTED:
       default:
         rd.timestamps[status] = isoNow;
     }
