@@ -1,53 +1,45 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import ApiService from '../ApiService';
 
-export default function ComboBox({ label, property, required, value, onChange }) {
-  
-  const [ambulancId, setAmbulanceId] = useState([]);
+export default function ComboBox({ label, property, required, onChange, condition }) {
+  const [ambulanceId, setAmbulanceId] = useState([]);
   const [dispatchCall, setDispatchCall] = useState([]);
-  
 
-  // setTimeout(() => {
-  // // useEffect(() =>{
-  // //   ApiService.ambulances.getIdentifiers().then((response) => {
-  // //     setAmbulanceId(response.data.ambulanceIdentifiers);
-  // //   });
-  // //   ApiService.emsCalls.getDispatchCallNumbers("SFFD-1").then((response) => {
-  // //     setAmbulanceId(response.data);
-  // //   });
-  // //   console.log("rendered");
-  // // }, [])
-  // }, 200);
+  useEffect(() => {
+    if (condition === '') {
+      ApiService.ambulances.getIdentifiers().then((response) => {
+        setAmbulanceId(response.data.ambulanceIdentifiers);
+      });
+    }
+    if (condition !== '') {
+      ApiService.emsCalls.getDispatchCallNumbers(condition).then((response) => {
+        setDispatchCall(response.data.dispatchCallNumbers);
+      });
+    }
+  }, [condition]);
 
-
-  useEffect(() =>{
-    ApiService.ambulances.getIdentifiers().then((response) => {
-      setAmbulanceId(response.data.ambulanceIdentifiers);
-    });
-    ApiService.emsCalls.getDispatchCallNumbers("SFFD-4").then((response) => {
-      setDispatchCall(response.data.dispatchCallNumbers);
-    });
-    console.log("rendered");
-  }, [])
-
-  const options = [<option />];
+  const options = [<option key={0} />];
 
   if (property === 'ambulanceIdentifier') {
-    
-    for (let i = 0; i < ambulancId.length; i += 1) {
+    for (let i = 0; i < ambulanceId.length; i += 1) {
       options.push(
-        <option key={i} value={value}>
-          {ambulancId[i]}
+        <option key={ambulanceId[i]} value={ambulanceId[i]}>
+          {ambulanceId[i]}
         </option>
       );
     }
-  } 
-
-  // console.log(options);
-  console.log(dispatchCall);
-
+  }
+  if (property === 'dispatchCallNumber') {
+    for (let i = 0; i < dispatchCall.length; i += 1) {
+      options.push(
+        <option key={dispatchCall[i]} value={dispatchCall[i]}>
+          {dispatchCall[i]}
+        </option>
+      );
+    }
+  }
 
   return (
     <>
@@ -60,7 +52,7 @@ export default function ComboBox({ label, property, required, value, onChange })
           name={property}
           id={property}
           required={required}
-          onBlur={onChange}
+          onBlur={(e) => onChange(property, e.target.value)}
         >
           {options}
         </select>
@@ -74,5 +66,5 @@ ComboBox.propTypes = {
   onChange: PropTypes.func.isRequired,
   property: PropTypes.string.isRequired,
   required: PropTypes.bool.isRequired,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  condition: PropTypes.string.isRequired,
 };

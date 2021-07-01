@@ -16,9 +16,15 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <ComboBox label="Unit #" property="ambulanceIdentifier" required onChange={onChange} value={ringdown.ambulanceIdentifier} />
+            <ComboBox label="Unit #" property="ambulanceIdentifier" required onChange={onChange} condition="" />
 
-            <ComboBox label="Incident #" property="dispatchCallNumber" required onChange={onChange} value={ringdown.dispatchCallNumber} />
+            <ComboBox
+              label="Incident #"
+              property="dispatchCallNumber"
+              required
+              onChange={onChange}
+              condition={ringdown.ambulanceIdentifier || ''}
+            />
           </fieldset>
         </div>
         <Heading title="Patient Info" />
