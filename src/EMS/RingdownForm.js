@@ -51,19 +51,23 @@ function RingdownForm({ className }) {
 
   function onStatusChange(rd, status) {
     // submit to server
-    console.log(rd, status)
+    console.log(rd, status);
     const now = new Date();
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
     rd.currentDeliveryStatus = status;
     const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
+      case Ringdown.Status.REDIRECTED:
+        setRingdown(rd.clone());
+      // We want this to fall through
       case Ringdown.Status.RETURNED_TO_SERVICE:
       case Ringdown.Status.CANCELLED:
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
+        next();
         return;
-      case Ringdown.Status.REDIRECTED:
+
       default:
         rd.timestamps[status] = isoNow;
     }

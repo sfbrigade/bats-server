@@ -8,22 +8,16 @@ import Alert from '../Components/Alert';
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showUpdate, setShowUpdate] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-
   function handleDiversionUpdate() {
     setShowUpdate(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
-  function handleRedirectUpdate() {
+
+  function handleRedirect() {
     setShowRedirect(false);
-    const tempRingDown = ringdown;
-    // tempRingDown.hospital_id = null;
-    console.log('ringdown', tempRingDown);
-    // cancel the ringdown
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
-    // create a new one with the old ringdown info and a null hospital id.
-    // new Ringdown(ringdown.payload);
-    // console.log(Ringdown.Status);
   }
+
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
@@ -150,11 +144,11 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           {showRedirect && (
             <Alert
               type="warning"
-              title="Redirect patient?"
+              title="Redirect Patient?"
               message="Patient data will be saved and you will be prompted to select a new destination."
               cancel="Keep status"
               destructive="Update status"
-              onDestructive={handleRedirectUpdate}
+              onDestructive={handleRedirect}
               onCancel={() => setShowRedirect(false)}
             />
           )}

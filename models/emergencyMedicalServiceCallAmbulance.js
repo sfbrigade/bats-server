@@ -1,34 +1,35 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class EmergencyMedicalServiceCall extends Model {
+  class EmergencyMedicalServiceCallAmbulance extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      EmergencyMedicalServiceCall.hasOne(models.Patient);
+      EmergencyMedicalServiceCallAmbulance.belongsTo(models.EmergencyMedicalServiceCall);
+      EmergencyMedicalServiceCallAmbulance.belongsTo(models.Ambulance);
 
-      EmergencyMedicalServiceCall.hasMany(models.EmergencyMedicalServiceCallAmbulance);
-      EmergencyMedicalServiceCall.belongsToMany(models.Ambulance, { through: models.EmergencyMedicalServiceCallAmbulance });
-
-      EmergencyMedicalServiceCall.belongsTo(models.User, { as: 'CreatedBy' });
-      EmergencyMedicalServiceCall.belongsTo(models.User, { as: 'UpdatedBy' });
+      EmergencyMedicalServiceCallAmbulance.belongsTo(models.User, { as: 'CreatedBy' });
+      EmergencyMedicalServiceCallAmbulance.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
-  EmergencyMedicalServiceCall.init(
+  EmergencyMedicalServiceCallAmbulance.init(
     {
       id: {
-        field: 'emergencymedicalservicecall_uuid',
+        field: 'emergencymedicalservicecallambulance_uuid',
         type: DataTypes.UUID,
         primaryKey: true,
         autoIncrement: true,
       },
-      dispatchCallNumber: {
-        field: 'dispatchcallnumber',
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      EmergencyMedicalServiceCallId: {
+        field: 'emergencymedicalservicecall_uuid',
+        type: DataTypes.UUID,
+      },
+      AmbulanceId: {
+        field: 'ambulance_uuid',
+        type: DataTypes.UUID,
       },
       startDateTimeLocal: {
         field: 'startdatetimelocal',
@@ -55,9 +56,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       timestamps: true,
-      tableName: 'emergencymedicalservicecall',
-      modelName: 'EmergencyMedicalServiceCall',
+      tableName: 'emergencymedicalservicecallambulance',
+      modelName: 'EmergencyMedicalServiceCallAmbulance',
     }
   );
-  return EmergencyMedicalServiceCall;
+  return EmergencyMedicalServiceCallAmbulance;
 };

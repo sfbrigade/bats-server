@@ -301,6 +301,10 @@ $spinner-border-width-sm: 0.2em;
   padding: 1.5rem;
 }
 
+.usa-fieldset + .usa-fieldset {
+  padding-top: 0.5rem;
+}
+
 .usa-fieldset > .usa-button:first-child,
 .usa-fieldset > .usa-checkbox:first-child .usa-checkbox__label,
 .usa-fieldset > .usa-radio:first-child .usa-radio__label {
