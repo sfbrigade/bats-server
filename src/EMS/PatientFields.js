@@ -1,29 +1,78 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {useState, useEffect} from 'react';
+import PropTypes, { func } from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
 import FormInput from '../Components/FormInput';
 import FormRadio from '../Components/FormRadio';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
-import Ringdown from '../Models/Ringdown';
 import ComboBox from '../Components/ComboBox';
 
+import Ringdown from '../Models/Ringdown';
+import ApiService from '../ApiService';
+
 function PatientFields({ ringdown, onChange }) {
+
+  const [ambulanceId, setAmbulanceId] = useState([]);
+  const [dispatchCall, setDispatchCall] = useState([]);
+  let ambulanceOptionsList;
+  let dispatchOptionsList;
+
+  useEffect(() => {
+
+    
+      ApiService.ambulances.getIdentifiers().then((response) => {
+        setAmbulanceId(response.data.ambulanceIdentifiers);
+      });
+    if (ringdown.ambulanceIdentifier) {
+      ApiService.emsCalls.getDispatchCallNumbers(ringdown.ambulanceIdentifier).then((response) => {
+        setDispatchCall(response.data.dispatchCallNumbers);
+      });
+    }
+
+  }, [ringdown.ambulanceIdentifier]);
+
+  function createOptionsList(listName, listInfo){
+    const options = [<option key={0} />];
+
+    if (listName === 'ambulanceIdentifier') {
+      for (let i = 0; i < listInfo.length; i += 1) {
+        options.push(
+          <option key={listInfo[i]} value={listInfo[i]}>
+            {ambulanceId[i]}
+          </option>
+        );
+      }
+    }
+    if (listName === 'dispatchCallNumber') {
+      for (let i = 0; i < listInfo.length; i += 1) {
+        options.push(
+          <option key={`dispatchCall${i + 1}`} value={listInfo[i]}>
+            {dispatchCall[i]}
+          </option>
+        );
+      }
+    }
+    return options
+  } 
+
+  ambulanceOptionsList = createOptionsList('ambulanceIdentifier', ambulanceId);
+  dispatchOptionsList =createOptionsList('dispatchCallNumber', dispatchCall);
+  
   return (
     <>
       <div className="usa-accordion">
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <ComboBox label="Unit #" property="ambulanceIdentifier" required onChange={onChange} condition="" />
+            <ComboBox label="Unit #" property="ambulanceIdentifier" required onChange={onChange} options={ambulanceOptionsList || ''} />
 
             <ComboBox
               label="Incident #"
               property="dispatchCallNumber"
               required
               onChange={onChange}
-              condition={ringdown.ambulanceIdentifier || ''}
+              options={dispatchOptionsList || ''}
             />
           </fieldset>
         </div>
