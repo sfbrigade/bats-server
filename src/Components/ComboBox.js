@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
-
 export default function ComboBox({ label, property, required, onChange, options }) {
-  
-
   return (
     <>
       <label className="usa-label" htmlFor={property}>
