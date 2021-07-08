@@ -27,5 +27,5 @@ ComboBox.propTypes = {
   onChange: PropTypes.func.isRequired,
   property: PropTypes.string.isRequired,
   required: PropTypes.bool.isRequired,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.oneOfType([PropTypes.array]).isRequired,
 };
