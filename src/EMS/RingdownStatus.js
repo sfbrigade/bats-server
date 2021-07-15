@@ -6,10 +6,10 @@ import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
-  const [showUpdate, setShowUpdate] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-  function handleDiversionUpdate() {
-    setShowUpdate(false);
+  function handleCancel() {
+    setShowCancel(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
@@ -127,18 +127,18 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           >
             Redirect patient
           </button>
-          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowUpdate(true)}>
+          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowCancel(true)}>
             Cancel delivery
           </button>
-          {showUpdate && (
+          {showCancel && (
             <Alert
               type="warning"
               title="Cancel Delivery?"
               message="Patient data will be erased and hospital will be notified."
-              cancel="Keep status"
-              destructive="Update status"
-              onDestructive={handleDiversionUpdate}
-              onCancel={() => setShowUpdate(false)}
+              cancel="Maintain delivery"
+              destructive="Confirm cancel delivery"
+              onDestructive={handleCancel}
+              onCancel={() => setShowCancel(false)}
             />
           )}
           {showRedirect && (
@@ -146,8 +146,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               type="warning"
               title="Redirect Patient?"
               message="Patient data will be saved and you will be prompted to select a new destination."
-              cancel="Keep status"
-              destructive="Update status"
+              cancel="Maintain destination"
+              destructive="Confirm redirect patient"
               onDestructive={handleRedirect}
               onCancel={() => setShowRedirect(false)}
             />
