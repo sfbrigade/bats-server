@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
+import { PatientFieldData, ValidationState } from './PatientFieldData';
 
 const DeliveryStatus = {
   RINGDOWN_SENT: 'RINGDOWN SENT',
@@ -9,6 +10,7 @@ const DeliveryStatus = {
   RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
   CANCELLED: 'CANCELLED',
 };
+
 DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.RINGDOWN_SENT,
   DeliveryStatus.RINGDOWN_RECEIVED,
@@ -17,6 +19,7 @@ DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.RETURNED_TO_SERVICE,
   DeliveryStatus.CANCELLED,
 ];
+
 Object.freeze(DeliveryStatus);
 
 class Ringdown {
@@ -31,6 +34,16 @@ class Ringdown {
     this.payload.hospital = this.payload.hospital || {};
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
+    this.validationData = {
+      ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, ValidationState.NO_INPUT),
+      dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, ValidationState.NO_INPUT),
+      age: new PatientFieldData('age', 2, ValidationState.NO_INPUT),
+      sex: new PatientFieldData('sex', 3, ValidationState.NO_INPUT),
+      emergencyServiceResponseType: new PatientFieldData('emergencyServiceResponseType', 4, ValidationState.NO_INPUT),
+      chiefComplaintDescription: new PatientFieldData('chiefComplaintDescription', 5, ValidationState.NO_INPUT),
+      stableIndicator: new PatientFieldData('stableIndicator', 6, ValidationState.NO_INPUT),
+      all: new PatientFieldData('all', 7, ValidationState.NO_INPUT),
+    };
   }
 
   get id() {
@@ -337,6 +350,52 @@ class Ringdown {
 
   toJSON() {
     return this.payload;
+  }
+
+  // Form validation
+
+  static ascendingByOrder(a, b) {
+    if (a.order < b.order) {
+      return -1;
+    }
+    if (a.order === b.order) {
+      return 0;
+    }
+    return 1;
+  }
+
+  validatePatientFields(updatedField, inputValue) {
+    const updatedFieldHasValidations = updatedField in this.validationData;
+
+    if (updatedFieldHasValidations) {
+      const currentState = this.validationData[updatedField].validationState;
+      this.setValidationStateForInput(updatedField, currentState, inputValue);
+    }
+
+    const partition = updatedFieldHasValidations ? this.validationData[updatedField].order : this.validationData.all.order;
+    const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
+    const previousFields = sorted.slice(0, partition);
+    previousFields
+      .filter((fieldData) => fieldData.validationState === ValidationState.NO_INPUT)
+      .forEach((fieldData) => {
+        this.validationData[fieldData.name].validationState = ValidationState.ERROR;
+      });
+  }
+
+  setValidationStateForInput(fieldName, currentState, inputValue) {
+    if (currentState === ValidationState.ERROR) {
+      this.validationData[fieldName].validationState = ValidationState.FIXED;
+    } else if (currentState === ValidationState.NO_INPUT) {
+      this.validationData[fieldName].validationState = ValidationState.INPUT;
+    } else if (currentState === ValidationState.INPUT && !inputValue) {
+      this.validationData[fieldName].validationState = ValidationState.ERROR;
+    } else if (currentState === ValidationState.FIXED && !inputValue) {
+      this.validationData[fieldName].validationState = ValidationState.ERROR;
+    }
+  }
+
+  getValidationState(fieldName) {
+    return this.validationData[fieldName].validationState;
   }
 }
 

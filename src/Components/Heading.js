@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './Heading.scss';
 
-const Heading = ({ title, subtitle, badge }) => {
+function Heading({ title, subtitle, badge }) {
   return (
     <h3 className="usa-accordion__heading heading">
       <div>
@@ -13,7 +13,7 @@ const Heading = ({ title, subtitle, badge }) => {
       {badge && <div className="heading__badge">{badge}</div>}
     </h3>
   );
-};
+}
 
 Heading.propTypes = {
   title: PropTypes.string.isRequired,
