@@ -51,7 +51,6 @@ function RingdownForm({ className }) {
 
   function onStatusChange(rd, status) {
     // submit to server
-    console.log(rd, status);
     const now = new Date();
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
