@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import Ringdown from '../Models/Ringdown';
-z
+
 function RingdownEta({ className, prefix, ringdown }) {
   return (
     <>
