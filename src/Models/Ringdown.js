@@ -313,9 +313,11 @@ class Ringdown {
   // Delivery Status
 
   get etaDateTimeLocalObj() {
-    return DateTime.fromISO(this.timestamps[DeliveryStatus.RINGDOWN_SENT]).plus({
-      minutes: this.etaMinutes,
-    });
+    return this.timestamps[DeliveryStatus.RINGDOWN_SENT]
+      ? DateTime.fromISO(this.timestamps[DeliveryStatus.RINGDOWN_SENT]).plus({
+          minutes: this.etaMinutes,
+        })
+      : null;
   }
 
   get etaMinutes() {
