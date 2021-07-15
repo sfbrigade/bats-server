@@ -74,15 +74,17 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
   try {
     let patientDelivery;
     await models.sequelize.transaction(async (transaction) => {
-      const emsCall = await models.EmergencyMedicalServiceCall.create(
-        {
+      const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
+        where: {
           dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
+        },
+        defaults: {
           startDateTimeLocal: new Date(),
           CreatedById: req.user.id,
           UpdatedById: req.user.id,
         },
-        { transaction }
-      );
+        transaction,
+      });
       const patient = await models.Patient.create(
         {
           ..._.pick(req.body.patient, models.Patient.Params),

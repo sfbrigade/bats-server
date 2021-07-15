@@ -9,6 +9,9 @@ const DeliveryStatus = {
   OFFLOADED: 'OFFLOADED',
   RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
   CANCELLED: 'CANCELLED',
+  CANCEL_ACKNOWLEDGED: 'CANCEL ACKNOWLEGED',
+  REDIRECTED: 'REDIRECTED',
+  REDIRECT_ACKNOWLEDGED: 'REDIRECT ACKNOWLEGED',
 };
 
 DeliveryStatus.ALL_STATUSES = [
@@ -18,6 +21,9 @@ DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.OFFLOADED,
   DeliveryStatus.RETURNED_TO_SERVICE,
   DeliveryStatus.CANCELLED,
+  DeliveryStatus.CANCEL_ACKNOWLEDGED,
+  DeliveryStatus.REDIRECTED,
+  DeliveryStatus.REDIRECT_ACKNOWLEDGED,
 ];
 
 Object.freeze(DeliveryStatus);
@@ -44,6 +50,14 @@ class Ringdown {
       stableIndicator: new PatientFieldData('stableIndicator', 6, ValidationState.NO_INPUT),
       all: new PatientFieldData('all', 7, ValidationState.NO_INPUT),
     };
+  }
+
+  clone() {
+    const copy = new Ringdown({ ...this.payload });
+    delete copy.payload.id;
+    copy.hospitalId = null;
+    copy.etaMinutes = null;
+    return copy;
   }
 
   get id() {
