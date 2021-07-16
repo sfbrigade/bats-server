@@ -8,6 +8,7 @@ import Alert from '../Components/Alert';
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+
   function handleCancel() {
     setShowCancel(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);

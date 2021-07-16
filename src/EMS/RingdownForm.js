@@ -60,15 +60,18 @@ function RingdownForm({ className }) {
     const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
       case Ringdown.Status.REDIRECTED:
+        // create a new ringdown with the same patient data, but no hospital selected yet
         setRingdown(rd.clone());
       // We want this to fall through
       case Ringdown.Status.RETURNED_TO_SERVICE:
       case Ringdown.Status.CANCELLED:
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
-        next();
+        if (status === Ringdown.Status.REDIRECTED) {
+          // if redirected, go directly to Hospital Selection
+          next();
+        }
         return;
-
       default:
         rd.timestamps[status] = isoNow;
     }
