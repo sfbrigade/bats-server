@@ -13,4 +13,8 @@ test('renders EMS and ER links', () => {
   expect(erLinkElement.href).toBe('http://localhost/er');
 });
 */
-test('placeholder', () => {});
+
+test('adds 1 + 2 to equal 3', () => {
+  const sum = (a, b) => a + b;
+  expect(sum(1, 2)).toBe(3);
+});
