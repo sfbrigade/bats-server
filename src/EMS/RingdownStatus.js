@@ -6,11 +6,18 @@ import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
-  const [showUpdate, setShowUpdate] = useState(false);
-  function handleDiversionUpdate() {
-    setShowUpdate(false);
+  const [showCancel, setShowCancel] = useState(false);
+  const [showRedirect, setShowRedirect] = useState(false);
+  function handleCancel() {
+    setShowCancel(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
+
+  function handleRedirect() {
+    setShowRedirect(false);
+    onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
+  }
+
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
@@ -113,21 +120,36 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           </ol>
         </fieldset>
         <fieldset className="usa-fieldset border-top border-base-lighter">
-          <button className="usa-button usa-button--outline usa-button--secondary width-full" type="button">
+          <button
+            className="usa-button usa-button--outline usa-button--secondary width-full"
+            type="button"
+            onClick={() => setShowRedirect(true)}
+          >
             Redirect patient
           </button>
-          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowUpdate(true)}>
+          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowCancel(true)}>
             Cancel delivery
           </button>
-          {showUpdate && (
+          {showCancel && (
             <Alert
               type="warning"
               title="Cancel Delivery?"
               message="Patient data will be erased and hospital will be notified."
               cancel="Maintain delivery"
               destructive="Confirm cancel delivery"
-              onDestructive={handleDiversionUpdate}
-              onCancel={() => setShowUpdate(false)}
+              onDestructive={handleCancel}
+              onCancel={() => setShowCancel(false)}
+            />
+          )}
+          {showRedirect && (
+            <Alert
+              type="warning"
+              title="Redirect Patient?"
+              message="Patient data will be saved and you will be prompted to select a new destination."
+              cancel="Maintain destination"
+              destructive="Confirm redirect patient"
+              onDestructive={handleRedirect}
+              onCancel={() => setShowRedirect(false)}
             />
           )}
         </fieldset>

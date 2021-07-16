@@ -7,6 +7,8 @@ import ApiService from '../ApiService';
 import Context from '../Context';
 import Ringdown from '../Models/Ringdown';
 import Spinner from '../Components/Spinner';
+import RingdownCard from '../Components/RingdownCard';
+import Heading from '../Components/Heading';
 
 import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
@@ -57,11 +59,16 @@ function RingdownForm({ className }) {
     rd.currentDeliveryStatus = status;
     const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
+      case Ringdown.Status.REDIRECTED:
+        setRingdown(rd.clone());
+      // We want this to fall through
       case Ringdown.Status.RETURNED_TO_SERVICE:
       case Ringdown.Status.CANCELLED:
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
+        next();
         return;
+
       default:
         rd.timestamps[status] = isoNow;
     }
@@ -100,6 +107,8 @@ function RingdownForm({ className }) {
                 <button className="usa-button usa-button--outline width-full margin-top-4" type="button" onClick={edit}>
                   Edit Ringdown
                 </button>
+                <Heading title="Ringdown Overview" />
+                <RingdownCard key={ringdown.id} className="margin-x-3 margin-y-2" ringdown={ringdown} />
               </>
             )}
           </fieldset>

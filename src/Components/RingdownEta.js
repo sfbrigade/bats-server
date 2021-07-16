@@ -6,10 +6,14 @@ import Ringdown from '../Models/Ringdown';
 
 function RingdownEta({ className, prefix, ringdown }) {
   return (
-    <span className={classNames('ringdown-eta', className)}>
-      <span className="ringdown-eta__prefix">{prefix}</span>
-      {ringdown.etaDateTimeLocalObj.toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
-    </span>
+    <>
+      {ringdown.etaDateTimeLocalObj && (
+        <span className={classNames('ringdown-eta', className)}>
+          <span className="ringdown-eta__prefix">{prefix}</span>
+          {ringdown.etaDateTimeLocalObj.toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+        </span>
+      )}
+    </>
   );
 }
 
