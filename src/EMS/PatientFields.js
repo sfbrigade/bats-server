@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
+import FormComboBox from '../Components/FormComboBox';
 import FormInput from '../Components/FormInput';
 import FormRadio from '../Components/FormRadio';
 import FormRadioFieldSet from '../Components/FormRadioFieldSet';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
-import ComboBox from '../Components/ComboBox';
 
 import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
@@ -15,6 +15,7 @@ import ApiService from '../ApiService';
 function PatientFields({ ringdown, onChange }) {
   const [ambulanceId, setAmbulanceId] = useState([]);
   const [dispatchCall, setDispatchCall] = useState([]);
+
   let ambulanceOptionsList = [];
   let dispatchOptionsList = [];
 
@@ -30,7 +31,7 @@ function PatientFields({ ringdown, onChange }) {
   }, [ringdown.ambulanceIdentifier]);
 
   function createOptionsList(listName, listInfo) {
-    const options = [<option key={0} />];
+    const options = [];
 
     if (listName === 'ambulanceIdentifier') {
       for (let i = 0; i < listInfo.length; i += 1) {
@@ -68,9 +69,10 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <ComboBox label="Unit #" property="ambulanceIdentifier" required onChange={onChange} options={ambulanceOptionsList || ''} />
-
-            <ComboBox label="Incident #" property="dispatchCallNumber" required onChange={onChange} options={dispatchOptionsList || ''} />
+            <FormComboBox label="Unit #" property="ambulanceIdentifier" required onChange={onChange} options={ambulanceOptionsList} />
+          </fieldset>
+          <fieldset className="usa-fieldset">
+            <FormComboBox label="Incident #" property="dispatchCallNumber" required onChange={onChange} options={dispatchOptionsList} />
           </fieldset>
         </div>
         <Heading title="Patient Info" />
