@@ -13,49 +13,31 @@ import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
 
 function PatientFields({ ringdown, onChange }) {
-  const [ambulanceId, setAmbulanceId] = useState([]);
-  const [dispatchCall, setDispatchCall] = useState([]);
-
-  let ambulanceOptionsList = [];
-  let dispatchOptionsList = [];
+  const [ambulanceIds, setAmbulanceIds] = useState([]);
+  const [dispatchCallNumbers, setDispatchCallNumbers] = useState([]);
 
   useEffect(() => {
     ApiService.ambulances.getIdentifiers().then((response) => {
-      setAmbulanceId(response.data.ambulanceIdentifiers);
+      setAmbulanceIds(response.data.ambulanceIdentifiers);
     });
     if (ringdown.ambulanceIdentifier) {
       ApiService.emsCalls.getDispatchCallNumbers(ringdown.ambulanceIdentifier).then((response) => {
-        setDispatchCall(response.data.dispatchCallNumbers);
+        setDispatchCallNumbers(response.data.dispatchCallNumbers);
       });
     }
   }, [ringdown.ambulanceIdentifier]);
 
-  function createOptionsList(listName, listInfo) {
+  function createOptions(ids) {
     const options = [];
-
-    if (listName === 'ambulanceIdentifier') {
-      for (let i = 0; i < listInfo.length; i += 1) {
-        options.push(
-          <option key={listInfo[i]} value={listInfo[i]}>
-            {ambulanceId[i]}
-          </option>
-        );
-      }
-    }
-    if (listName === 'dispatchCallNumber') {
-      for (let i = 0; i < listInfo.length; i += 1) {
-        options.push(
-          <option key={`dispatchCall${i + 1}`} value={listInfo[i]}>
-            {dispatchCall[i]}
-          </option>
-        );
-      }
-    }
+    ids.forEach((id) =>
+      options.push(
+        <option key={id} value={id}>
+          {id}
+        </option>
+      )
+    );
     return options;
   }
-
-  ambulanceOptionsList = createOptionsList('ambulanceIdentifier', ambulanceId);
-  dispatchOptionsList = createOptionsList('dispatchCallNumber', dispatchCall);
 
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
@@ -69,10 +51,22 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <FormComboBox label="Unit #" property="ambulanceIdentifier" required onChange={onChange} options={ambulanceOptionsList} />
+            <FormComboBox
+              label="Unit #"
+              property="ambulanceIdentifier"
+              required
+              onChange={onChange}
+              options={createOptions(ambulanceIds)}
+            />
           </fieldset>
           <fieldset className="usa-fieldset">
-            <FormComboBox label="Incident #" property="dispatchCallNumber" required onChange={onChange} options={dispatchOptionsList} />
+            <FormComboBox
+              label="Incident #"
+              property="dispatchCallNumber"
+              required
+              onChange={onChange}
+              options={createOptions(dispatchCallNumbers)}
+            />
           </fieldset>
         </div>
         <Heading title="Patient Info" />
