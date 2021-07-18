@@ -10,7 +10,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   const [focused, setFocused] = useState(false);
 
   useEffect(() => {
-    const {current} = ref;
+    const { current } = ref;
     comboBox.on(current);
     return () => {
       comboBox.off(current);
