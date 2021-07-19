@@ -41,7 +41,6 @@ function PatientFields({ ringdown, onChange }) {
 
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
-
     ringdown.validatePatientFields(updatedField, inputValue);
   }
 
@@ -55,8 +54,10 @@ function PatientFields({ ringdown, onChange }) {
               label="Unit #"
               property="ambulanceIdentifier"
               required
-              onChange={onChange}
+              onChange={handleUserInput}
               options={createOptions(ambulanceIds)}
+              validationState={ringdown.getValidationState('ambulanceIdentifier')}
+              value={ringdown.ambulanceIdentifier}
             />
           </fieldset>
           <fieldset className="usa-fieldset">
@@ -64,8 +65,10 @@ function PatientFields({ ringdown, onChange }) {
               label="Incident #"
               property="dispatchCallNumber"
               required
-              onChange={onChange}
+              onChange={handleUserInput}
               options={createOptions(dispatchCallNumbers)}
+              validationState={ringdown.getValidationState('dispatchCallNumber')}
+              value={ringdown.dispatchCallNumber}
             />
           </fieldset>
         </div>
