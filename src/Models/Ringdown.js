@@ -71,7 +71,7 @@ class Ringdown {
   }
 
   get ambulanceIdentifier() {
-    return this.payload.ambulance.ambulanceIdentifier ?? null;
+    return this.payload.ambulance.ambulanceIdentifier ?? '';
   }
 
   set ambulanceIdentifier(newValue) {
@@ -85,7 +85,7 @@ class Ringdown {
   }
 
   get dispatchCallNumber() {
-    return this.payload.emsCall.dispatchCallNumber ?? null;
+    return this.payload.emsCall.dispatchCallNumber ?? '';
   }
 
   set dispatchCallNumber(newValue) {

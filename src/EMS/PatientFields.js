@@ -1,18 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
+import FormComboBox from '../Components/FormComboBox';
 import FormInput from '../Components/FormInput';
 import FormRadio from '../Components/FormRadio';
 import FormRadioFieldSet from '../Components/FormRadioFieldSet';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
+
 import Ringdown from '../Models/Ringdown';
+import ApiService from '../ApiService';
 
 function PatientFields({ ringdown, onChange }) {
+  const [ambulanceIds, setAmbulanceIds] = useState([]);
+  const [dispatchCallNumbers, setDispatchCallNumbers] = useState([]);
+
+  useEffect(() => {
+    ApiService.ambulances.getIdentifiers().then((response) => {
+      setAmbulanceIds(response.data.ambulanceIdentifiers);
+    });
+    if (ringdown.ambulanceIdentifier) {
+      ApiService.emsCalls.getDispatchCallNumbers(ringdown.ambulanceIdentifier).then((response) => {
+        setDispatchCallNumbers(response.data.dispatchCallNumbers);
+      });
+    }
+  }, [ringdown.ambulanceIdentifier]);
+
+  function createOptions(ids) {
+    const options = [];
+    ids.forEach((id) =>
+      options.push(
+        <option key={id} value={id}>
+          {id}
+        </option>
+      )
+    );
+    return options;
+  }
+
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
-
     ringdown.validatePatientFields(updatedField, inputValue);
   }
 
@@ -22,24 +50,25 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <FormInput
+            <FormComboBox
               label="Unit #"
-              onChange={handleUserInput}
               property="ambulanceIdentifier"
               required
-              size="medium"
-              value={ringdown.ambulanceIdentifier}
-              validationState={ringdown.getValidationState('ambulanceIdentifier')}
-            />
-            <FormInput
-              label="Incident #"
               onChange={handleUserInput}
+              options={createOptions(ambulanceIds)}
+              validationState={ringdown.getValidationState('ambulanceIdentifier')}
+              value={ringdown.ambulanceIdentifier}
+            />
+          </fieldset>
+          <fieldset className="usa-fieldset">
+            <FormComboBox
+              label="Incident #"
               property="dispatchCallNumber"
               required
-              size="medium"
-              type="number"
-              value={ringdown.dispatchCallNumber}
+              onChange={handleUserInput}
+              options={createOptions(dispatchCallNumbers)}
               validationState={ringdown.getValidationState('dispatchCallNumber')}
+              value={ringdown.dispatchCallNumber}
             />
           </fieldset>
         </div>

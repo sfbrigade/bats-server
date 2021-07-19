@@ -17,6 +17,16 @@ instance.interceptors.response.use(
 );
 
 export default {
+  ambulances: {
+    getIdentifiers() {
+      return instance.get('/api/ambulances/identifiers');
+    },
+  },
+  emsCalls: {
+    getDispatchCallNumbers(ambulanceIdentifier) {
+      return instance.get('/api/emscalls/dispatch-call-numbers', { params: { ambulanceIdentifier } });
+    },
+  },
   hospitalStatuses: {
     get() {
       return instance.get('/api/hospitalstatuses');

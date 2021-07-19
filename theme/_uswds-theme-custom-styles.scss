@@ -233,6 +233,7 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .usa-accordion__content {
+  overflow: initial;
   padding: 0;
 }
 
@@ -339,7 +340,9 @@ $spinner-border-width-sm: 0.2em;
   font-size: 1.25rem;
 }
 
+.usa-combo-box__input,
 .usa-input,
+.usa-select,
 .usa-textarea {
   @include h3;
   border-radius: 0.25rem;
