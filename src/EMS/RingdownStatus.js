@@ -13,18 +13,25 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
 
   function handleCancel() {
     setShowCancel(false);
+    handleRedirect(false);
     setShowConfirmCancel(true);
  
   }
 
   function handleRedirect() {
     setShowRedirect(false);
-    onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
+    setConfirmRedirect(true);
+    // onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
   function handleConfirmCancel (){
     setShowConfirmCancel(false)
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
+  }
+
+  function handleConfirmRedirect (){
+    setConfirmRedirect(false)
+    onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
   return (
@@ -166,10 +173,10 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               type="warning"
               title="Hospital notified"
               message="Please select a new destination."
-              cancel="Return to hospital list"
-              destructive="Edit ringdown"
-              // onDestructive={handleCancel}
-              // onCancel={() => setShowCancel(false)}
+              cancel="Edit ringdown"
+              destructive="Return to hospital list"
+              onDestructive={handleConfirmRedirect}
+              onCancel={handleCancel}
             />
           )}
           {showRedirect && (
