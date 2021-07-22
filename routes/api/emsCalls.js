@@ -20,10 +20,9 @@ router.get('/dispatch-call-numbers', middleware.isAuthenticated, async (req, res
           model: EmergencyMedicalServiceCall,
         },
       ],
+      order: [['EmergencyMedicalServiceCall', 'dispatchCallNumber', 'DESC']],
     });
-    const dispatchCallNumbers = emsAmbulances
-      .map((emsAmbulance) => emsAmbulance.EmergencyMedicalServiceCall.dispatchCallNumber)
-      .sort((a, b) => b - a);
+    const dispatchCallNumbers = emsAmbulances.map((emsAmbulance) => emsAmbulance.EmergencyMedicalServiceCall.dispatchCallNumber);
     res.status(HttpStatus.OK).json({ dispatchCallNumbers });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
