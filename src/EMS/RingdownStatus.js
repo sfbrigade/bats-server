@@ -13,12 +13,18 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
 
   function handleCancel() {
     setShowCancel(false);
-    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
+    setShowConfirmCancel(true);
+ 
   }
 
   function handleRedirect() {
     setShowRedirect(false);
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
+  }
+
+  function handleConfirmCancel (){
+    setShowConfirmCancel(false)
+    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
   return (
@@ -149,10 +155,10 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               type="warning"
               title="Delivery canceled"
               message="The hospital has been notified."
-              cancel="Start new form"
-              // destructive="Confirm cancel delivery"
-              // onDestructive={handleCancel}
-              onCancel={() => setShowCancel(false)}
+              // cancel="Start new form"
+              destructive="Start new form"
+              onDestructive={handleConfirmCancel}
+              // onCancel={() => setShowCancel(false)}
             />
           )}
           {confirmRedirect && (
