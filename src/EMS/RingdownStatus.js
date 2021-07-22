@@ -9,6 +9,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
   const [confirmCancel, setShowConfirmCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [confirmRedirect, setConfirmRedirect] = useState(false);
 
   function handleCancel() {
     setShowCancel(false);
@@ -152,6 +153,17 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               // destructive="Confirm cancel delivery"
               // onDestructive={handleCancel}
               onCancel={() => setShowCancel(false)}
+            />
+          )}
+          {confirmRedirect && (
+            <Alert
+              type="warning"
+              title="Hospital notified"
+              message="Please select a new destination."
+              cancel="Return to hospital list"
+              destructive="Edit ringdown"
+              // onDestructive={handleCancel}
+              // onCancel={() => setShowCancel(false)}
             />
           )}
           {showRedirect && (
