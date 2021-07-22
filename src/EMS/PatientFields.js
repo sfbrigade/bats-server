@@ -27,7 +27,7 @@ function PatientFields({ ringdown, onChange }) {
         setDispatchCallNumbers(response.data.dispatchCallNumbers);
       });
     }
-  }, [ringdown.ambulanceIdentifier]);
+  }, [ringdown.ambulanceIdentifier, user.organization.id]);
 
   function createOptions(ids) {
     const options = [];
