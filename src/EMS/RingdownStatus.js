@@ -13,7 +13,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
 
   function handleCancel() {
     setShowCancel(false);
-    handleRedirect(false);
     setShowConfirmCancel(true);
  
   }
@@ -165,18 +164,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               // cancel="Start new form"
               destructive="Start new form"
               onDestructive={handleConfirmCancel}
-              // onCancel={() => setShowCancel(false)}
-            />
-          )}
-          {confirmRedirect && (
-            <Alert
-              type="warning"
-              title="Hospital notified"
-              message="Please select a new destination."
-              cancel="Edit ringdown"
-              destructive="Return to hospital list"
-              onDestructive={handleConfirmRedirect}
-              onCancel={handleCancel}
+              onCancel={() => setShowCancel(false)}
             />
           )}
           {showRedirect && (
@@ -188,6 +176,17 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               destructive="Confirm redirect patient"
               onDestructive={handleRedirect}
               onCancel={() => setShowRedirect(false)}
+            />
+          )}
+          {confirmRedirect && (
+            <Alert
+              type="warning"
+              title="Hospital notified"
+              message="Please select a new destination."
+              cancel="Edit ringdown"
+              destructive="Return to hospital list"
+              onDestructive={handleConfirmRedirect}
+              onCancel={handleConfirmCancel}
             />
           )}
         </fieldset>
