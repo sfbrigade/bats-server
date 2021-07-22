@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
@@ -11,13 +11,15 @@ import Heading from '../Components/Heading';
 
 import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
+import Context from '../Context';
 
 function PatientFields({ ringdown, onChange }) {
   const [ambulanceIds, setAmbulanceIds] = useState([]);
   const [dispatchCallNumbers, setDispatchCallNumbers] = useState([]);
+  const { user } = useContext(Context);
 
   useEffect(() => {
-    ApiService.ambulances.getIdentifiers().then((response) => {
+    ApiService.ambulances.getIdentifiers(user.organization.id).then((response) => {
       setAmbulanceIds(response.data.ambulanceIdentifiers);
     });
     if (ringdown.ambulanceIdentifier) {
