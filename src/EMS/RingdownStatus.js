@@ -7,6 +7,7 @@ import Alert from '../Components/Alert';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
+  const [confirmCancel, setShowConfirmCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
 
   function handleCancel() {
@@ -139,6 +140,17 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               cancel="Maintain delivery"
               destructive="Confirm cancel delivery"
               onDestructive={handleCancel}
+              onCancel={() => setShowCancel(false)}
+            />
+          )}
+          {confirmCancel && (
+            <Alert
+              type="warning"
+              title="Delivery canceled"
+              message="The hospital has been notified."
+              cancel="Start new form"
+              // destructive="Confirm cancel delivery"
+              // onDestructive={handleCancel}
               onCancel={() => setShowCancel(false)}
             />
           )}
