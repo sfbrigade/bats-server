@@ -158,7 +158,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           )}
           {confirmCancel && (
             <Alert
-              type="warning"
+              type="success"
               title="Delivery canceled"
               message="The hospital has been notified."
               // cancel="Start new form"
@@ -180,7 +180,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           )}
           {confirmRedirect && (
             <Alert
-              type="warning"
+              type="success"
               title="Hospital notified"
               message="Please select a new destination."
               cancel="Edit ringdown"
