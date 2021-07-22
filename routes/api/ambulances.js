@@ -18,7 +18,7 @@ router.get('/identifiers', middleware.isAuthenticated, async (req, res) => {
         },
       ],
     });
-    const ambulanceIdentifiers = ambulances.map((ambulance) => ambulance.ambulanceIdentifier);
+    const ambulanceIdentifiers = ambulances.map((ambulance) => ambulance.ambulanceIdentifier).sort();
     res.status(HttpStatus.OK).json({ ambulanceIdentifiers });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();

@@ -21,7 +21,9 @@ router.get('/dispatch-call-numbers', middleware.isAuthenticated, async (req, res
         },
       ],
     });
-    const dispatchCallNumbers = emsAmbulances.map((emsAmbulance) => emsAmbulance.EmergencyMedicalServiceCall.dispatchCallNumber);
+    const dispatchCallNumbers = emsAmbulances
+      .map((emsAmbulance) => emsAmbulance.EmergencyMedicalServiceCall.dispatchCallNumber)
+      .sort((a, b) => b - a);
     res.status(HttpStatus.OK).json({ dispatchCallNumbers });
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();

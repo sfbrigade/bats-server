@@ -19,7 +19,7 @@ describe('/api/ambulances', () => {
   });
 
   describe('GET /identifiers', () => {
-    it('returns a list of ambulance identifiers filtered by organizationId', async () => {
+    it('returns a sorted list of ambulance identifiers filtered by organizationId', async () => {
       const orgId = '1dd0dfd7-562e-48db-ae78-31b9136d3e15';
       const response = await testSession
         .get(`/api/ambulances/identifiers?organizationId=${orgId}`)
@@ -27,9 +27,11 @@ describe('/api/ambulances', () => {
         .expect(HttpStatus.OK);
 
       const { ambulanceIdentifiers } = response.body;
-      assert.deepStrictEqual(ambulanceIdentifiers.length, 2);
-      assert(ambulanceIdentifiers.includes('SFFD-1'));
-      assert(ambulanceIdentifiers.includes('SFFD-2'));
+      assert.deepStrictEqual(ambulanceIdentifiers.length, 3);
+      // should be sorted ascending
+      assert(ambulanceIdentifiers[0] === 'SFFD-1');
+      assert(ambulanceIdentifiers[1] === 'SFFD-2');
+      assert(ambulanceIdentifiers[2] === 'SFFD-3');
     });
   });
 });
