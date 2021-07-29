@@ -14,7 +14,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   function handleCancel() {
     setShowCancel(false);
     setShowConfirmCancel(true);
- 
   }
 
   function handleRedirect() {
@@ -23,13 +22,13 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     // onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
-  function handleConfirmCancel (){
-    setShowConfirmCancel(false)
+  function handleConfirmCancel() {
+    setShowConfirmCancel(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
-  function handleConfirmRedirect (){
-    setConfirmRedirect(false)
+  function handleConfirmRedirect() {
+    setConfirmRedirect(false);
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
