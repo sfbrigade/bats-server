@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
 
-
 function FormInput({
   children,
   disabled,
