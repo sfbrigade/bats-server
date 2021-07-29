@@ -5,16 +5,6 @@ import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
 
 
-const INPUT_RANGES = {
-  systolicBloodPressure: {min: 120, max: 180},
-  diastolicBloodPressure: {min: 80 , max: 120},
-  heartRateBpm: {min: 40, max: 200},
-  respiratoryRate: {min:12, max:25},
-  oxygenSaturation: {max: 100},
-  temperature: {min: 80, max: 150}
-};
-
-
 function FormInput({
   children,
   disabled,
@@ -26,6 +16,8 @@ function FormInput({
   showRequiredHint,
   size,
   type,
+  min,
+  max,
   unit,
   value,
   validationState,
@@ -54,9 +46,8 @@ function FormInput({
         onFocus={() => setFocused(true)}
         required={required}
         type={type}
-        min={INPUT_RANGES[property] ? INPUT_RANGES[property]['min'] : null }
-        max={INPUT_RANGES[property] ? INPUT_RANGES[property]['max'] : null }
-        placeholder={INPUT_RANGES[property] ? INPUT_RANGES[property]['min'] : null }
+        min={min}
+        max={max}
         className={classNames('usa-input', {
           'usa-input--error': validationState === ValidationState.ERROR,
           'usa-input--success': validationState === ValidationState.FIXED,
@@ -105,6 +96,8 @@ FormInput.propTypes = {
   showRequiredHint: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
   type: PropTypes.oneOf(['number', 'text']),
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   unit: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   validationState: PropTypes.oneOf([...ValidationState.ALL_STATES]),
@@ -119,6 +112,8 @@ FormInput.defaultProps = {
   showRequiredHint: true,
   size: null,
   type: 'text',
+  min : null,
+  max : null,
   unit: null,
   value: '',
   validationState: ValidationState.NO_INPUT,
