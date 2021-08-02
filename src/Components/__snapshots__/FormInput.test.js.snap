@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+Array [
+  <label
+    className="usa-label usa-label--required"
+    htmlFor="ambulanceIdentifier"
+  >
+    Unit #
+  </label>,
+  <div
+    className="grid-row flex-align-center"
+  >
+    <input
+      className="usa-input usa-input--medium"
+      disabled={false}
+      id="ambulanceIdentifier"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={true}
+      type="text"
+      value=""
+    />
+  </div>,
+]
+`;

@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<fieldset
+  className="usa-fieldset form-radio-field-set form-radio-field-set--success"
+>
+  <div
+    className="form-radio-field-set__background"
+  >
+    <label
+      className="usa-label usa-label--required"
+      htmlFor="fruit"
+    >
+      Select Favorite Fruit
+    </label>
+    <div
+      className="usa-radio"
+    >
+      <input
+        checked={true}
+        className="usa-radio__input"
+        disabled={false}
+        id="fruit-APPLE"
+        name="fruit"
+        onChange={[Function]}
+        type="radio"
+        value="APPLE"
+      />
+      <label
+        className="usa-radio__label"
+        htmlFor="fruit-APPLE"
+      >
+        Apple
+      </label>
+    </div>
+    <div
+      className="usa-radio"
+    >
+      <input
+        checked={false}
+        className="usa-radio__input"
+        disabled={false}
+        id="fruit-BANANA"
+        name="fruit"
+        onChange={[Function]}
+        type="radio"
+        value="BANANA"
+      />
+      <label
+        className="usa-radio__label"
+        htmlFor="fruit-BANANA"
+      >
+        Banana
+      </label>
+    </div>
+    <div
+      className="usa-radio"
+    >
+      <input
+        checked={false}
+        className="usa-radio__input"
+        disabled={false}
+        id="fruit-COCONUT"
+        name="fruit"
+        onChange={[Function]}
+        type="radio"
+        value="COCONUT"
+      />
+      <label
+        className="usa-radio__label"
+        htmlFor="fruit-COCONUT"
+      >
+        Coconut
+      </label>
+    </div>
+    <div
+      className="usa-success-message margin-top-1"
+    >
+      <i
+        className="fas fa-check-circle"
+      />
+       Success
+    </div>
+  </div>
+</fieldset>
+`;
