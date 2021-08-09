@@ -20,10 +20,11 @@ function RingdownCard({ className, ringdown }) {
         { 'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED },
         className
       )}
-      header={isExpanded ? null : `Incident #${ringdown.dispatchCallNumber}`}
-      body={isExpanded ? null : ringdown.chiefComplaintDescription}
+      header={isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : `Incident #${ringdown.dispatchCallNumber}`}
+      body={isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : ringdown.chiefComplaintDescription}
     >
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
+        
         <span className="ringdown-eta ringdown-card__eta">
           <span className="ringdown-eta__prefix">Offloaded: </span>
           {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
