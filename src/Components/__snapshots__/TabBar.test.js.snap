@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div
+  className="tabbar"
+>
+  <button
+    className="tabbar__tab h4"
+    onClick={[Function]}
+    type="button"
+  >
+    Ringdown
+  </button>
+  <button
+    className="tabbar__tab tabbar__tab--selected h4"
+    onClick={[Function]}
+    type="button"
+  >
+    Hospital Info
+  </button>
+</div>
+`;

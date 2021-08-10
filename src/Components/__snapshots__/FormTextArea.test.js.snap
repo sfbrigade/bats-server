@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+Array [
+  <label
+    className="usa-label"
+    htmlFor="otherObservationNotes"
+  >
+    Other
+  </label>,
+  <textarea
+    className="usa-textarea"
+    id="otherObservationNotes"
+    onBlur={[Function]}
+    onChange={[Function]}
+    onFocus={[Function]}
+    required={false}
+    value="val"
+  />,
+]
+`;

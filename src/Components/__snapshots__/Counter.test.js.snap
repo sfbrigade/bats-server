@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+<div
+  className="counter"
+>
+  <label
+    className="counter__label"
+    htmlFor="psychBedsCount"
+  >
+    Behavioral Beds
+  </label>
+  <div
+    className="counter__control"
+  >
+    <button
+      className="usa-button counter__button counter__button--decrement"
+      onClick={[Function]}
+      type="button"
+    >
+      −
+    </button>
+    <input
+      className="usa-input usa-input--small counter__input"
+      id="psychBedsCount"
+      name="psychBedsCount"
+      type="number"
+      value="val"
+    />
+    <button
+      className="usa-button counter__button counter__button--increment"
+      onClick={[Function]}
+      type="button"
+    >
+      +
+    </button>
+  </div>
+</div>
+`;

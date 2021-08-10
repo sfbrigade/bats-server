@@ -13,8 +13,8 @@ test('Snapshot', () => {
       value={true}
     />);
 
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    const componentJson = component.toJSON();
+    expect(componentJson).toMatchSnapshot();
 });
 
 test('FormInput should trigger the onChange callback', () => {
