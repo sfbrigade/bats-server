@@ -14,8 +14,8 @@ import ApiService from '../ApiService';
 import Context from '../Context';
 
 const INPUT_RANGES = {
-  systolicBloodPressure: {min: 120, max: 180},
-  diastolicBloodPressure: {min: 80 , max: 120},
+  systolicBloodPressure: {min: 90, max: 180},
+  diastolicBloodPressure: {min: 60 , max: 120},
   heartRateBpm: {min: 40, max: 200},
   respiratoryRate: {min:12, max:25},
   oxygenSaturation: {min:0, max: 100},
