@@ -16,7 +16,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     comboBox.on(current);
     // manually add event handlers to the custom input added by USWDS
     const input = current.querySelector('input[type="text"]');
-    input.addEventListener('input', (e) => setCustomOption(e.target.value));
+    // input.addEventListener('input', (e) => setCustomOption(e.target.value));
     input.addEventListener('focus', () => setFocused(true));
     input.addEventListener('blur', () => setFocused(false));
     input.value = value;
@@ -25,6 +25,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  // console.log("hello:=", customOption)
 
   useEffect(() => {
     const { current } = ref;
@@ -43,13 +44,13 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   }, [validationState]);
 
   // first check if value exists as customOption or in options, if not, set as the custom option
-  if (value && value !== customOption) {
-    if (options.every((o) => value.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
-      setCustomOption(value);
-    } else if (customOption) {
-      setCustomOption(null);
-    }
-  }
+  // if (value && value !== customOption) {
+  //   if (options.every((o) => value.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
+  //     setCustomOption(value);
+  //   } else if (customOption) {
+  //     setCustomOption(null);
+  //   }
+  // }
   // combine the custom entered value in the input box with the options as needed
   let combinedOptions = options;
   if (customOption && options.every((o) => customOption.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
