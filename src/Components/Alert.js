@@ -14,13 +14,6 @@ function Alert({ className, type, title, message, cancel, primary, destructive, 
             <p className="usa-alert__text">{message}</p>
           </div>
           <ul className="usa-button-group flex-column flex-align-stretch">
-            {cancel && (
-              <li className="usa-button-group__item">
-                <button type="button" className="usa-button usa-button--outline bg-white width-full" onClick={onCancel}>
-                  {cancel}
-                </button>
-              </li>
-            )}
             {destructive && (
               <li className="usa-button-group__item">
                 <button type="button" className="usa-button usa-button--secondary width-full" onClick={onDestructive}>
@@ -32,6 +25,13 @@ function Alert({ className, type, title, message, cancel, primary, destructive, 
               <li className="usa-button-group__item">
                 <button type="button" className="usa-button width-full" onClick={onPrimary}>
                   {primary}
+                </button>
+              </li>
+            )}
+            {cancel && (
+              <li className="usa-button-group__item">
+                <button type="button" className="usa-button usa-button--outline bg-white width-full" onClick={onCancel}>
+                  {cancel}
                 </button>
               </li>
             )}

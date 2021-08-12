@@ -161,8 +161,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               title="Delivery canceled"
               message="The hospital has been notified."
               // cancel="Start new form"
-              destructive="Start new form"
-              onDestructive={handleConfirmCancel}
+              primary="Start new form"
+              onPrimary={handleConfirmCancel}
               onCancel={() => setShowCancel(false)}
             />
           )}
@@ -183,8 +183,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               title="Hospital notified"
               message="Please select a new destination."
               cancel="Edit ringdown"
-              destructive="Return to hospital list"
-              onDestructive={handleConfirmRedirect}
+              primary="Return to hospital list"
+              onPrimary={handleConfirmRedirect}
               onCancel={handleConfirmCancel}
             />
           )}
