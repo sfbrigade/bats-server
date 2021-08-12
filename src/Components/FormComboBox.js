@@ -10,8 +10,8 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   const ref = useRef();
   const [focused, setFocused] = useState(false);
   // changed to let so I could manually reset value of customOptions
-  //throws an error with lint
-  let [customOption, setCustomOption] = useState(null);
+  // throws an error with lint
+  const [customOption, setCustomOption] = useState(null);
 
   useEffect(() => {
     const { current } = ref;
@@ -57,13 +57,17 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   let combinedOptions = options;
   // this is the fix for the crash however using setCustomOption causes an infinite loop
   // so I change customOption into a var instead of a const
-  if (customOption && typeof customOption !== 'string') {
-    customOption = customOption.toString();
+  // try useEffect
+  // or try creating var temp; and using that in the sorting if statement instead of customOption
+  let tempCustomOption = customOption;
+  if (tempCustomOption && typeof tempCustomOption !== 'string') {
+    tempCustomOption = tempCustomOption.toString();
   }
-  if (customOption && options.every((o) => customOption.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
+
+  if (tempCustomOption && options.every((o) => tempCustomOption.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
     combinedOptions = [
-      <option key={customOption} value={customOption}>
-        {customOption}
+      <option key={tempCustomOption} value={tempCustomOption}>
+        {tempCustomOption}
       </option>,
     ].concat(options);
   }
