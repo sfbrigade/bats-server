@@ -9,14 +9,16 @@ import ValidationMessage from './ValidationMessage';
 function FormComboBox({ label, property, required, onChange, options, showRequiredHint, size, validationState, value }) {
   const ref = useRef();
   const [focused, setFocused] = useState(false);
-  const [customOption, setCustomOption] = useState(null);
+  // changed to let so I could manually reset value of customOptions
+  //throws an error with lint
+  let [customOption, setCustomOption] = useState(null);
 
   useEffect(() => {
     const { current } = ref;
     comboBox.on(current);
     // manually add event handlers to the custom input added by USWDS
     const input = current.querySelector('input[type="text"]');
-    // input.addEventListener('input', (e) => setCustomOption(e.target.value));
+    input.addEventListener('input', (e) => setCustomOption(e.target.value));
     input.addEventListener('focus', () => setFocused(true));
     input.addEventListener('blur', () => setFocused(false));
     input.value = value;
@@ -25,7 +27,6 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
 
   useEffect(() => {
     const { current } = ref;
@@ -44,15 +45,21 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   }, [validationState]);
 
   // first check if value exists as customOption or in options, if not, set as the custom option
-  // if (value && value !== customOption) {
-  //   if (options.every((o) => value.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
-  //     setCustomOption(value);
-  //   } else if (customOption) {
-  //     setCustomOption(null);
-  //   }
-  // }
+  if (value && value !== customOption) {
+    if (options.every((o) => value.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
+      setCustomOption(value);
+    } else if (customOption) {
+      setCustomOption(null);
+    }
+  }
   // combine the custom entered value in the input box with the options as needed
+
   let combinedOptions = options;
+  // this is the fix for the crash however using setCustomOption causes an infinite loop
+  // so I change customOption into a var instead of a const
+  if (customOption && typeof customOption !== 'string') {
+    customOption = customOption.toString();
+  }
   if (customOption && options.every((o) => customOption.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
     combinedOptions = [
       <option key={customOption} value={customOption}>
