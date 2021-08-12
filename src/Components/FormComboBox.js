@@ -55,10 +55,8 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   // combine the custom entered value in the input box with the options as needed
 
   let combinedOptions = options;
-  // this is the fix for the crash however using setCustomOption causes an infinite loop
-  // so I change customOption into a var instead of a const
-  // try useEffect
-  // or try creating var temp; and using that in the sorting if statement instead of customOption
+  // since localCompare only takes  a string this code stores customOption into tempCustomOption
+  // then checks that it is a string and changes it to one if not.
   let tempCustomOption = customOption;
   if (tempCustomOption && typeof tempCustomOption !== 'string') {
     tempCustomOption = tempCustomOption.toString();
