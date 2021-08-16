@@ -35,8 +35,10 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
         { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED },
         className
       )}
-      header={isExpanded ? null : `Incident #${ringdown.dispatchCallNumber}`}
-      body={isExpanded ? null : ringdown.chiefComplaintDescription}
+      header={
+        isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : `Incident #${ringdown.dispatchCallNumber}`
+      }
+      body={isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : ringdown.chiefComplaintDescription}
     >
       {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
         <span className="ringdown-eta ringdown-card__eta">

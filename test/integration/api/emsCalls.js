@@ -27,7 +27,7 @@ describe('/api/emscalls', () => {
   });
 
   describe('GET /dispatch-call-numbers', () => {
-    it('returns a list of EmergencyMedicalServiceCall dispatchCallNumbers filtered by ambulanceIdentifier', async () => {
+    it('returns a sorted list of EmergencyMedicalServiceCall dispatchCallNumbers filtered by ambulanceIdentifier', async () => {
       const ambulanceIdentifier = 'SFFD-1';
       const response = await testSession
         .get(`/api/emscalls/dispatch-call-numbers?ambulanceIdentifier=${ambulanceIdentifier}`)
@@ -35,9 +35,11 @@ describe('/api/emscalls', () => {
         .expect(HttpStatus.OK);
 
       const { dispatchCallNumbers } = response.body;
-      assert.deepStrictEqual(dispatchCallNumbers.length, 2);
-      assert(dispatchCallNumbers.includes(911));
-      assert(dispatchCallNumbers.includes(111));
+      assert.deepStrictEqual(dispatchCallNumbers.length, 3);
+      // should be sorted descending
+      assert(dispatchCallNumbers[0] === 911);
+      assert(dispatchCallNumbers[1] === 333);
+      assert(dispatchCallNumbers[2] === 111);
     });
   });
 });

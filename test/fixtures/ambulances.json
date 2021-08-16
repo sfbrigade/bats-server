@@ -12,6 +12,16 @@
   {
     "model": "Ambulance",
     "data": {
+      "id": "85a6681d-a8ec-413c-8e4b-af7b3e79ee5f",
+      "OrganizationId": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
+      "ambulanceIdentifier": "SFFD-3",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Ambulance",
+    "data": {
       "id": "b594eb54-bfed-41f7-8248-616917cfc6e9",
       "OrganizationId": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
       "ambulanceIdentifier": "SFFD-2",
