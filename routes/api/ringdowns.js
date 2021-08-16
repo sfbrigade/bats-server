@@ -138,7 +138,7 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
       });
       // check if calling user is allowed to modify this record
 
-      if (req.body.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED) {
+      if (req.body.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED || req.body.deliveryStatus === DeliveryStatus.CANCEL_ACKNOWLEDGED || req.body.deliveryStatus === DeliveryStatus.REDIRECT_ACKNOWLEDGED) {
         // check if user is in the receiving hospital ED
         const hospitalUser = await models.HospitalUser.findOne({
           where: {
