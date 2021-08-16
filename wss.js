@@ -50,9 +50,6 @@ async function getStatusUpdateData(hospitalId) {
     include: { all: true },
     where: {
       HospitalId: hospitalId,
-      currentDeliveryStatus: {
-        [Op.lt]: 'RETURNED TO SERVICE',
-      },
     },
   });
   const statusUpdate = await models.HospitalStatusUpdate.scope('latest').findOne({
