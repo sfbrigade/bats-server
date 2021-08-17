@@ -15,6 +15,7 @@ function App() {
     ApiService.users.me().then((response) => {
       // save the user data into the context
       const user = response.data;
+
       setUser(user);
       if (user.organization.type === 'HEALTHCARE') {
         // TODO: handle user added to multiple hospitals
