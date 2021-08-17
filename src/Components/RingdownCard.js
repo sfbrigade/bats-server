@@ -8,13 +8,14 @@ import Drawer from './Drawer';
 import Ringdown from '../Models/Ringdown';
 import RingdownDetails from './RingdownDetails';
 import RingdownEta from './RingdownEta';
-import Alert from '../Components/Alert';
+import Alert from './Alert';
 import './RingdownCard.scss';
 
 function RingdownCard({ className, ringdown, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [currentHospital] = useState(ringdown.hospital.id);
 
   function handleCancel() {
     setShowCancel(false);
@@ -32,7 +33,12 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
         'ringdown-card',
         { 'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED },
         { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED },
-        { 'ringdown-card--cancelled': (ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && ringdown.hospital.id) },
+        {
+          'ringdown-card--cancelled':
+            ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED &&
+            ringdown.hospital.id &&
+            ringdown.hospital.id === currentHospital,
+        },
         className
       )}
       header={
@@ -43,21 +49,20 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
       {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
         <span className="ringdown-eta ringdown-card__eta">
           <span className="ringdown-eta__prefix">Cancelled: </span>
-            {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.CANCELLED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
-            <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowCancel(true)}>
-              Dismiss
-            </button>
-          </span>
+          {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.CANCELLED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowCancel(true)}>
+            Dismiss
+          </button>
+        </span>
       )}
-      {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && ringdown.hospital.id && (
+      {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && ringdown.hospital.id && ringdown.hospital.id === currentHospital && (
         <span className="ringdown-eta ringdown-card__eta">
-          {console.log(ringdown) } 
           <span className="ringdown-eta__prefix">Redirected: </span>
-            {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.REDIRECTED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
-            <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowRedirect(true)}>
-              Dismiss
-            </button>
-          </span>
+          {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.REDIRECTED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowRedirect(true)}>
+            Dismiss
+          </button>
+        </span>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
         <span className="ringdown-eta ringdown-card__eta">
@@ -65,26 +70,28 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
           {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
         </span>
       )}
-      {((ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED) 
-          && (ringdown.currentDeliveryStatus !== Ringdown.Status.CANCELLED)
-          && (ringdown.currentDeliveryStatus !== Ringdown.Status.REDIRECTED || !ringdown.hospital.id)) && (
-        <Drawer
-          title={<RingdownEta className="ringdown-card__eta" ringdown={ringdown} />}
-          isOpened={isExpanded}
-          onToggle={() => setExpanded(!isExpanded)}
-        >
-          <RingdownDetails ringdown={ringdown} />
-        </Drawer>
-      )}
+      {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+        ringdown.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
+        (ringdown.currentDeliveryStatus !== Ringdown.Status.REDIRECTED ||
+          !ringdown.hospital.id ||
+          ringdown.hospital.id !== currentHospital) && (
+          <Drawer
+            title={<RingdownEta className="ringdown-card__eta" ringdown={ringdown} />}
+            isOpened={isExpanded}
+            onToggle={() => setExpanded(!isExpanded)}
+          >
+            <RingdownDetails ringdown={ringdown} />
+          </Drawer>
+        )}
       {showCancel && (
         <Alert
-            type="warning"
-            title="Dismiss Notice"
-            message="The Ringdown will be removed from the docket."
-            cancel="Keep"
-            destructive="Dismiss"
-            onDestructive={handleCancel}
-            onCancel={() => setShowCancel(false)}
+          type="warning"
+          title="Dismiss Notice"
+          message="The Ringdown will be removed from the docket."
+          cancel="Keep"
+          destructive="Dismiss"
+          onDestructive={handleCancel}
+          onCancel={() => setShowCancel(false)}
         />
       )}
       {showRedirect && (
@@ -99,17 +106,18 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
         />
       )}
     </Card>
-    
   );
 }
 
 RingdownCard.propTypes = {
   className: PropTypes.string,
   ringdown: PropTypes.instanceOf(Ringdown).isRequired,
+  onStatusChange: PropTypes.instanceOf(Function),
 };
 
 RingdownCard.defaultProps = {
   className: null,
+  onStatusChange: null,
 };
 
 export default RingdownCard;
