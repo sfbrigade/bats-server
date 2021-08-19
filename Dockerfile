@@ -1,4 +1,4 @@
-FROM node:14.8
+FROM node:14.17.4
 
 # Set an env variable for the location of the app files
 ENV APP_HOME=/opt/node/app
