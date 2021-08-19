@@ -9,8 +9,6 @@ import ValidationMessage from './ValidationMessage';
 function FormComboBox({ label, property, required, onChange, options, showRequiredHint, size, validationState, value }) {
   const ref = useRef();
   const [focused, setFocused] = useState(false);
-  // changed to let so I could manually reset value of customOptions
-  // throws an error with lint
   const [customOption, setCustomOption] = useState(null);
 
   useEffect(() => {
