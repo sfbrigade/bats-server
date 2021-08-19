@@ -51,8 +51,13 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     }
   }
   // combine the custom entered value in the input box with the options as needed
+
   let combinedOptions = options;
-  if (customOption && options.every((o) => customOption.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
+
+  if (
+    customOption &&
+    options.every((o) => customOption.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)
+  ) {
     combinedOptions = [
       <option key={customOption} value={customOption}>
         {customOption}
