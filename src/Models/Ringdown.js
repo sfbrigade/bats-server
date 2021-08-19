@@ -399,7 +399,7 @@ class Ringdown {
   }
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
-    if (currentState === ValidationState.ERROR) {
+    if (currentState === ValidationState.ERROR && inputValue) {
       this.validationData[fieldName].validationState = ValidationState.FIXED;
     } else if (currentState === ValidationState.NO_INPUT) {
       this.validationData[fieldName].validationState = ValidationState.INPUT;
