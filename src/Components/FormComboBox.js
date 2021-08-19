@@ -55,17 +55,14 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   // combine the custom entered value in the input box with the options as needed
 
   let combinedOptions = options;
-  // since localCompare only takes  a string this code stores customOption into tempCustomOption
-  // then checks that it is a string and changes it to one if not.
-  let tempCustomOption = customOption;
-  if (tempCustomOption && typeof tempCustomOption !== 'string') {
-    tempCustomOption = tempCustomOption.toString();
-  }
 
-  if (tempCustomOption && options.every((o) => tempCustomOption.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
+  if (
+    customOption &&
+    options.every((o) => customOption.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)
+  ) {
     combinedOptions = [
-      <option key={tempCustomOption} value={tempCustomOption}>
-        {tempCustomOption}
+      <option key={customOption} value={customOption}>
+        {customOption}
       </option>,
     ].concat(options);
   }
