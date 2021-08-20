@@ -15,6 +15,8 @@ function FormInput({
   showRequiredHint,
   size,
   type,
+  min,
+  max,
   unit,
   value,
   validationState,
@@ -43,6 +45,8 @@ function FormInput({
         onFocus={() => setFocused(true)}
         required={required}
         type={type}
+        min={min}
+        max={max}
         className={classNames('usa-input', {
           'usa-input--error': validationState === ValidationState.ERROR,
           'usa-input--success': validationState === ValidationState.FIXED,
@@ -91,6 +95,8 @@ FormInput.propTypes = {
   showRequiredHint: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
   type: PropTypes.oneOf(['number', 'text']),
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   unit: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   validationState: PropTypes.oneOf([...ValidationState.ALL_STATES]),
@@ -105,6 +111,8 @@ FormInput.defaultProps = {
   showRequiredHint: true,
   size: null,
   type: 'text',
+  min: null,
+  max: null,
   unit: null,
   value: '',
   validationState: ValidationState.NO_INPUT,
