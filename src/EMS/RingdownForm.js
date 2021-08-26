@@ -89,8 +89,6 @@ function RingdownForm({ className }) {
     setRingdowns([...ringdowns]);
   }
 
-
-
   return (
     <>
       {ringdowns && ringdowns.length === 0 && (
@@ -140,7 +138,6 @@ function RingdownForm({ className }) {
             />
           )}
         </form>
-        
       )}
       {ringdowns && ringdowns.length > 0 && (
         <RingdownStatus className={className} onStatusChange={onStatusChange} ringdown={ringdowns[0]} />
@@ -152,7 +149,6 @@ function RingdownForm({ className }) {
       )}
     </>
   );
-  
 }
 
 RingdownForm.propTypes = {
