@@ -1,0 +1,23 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+
+
+.admin{
+    display: flex;
+    flex-flow: column;
+    margin: auto 0%;
+    justify-content: center;
+  }
+
+.bottom {
+    display: flex;
+    flex-flow: row;
+}
+
+.side {
+    width: 25%;
+}
+
+.info_display {
+    width: 75%;
+}

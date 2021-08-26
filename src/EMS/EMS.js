@@ -27,7 +27,9 @@ export default function EMS() {
   }, [lastMessage, setRingdowns, setStatusUpdates]);
 
   return (
-    <>
+    <div className="grid-container">
+    <div className="grid-row">
+    <div className="tablet:grid-col-6 tablet:grid-offset-3">
       <Header name="Hospital Destination Tool">
         <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdown', 'Hospital Info']} />
       </Header>
@@ -36,6 +38,8 @@ export default function EMS() {
         onReturn={() => setSelectedTab(0)}
         className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 1 })}
       />
-    </>
+    </div>
+    </div>
+    </div>
   );
 }

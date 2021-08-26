@@ -1,0 +1,16 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+
+.admin__user {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+}
+
+.admin__user__gray {
+    background-color: rgb(241, 241, 241);
+}
+
+.admin__user__name {
+    color: blue;
+}
