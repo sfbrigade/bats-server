@@ -7,13 +7,13 @@ import Alert from '../Components/Alert';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
-  const [confirmCancel, setShowConfirmCancel] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
   const [confirmRedirect, setConfirmRedirect] = useState(false);
 
   function handleCancel() {
     setShowCancel(false);
-    setShowConfirmCancel(true);
+    setConfirmCancel(true);
   }
 
   function handleRedirect() {
@@ -23,7 +23,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   }
 
   function handleConfirmCancel() {
-    setShowConfirmCancel(false);
+    setConfirmCancel(false);
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
