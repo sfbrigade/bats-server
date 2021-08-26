@@ -57,7 +57,6 @@ class Ringdown {
     const copy = new Ringdown({ ...this.payload });
     delete copy.payload.id;
     copy.payload.patientDelivery.currentDeliveryStatus = null;
-    console.log(copy);
     copy.hospitalId = null;
     copy.etaMinutes = null;
     return copy;

@@ -18,7 +18,7 @@ function Ringdowns({ ringdowns }) {
       r.currentDeliveryStatus !== Ringdown.Status.CANCEL_ACKNOWLEDGED &&
       r.currentDeliveryStatus !== Ringdown.Status.REDIRECT_ACKNOWLEDGED &&
       r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
-  )
+  );
 
   function onStatusChange(rd, status) {
     // submit to server
