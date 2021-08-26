@@ -9,7 +9,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
   const [confirmCancel, setConfirmCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-  const [confirmRedirect, setConfirmRedirect] = useState(false);
 
   function handleCancel() {
     setShowCancel(false);
@@ -18,7 +17,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
 
   function handleRedirect() {
     setShowRedirect(false);
-    setConfirmRedirect(true);
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
@@ -27,10 +25,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
-  function handleConfirmRedirect() {
-    setConfirmRedirect(false);
-    // onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
-  }
 
   return (
     <div className={classNames('usa-accordion', className)}>
@@ -175,17 +169,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               destructive="Confirm redirect patient"
               onDestructive={handleRedirect}
               onCancel={() => setShowRedirect(false)}
-            />
-          )}
-          {confirmRedirect && (
-            <Alert
-              type="success"
-              title="Hospital notified"
-              message="Please select a new destination."
-              cancel="Edit ringdown"
-              primary="Return to hospital list"
-              onPrimary={handleConfirmRedirect}
-              onCancel={handleConfirmCancel}
             />
           )}
         </fieldset>
