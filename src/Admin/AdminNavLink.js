@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+//it is possible this component can go into the component folder.
 export default function AdminNavLink({ click, title, isCurrent }){
-
-    const handleClick = () => {
-        click(title)
-    }
 
     return(
         <li className="usa-sidenav__item">
-            <a href="#" onClick={() => handleClick()} className={isCurrent ? "usa-current":""}>{title}</a>
+            <a href="#" onClick={() => click(title)} className={isCurrent ? "usa-current":""}>{title}</a>
 
         </li>
     )
