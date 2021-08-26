@@ -9,7 +9,7 @@ import Ringdown from '../Models/Ringdown';
 import Spinner from '../Components/Spinner';
 import RingdownCard from '../Components/RingdownCard';
 import Heading from '../Components/Heading';
-
+import Alert from '../Components/Alert';
 import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
@@ -19,7 +19,8 @@ function RingdownForm({ className }) {
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
   const [version, setVersion] = useState(0);
-
+  const [confirmRedirect, setConfirmRedirect] = useState(false);
+  const [confirmCancel, setConfirmCancel] = useState(false);
   function next() {
     setStep(1);
   }
@@ -51,6 +52,16 @@ function RingdownForm({ className }) {
     setVersion(version + 1);
   }
 
+  function handleConfirmCancel() {
+    setConfirmCancel(false);
+    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
+  }
+
+  function handleConfirmRedirect() {
+    setConfirmRedirect(false);
+    // onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
+  }
+
   function onStatusChange(rd, status) {
     // submit to server
     const now = new Date();
@@ -70,6 +81,7 @@ function RingdownForm({ className }) {
         if (status === Ringdown.Status.REDIRECTED) {
           // if redirected, go directly to Hospital Selection
           next();
+          setConfirmRedirect(true);
         }
         return;
       default:
@@ -77,6 +89,8 @@ function RingdownForm({ className }) {
     }
     setRingdowns([...ringdowns]);
   }
+
+
 
   return (
     <>
@@ -115,7 +129,19 @@ function RingdownForm({ className }) {
               </>
             )}
           </fieldset>
+          {confirmRedirect && (
+            <Alert
+              type="success"
+              title="Hospital notified"
+              message="Please select a new destination."
+              cancel="Edit ringdown"
+              primary="Return to hospital list"
+              onPrimary={handleConfirmRedirect}
+              onCancel={handleConfirmCancel}
+            />
+          )}
         </form>
+        
       )}
       {ringdowns && ringdowns.length > 0 && (
         <RingdownStatus className={className} onStatusChange={onStatusChange} ringdown={ringdowns[0]} />
@@ -127,6 +153,7 @@ function RingdownForm({ className }) {
       )}
     </>
   );
+  
 }
 
 RingdownForm.propTypes = {

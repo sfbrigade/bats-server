@@ -19,7 +19,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   function handleRedirect() {
     setShowRedirect(false);
     setConfirmRedirect(true);
-    // onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
+    onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
   function handleConfirmCancel() {
@@ -29,7 +29,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
 
   function handleConfirmRedirect() {
     setConfirmRedirect(false);
-    onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
+    // onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
   return (
