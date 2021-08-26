@@ -20,7 +20,6 @@ function RingdownForm({ className }) {
   const [step, setStep] = useState(0);
   const [version, setVersion] = useState(0);
   const [confirmRedirect, setConfirmRedirect] = useState(false);
-  const [confirmCancel, setConfirmCancel] = useState(false);
   function next() {
     setStep(1);
   }
@@ -52,9 +51,9 @@ function RingdownForm({ className }) {
     setVersion(version + 1);
   }
 
-  function handleConfirmCancel() {
-    setConfirmCancel(false);
-    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
+  function handleEditForm() {
+    edit();
+    setConfirmRedirect(false);
   }
 
   function handleConfirmRedirect() {
@@ -137,7 +136,7 @@ function RingdownForm({ className }) {
               cancel="Edit ringdown"
               primary="Return to hospital list"
               onPrimary={handleConfirmRedirect}
-              onCancel={handleConfirmCancel}
+              onCancel={handleEditForm}
             />
           )}
         </form>
