@@ -11,6 +11,7 @@ const DeliveryStatus = {
   CANCELLED: 'CANCELLED',
   CANCEL_ACKNOWLEDGED: 'CANCEL ACKNOWLEGED',
   REDIRECTED: 'REDIRECTED',
+  REDIRECTED_CONFIRMED: 'REDIRECTED_CONFIRMED',
   REDIRECT_ACKNOWLEDGED: 'REDIRECT ACKNOWLEGED',
 };
 
@@ -55,6 +56,8 @@ class Ringdown {
   clone() {
     const copy = new Ringdown({ ...this.payload });
     delete copy.payload.id;
+    copy.payload.patientDelivery.currentDeliveryStatus = null;
+    console.log(copy);
     copy.hospitalId = null;
     copy.etaMinutes = null;
     return copy;

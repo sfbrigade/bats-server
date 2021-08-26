@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ApiService from '../ApiService';
 
@@ -7,30 +7,18 @@ import RingdownCard from '../Components/RingdownCard';
 import Ringdown from '../Models/Ringdown';
 
 function Ringdowns({ ringdowns }) {
-  const [enroute, setEnroute] = useState([]);
-
   const waiting = ringdowns.filter(
     (r) => r.currentDeliveryStatus === Ringdown.Status.ARRIVED || r.currentDeliveryStatus === Ringdown.Status.OFFLOADED
   );
 
-  useEffect(() => {
-    // set enroute ringdowns once data comes back from server.
-    const handler = setTimeout(() => {
-      setEnroute(
-        ringdowns.filter(
-          (r) =>
-            r.currentDeliveryStatus !== Ringdown.Status.ARRIVED &&
-            r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
-            r.currentDeliveryStatus !== Ringdown.Status.CANCEL_ACKNOWLEDGED &&
-            r.currentDeliveryStatus !== Ringdown.Status.REDIRECT_ACKNOWLEDGED &&
-            r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
-        )
-      );
-    }, 100);
-    return () => {
-      clearTimeout(handler);
-    };
-  });
+  const enroute = ringdowns.filter(
+    (r) =>
+      r.currentDeliveryStatus !== Ringdown.Status.ARRIVED &&
+      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+      r.currentDeliveryStatus !== Ringdown.Status.CANCEL_ACKNOWLEDGED &&
+      r.currentDeliveryStatus !== Ringdown.Status.REDIRECT_ACKNOWLEDGED &&
+      r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
+  )
 
   function onStatusChange(rd, status) {
     // submit to server
@@ -38,16 +26,6 @@ function Ringdowns({ ringdowns }) {
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
     rd.currentDeliveryStatus = status;
-    setEnroute(
-      ringdowns.filter(
-        (r) =>
-          r.currentDeliveryStatus !== Ringdown.Status.ARRIVED &&
-          r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
-          r.currentDeliveryStatus !== Ringdown.Status.CANCEL_ACKNOWLEDGED &&
-          r.currentDeliveryStatus !== Ringdown.Status.REDIRECT_ACKNOWLEDGED &&
-          r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
-      )
-    );
   }
 
   return (
