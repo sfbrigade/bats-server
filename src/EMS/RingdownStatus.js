@@ -25,7 +25,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
-
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
