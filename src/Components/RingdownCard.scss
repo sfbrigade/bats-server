@@ -38,7 +38,9 @@
   &.usa-card__container {
     background-color: color($theme-color-warning);
   }
-  .ringdown-card__eta {
-    color: color($theme-color-base-ink);
-  }
+}
+
+.ringdown-cancel {
+  display: flex;
+  justify-content: space-between;
 }
