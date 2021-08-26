@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import FormCheckbox from '../Components/FormCheckbox';
@@ -11,13 +11,28 @@ import Heading from '../Components/Heading';
 
 import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
+import Context from '../Context';
+
+const INPUT_RANGES = {
+  systolicBloodPressure: { min: 90, max: 180 },
+  diastolicBloodPressure: { min: 60, max: 120 },
+  heartRateBpm: { min: 40, max: 200 },
+  respiratoryRate: { min: 12, max: 25 },
+  oxygenSaturation: { min: 0, max: 100 },
+  temperature: { min: 80, max: 150 },
+};
+
+function getRange(property, extreme) {
+  return INPUT_RANGES[property] ? INPUT_RANGES[property][extreme] : null;
+}
 
 function PatientFields({ ringdown, onChange }) {
   const [ambulanceIds, setAmbulanceIds] = useState([]);
   const [dispatchCallNumbers, setDispatchCallNumbers] = useState([]);
+  const { user } = useContext(Context);
 
   useEffect(() => {
-    ApiService.ambulances.getIdentifiers().then((response) => {
+    ApiService.ambulances.getIdentifiers(user.organization.id).then((response) => {
       setAmbulanceIds(response.data.ambulanceIdentifiers);
     });
     if (ringdown.ambulanceIdentifier) {
@@ -25,7 +40,7 @@ function PatientFields({ ringdown, onChange }) {
         setDispatchCallNumbers(response.data.dispatchCallNumbers);
       });
     }
-  }, [ringdown.ambulanceIdentifier]);
+  }, [ringdown.ambulanceIdentifier, user.organization.id]);
 
   function createOptions(ids) {
     const options = [];
@@ -159,6 +174,8 @@ function PatientFields({ ringdown, onChange }) {
               size="small"
               type="number"
               unit="/"
+              min={getRange('systolicBloodPressure', 'min')}
+              max={getRange('systolicBloodPressure', 'max')}
               value={ringdown.systolicBloodPressure}
             >
               <FormInput
@@ -168,6 +185,8 @@ function PatientFields({ ringdown, onChange }) {
                 size="small"
                 type="number"
                 unit="mmHg"
+                min={getRange('diastolicBloodPressure', 'min')}
+                max={getRange('diastolicBloodPressure', 'max')}
                 value={ringdown.diastolicBloodPressure}
               />
             </FormInput>
@@ -178,6 +197,8 @@ function PatientFields({ ringdown, onChange }) {
               size="small"
               type="number"
               unit="bpm"
+              min={getRange('heartRateBpm', 'min')}
+              max={getRange('heartRateBpm', 'max')}
               value={ringdown.heartRateBpm}
             />
             <FormInput
@@ -186,6 +207,8 @@ function PatientFields({ ringdown, onChange }) {
               property="respiratoryRate"
               size="small"
               type="number"
+              min={getRange('respiratoryRate', 'min')}
+              max={getRange('respiratoryRate', 'max')}
               unit="breath/m"
               value={ringdown.respiratoryRate}
             />
@@ -196,6 +219,9 @@ function PatientFields({ ringdown, onChange }) {
               size="small"
               type="number"
               unit="%"
+              pattern="[0-9]*"
+              min={getRange('oxygenSaturation', 'min')}
+              max={getRange('oxygenSaturation', 'max')}
               value={ringdown.oxygenSaturation}
             />
             <div className="padding-left-4">
@@ -235,6 +261,8 @@ function PatientFields({ ringdown, onChange }) {
               property="temperature"
               size="small"
               type="number"
+              min={getRange('temperature', 'min')}
+              max={getRange('temperature', 'max')}
               unit="&deg;F"
               value={ringdown.temperature}
             />
