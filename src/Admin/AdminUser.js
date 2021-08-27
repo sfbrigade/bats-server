@@ -8,27 +8,24 @@ import "./AdminUser.scss";
 export default function AdminUser({ userName, userId, userEmail, userType, userOrganization, background }){
 
     return (
-        <div className={`margin-1 padding-1 admin__user ${background}`}>
+        
+        <div className={`margin-1 padding-1 admin__user grid-row ${background}`}>
           
-            <div className="margin-1 padding-1 admin__user__name">
+            <div className="grid-col-2 admin__user__name">
                 {userName}
             </div>
-            <div className="margin-1 padding-1">
+            <div className="grid-col-2">
                 {userId}
             </div>
-            <div className="margin-1 padding-1">
+            <div className="grid-col-4">
                 {userEmail}
             </div>
-            <div className="margin-1 padding-1">
+            <div className="grid-col-2">
                 {userType}
             </div>
-            <div className="margin-1 padding-1">
+            <div className="grid-col-2">
                 {userOrganization}
             </div>
-            {/* <button>
-                edit
-            </button> */}
-
         </div>
     )
 }

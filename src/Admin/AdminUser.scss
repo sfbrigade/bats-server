@@ -2,9 +2,7 @@
 @import '../../theme/uswds-theme-custom-mixins';
 
 .admin__user {
-    display: flex;
-    flex-flow: row;
-    justify-content: space-evenly;
+   text-align: center;
 }
 
 .admin__user__gray {
