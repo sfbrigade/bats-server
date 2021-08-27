@@ -1,7 +1,7 @@
 const users = {
     user1 : {
                 userid: '1234',
-                organization: 'SF GENERAL',
+                organization: 'SFFD',
                 email: 'johndoe@email.com',
                 firstname: 'John',
                 lastname: 'Doe',
@@ -13,7 +13,7 @@ const users = {
             },
             user2 : {
                 userid: '5678',
-                organization: 'SSFD',
+                organization: 'SF GENERAL',
                 email: 'janedoe@email.com',
                 firstname: 'Jane',
                 lastname: 'Doe',
@@ -25,7 +25,7 @@ const users = {
             },
             user3 : {
                 userid: '9012',
-                organization: 'SSFD',
+                organization: 'SFFD',
                 email: 'chrisdoe@email.com',
                 firstname: 'chris',
                 lastname: 'Doe',
@@ -49,7 +49,7 @@ const users = {
             },
             user5 : {
                 userid: '3456',
-                organization: 'SSFD',
+                organization: 'SFFD',
                 email: 'stevecarell@email.com',
                 firstname: 'Steve',
                 lastname: 'Carell',
@@ -61,7 +61,7 @@ const users = {
             },
             user6 : {
                 userid: '4567',
-                organization: 'SSFD',
+                organization: 'SF GENERAL',
                 email: 'elizabethjagger@email.com',
                 firstname: 'Elizabeth',
                 lastname: 'Jagger',
@@ -85,7 +85,7 @@ const users = {
             },
             user8 : {
                 userid: '7890',
-                organization: 'SSFD',
+                organization: 'SFFD',
                 email: 'calliopejames@email.com',
                 firstname: 'Calliope',
                 lastname: 'James',
@@ -97,7 +97,7 @@ const users = {
             },
             user9 : {
                 userid: '8901',
-                organization: 'SSFD',
+                organization: 'SF GENERAL',
                 email: 'sarafox@email.com',
                 firstname: 'Sara',
                 lastname: 'Fox',
