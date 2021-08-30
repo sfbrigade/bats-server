@@ -15,7 +15,6 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-  const [currentHospital] = useState(ringdown.hospital.id);
 
   function handleCancel() {
     setShowCancel(false);
@@ -33,12 +32,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
         'ringdown-card',
         { 'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED },
         { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED },
-        {
-          'ringdown-card--cancelled':
-            ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED &&
-            ringdown.hospital.id &&
-            ringdown.hospital.id === currentHospital,
-        },
+        { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED },
         className
       )}
       header={
