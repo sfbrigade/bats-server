@@ -73,7 +73,7 @@ const users = {
             },
             user7 : {
                 userid: '6789',
-                organization: 'SF GENERAL',
+                organization: 'SFFD',
                 email: 'milesdavis@email.com',
                 firstname: 'Miles',
                 lastname: 'Davis',

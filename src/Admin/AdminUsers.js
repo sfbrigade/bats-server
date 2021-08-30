@@ -1,5 +1,3 @@
-import { property } from 'lodash';
-import { object } from 'prop-types';
 import React, { useState } from 'react';
 
 import AdminUser from './AdminUser';
@@ -23,11 +21,9 @@ export default function AdminUsers(users){
     adminUserList.push(tempUserSetup)
  };
 
-
     return(
-        <div className="grid-container border margin-3 padding-2">
-          <div className="admin__users__header grid-row border margin-1 padding-2">
-            {/* repostion heading names */}
+        <div className="grid-container border margin-3 padding-2" >
+          <div className="admin__users__header grid-row border margin-1 padding-2" >
             <div className="grid-col-2">User Name</div>
             <div className="grid-col-2">User Id</div>
             <div className="grid-col-4">Email address</div>
