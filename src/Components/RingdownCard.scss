@@ -20,7 +20,7 @@
   }
 }
 
-.ringdown-card__eta {
+.ringdown-card__status {
   @include h4-italic;
   color: color($theme-color-base-light);
 }
@@ -29,7 +29,7 @@
   &.usa-card__container {
     background-color: color($theme-color-success-lighter);
   }
-  .ringdown-card__eta {
+  .ringdown-card__status {
     color: color($theme-color-base-ink);
   }
 }
@@ -38,7 +38,7 @@
   &.usa-card__container {
     background-color: color($theme-color-warning);
   }
-  .ringdown-card__eta {
+  .ringdown-card__status {
     color: color($theme-color-base-ink);
     display: flex;
     align-items: center;

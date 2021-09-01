@@ -41,7 +41,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
       body={isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : ringdown.chiefComplaintDescription}
     >
       {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
-        <span className="ringdown-card__eta">
+        <span className="ringdown-card__status">
           <span>Cancelled </span>
           <button className="usa-button width-card" type="button" onClick={() => setShowCancel(true)}>
             Dismiss
@@ -49,7 +49,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
         </span>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && (
-        <span className="ringdown-card__eta">
+        <span className="ringdown-card__status">
           <span>Redirected </span>
           <button className="usa-button width-card" type="button" onClick={() => setShowRedirect(true)}>
             Dismiss
@@ -57,7 +57,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
         </span>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
-        <span className="ringdown-card__eta">
+        <span className="ringdown-card__status">
           <span>Offloaded: </span>
           {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
         </span>
@@ -66,7 +66,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
         ringdown.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
         ringdown.currentDeliveryStatus !== Ringdown.Status.REDIRECTED && (
           <Drawer
-            title={<RingdownEta className="ringdown-card__eta" ringdown={ringdown} />}
+            title={<RingdownEta className="ringdown-card__status" ringdown={ringdown} />}
             isOpened={isExpanded}
             onToggle={() => setExpanded(!isExpanded)}
           >
