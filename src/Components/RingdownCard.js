@@ -41,24 +41,24 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
       body={isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : ringdown.chiefComplaintDescription}
     >
       {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
-        <div className="ringdown-cancel">
-          <span className="ringdown-eta__prefix padding-y-05">Cancelled </span>
+        <span className="ringdown-card__eta">
+          <span>Cancelled </span>
           <button className="usa-button width-card" type="button" onClick={() => setShowCancel(true)}>
             Dismiss
           </button>
-        </div>
+        </span>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && (
-        <div className="ringdown-cancel">
-          <span className="ringdown-eta__prefix padding-y-05">Redirected </span>
+        <span className="ringdown-card__eta">
+          <span>Redirected </span>
           <button className="usa-button width-card" type="button" onClick={() => setShowRedirect(true)}>
             Dismiss
           </button>
-        </div>
+        </span>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
-        <span className="ringdown-eta ringdown-card__eta">
-          <span className="ringdown-eta__prefix">Offloaded: </span>
+        <span className="ringdown-card__eta">
+          <span>Offloaded: </span>
           {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
         </span>
       )}
