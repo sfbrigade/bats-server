@@ -55,6 +55,7 @@ class Ringdown {
   clone() {
     const copy = new Ringdown({ ...this.payload });
     delete copy.payload.id;
+    copy.payload.patientDelivery.currentDeliveryStatus = null;
     copy.hospitalId = null;
     copy.etaMinutes = null;
     return copy;
@@ -399,7 +400,7 @@ class Ringdown {
   }
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
-    if (currentState === ValidationState.ERROR) {
+    if (currentState === ValidationState.ERROR && inputValue) {
       this.validationData[fieldName].validationState = ValidationState.FIXED;
     } else if (currentState === ValidationState.NO_INPUT) {
       this.validationData[fieldName].validationState = ValidationState.INPUT;

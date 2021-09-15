@@ -32,15 +32,17 @@ function PatientFields({ ringdown, onChange }) {
   const { user } = useContext(Context);
 
   useEffect(() => {
-    ApiService.ambulances.getIdentifiers(user.organization.id).then((response) => {
-      setAmbulanceIds(response.data.ambulanceIdentifiers);
-    });
-    if (ringdown.ambulanceIdentifier) {
-      ApiService.emsCalls.getDispatchCallNumbers(ringdown.ambulanceIdentifier).then((response) => {
-        setDispatchCallNumbers(response.data.dispatchCallNumbers);
+    if (user) {
+      ApiService.ambulances.getIdentifiers(user.organization.id).then((response) => {
+        setAmbulanceIds(response.data.ambulanceIdentifiers);
       });
+      if (ringdown.ambulanceIdentifier) {
+        ApiService.emsCalls.getDispatchCallNumbers(ringdown.ambulanceIdentifier).then((response) => {
+          setDispatchCallNumbers(response.data.dispatchCallNumbers);
+        });
+      }
     }
-  }, [ringdown.ambulanceIdentifier, user.organization.id]);
+  }, [ringdown.ambulanceIdentifier, user]);
 
   function createOptions(ids) {
     const options = [];

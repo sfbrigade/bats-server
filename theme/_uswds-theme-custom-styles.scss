@@ -288,6 +288,10 @@ $spinner-border-width-sm: 0.2em;
   margin-top: 1.5rem;
 }
 
+.usa-combo-box__clear-input {
+  display: none !important;
+}
+
 .usa-error-message {
   color: color($theme-color-error);
   font-weight: normal;
