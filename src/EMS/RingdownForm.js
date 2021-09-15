@@ -18,10 +18,19 @@ function RingdownForm({ className }) {
   const { ringdowns, setRingdowns } = useContext(Context);
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
-  const [version, setVersion] = useState(0);
-  const [confirmRedirect, setConfirmRedirect] = useState(false);
+  const [showConfirmRedirect, setShowConfirmRedirect] = useState(false);
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
+
   function next() {
     setStep(1);
+  }
+
+  function edit() {
+    setStep(0);
+  }
+
+  function clear() {
+    setRingdown(new Ringdown());
   }
 
   function send() {
@@ -38,27 +47,22 @@ function RingdownForm({ className }) {
       });
   }
 
-  function edit() {
-    setStep(0);
-  }
-
-  function clear() {
-    setRingdown(new Ringdown());
-  }
-
   function onChange(property, value) {
     ringdown[property] = value;
-    setVersion(version + 1);
+    setRingdown(new Ringdown(ringdown.payload));
   }
 
   function handleEditForm() {
     edit();
-    setConfirmRedirect(false);
+    setShowConfirmRedirect(false);
   }
 
   function handleConfirmRedirect() {
-    setConfirmRedirect(false);
-    // onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
+    setShowConfirmRedirect(false);
+  }
+
+  function handleConfirmCancel() {
+    setShowConfirmCancel(false);
   }
 
   function onStatusChange(rd, status) {
@@ -71,17 +75,16 @@ function RingdownForm({ className }) {
     switch (status) {
       case Ringdown.Status.REDIRECTED:
         // create a new ringdown with the same patient data, but no hospital selected yet
+        setShowConfirmRedirect(true);
         setRingdown(rd.clone());
-      // We want this to fall through
-      case Ringdown.Status.RETURNED_TO_SERVICE:
+        next();
+        return;
       case Ringdown.Status.CANCELLED:
+        setShowConfirmCancel(true);
+        return;
+      case Ringdown.Status.RETURNED_TO_SERVICE:
         // remove from list so that we go back to the ringdown form
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
-        if (status === Ringdown.Status.REDIRECTED) {
-          // if redirected, go directly to Hospital Selection
-          next();
-          setConfirmRedirect(true);
-        }
         return;
       default:
         rd.timestamps[status] = isoNow;
@@ -126,7 +129,7 @@ function RingdownForm({ className }) {
               </>
             )}
           </fieldset>
-          {confirmRedirect && (
+          {showConfirmRedirect && (
             <Alert
               type="success"
               title="Hospital notified"
@@ -135,6 +138,15 @@ function RingdownForm({ className }) {
               primary="Return to hospital list"
               onPrimary={handleConfirmRedirect}
               onCancel={handleEditForm}
+            />
+          )}
+          {showConfirmCancel && (
+            <Alert
+              type="success"
+              title="Delivery canceled"
+              message="The hospital has been notified."
+              primary="Start new form"
+              onPrimary={handleConfirmCancel}
             />
           )}
         </form>

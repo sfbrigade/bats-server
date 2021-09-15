@@ -7,22 +7,16 @@ import Alert from '../Components/Alert';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
-  const [confirmCancel, setConfirmCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
 
   function handleCancel() {
     setShowCancel(false);
-    setConfirmCancel(true);
+    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
   function handleRedirect() {
     setShowRedirect(false);
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
-  }
-
-  function handleConfirmCancel() {
-    setConfirmCancel(false);
-    onStatusChange(ringdown, Ringdown.Status.CANCELLED);
   }
 
   return (
@@ -145,17 +139,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               cancel="Maintain delivery"
               destructive="Confirm cancel delivery"
               onDestructive={handleCancel}
-              onCancel={() => setShowCancel(false)}
-            />
-          )}
-          {confirmCancel && (
-            <Alert
-              type="success"
-              title="Delivery canceled"
-              message="The hospital has been notified."
-              // cancel="Start new form"
-              primary="Start new form"
-              onPrimary={handleConfirmCancel}
               onCancel={() => setShowCancel(false)}
             />
           )}
