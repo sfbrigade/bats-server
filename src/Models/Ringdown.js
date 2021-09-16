@@ -41,12 +41,28 @@ class Ringdown {
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
     this.validationData = validationData || {
-      ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, this.ambulanceIdentifier ? ValidationState.INPUT : ValidationState.NO_INPUT),
-      dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, this.dispatchCallNumber ? ValidationState.INPUT : ValidationState.NO_INPUT),
+      ambulanceIdentifier: new PatientFieldData(
+        'ambulanceIdentifier',
+        0,
+        this.ambulanceIdentifier ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
+      dispatchCallNumber: new PatientFieldData(
+        'dispatchCallNumber',
+        1,
+        this.dispatchCallNumber ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
       age: new PatientFieldData('age', 2, this.age ? ValidationState.INPUT : ValidationState.NO_INPUT),
       sex: new PatientFieldData('sex', 3, this.sex ? ValidationState.INPUT : ValidationState.NO_INPUT),
-      emergencyServiceResponseType: new PatientFieldData('emergencyServiceResponseType', 4, this.emergencyServiceResponseType ? ValidationState.INPUT : ValidationState.NO_INPUT),
-      chiefComplaintDescription: new PatientFieldData('chiefComplaintDescription', 5, this.chiefComplaintDescription ? ValidationState.INPUT : ValidationState.NO_INPUT),
+      emergencyServiceResponseType: new PatientFieldData(
+        'emergencyServiceResponseType',
+        4,
+        this.emergencyServiceResponseType ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
+      chiefComplaintDescription: new PatientFieldData(
+        'chiefComplaintDescription',
+        5,
+        this.chiefComplaintDescription ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
       stableIndicator: new PatientFieldData('stableIndicator', 6, this.stableIndicator ? ValidationState.INPUT : ValidationState.NO_INPUT),
       all: new PatientFieldData('all', 7, ValidationState.NO_INPUT),
     };
