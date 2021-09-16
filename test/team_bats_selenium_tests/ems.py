@@ -5,7 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-class ERTest():
+class EMSTest():
     def __init__(self):
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
     
@@ -96,7 +96,7 @@ class ERTest():
         return_to_list.click()
 
 
-bot = ERTest()
+bot = EMSTest()
 bot.login()
 sleep(2)
 bot.fill_out_form()
