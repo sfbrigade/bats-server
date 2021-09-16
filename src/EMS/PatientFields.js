@@ -58,7 +58,6 @@ function PatientFields({ ringdown, onChange }) {
 
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
-    ringdown.validatePatientFields(updatedField, inputValue);
   }
 
   return (

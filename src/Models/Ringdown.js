@@ -33,27 +33,43 @@ class Ringdown {
     return DeliveryStatus;
   }
 
-  constructor(payload) {
+  constructor(payload, validationData) {
     this.payload = payload || {};
     this.payload.ambulance = this.payload.ambulance || {};
     this.payload.emsCall = this.payload.emsCall || {};
     this.payload.hospital = this.payload.hospital || {};
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
-    this.validationData = {
-      ambulanceIdentifier: new PatientFieldData('ambulanceIdentifier', 0, ValidationState.NO_INPUT),
-      dispatchCallNumber: new PatientFieldData('dispatchCallNumber', 1, ValidationState.NO_INPUT),
-      age: new PatientFieldData('age', 2, ValidationState.NO_INPUT),
-      sex: new PatientFieldData('sex', 3, ValidationState.NO_INPUT),
-      emergencyServiceResponseType: new PatientFieldData('emergencyServiceResponseType', 4, ValidationState.NO_INPUT),
-      chiefComplaintDescription: new PatientFieldData('chiefComplaintDescription', 5, ValidationState.NO_INPUT),
-      stableIndicator: new PatientFieldData('stableIndicator', 6, ValidationState.NO_INPUT),
+    this.validationData = validationData || {
+      ambulanceIdentifier: new PatientFieldData(
+        'ambulanceIdentifier',
+        0,
+        this.ambulanceIdentifier ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
+      dispatchCallNumber: new PatientFieldData(
+        'dispatchCallNumber',
+        1,
+        this.dispatchCallNumber ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
+      age: new PatientFieldData('age', 2, this.age ? ValidationState.INPUT : ValidationState.NO_INPUT),
+      sex: new PatientFieldData('sex', 3, this.sex ? ValidationState.INPUT : ValidationState.NO_INPUT),
+      emergencyServiceResponseType: new PatientFieldData(
+        'emergencyServiceResponseType',
+        4,
+        this.emergencyServiceResponseType ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
+      chiefComplaintDescription: new PatientFieldData(
+        'chiefComplaintDescription',
+        5,
+        this.chiefComplaintDescription ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
+      stableIndicator: new PatientFieldData('stableIndicator', 6, this.stableIndicator ? ValidationState.INPUT : ValidationState.NO_INPUT),
       all: new PatientFieldData('all', 7, ValidationState.NO_INPUT),
     };
   }
 
   clone() {
-    const copy = new Ringdown({ ...this.payload });
+    const copy = new Ringdown({ ...this.payload }, { ...this.validationData });
     delete copy.payload.id;
     copy.payload.patientDelivery.currentDeliveryStatus = null;
     copy.hospitalId = null;
