@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 
 
-import Header from '../Components/Header';
-import AdminNavigation from './AdminNavigation';
-import AdminUsers from './AdminUsers';
-import NewUserForm from './NewUserForm';
-import AdminInfo from '../Models/AdminInfo';
+import Header from '../../Components/Header';
+import AdminNavigation from '../AdminNavigation';
+import AdminUsers from '../AdminUsers';
+import NewUserForm from '../NewUserForm';
+import AdminInfo from '../../Models/AdminInfo';
 
 //temp info for testing
-import users from './tempData'
+import users from '../tempData'
 
-import './Admin.scss';
+import '../Admin.scss';
 
 
-export default function Admin() {
+export default function AdminEMS() {
 
   const [adminInfo, setAdminInfo] = useState(new AdminInfo());
   const [stateChanged, setStateChanged] = useState(false);

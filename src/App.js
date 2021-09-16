@@ -5,7 +5,8 @@ import ApiService from './ApiService';
 import Context from './Context';
 import EMS from './EMS';
 import ER from './ER';
-import Admin from './Admin';
+import AdminER from './Admin/AdminER/Admin';
+import AdminEMS from './Admin/AdminEMS/Admin';
 import Redirect from './Components/Redirect';
 
 function App() {
@@ -34,8 +35,12 @@ function App() {
         <Route path="/er">
           <ER />
         </Route>
-        <Route path="/admin">
-          <Admin />
+        {/* create two paths for ER and EMS admin functions */}
+        <Route path="/admin/ems">
+          <AdminEMS />
+        </Route>
+        <Route path="/admin/er">
+          <AdminER />
         </Route>
         <Route exact path="/">
           <Redirect />

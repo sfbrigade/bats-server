@@ -11,6 +11,7 @@ class tabData {
     NOT_CURRENT: 'NOT_CURRENT'
   };
 
+  // logic for tab status may be better as it's own class outside of admin info 
   export default class AdminInfo{
 
     constructor(){
