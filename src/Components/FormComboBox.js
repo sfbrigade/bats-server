@@ -15,10 +15,20 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     const { current } = ref;
     comboBox.on(current);
     // manually add event handlers to the custom input added by USWDS
+    const select = current.querySelector('select');
     const input = current.querySelector('input[type="text"]');
     input.addEventListener('input', (e) => setCustomOption(e.target.value));
     input.addEventListener('focus', () => setFocused(true));
-    input.addEventListener('blur', () => setFocused(false));
+    input.addEventListener('blur', (e) => {
+      setFocused(false);
+      select.value = e.target.value;
+      const event = new CustomEvent('change', {
+        bubbles: true,
+        cancelable: true,
+        detail: { value },
+      });
+      select.dispatchEvent(event);
+    });
     input.value = value;
     return () => {
       comboBox.off(current);
@@ -44,16 +54,14 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
 
   // first check if value exists as customOption or in options, if not, set as the custom option
   if (value && value !== customOption) {
-    if (options.every((o) => value.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
+    if (options.every((o) => value.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
       setCustomOption(value);
     } else if (customOption) {
       setCustomOption(null);
     }
   }
   // combine the custom entered value in the input box with the options as needed
-
   let combinedOptions = options;
-
   if (
     customOption &&
     options.every((o) => customOption.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)

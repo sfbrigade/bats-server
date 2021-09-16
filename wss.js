@@ -2,7 +2,7 @@ const querystring = require('querystring');
 const { Op } = require('sequelize');
 const url = require('url');
 const WebSocket = require('ws');
-
+const DeliveryStatus = require('./constants/deliveryStatus');
 const models = require('./models');
 
 const userServer = new WebSocket.Server({ noServer: true });
@@ -29,7 +29,7 @@ async function getRingdownData(userId, cachedStatusUpdates) {
     where: {
       ParamedicUserId: userId,
       currentDeliveryStatus: {
-        [Op.lt]: 'RETURNED TO SERVICE',
+        [Op.lt]: DeliveryStatus.RETURNED_TO_SERVICE,
       },
     },
   });
@@ -51,7 +51,7 @@ async function getStatusUpdateData(hospitalId) {
     where: {
       HospitalId: hospitalId,
       currentDeliveryStatus: {
-        [Op.lt]: 'RETURNED TO SERVICE',
+        [Op.notIn]: [DeliveryStatus.RETURNED_TO_SERVICE, DeliveryStatus.CANCEL_ACKNOWLEDGED, DeliveryStatus.REDIRECT_ACKNOWLEDGED],
       },
     },
   });
