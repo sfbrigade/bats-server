@@ -28,9 +28,9 @@ export default function AdminEMS() {
 
     return (
       <div className="admin">
-            <div className="top">
+            {/* <div className="top">
                 <Header name="Hospital Selection Tool Admin Page" />
-                 </div>
+                 </div> */}
             <div className="bottom">
                <div className="side"><AdminNavigation click={handleClick} adminInfo={adminInfo} /></div>
                <div className="info_display">

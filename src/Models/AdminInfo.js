@@ -18,8 +18,8 @@ class tabData {
         this.currentTab = this.currentTab || '';
         this.tabStatus = {
             usersTab: new tabData("Users", currentStatus.NOT_CURRENT),
-            organizationTab: new tabData("Organizations", currentStatus.NOT_CURRENT),
-            addUserTab: new tabData("Add User", currentStatus.NOT_CURRENT)
+            dashBoardTab: new tabData("Dashboard", currentStatus.NOT_CURRENT),
+            ringDownTab: new tabData("Ringdowns", currentStatus.NOT_CURRENT)
         }
     }
 

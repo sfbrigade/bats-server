@@ -32,13 +32,15 @@ export default function AdminER() {
           <AdminNavigation click={handleClick} adminInfo={adminInfo} />
         </div>
         <div className="grid-col flex-5">
-        {adminInfo.Tab === 'Users' && <AdminUsers users={users} />}
-                   {/* organizations page will show the name of the organization how many users it 
-                   has and a link to view all users specific to organization create function in model that
-                   sorts through users accoding to organization */}
-                   {adminInfo.Tab === 'Organizations' && <div>hello organizations</div>}
-                   {adminInfo.Tab === 'Add User' && <NewUserForm />}
-                   {/* {AdminInfo.currentTab === 'Remove User' && <div>hello Remove User</div>} */}
+
+            {adminInfo.Tab === 'Users' && <AdminUsers users={users} />}
+            {/* organizations page will show the name of the organization how many users it 
+                has and a link to view all users specific to organization create function in model that
+                sorts through users accoding to organization */}
+            {adminInfo.Tab === 'Organizations' && <div>hello organizations</div>}
+            {adminInfo.Tab === 'Add User' && <NewUserForm />}
+            {/* {AdminInfo.currentTab === 'Remove User' && <div>hello Remove User</div>} */}
+            
         </div>
         </div> 
       </div>);

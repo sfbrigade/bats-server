@@ -18,22 +18,25 @@ export default function AdminNavigation({ click, adminInfo }){
   <div>
 
     <nav aria-label="Secondary navigation,">
-      <ul className="usa-sidenav">
+      <div>
+
+      </div>
+      <ul className="usa-sidenav margin-y-7 padding-y-7">
+        <AdminNavLink 
+          title="Dashboard"
+          click={handleClick}
+          isCurrent={adminInfo.tabStatus['dashBoardTab'].currentStatus === 'CURRENT' ? true: false}
+          />
+
         <AdminNavLink 
           title="Users"
           click={handleClick}
           isCurrent={adminInfo.tabStatus['usersTab'].currentStatus === 'CURRENT' ? true: false}
           />
-
-        <AdminNavLink 
-          title="Organizations"
-          click={handleClick}
-          isCurrent={adminInfo.tabStatus['organizationTab'].currentStatus === 'CURRENT' ? true: false}
-          />
             <AdminNavLink 
-          title="Add User"
+          title="Ringdowns"
           click={handleClick}
-          isCurrent={adminInfo.tabStatus['addUserTab'].currentStatus === 'CURRENT' ? true: false}
+          isCurrent={adminInfo.tabStatus['ringDownTab'].currentStatus === 'CURRENT' ? true: false}
           />
       </ul>
     </nav>
