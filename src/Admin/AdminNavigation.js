@@ -4,24 +4,28 @@ import PropTypes from 'prop-types';
 import AdminNavLink from './AdminNavLink';
 import AdminInfo from '../Models/AdminInfo';
 
-export default function AdminNavigation({ click, adminInfo }){
-    const [tabChanged, setTabChanged] = useState(false)
+import './AdminNavigation.scss';
 
-      // restructure function to use an object to determine current tab
+export default function AdminNavigation({ click, adminInfo }){
+    const [tabChanged, setTabChanged] = useState("")
+
     const handleClick = (tab) => {
-      setTabChanged(!tabChanged)
+      setTabChanged(tab)
       click(tab);
     }
 
     return(
         
-  <div>
+  <div >
 
     <nav aria-label="Secondary navigation,">
-      <div>
-
-      </div>
-      <ul className="usa-sidenav margin-y-7 padding-y-7">
+      <div >
+        <div className="logo"></div>
+        <button className=" edit_profile border-0 border-bottom bg-base-lighter ">
+          Edit Profile
+          </button>
+      </div >
+      <ul className="usa-sidenav margin-bottom-9 padding-bottom-9">
         <AdminNavLink 
           title="Dashboard"
           click={handleClick}

@@ -1,0 +1,13 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-custom-mixins';
+
+.logo {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: darkgray;
+    margin: 7% auto;
+}
+.edit_profile{
+    margin: 0% 28%;
+}

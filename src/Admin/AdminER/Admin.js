@@ -26,20 +26,15 @@ export default function AdminER() {
   }
 
     return (
-      <div className="grid-container">
-        <div className="grid-row">
-        <div id="side" className="grid-col flex-1 bg-base-lighter">
+      <div className="admin height-full">
+        <div className="bottom">
+        <div className="grid-col bg-base-lighter height-full">
           <AdminNavigation click={handleClick} adminInfo={adminInfo} />
         </div>
-        <div className="grid-col flex-5">
-
+        <div className="grid-col flex-4">
+            {adminInfo.Tab === 'Dashboard' && <div>Dashboard</div>}
             {adminInfo.Tab === 'Users' && <AdminUsers users={users} />}
-            {/* organizations page will show the name of the organization how many users it 
-                has and a link to view all users specific to organization create function in model that
-                sorts through users accoding to organization */}
-            {adminInfo.Tab === 'Organizations' && <div>hello organizations</div>}
-            {adminInfo.Tab === 'Add User' && <NewUserForm />}
-            {/* {AdminInfo.currentTab === 'Remove User' && <div>hello Remove User</div>} */}
+            {adminInfo.Tab === 'Ringdowns' && <div>Ringdowns</div>}
             
         </div>
         </div> 

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export default function AdminNavLink({ click, title, isCurrent }){
 
     return(
-        <li className="usa-sidenav__item margin margin-y-2 padding-y-2">
+        <li className="usa-sidenav__item margin margin-bottom-9 padding-y-6 margin-left-4">
             <a href="#" onClick={() => click(title)} className={isCurrent ? "usa-current":""}>{title}</a>
 
         </li>
