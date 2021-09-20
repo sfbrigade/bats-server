@@ -15,10 +15,10 @@ class tabData {
   export default class AdminInfo{
 
     constructor(){
-        this.currentTab = this.currentTab || '';
+        this.currentTab = this.currentTab || 'Dashboard';
         this.tabStatus = {
             usersTab: new tabData("Users", currentStatus.NOT_CURRENT),
-            dashBoardTab: new tabData("Dashboard", currentStatus.NOT_CURRENT),
+            dashBoardTab: new tabData("Dashboard", currentStatus.CURRENT),
             ringDownTab: new tabData("Ringdowns", currentStatus.NOT_CURRENT)
         }
     }
