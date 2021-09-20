@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import AdminNavigation from '../AdminNavigation';
 import AdminUsers from '../AdminUsers';
 import NewUserForm from '../NewUserForm';
+import ErDashboard from './ErDashboard';
 import UserInfo from '../UserInfo';
 import AdminInfo from '../../Models/AdminInfo';
 
@@ -17,6 +18,7 @@ export default function AdminER() {
 
   const [adminInfo, setAdminInfo] = useState(new AdminInfo());
   const [stateChanged, setStateChanged] = useState(false);
+  const [showMore, setShowMore] = useState(false);
  
   const handleClick = (tab) => {
     adminInfo.Tab = tab;
@@ -26,6 +28,13 @@ export default function AdminER() {
     setStateChanged(!stateChanged);
   }
 
+  const More = () => {
+    setShowMore(true);
+  }
+  const Back = () => {
+    setShowMore(false);
+  }
+console.log(showMore, adminInfo.tab);
     return (
       <div className="admin height-full">
         <div className="bottom">
@@ -33,7 +42,7 @@ export default function AdminER() {
           <AdminNavigation click={handleClick} adminInfo={adminInfo} />
         </div>
         <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
-            {adminInfo.Tab === 'Dashboard' && <div>Dashboard</div>}
+            {adminInfo.Tab === 'Dashboard' && showMore === false ? <ErDashboard more={More} /> : <UserInfo back={Back} />}
             {adminInfo.Tab === 'Users' && <AdminUsers users={users} /> }
             {adminInfo.Tab === 'Ringdowns' && <div>Ringdowns</div>}
             
