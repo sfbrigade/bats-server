@@ -34,8 +34,7 @@ export default function AdminER() {
         </div>
         <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
             {adminInfo.Tab === 'Dashboard' && <div>Dashboard</div>}
-            {adminInfo.Tab === 'Users' && <UserInfo /> }
-            {/* <AdminUsers users={users} /> */}
+            {adminInfo.Tab === 'Users' && <AdminUsers users={users} /> }
             {adminInfo.Tab === 'Ringdowns' && <div>Ringdowns</div>}
             
         </div>
