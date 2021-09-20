@@ -16,16 +16,16 @@ export default function AdminNavigation({ click, adminInfo }){
 
     return(
         
-  <div >
+  <div className="margin-y-6 padding-bottom-7">
 
     <nav aria-label="Secondary navigation,">
       <div >
         <div className="logo"></div>
-        <button className=" edit_profile border-0 border-bottom bg-base-lighter ">
+        <button className=" edit_profile border-0 border-bottom bg-base-lighter button_text">
           Edit Profile
           </button>
       </div >
-      <ul className="usa-sidenav margin-bottom-9 padding-bottom-9">
+      <ul className="usa-sidenav margin-y-5 padding-bottom-5">
         <AdminNavLink 
           title="Dashboard"
           click={handleClick}

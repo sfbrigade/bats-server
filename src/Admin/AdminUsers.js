@@ -22,7 +22,7 @@ export default function AdminUsers(users){
  };
 
     return(
-        <div className="grid-container border margin-3 padding-2" >
+        <div className="grid-container border margin-left-9 padding-9" >
           <div className="admin__users__header grid-row border margin-1 padding-2" >
             <div className="grid-col-2">User Name</div>
             <div className="grid-col-2">User Id</div>

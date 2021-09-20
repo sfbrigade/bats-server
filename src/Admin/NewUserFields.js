@@ -29,7 +29,7 @@ export default function NewUserFields(){
         />
 
     <FormInput
-        label="Last Name"
+        label="Unit #"
         onChange={handleChange}
         property="Last Name"
         required={true}
@@ -51,7 +51,18 @@ export default function NewUserFields(){
         />
 
     <FormInput
-        label="Organization"
+        label="Phone #"
+        onChange={handleChange}
+        property="Organization"
+        required={true}
+        showRequiredHint={true}
+        size="medium"
+        type="text"
+        value="(555)555-555"
+        />
+
+<FormInput
+        label="Password"
         onChange={handleChange}
         property="Organization"
         required={true}
