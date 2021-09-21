@@ -1,0 +1,7 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../../theme/uswds-theme-custom-mixins';
+
+table {
+    border: none;
+    border-color: gray;
+}

@@ -16,7 +16,7 @@ export default function AdminNavigation({ click, adminInfo }){
 
     return(
         
-  <div className="margin-y-6 padding-bottom-7">
+  <div className="margin-y-6 padding-bottom-9">
 
     <nav aria-label="Secondary navigation,">
       <div >
@@ -25,7 +25,7 @@ export default function AdminNavigation({ click, adminInfo }){
           Edit Profile
           </button>
       </div >
-      <ul className="usa-sidenav margin-y-5 padding-bottom-5">
+      <ul className="usa-sidenav margin-y-9 padding-bottom-9">
         <AdminNavLink 
           title="Dashboard"
           click={handleClick}
