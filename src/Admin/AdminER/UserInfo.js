@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NewUserFields from './NewUserFields';
+import NewUserFields from '../NewUserFields';
 
 
 export default function UserInfo({ back }){

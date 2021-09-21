@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 
 import AdminNavigation from '../AdminNavigation';
-import AdminUsers from '../AdminUsers';
 import NewUserForm from '../NewUserForm';
 import ErDashboard from './ErDashboard';
-import UserInfo from '../UserInfo';
+import ErRingdowns from './ErRingdowns';
+import ErUsers from './ErUsers';
+
 import AdminInfo from '../../Models/AdminInfo';
 
 //temp info for testing
@@ -35,8 +36,8 @@ export default function AdminER() {
         </div>
         <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
             {adminInfo.Tab === 'Dashboard' &&  <ErDashboard />}
-            {adminInfo.Tab === 'Users' && <AdminUsers users={users} /> }
-            {adminInfo.Tab === 'Ringdowns' && <div>Ringdowns</div>}
+            {adminInfo.Tab === 'Users' && <ErUsers />}
+            {adminInfo.Tab === 'Ringdowns' && <ErRingdowns />}
             
         </div>
         </div> 

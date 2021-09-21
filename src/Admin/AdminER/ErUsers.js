@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React,  { useEffect, useState } from 'react';
 
 import UserInfo from './UserInfo';
-import ErDashboardTable from './ErDashboardTable';
+import ErUsersTable from './ErUsersTable';
 
-
-export default function ErDashboard() {
+export default function ErUsers() {
     const [showMore, setShowMore] = useState(false);
 
     const More = () => {
@@ -13,12 +12,12 @@ export default function ErDashboard() {
 
       const Back = () => {
         setShowMore(false);
-      }
+      }    
 
     return (
         <div className="margin-left-9 padding-left-2">
             {showMore === true && <UserInfo back={Back} />}
-            {showMore === false && <ErDashboardTable more={More} />}
+            {showMore === false && <ErUsersTable more={More} />}
         </div>
-    );
+    )
 }
