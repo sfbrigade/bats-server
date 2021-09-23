@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
@@ -47,4 +48,7 @@ export default function ErUsersTable({ more }) {
             </table>
         </div>
         );
+}
+ErUsersTable.propTypes = {
+    more: PropTypes.func.isRequired
 }

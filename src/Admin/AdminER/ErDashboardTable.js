@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
@@ -70,3 +71,9 @@ export default function ErDashboardTable({ more }) {
         </div>
     )
 }
+ErDashboardTable.propTypes = {
+    more: PropTypes.func.isRequired
+  };
+  ErDashboardTable.defaultProps = {
+    more: null,
+  };

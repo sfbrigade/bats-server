@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import AdminUser from './AdminUser';
 
@@ -35,4 +36,18 @@ export default function AdminUsers(users){
             
         </div>
     )
+}
+AdminUser.PropTypes = {
+  users: PropTypes.shape({
+  userid: PropTypes.stirng,
+  organization: PropTypes.stirng,            
+  email: PropTypes.stirng,
+  firstname: PropTypes.stirng,
+  lastname: PropTypes.stirng,
+  usertype:PropTypes.stirng,                 
+  active: PropTypes.bool,
+  created: PropTypes.stirng,
+  updated: PropTypes.stirng,
+
+  })
 }

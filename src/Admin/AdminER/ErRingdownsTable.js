@@ -1,18 +1,46 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
+
+import './ErRingdownsTable.scss';
 
 export default function ErRingdownsTable({ more }) {
 
     return (
 
         <div className="margin-y-5">
+            <span>
+                <button className="bg-white border-0 border-bottom margin-x-2">Today</button>
+                <button className="bg-white border-0 border-bottom margin-x-2">This Week</button>
+                <button className="bg-white border-0 border-bottom margin-x-2">This Month</button>
+                <input type="date"></input>
+                </span>
         <Heading title="Ringdown History" />
+        
         <table cellspacing="0" cellpadding="0">
             <tr >
-                <th className="padding-2">Time</th>
-                <th className="padding-2">Ambulance #</th>
-                <th className="padding-2">Incident #</th>
+                <th className="padding-2">
+                    Time
+                    <div className="shift">
+                    <button className="bg-white border-0">&lt;</button>
+                    <button className="bg-white border-0">&gt;</button>
+                    </div>
+                </th>
+                <th className="padding-2">
+                    Ambulance #
+                    <div className="shift">
+                    <button className="bg-white border-0">&lt;</button>
+                    <button className="bg-white border-0">&gt;</button>
+                    </div>
+                    </th>
+                <th className="padding-2">
+                    Incident #
+                    <div className="shift">
+                    <button className="bg-white border-0">&lt;</button>
+                    <button className="bg-white border-0">&gt;</button>
+                    </div>
+                    </th>
                 <th className="padding-2">Show details</th>
             </tr>
             <tr className="bg-gray-30 text-base-lightest">
@@ -37,3 +65,9 @@ export default function ErRingdownsTable({ more }) {
         </div>
     )
 }
+ErRingdownsTable.propTypes = {
+    more: PropTypes.func.isRequired,
+}
+ErRingdownsTable.defaultProps = {
+    more: null,
+  };
