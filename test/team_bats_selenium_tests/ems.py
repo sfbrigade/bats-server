@@ -11,7 +11,7 @@ class EMSTest():
     
     def login(self):
         self.driver.get('https://bats-dev.herokuapp.com/auth/local/login')
-        sleep(2)
+        sleep(1)
         email = self.driver.find_element_by_xpath('//*[@id="email"]')
         email.send_keys('op.ems@c4sf.me')
         password = self.driver.find_element_by_xpath('//*[@id="password"]')
@@ -62,7 +62,7 @@ class EMSTest():
         other_text = self.driver.find_element_by_xpath('//*[@id="otherObservationNotes"]')
         other_text.send_keys('Wow. This is a speedy test.')
         select_hospital = self.driver.find_element_by_xpath('//*[@id="root"]/form/fieldset/button[1]')
-        sleep(5)
+        sleep(0.5)
         select_hospital.click()
 
     def select_hospital(self):
@@ -71,7 +71,7 @@ class EMSTest():
         eta = self.driver.find_element_by_xpath('//*[@id="etaMinutes"]')
         eta.send_keys('5')
         send_ringdown = self.driver.find_element_by_xpath('//*[@id="root"]/form/fieldset/button[1]')
-        sleep(2)
+        sleep(0.5)
         send_ringdown.click()
 
     def redirect(self):
@@ -95,15 +95,18 @@ class EMSTest():
         return_to_list = self.driver.find_element_by_xpath('//*[@id="root"]/form/div[3]/div/div/ul/li/button')
         return_to_list.click()
 
-
-bot = EMSTest()
-bot.login()
-sleep(2)
-bot.fill_out_form()
-sleep(0.5)
-bot.select_hospital()
-bot.redirect()
-sleep(0.5)
-bot.select_hospital()
-sleep(0.5)
-bot.cancel()
+i = 0
+while i < 10 :
+    bot = EMSTest()
+    bot.login()
+    sleep(2)
+    bot.fill_out_form()
+    sleep(0.5)
+    bot.select_hospital()
+    bot.redirect()
+    sleep(0.5)
+    bot.select_hospital()
+    sleep(0.5)
+    bot.cancel()
+    bot.driver.close()
+    i += 1
