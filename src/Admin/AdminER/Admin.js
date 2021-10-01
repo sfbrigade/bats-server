@@ -54,7 +54,7 @@ console.log("mainUser", mainUser)
           <AdminNavigation click={handleClick} adminInfo={adminInfo}/>
         </div>
         <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
-            {adminInfo.Tab === 'Dashboard' &&  <ErDashboard />}
+            {adminInfo.Tab === 'Dashboard' &&  <ErDashboard users={users} mainUser={mainUser} />}
             {adminInfo.Tab === 'Users' && <ErUsers users={users} mainUser={mainUser} />}
             {adminInfo.Tab === 'Ringdowns' && <ErRingdowns />}
             

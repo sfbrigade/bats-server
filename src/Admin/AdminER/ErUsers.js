@@ -5,9 +5,11 @@ import ErUsersTable from './ErUsersTable';
 
 export default function ErUsers({ users, mainUser }) {
     const [showMore, setShowMore] = useState(false);
+    const [user, setUser] = useState(null);
 
-    const More = () => {
+    const More = (user) => {
         setShowMore(true);
+        setUser(user)
       }
 
       const Back = () => {
@@ -16,7 +18,7 @@ export default function ErUsers({ users, mainUser }) {
 
     return (
         <div className="margin-left-9 padding-left-2">
-            {showMore === true && <UserInfo back={Back} />}
+            {showMore === true && <UserInfo back={Back} user={user} />}
             {showMore === false && <ErUsersTable more={More} users={users} mainUser={mainUser} />}
         </div>
     )

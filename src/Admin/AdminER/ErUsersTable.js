@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
+import './ErUsersTable.scss';
+
 export default function ErUsersTable({ more, users, mainUser }) {
 
     const userRows = [];
@@ -10,10 +12,10 @@ export default function ErUsersTable({ more, users, mainUser }) {
 
     for ( const user of users) {
         if ( user.organization.id === mainUser.organization.id){
-        temp = <tr className="bg-gray-30 text-base-lightest">
-                <td className="padding-2">{user.firstName}</td>
-                <td className="padding-2">{user.email}</td>
-                <td className="padding-2"><button className="bg-gray-30 text-base-lightest border-0" onClick={() => more()}>More &gt;</button></td>
+        temp = <tr>
+                <td className="padding-2 row-border">{user.firstName}</td>
+                <td className="padding-2 row-border">{user.email}</td>
+                <td className="padding-2 row-border"><button className="border-0 bg-white" onClick={() => more(user)}>More &gt;</button></td>
             </tr>
 
         }

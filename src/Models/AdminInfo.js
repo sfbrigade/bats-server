@@ -15,7 +15,7 @@ class tabData {
   export default class AdminInfo{
 
     constructor(){
-        this.currentTab = this.currentTab || 'Dashboard';
+        this.currentTab = this.currentTab || '';
         this.tabStatus = {
             usersTab: new tabData("Users", currentStatus.NOT_CURRENT),
             dashBoardTab: new tabData("Dashboard", currentStatus.CURRENT),

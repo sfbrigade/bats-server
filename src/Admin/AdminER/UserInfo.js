@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import NewUserFields from '../NewUserFields';
 
 
-export default function UserInfo({ back }){
+export default function UserInfo({ back, user }){
    
    const send = () => {
        //api call update for current user
@@ -23,7 +23,7 @@ export default function UserInfo({ back }){
 
             </div>
 
-        <NewUserFields />
+        <NewUserFields user={user} />
         <button className="usa-button width-card-lg margin-2" type="button" onClick={send}>
                  Save Changes
             </button>

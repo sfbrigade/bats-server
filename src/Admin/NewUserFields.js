@@ -4,10 +4,10 @@ import FormInput from '../Components/FormInput';
 
 //create model to help store data rather than using useState to create state variables?
 // add radio button for type and for organization selection?
-export default function NewUserFields(){
+export default function NewUserFields({ user }){
 
     const handleChange = () => {
-        alert("changed")
+        console.log("changed")
     }
 
     return (
@@ -25,18 +25,18 @@ export default function NewUserFields(){
         showRequiredHint={true}
         size="medium"
         type="text"
-        value="John"
+        value={user.firstName}
         />
 
     <FormInput
-        label="Unit #"
+        label="Last Name"
         onChange={handleChange}
         property="Last Name"
         required={true}
         showRequiredHint={true}
         size="medium"
         type="text"
-        value="Doe"
+        value={user.lastName}
         />
 
     <FormInput
@@ -47,7 +47,7 @@ export default function NewUserFields(){
         showRequiredHint={true}
         size="medium"
         type="text"
-        value="John@email.com"
+        value={user.email}
         />
 
     <FormInput
@@ -64,12 +64,12 @@ export default function NewUserFields(){
 <FormInput
         label="Password"
         onChange={handleChange}
-        property="Organization"
+        property="pasword"
         required={true}
         showRequiredHint={true}
         size="medium"
-        type="text"
-        value="SFFD"
+        type="password"
+        value={user.hashedPassword}
         />
        </div>
     )

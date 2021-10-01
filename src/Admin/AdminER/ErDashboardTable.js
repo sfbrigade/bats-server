@@ -3,7 +3,24 @@ import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
-export default function ErDashboardTable({ more }) {
+export default function ErDashboardTable({ more, users, mainUser }) {
+
+    const userRows = [];
+    let temp = null;
+
+    for ( const user of users) {
+        if ( user.organization.id === mainUser.organization.id){
+        temp = <tr>
+                <td className="padding-2 row-border">{user.firstName}</td>
+                <td className="padding-2 row-border">{user.email}</td>
+                <td className="padding-2 row-border"><button className="border-0 bg-white" onClick={() => more(user)}>More &gt;</button></td>
+            </tr>
+
+        }
+        if (userRows.indexOf(temp) === -1) {
+            userRows.push(temp);  
+              }
+    }
 
     return (
         <div>
@@ -16,24 +33,7 @@ export default function ErDashboardTable({ more }) {
                 <th className="padding-2">Shift</th>
                 
             </tr>
-            <tr className="bg-gray-30 text-base-lightest">
-                <td className="padding-2">Active</td>
-                <td className="padding-2">Molly Jane</td>
-                <td className="padding-2">Day shift</td>
-                <td className="padding-2"><button className="bg-gray-30 text-base-lightest border-0" onClick={() => more()}>More &gt;</button></td>
-            </tr>
-            <tr>
-                <td className="padding-2">Inactive</td>
-                <td className="padding-2">John Doe</td>
-                <td className="padding-2">Day shift</td>
-                <td className="padding-2"><button className="bg-white border-0" onClick={() => more()}>More &gt;</button></td>
-            </tr>
-            <tr className="bg-gray-30 text-base-lightest">
-                <td className="padding-2">Inactive</td>
-                <td className="padding-2">Cindy Moton</td>
-                <td className="padding-2">mid shift</td>
-                <td className="padding-2"><button className="bg-gray-30 text-base-lightest border-0"  onClick={() => more()}>More &gt;</button></td>     
-            </tr>
+            {userRows}
             </table>
         </div>
 
