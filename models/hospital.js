@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Hospital.init(
     {
+      // this is the value used to determine who each nurse belongs to
       id: {
         field: 'hospital_uuid',
         type: DataTypes.UUID,
