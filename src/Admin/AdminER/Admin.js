@@ -39,7 +39,7 @@ export default function AdminER() {
     });
     ApiService.users.me().then((response) => {
       if (mainUser === null){
-      setMainUser("hello world", response.data);
+      setMainUser(response.data);
       }
     });
 
