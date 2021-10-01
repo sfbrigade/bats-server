@@ -1,15 +1,14 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-custom-mixins';
 
-
-.admin{
-    display: flex;
-    flex-flow: column;
-    margin: auto 0%;
-    justify-content: center;
-  }
+.admin {
+  display: flex;
+  flex-flow: column;
+  margin: auto 0%;
+  justify-content: center;
+}
 
 .bottom {
-    display: flex;
-    flex-flow: row;
+  display: flex;
+  flex-flow: row;
 }

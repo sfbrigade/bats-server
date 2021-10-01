@@ -6,43 +6,42 @@ import Heading from '../../Components/Heading';
 import './ErUsersTable.scss';
 
 export default function ErUsersTable({ more, users, mainUser }) {
+  const userRows = [];
+  let temp = null;
 
-    const userRows = [];
-    let temp = null;
-
-    for ( const user of users) {
-        if ( user.organization.id === mainUser.organization.id){
-        temp = <tr>
-                <td className="padding-2 row-border">{user.firstName}</td>
-                <td className="padding-2 row-border">{user.email}</td>
-                <td className="padding-2 row-border"><button className="border-0 bg-white" onClick={() => more(user)}>More &gt;</button></td>
-            </tr>
-
-        }
-        if (userRows.indexOf(temp) === -1) {
-            userRows.push(temp);  
-              }
+  for (const user of users) {
+    if (user.organization.id === mainUser.organization.id) {
+      temp = (
+        <tr>
+          <td className="padding-2 row-border">{user.firstName}</td>
+          <td className="padding-2 row-border">{user.email}</td>
+          <td className="padding-2 row-border">
+            <button type="button" className="border-0 bg-white" onClick={() => more(user)}>
+              More &gt;
+            </button>
+          </td>
+        </tr>
+      );
     }
+    if (userRows.indexOf(temp) === -1) {
+      userRows.push(temp);
+    }
+  }
 
-    console.log("users table", users)
-
-   return (
-         <div className="margin-y-5">
-        {/* will need a different header for this page */}
-        <Heading title="Active" />
-        <table cellspacing="0" cellpadding="0">
-            <tr >
-               
-                <th className="padding-2">Name</th>
-                <th className="padding-2">Email</th>
-               
-            </tr>
-            {userRows}
-     
-            </table>
-        </div>
-        );
+  return (
+    <div className="margin-y-5">
+      {/* will need a different header for this page */}
+      <Heading title="Active" />
+      <table cellSpacing="0" cellPadding="0">
+        <tr>
+          <th className="padding-2">Name</th>
+          <th className="padding-2">Email</th>
+        </tr>
+        {userRows}
+      </table>
+    </div>
+  );
 }
 ErUsersTable.propTypes = {
-    more: PropTypes.func.isRequired
-}
+  more: PropTypes.func.isRequired,
+};

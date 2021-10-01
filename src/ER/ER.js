@@ -46,18 +46,17 @@ export default function ER() {
   return (
     <div className="grid-container">
       <div className="grid-row">
-      <div className="tablet:grid-col-6 tablet:grid-offset-3">
-      <Header name="Hospital Destination Tool">
-        {incomingRingdowns.length === 0 && (
-          <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
-        )}
-      </Header>
-      {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
-      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
-      {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />}
-    
-    </div>
-    </div> 
+        <div className="tablet:grid-col-6 tablet:grid-offset-3">
+          <Header name="Hospital Destination Tool">
+            {incomingRingdowns.length === 0 && (
+              <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
+            )}
+          </Header>
+          {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
+          {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
+          {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />}
+        </div>
+      </div>
     </div>
   );
 }

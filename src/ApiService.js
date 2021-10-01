@@ -58,6 +58,6 @@ export default {
     },
     all() {
       return instance.get('/api/users/');
-    }
+    },
   },
 };
