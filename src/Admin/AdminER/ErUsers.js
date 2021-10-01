@@ -3,7 +3,7 @@ import React,  { useEffect, useState } from 'react';
 import UserInfo from './UserInfo';
 import ErUsersTable from './ErUsersTable';
 
-export default function ErUsers() {
+export default function ErUsers({ users }) {
     const [showMore, setShowMore] = useState(false);
 
     const More = () => {
@@ -17,7 +17,7 @@ export default function ErUsers() {
     return (
         <div className="margin-left-9 padding-left-2">
             {showMore === true && <UserInfo back={Back} />}
-            {showMore === false && <ErUsersTable more={More} />}
+            {showMore === false && <ErUsersTable more={More} users={users} />}
         </div>
     )
 }

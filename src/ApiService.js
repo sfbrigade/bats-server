@@ -56,5 +56,8 @@ export default {
     me() {
       return instance.get('/api/users/me');
     },
+    all() {
+      return instance.get('/api/users/');
+    }
   },
 };

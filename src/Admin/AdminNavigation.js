@@ -51,4 +51,5 @@ export default function AdminNavigation({ click, adminInfo }){
 AdminNavigation.propTypes = {
   adminInfo: PropTypes.instanceOf(AdminInfo).isRequired,
   click: PropTypes.func.isRequired,
+  // adminName: PropTypes.string.isRequired
 };
