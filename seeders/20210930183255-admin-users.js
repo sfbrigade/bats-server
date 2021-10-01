@@ -101,7 +101,7 @@ module.exports = {
                     email: hospitalAdmin.email,
                     hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
                     isOperationalUser: true,
-                    isAdminUser: false,
+                    isAdminUser: true,
                     isSuperUser: false,
                     CreatedById: superuser.id,
                     UpdatedById: superuser.id,

@@ -45,8 +45,8 @@ export default function AdminER() {
 
   })
  
-// console.log(users);
-// console.log("mainUser", mainUser)
+console.log(users);
+console.log("mainUser", mainUser)
     return (
       <div className="admin height-full">
         <div className="bottom">
