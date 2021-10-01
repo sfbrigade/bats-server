@@ -19,6 +19,9 @@ export default function AdminNavigation({ click, adminInfo }){
   <div className="margin-y-6 padding-bottom-9">
 
     <nav aria-label="Secondary navigation,">
+    <a className="header__logout h4" href="/auth/local/logout">
+        Logout
+      </a>
       <div >
         <div className="logo"></div>
         <button className=" edit_profile border-0 border-bottom bg-base-lighter button_text">
@@ -44,6 +47,7 @@ export default function AdminNavigation({ click, adminInfo }){
           />
       </ul>
     </nav>
+
   </div>
  
     )

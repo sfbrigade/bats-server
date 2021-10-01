@@ -3,21 +3,23 @@ import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
-export default function ErUsersTable({ more, users }) {
+export default function ErUsersTable({ more, users, mainUser }) {
 
     const userRows = [];
     let temp = null;
 
-    for ( let i = 0; i < users.length; i++ ) {
-        if ( users[i].lastName === 'Healthcare'){
+    for ( const user of users) {
+        if ( user.organization.id === mainUser.organization.id){
         temp = <tr className="bg-gray-30 text-base-lightest">
-                <td className="padding-2">{users[i].firstName}</td>
-                <td className="padding-2">{users[i].email}</td>
+                <td className="padding-2">{user.firstName}</td>
+                <td className="padding-2">{user.email}</td>
                 <td className="padding-2"><button className="bg-gray-30 text-base-lightest border-0" onClick={() => more()}>More &gt;</button></td>
             </tr>
 
         }
-        userRows.push(temp);    
+        if (userRows.indexOf(temp) === -1) {
+            userRows.push(temp);  
+              }
     }
 
     console.log("users table", users)
