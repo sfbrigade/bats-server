@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
-import './ErDashboard.scss';
+import './ErDashboardTable.scss';
 
 export default function ErDashboardTable({ more, users, mainUser }) {
   //may be able to replace mainUser with user

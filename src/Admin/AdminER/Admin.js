@@ -25,6 +25,7 @@ export default function AdminER() {
   };
 
   useEffect(() => {
+    // instead of getting all users create and api that only gets active users according who is signed on
     ApiService.users.all().then((response) => {
       if (users === null) {
         setUsers(response.data);
