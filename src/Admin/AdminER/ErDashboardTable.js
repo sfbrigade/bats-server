@@ -57,7 +57,7 @@ export default function ErDashboardTable({ more, users, mainUser }) {
             <td className="padding-2 row-border">10 min</td>
             <td className="padding-2 row-border">On the way</td>
             <td className="padding-2 row-border">5678</td>
-            <td className="padding-2 row-border">Head ache</td>
+            <td className="padding-2 row-border">Headache</td>
             <td className="padding-2 row-border">
               <button type="button" className="bg-white border-0">
                 More &gt;
@@ -68,7 +68,7 @@ export default function ErDashboardTable({ more, users, mainUser }) {
             <td className="padding-2 row-border">5min</td>
             <td className="padding-2 row-border">Offloading</td>
             <td className="padding-2 row-border">4567</td>
-            <td className="padding-2 row-border">Head ache</td>
+            <td className="padding-2 row-border">Headache</td>
             <td className="padding-2 row-border">
               <button type="button" className="bg-white border-0">
                 More &gt;
@@ -79,7 +79,7 @@ export default function ErDashboardTable({ more, users, mainUser }) {
             <td className="padding-2 row-border">2 min</td>
             <td className="padding-2 row-border">Waiting</td>
             <td className="padding-2 row-border">4327</td>
-            <td className="padding-2 row-border">Head ache</td>
+            <td className="padding-2 row-border">Headache</td>
             <td className="padding-2 row-border">
               <button type="button" className="bg-white border-0">
                 More &gt;
