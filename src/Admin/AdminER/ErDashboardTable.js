@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
+import './ErDashboard.scss';
+
 export default function ErDashboardTable({ more, users, mainUser }) {
+  //may be able to replace mainUser with user
   const userRows = [];
   let temp = null;
 
   for (const user of users) {
+    
     if (user.organization.id === mainUser.organization.id && !user.isAdminUser) {
       temp = (
         <tr>
@@ -34,7 +38,6 @@ export default function ErDashboardTable({ more, users, mainUser }) {
           <tr>
             <th className="padding-2">Status</th>
             <th className="padding-2">Name</th>
-            <th className="padding-2">Shift</th>
           </tr>
           {userRows}
         </table>
@@ -50,32 +53,35 @@ export default function ErDashboardTable({ more, users, mainUser }) {
             <th className="padding-2">Ambulance #</th>
             <th className="padding-2">Chief Complaint</th>
           </tr>
-          <tr className="bg-gray-30 text-base-lightest">
-            <td className="padding-2">10 min</td>
-            <td className="padding-2">On the way</td>
-            <td className="padding-2">5678</td>
-            <td className="padding-2">
-              <button type="button" className="bg-gray-30 text-base-lightest border-0">
-                More &gt;
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td className="padding-2">5min</td>
-            <td className="padding-2">Offloading</td>
-            <td className="padding-2">4567</td>
-            <td className="padding-2">
+          <tr className>
+            <td className="padding-2 row-border">10 min</td>
+            <td className="padding-2 row-border">On the way</td>
+            <td className="padding-2 row-border">5678</td>
+            <td className="padding-2 row-border">Head ache</td>
+            <td className="padding-2 row-border">
               <button type="button" className="bg-white border-0">
                 More &gt;
               </button>
             </td>
           </tr>
-          <tr className="bg-gray-30 text-base-lightest">
-            <td className="padding-2">2 min</td>
-            <td className="padding-2">Waiting</td>
-            <td className="padding-2">4327</td>
-            <td className="padding-2">
-              <button type="button" className="bg-gray-30 text-base-lightest border-0">
+          <tr>
+            <td className="padding-2 row-border">5min</td>
+            <td className="padding-2 row-border">Offloading</td>
+            <td className="padding-2 row-border">4567</td>
+            <td className="padding-2 row-border">Head ache</td>
+            <td className="padding-2 row-border">
+              <button type="button" className="bg-white border-0">
+                More &gt;
+              </button>
+            </td>
+          </tr>
+          <tr >
+            <td className="padding-2 row-border">2 min</td>
+            <td className="padding-2 row-border">Waiting</td>
+            <td className="padding-2 row-border">4327</td>
+            <td className="padding-2 row-border">Head ache</td>
+            <td className="padding-2 row-border">
+              <button type="button" className="bg-white border-0">
                 More &gt;
               </button>
             </td>

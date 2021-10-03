@@ -59,32 +59,32 @@ export default function ErRingdownsTable({ more }) {
           </th>
           <th className="padding-2">Show details</th>
         </tr>
-        <tr className="bg-gray-30 text-base-lightest">
-          <td className="padding-2">5:30 am</td>
-          <td className="padding-2">9876</td>
-          <td className="padding-2">38654</td>
-          <td className="padding-2">
-            <button type="button" className="bg-gray-30 text-base-lightest border-0" onClick={() => more()}>
-              !
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td className="padding-2">7:30 pm</td>
-          <td className="padding-2">4563</td>
-          <td className="padding-2">48867</td>
-          <td className="padding-2">
+        <tr >
+          <td className="padding-2 row-border">5:30 am</td>
+          <td className="padding-2 row-border">9876</td>
+          <td className="padding-2 row-border">38654</td>
+          <td className="padding-2 row-border">
             <button type="button" className="bg-white border-0" onClick={() => more()}>
               !
             </button>
           </td>
         </tr>
-        <tr className="bg-gray-30 text-base-lightest">
-          <td className="padding-2">8:30 am</td>
-          <td className="padding-2">3957</td>
-          <td className="padding-2">48375</td>
-          <td className="padding-2">
-            <button type="button" className="bg-gray-30 text-base-lightest border-0" onClick={() => more()}>
+        <tr>
+          <td className="padding-2 row-border">7:30 pm</td>
+          <td className="padding-2 row-border">4563</td>
+          <td className="padding-2 row-border">48867</td>
+          <td className="padding-2 row-border">
+            <button type="button" className="bg-white border-0" onClick={() => more()}>
+              !
+            </button>
+          </td>
+        </tr>
+        <tr >
+          <td className="padding-2 row-border">8:30 am</td>
+          <td className="padding-2 row-border">3957</td>
+          <td className="padding-2 row-border">48375</td>
+          <td className="padding-2 row-border">
+            <button type="button" className="bg-white border-0" onClick={() => more()}>
               !
             </button>
           </td>

@@ -6,6 +6,7 @@ import Heading from '../../Components/Heading';
 import './ErUsersTable.scss';
 
 export default function ErUsersTable({ more, users, mainUser }) {
+  //may be able to replace mainUser with user
   const userRows = [];
   let temp = null;
 

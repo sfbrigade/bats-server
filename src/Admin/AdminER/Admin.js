@@ -11,6 +11,7 @@ import ApiService from '../../ApiService';
 import '../Admin.scss';
 
 export default function AdminER() {
+  
   const [adminInfo, setAdminInfo] = useState(new AdminInfo());
   const [stateChanged, setStateChanged] = useState(false);
   const [users, setUsers] = useState(null);
@@ -29,6 +30,7 @@ export default function AdminER() {
         setUsers(response.data);
       }
     });
+    //this api call most likely not needed. can use useContext instead
     ApiService.users.me().then((response) => {
       if (mainUser === null) {
         setMainUser(response.data);
