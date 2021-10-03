@@ -6,7 +6,6 @@ const models = require('../../models');
 
 const router = express.Router();
 
-// relax the requirement or create new middleware to check for admin
 router.get('/', middleware.isAdminUser, async (req, res) => {
   const users = await models.User.findAll();
   res.json(users.map((u) => u.toJSON()));

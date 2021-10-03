@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import AdminNavLink from './AdminNavLink';
 import AdminInfo from '../Models/AdminInfo';
+import ApiService from '../ApiService';
 
 import './AdminNavigation.scss';
 
-export default function AdminNavigation({ click, adminInfo }) {
+export default function AdminNavigation({ click, adminInfo, mainUser }) {
   const [tabChanged, setTabChanged] = useState('');
 
   const handleClick = (tab) => {
@@ -17,12 +18,14 @@ export default function AdminNavigation({ click, adminInfo }) {
   return (
     <div className="margin-y-6 padding-bottom-9">
       <nav aria-label="Secondary navigation,">
-        <a className="header__logout h4" href="/auth/local/logout">
+        <a className="text-base-darkest" href="/auth/local/logout">
           Logout
         </a>
         <div>
           <div className="logo" />
-          <button type="button" className=" edit_profile border-0 border-bottom bg-base-lighter button_text">
+         <h2>{mainUser ? mainUser.activeHospitals[0].name: ''}</h2>
+         <h4>{mainUser ? `${mainUser.firstName} ${mainUser.lastName}`: ''}</h4>
+          <button type="button" className=" edit_profile bg-white border-0 border-bottom button_text">
             Edit Profile
           </button>
         </div>
@@ -39,5 +42,4 @@ export default function AdminNavigation({ click, adminInfo }) {
 AdminNavigation.propTypes = {
   adminInfo: PropTypes.instanceOf(AdminInfo).isRequired,
   click: PropTypes.func.isRequired,
-  // adminName: PropTypes.string.isRequired
 };

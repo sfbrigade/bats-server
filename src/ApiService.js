@@ -60,4 +60,9 @@ export default {
       return instance.get('/api/users/');
     },
   },
+  orgs: {
+    all() {
+      return instance.get('/api/organizations/')
+    },
+  },
 };

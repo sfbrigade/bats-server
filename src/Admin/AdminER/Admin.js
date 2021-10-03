@@ -39,8 +39,8 @@ export default function AdminER() {
   return (
     <div className="admin height-full">
       <div className="bottom">
-        <div className="grid-col-2 bg-base-lighter position-fixed">
-          <AdminNavigation click={handleClick} adminInfo={adminInfo} />
+        <div className="grid-col-2 position-fixed">
+          <AdminNavigation click={handleClick} adminInfo={adminInfo} mainUser={mainUser} />
         </div>
         <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
           {adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={mainUser} />}
