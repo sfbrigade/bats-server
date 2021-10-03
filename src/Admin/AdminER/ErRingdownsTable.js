@@ -59,7 +59,7 @@ export default function ErRingdownsTable({ more }) {
           </th>
           <th className="padding-2">Show details</th>
         </tr>
-        <tr >
+        <tr>
           <td className="padding-2 row-border">5:30 am</td>
           <td className="padding-2 row-border">9876</td>
           <td className="padding-2 row-border">38654</td>
@@ -79,7 +79,7 @@ export default function ErRingdownsTable({ more }) {
             </button>
           </td>
         </tr>
-        <tr >
+        <tr>
           <td className="padding-2 row-border">8:30 am</td>
           <td className="padding-2 row-border">3957</td>
           <td className="padding-2 row-border">48375</td>

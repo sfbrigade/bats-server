@@ -6,12 +6,11 @@ import Heading from '../../Components/Heading';
 import './ErDashboardTable.scss';
 
 export default function ErDashboardTable({ more, users, mainUser }) {
-  //may be able to replace mainUser with user
+  // may be able to replace mainUser with user
   const userRows = [];
   let temp = null;
 
   for (const user of users) {
-    
     if (user.organization.id === mainUser.organization.id && !user.isAdminUser) {
       temp = (
         <tr>
@@ -75,7 +74,7 @@ export default function ErDashboardTable({ more, users, mainUser }) {
               </button>
             </td>
           </tr>
-          <tr >
+          <tr>
             <td className="padding-2 row-border">2 min</td>
             <td className="padding-2 row-border">Waiting</td>
             <td className="padding-2 row-border">4327</td>

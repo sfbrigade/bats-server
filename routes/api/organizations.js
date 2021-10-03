@@ -8,7 +8,6 @@ const router = express.Router();
 // this may not be needed will keep for now
 router.get('/', middleware.isAdminUser, async (req, res) => {
   const orgs = await models.Organization.findAll();
-  console.log(orgs)
   res.json(orgs.map((org) => org.toJSON()));
 });
 

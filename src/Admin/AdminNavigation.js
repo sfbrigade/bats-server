@@ -23,8 +23,8 @@ export default function AdminNavigation({ click, adminInfo, mainUser }) {
         </a>
         <div>
           <div className="logo" />
-         <h2>{mainUser ? mainUser.activeHospitals[0].name: ''}</h2>
-         <h4>{mainUser ? `${mainUser.firstName} ${mainUser.lastName}`: ''}</h4>
+          <h2>{mainUser ? mainUser.activeHospitals[0].name : ''}</h2>
+          <h4>{mainUser ? `${mainUser.firstName} ${mainUser.lastName}` : ''}</h4>
           <button type="button" className=" edit_profile bg-white border-0 border-bottom button_text">
             Edit Profile
           </button>

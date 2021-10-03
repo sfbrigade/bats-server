@@ -61,9 +61,9 @@ export default {
     },
   },
   orgs: {
-    //this may not be needed will keep for now
+    // this may not be needed will keep for now
     all() {
-      return instance.get('/api/organizations/')
+      return instance.get('/api/organizations/');
     },
   },
 };

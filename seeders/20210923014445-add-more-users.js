@@ -59,14 +59,14 @@ module.exports = {
         transaction,
       });
       for (const account of accounts) {
-        //find the org info
+        // find the org info
         const org = await models.Organization.findOne({
           where: {
             name: account.org,
           },
           transaction,
         });
-        //used to find hospital to create hopital user
+        // used to find hospital to create hopital user
         const hospital = await models.Hospital.findOne({
           where: {
             name: account.hospital,
@@ -74,7 +74,7 @@ module.exports = {
         });
         const user = await models.User.create(
           {
-            //org.id is how we show each individual hospital
+            // org.id is how we show each individual hospital
             OrganizationId: org.id,
             firstName: 'Operational',
             lastName: 'Healthcare',

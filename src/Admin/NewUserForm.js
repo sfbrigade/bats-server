@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import NewUserFields from './NewUserFields';
 
 export default function NewUserForm() {
