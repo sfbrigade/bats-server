@@ -12,6 +12,15 @@ app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.secure) {
+      next();
+    } else {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+  });
+}
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'));
 }
