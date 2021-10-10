@@ -3,6 +3,7 @@ import axios from 'axios';
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
+    
   },
 });
 
@@ -59,6 +60,9 @@ export default {
     all() {
       return instance.get('/api/users/');
     },
+    create(data) {
+      return instance.post('/api/users/', data);
+    }
   },
   orgs: {
     // this may not be needed will keep for now

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Heading from '../../Components/Heading';
 
 import './ErUsersTable.scss';
 
-export default function ErUsersTable({ more, users, mainUser }) {
+export default function ErUsersTable({ more, users, mainUser, addUser }) {
   // may be able to replace mainUser with user
   const userRows = [];
   let temp = null;
+
+  
 
   for (const user of users) {
     if (user.organization.id === mainUser.organization.id && !user.isAdminUser) {
@@ -32,6 +34,7 @@ export default function ErUsersTable({ more, users, mainUser }) {
   return (
     <div className="margin-y-5">
       {/* will need a different header for this page */}
+      <button type="button" className="bg-white" onClick={() => addUser()}>Add User</button>
       <Heading title="Active" />
       <table cellSpacing="0" cellPadding="0">
         <tr>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import NewUserFields from '../NewUserFields';
+import UserFields from '../UserFields';
 
 export default function UserInfo({ back, user }) {
   const send = () => {
@@ -21,7 +21,7 @@ export default function UserInfo({ back, user }) {
         </button>
       </div>
 
-      <NewUserFields user={user} />
+      <UserFields user={user} />
       <button className="usa-button width-card-lg margin-2" type="button" onClick={send}>
         Save Changes
       </button>
