@@ -1,5 +1,6 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
+const axios = require('axios');
 
 const models = require('../../models');
 
@@ -13,6 +14,17 @@ router.post('/cad', async (req, res) => {
   const data = req.body;
   if (!Array.isArray(data)) {
     return;
+  }
+  if (process.env.PR_BASE_URL && process.env.PR_API_KEY) {
+    axios
+      .post(`${process.env.PR_BASE_URL}/webhooks/sffd/cad`, data, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${process.env.PR_API_KEY}`,
+        },
+      })
+      .catch((error) => console.log('CAD data repost', error))
+      .then((response) => console.log('CAD data repost', response.status));
   }
   await models.sequelize.transaction(async (transaction) => {
     const superUser = await models.User.findOne({
