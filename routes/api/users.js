@@ -11,17 +11,21 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
   res.json(users.map((u) => u.toJSON()));
 });
 
-router.post('/', async (req, res) => {
+router.post('/', middleware.isAdminUser, async (req, res) => {
   try {
     const user = await models.User.create({
+      OrganizationId: req.user.OrganizationId,
       email: req.body.email,
       password: req.body.password,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
+      CreatedById: req.user.id,
+      UpdatedById: req.user.id,
     });
     res.status(HttpStatus.CREATED).json(user.toJSON());
-  } catch {
+  } catch (err) {
+    console.log(err);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -33,6 +37,22 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
     req.user.activeHospitals = await req.user.getActiveHospitals();
   }
   res.json(req.user.toJSON());
+});
+
+router.delete('/', middleware.isAdminUser, async (req, res) => {
+  console.log(req.body)
+  try{
+    await models.User.destroy({
+      where: {
+        // work in progress body being passed empty
+        id: req.body.id
+      }
+    })
+    res.status(HttpStatus.DELETED).end();
+  } catch (err) {
+    console.log(err)
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+  }
 });
 
 module.exports = router;

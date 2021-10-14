@@ -15,30 +15,17 @@ export default function NewUserForm({ createdUser }) {
   }
 
   function createUser() {
-    console.log(newUser.firstName, newUser.lastName, newUser.email, newUser.password);
-    // ApiService.users.create(newUser.toJson())
-    // .then((response) => {   
-    //   setNewUser(new NewUser);
-    //    createdUser()
-    // })
-    // .catch((error) => {
-    //    // eslint-disable-next-line no-console
-    //    console.log(error.response.data);
-    //    console.log("request", error.request)
-    // });
-    axios.post('/api/users/', {
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
-      password: newUser.password,
-    })
-    .then((response) => {
-      console.log(response);
+    // console.log(newUser.firstName, newUser.lastName, newUser.email, newUser.password);
+    ApiService.users.create(newUser.toJson())
+    .then((response) => {   
+      setNewUser(new NewUser);
+       createdUser()
     })
     .catch((error) => {
-      console.log(error.response.data);
-    });
-   
+       // eslint-disable-next-line no-console
+       console.log(error.response.data);
+       console.log("request", error.request)
+    }); 
   }
 
   function cancel() {

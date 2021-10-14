@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 
 import AdminNavLink from './AdminNavLink';
 import AdminInfo from '../Models/AdminInfo';
@@ -7,7 +8,7 @@ import ApiService from '../ApiService';
 
 import './AdminNavigation.scss';
 
-export default function AdminNavigation({ click, adminInfo, mainUser }) {
+export default function AdminNavigation({ click, adminInfo, mainUser, match }) {
   const [tabChanged, setTabChanged] = useState('');
 
   const handleClick = (tab) => {
@@ -29,11 +30,17 @@ export default function AdminNavigation({ click, adminInfo, mainUser }) {
             Edit Profile
           </button>
         </div>
-        <ul className="usa-sidenav margin-y-9 padding-bottom-9">
+        <ul className="usa-sidenav margin-y-1 padding-bottom-2">
+        <Link to={`${match.url}/dashboard`}>
           <AdminNavLink title="Dashboard" click={handleClick} isCurrent={adminInfo.tabStatus.DashBoardTab.currentStatus === 'CURRENT'} />
-
+          </Link>
+          <Link to={`${match.url}/user`}>
           <AdminNavLink title="Users" click={handleClick} isCurrent={adminInfo.tabStatus.UsersTab.currentStatus === 'CURRENT'} />
+          </Link>
+          <Link to={`${match.url}/ringdowns`}>
           <AdminNavLink title="Ringdowns" click={handleClick} isCurrent={adminInfo.tabStatus.RingDownTab.currentStatus === 'CURRENT'} />
+          </Link>
+          
         </ul>
       </nav>
     </div>
