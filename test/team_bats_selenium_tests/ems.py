@@ -95,18 +95,6 @@ class EMSTest():
         return_to_list = self.driver.find_element_by_xpath('//*[@id="root"]/form/div[3]/div/div/ul/li/button')
         return_to_list.click()
 
-i = 0
-while i < 10 :
-    bot = EMSTest()
-    bot.login()
-    sleep(2)
-    bot.fill_out_form()
-    sleep(0.5)
-    bot.select_hospital()
-    bot.redirect()
-    sleep(0.5)
-    bot.select_hospital()
-    sleep(0.5)
-    bot.cancel()
-    bot.driver.close()
-    i += 1
+bot = EMSTest()
+
+bot.login()

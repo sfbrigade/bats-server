@@ -32,8 +32,13 @@ class ERTest():
     def update_notes(self):
         notes = self.driver.find_element_by_xpath('//*[@id="additionalNotes"]')
         notes.send_keys('The HVAC system is dripping watch out for puddles.')
-        
+    
+    def accept_ringdown(self):
+        view = self.driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/button')
+        view.click()
+        confirm = self.driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/button')
+        confirm.click()
     
 bot = ERTest()
 bot.login()
-# bot.driver.close()
+bot.accept_ringdown()
