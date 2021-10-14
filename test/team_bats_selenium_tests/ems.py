@@ -95,6 +95,19 @@ class EMSTest():
         return_to_list = self.driver.find_element_by_xpath('//*[@id="root"]/form/div[3]/div/div/ul/li/button')
         return_to_list.click()
 
+    def arrived(self):
+        button = self.driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/fieldset[1]/ol/li[3]/div[2]/button')
+        button.click()
+
+    def offloaded(self):
+        button = self.driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/fieldset[1]/ol/li[4]/div[2]/button')
+        button.click()
+
+    def return_to_service(self):
+        button = self.driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/fieldset[1]/ol/li[5]/div[2]/button')
+        button.click()
+
+
 bot = EMSTest()
 
 bot.login()
