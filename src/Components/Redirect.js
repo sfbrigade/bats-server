@@ -10,7 +10,11 @@ function Redirect() {
 
   useEffect(() => {
     if (user) {
-      if (user.organization.type === 'HEALTHCARE') {
+      if (user.isAdminUser) {
+        if (user.email === 'sfgeneral.eraod@c4sf.me') {
+          history.push('/aod');
+        }
+      } else if (user.organization.type === 'HEALTHCARE') {
         history.push('/er');
       } else {
         history.push('/ems');

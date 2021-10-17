@@ -1,3 +1,4 @@
 import ER from './ER';
+import AOD from './AOD';
 
-export default ER;
+export { ER, AOD };

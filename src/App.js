@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ApiService from './ApiService';
 import Context from './Context';
 import EMS from './EMS';
-import ER from './ER';
+import ER from './ER/ER';
+import AOD from './ER/AOD';
 import Redirect from './Components/Redirect';
 
 function App() {
@@ -32,6 +33,9 @@ function App() {
         </Route>
         <Route path="/er">
           <ER />
+        </Route>
+        <Route path="/aod">
+          <AOD />
         </Route>
         <Route exact path="/">
           <Redirect />
