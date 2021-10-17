@@ -10,10 +10,18 @@ function Redirect() {
 
   useEffect(() => {
     if (user) {
-      if (user.organization.type === 'HEALTHCARE') {
-        history.push('/er');
+      if (user.isAdminUser) {
+        if (user.organization.type === 'HEALTHCARE') {
+          history.push('/admin/er');
+        } else {
+          history.push('/admin/ems');
+        }
       } else {
-        history.push('/ems');
+        if (user.organization.type === 'HEALTHCARE') {
+          history.push('/er');
+        } else {
+          history.push('/ems');
+        }
       }
     }
   }, [history, user, setHospital]);
