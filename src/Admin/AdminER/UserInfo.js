@@ -9,16 +9,15 @@ export default function UserInfo({ back, user }) {
     // api call update for current user
   };
   const deleteUser = () => {
-    // console.log(user.id)
-    // ApiService.users.deleteUser(user.id)
-    // .then((response) => { 
-    //   alert("user deleted")
-    //    back()
-    // })
-    // .catch((error) => {
-    //    // eslint-disable-next-line no-console
-    //    console.log("request", error.request)
-    // }); 
+    try{
+    console.log(user)
+    let data = {id: user.email}
+    ApiService.users.deleteUser(user.email)
+      back();
+    } catch(error){
+       // eslint-disable-next-line no-console
+       console.log("request", error.request)
+    }; 
   }
 
   return (
