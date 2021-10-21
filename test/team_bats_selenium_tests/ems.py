@@ -107,7 +107,13 @@ class EMSTest():
         button = self.driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/fieldset[1]/ol/li[5]/div[2]/button')
         button.click()
 
+    def go_go_thru(self):
+        self.fill_out_form()
+        self.select_hospital()
+        self.arrived()
+
 
 bot = EMSTest()
 
 bot.login()
+# bot.go_go_thru()

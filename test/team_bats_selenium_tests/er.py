@@ -41,4 +41,4 @@ class ERTest():
     
 bot = ERTest()
 bot.login()
-bot.accept_ringdown()
+# bot.accept_ringdown()
