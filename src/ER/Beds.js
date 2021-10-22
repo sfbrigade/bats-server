@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { DateTime } from 'luxon';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import ApiService from '../ApiService';
 
-import Alert from '../Components/Alert';
+// import Alert from '../Components/Alert';
 import Counter from '../Components/Counter';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
@@ -16,8 +16,10 @@ import './Beds.scss';
 function Beds({ statusUpdate, onStatusUpdate }) {
   const [additionalNotes, setAdditionalNotes] = useState(null);
   const [showNotesUpdated, setShowNotesUpdated] = useState(false);
-  const [showUpdate, setShowUpdate] = useState(false);
-  const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
+  // const [showUpdate, setShowUpdate] = useState(false);
+  // const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
+  const [editBeds, setEditBeds] = useState(false);
+  const [editNotes, setEditNotes] = useState(false);
 
   function handleBedUpdate(event) {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
@@ -44,42 +46,58 @@ function Beds({ statusUpdate, onStatusUpdate }) {
     setTimeout(() => {
       setShowNotesUpdated(false);
     }, 1000);
+    setEditNotes(false);
   }
 
-  function handleDiversionUpdate() {
-    const newStatusUpdate = new HospitalStatus(statusUpdate);
-    newStatusUpdate.updateDateTimeLocal = DateTime.local().toISO();
-    newStatusUpdate.divertStatusUpdateDateTimeLocal = newStatusUpdate.updateDateTimeLocal;
-    newStatusUpdate.divertStatusIndicator = !newStatusUpdate.divertStatusIndicator;
-    onStatusUpdate(newStatusUpdate);
-    ApiService.hospitalStatuses.create(newStatusUpdate.toJSON());
-    setShowUpdate(false);
-    setShowConfirmUpdate(true);
-  }
+  // function handleDiversionUpdate() {
+  //   const newStatusUpdate = new HospitalStatus(statusUpdate);
+  //   newStatusUpdate.updateDateTimeLocal = DateTime.local().toISO();
+  //   newStatusUpdate.divertStatusUpdateDateTimeLocal = newStatusUpdate.updateDateTimeLocal;
+  //   newStatusUpdate.divertStatusIndicator = !newStatusUpdate.divertStatusIndicator;
+  //   onStatusUpdate(newStatusUpdate);
+  //   ApiService.hospitalStatuses.create(newStatusUpdate.toJSON());
+  //   setShowUpdate(false);
+  //   setShowConfirmUpdate(true);
+  // }
 
   return (
     <div className="usa-accordion">
       <Heading
         title="Bed availability"
         subtitle={`Updated ${DateTime.fromISO(statusUpdate.bedCountUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
+        buttonTitle={editBeds ? 'Confirm' : 'Edit'}
+        readOnly={() => setEditBeds(!editBeds)}
       />
       <div className="usa-accordion__content">
         <form className="usa-form">
-          <fieldset className="usa-fieldset beds__availability">
-            <Counter label="ER Beds" name="erBedsCount" min={0} onChange={handleBedUpdate} value={statusUpdate.openEdBedCount} />
-            <Counter
-              label="Behavioral Beds"
-              name="psychBedsCount"
-              min={0}
-              onChange={handleBedUpdate}
-              value={statusUpdate.openPsychBedCount}
-            />
-          </fieldset>
+          {editBeds ? (
+            <fieldset className="usa-fieldset beds__availability">
+              <Counter label="ER Beds" name="erBedsCount" min={0} onChange={handleBedUpdate} value={statusUpdate.openEdBedCount} />
+              <Counter
+                label="Behavioral Beds"
+                name="psychBedsCount"
+                min={0}
+                onChange={handleBedUpdate}
+                value={statusUpdate.openPsychBedCount}
+              />
+            </fieldset>
+          ) : (
+            <div>
+              <div className="margin-3">
+                ER Beds<span className="margin-left-205">{statusUpdate.openPsychBedCount}</span>
+              </div>
+              <div className="margin-3">
+                Behavioral Beds<span className="margin-left-205">{statusUpdate.openPsychBedCount}</span>
+              </div>
+            </div>
+          )}
         </form>
       </div>
       <Heading
         title="Additional Notes"
         subtitle={`Updated ${DateTime.fromISO(statusUpdate.notesUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
+        buttonTitle={editNotes ? undefined : 'Edit'}
+        readOnly={() => setEditNotes(true)}
       />
       <div className="usa-accordion__content">
         <form className="usa-form">
@@ -93,6 +111,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
               property="additionalNotes"
               value={additionalNotes == null ? statusUpdate.additionalServiceAvailabilityNotes : additionalNotes}
               onChange={(property, value) => setAdditionalNotes(value)}
+              readOnly={editNotes}
             />
             <div className="beds__notes-controls">
               <span className="beds__updated">
