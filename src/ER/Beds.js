@@ -84,7 +84,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
           ) : (
             <div>
               <div className="margin-3">
-                ER Beds<span className="margin-left-205">{statusUpdate.openPsychBedCount}</span>
+                ER Beds<span className="margin-left-205">{statusUpdate.openEdBedCount}</span>
               </div>
               <div className="margin-3">
                 Behavioral Beds<span className="margin-left-205">{statusUpdate.openPsychBedCount}</span>
