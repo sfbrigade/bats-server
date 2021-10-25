@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-class NewUser {
+class User {
 
     constructor(payload) {
         this.payload = payload || {};
@@ -82,4 +82,4 @@ class NewUser {
     }
 }
 
-export default NewUser;
+export default User;

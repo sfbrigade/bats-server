@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FormInput from '../Components/FormInput';
-import NewUser from '../Models/NewUser';
+import User from '../Models/User';
 
 // create model to help store data rather than using useState to create state variables?
 // add radio button for type and for organization selection?
@@ -57,5 +57,5 @@ export default function NewUserFields({ newUser, onChange }) {
   );
 }
 NewUserFields.propTypes = {
-  newUser: PropTypes.instanceOf(NewUser).isRequired
+  newUser: PropTypes.instanceOf(User).isRequired
 }

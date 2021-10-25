@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ApiService from '../../ApiService';
 
-import NewUser from '../../Models/NewUser';
+import User from '../../Models/User';
 
 import UserFields from '../UserFields';
 
 export default function UserInfo({ back, user }) {
-  const [updatedUser, setUpdatedUser] = useState(new NewUser(user));
+  const [updatedUser, setUpdatedUser] = useState(new User(user));
 
   console.log(updatedUser)
   const handleChange = (property, value) => {
     updatedUser.payload[property] = value;
-    setUpdatedUser(new NewUser(updatedUser.payload));
+    setUpdatedUser(new User(updatedUser.payload));
   }
 
   const send = () => {
