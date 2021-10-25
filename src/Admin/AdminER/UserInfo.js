@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import ApiService from '../../ApiService';
+
+import NewUser from '../../Models/NewUser';
 
 import UserFields from '../UserFields';
 
 export default function UserInfo({ back, user }) {
+  const [updatedUser, setUpdatedUser] = useState(new NewUser(user));
+
+  console.log(updatedUser)
+  const handleChange = (property, value) => {
+    updatedUser.payload[property] = value;
+    setUpdatedUser(new NewUser(updatedUser.payload));
+  }
+
   const send = () => {
     // api call update for current user
+    try {
+      ApiService.users.update(updatedUser.toJson());
+      back()
+    } catch(error) {
+      // eslint-disable-next-line no-console
+      console.log("updating", error.request);
+    };
   };
   const deleteUser = () => {
     try{
     console.log(user)
-    let data = {id: user.email}
     ApiService.users.deleteUser(user.email)
       back();
     } catch(error){
@@ -35,11 +51,11 @@ export default function UserInfo({ back, user }) {
         </button>
       </div>
 
-      <UserFields user={user} />
-      <button className="usa-button width-card-lg margin-2" type="button" onClick={send}>
+      <UserFields user={updatedUser.payload} handleChange={handleChange} />
+      <button className="usa-button width-card-lg margin-2" type="button" onClick={() => send()}>
         Save Changes
       </button>
-      <button className="usa-button width-card-lg margin-2" type="button" onClick={deleteUser}>
+      <button className="usa-button width-card-lg margin-2" type="button" onClick={() => back()}>
         Cancel
       </button>
     </div>

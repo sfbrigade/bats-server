@@ -63,6 +63,9 @@ export default {
     create(data) {
       return instance.post('/api/users/', data);
     },
+    update(data) {
+      return instance.put('/api/users/', data);
+    },
     deleteUser(data) {
         return instance.delete('/api/users/remove', {params: {data}});
     }

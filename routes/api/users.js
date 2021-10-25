@@ -39,19 +39,34 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
   res.json(req.user.toJSON());
 });
 
+router.put('/', middleware.isAdminUser, async (req,res) => {
+  try {
+    await models.User.update( 
+      {
+        email: req.body.email,
+        password: req.body.password,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
+        CreatedById: req.user.id,
+        UpdatedById: req.user.id,
+    }, {where: {id: req.body.id}});
+    res.status(HttpStatus.ACCEPTED).end();
+  } catch (err) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+  }
+
+});
+
 router.delete('/remove', middleware.isAdminUser, async (req, res) => {
-  console.log("hello", req)
   try{
     await models.User.destroy({
       where: {
-        // work in progress body being passed empty
         email: req.query.data,
       }
     })
     res.status(HttpStatus.ACCEPTED).end();
   } catch (err) {
-    console.log(err)
-    console.log(err);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });

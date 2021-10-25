@@ -16,7 +16,7 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
     if (user.organization.id === mainUser.organization.id && !user.isAdminUser) {
       temp = (
         <tr>
-          <td className="padding-2 row-border">{user.firstName}</td>
+          <td className="padding-2 row-border">{user.firstName} {user.lastName}</td>
           <td className="padding-2 row-border">{user.email}</td>
           <td className="padding-2 row-border">
             <button type="button" className="border-0 bg-white" onClick={() => more(user)}>

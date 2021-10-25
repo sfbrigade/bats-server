@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import FormInput from '../Components/FormInput';
 
 // add radio button for type and for organization selection?
-export default function UserFields({ user }) {
-  const handleChange = () => {};
+export default function UserFields({ user, handleChange }) {
+  // const handleChange = () => {
+  //   console.log("changed")
+  // };
 
   return (
     <div className="margin-5 padding-3">
@@ -13,7 +15,7 @@ export default function UserFields({ user }) {
       <FormInput
         label="First Name"
         onChange={handleChange}
-        property="First Name"
+        property="firstName"
         required
         showRequiredHint
         size="medium"
@@ -24,7 +26,7 @@ export default function UserFields({ user }) {
       <FormInput
         label="Last Name"
         onChange={handleChange}
-        property="Last Name"
+        property="lastName"
         required
         showRequiredHint
         size="medium"
