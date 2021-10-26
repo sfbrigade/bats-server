@@ -108,12 +108,39 @@ class EMSTest():
         button.click()
 
     def go_go_thru(self):
-        self.fill_out_form()
-        self.select_hospital()
-        self.arrived()
+        i=1
+        while i < 5:
+            sleep(0.5)
+            self.fill_out_form()
+            sleep(0.5)
+            self.select_hospital()
+            sleep(0.5)
+            self.arrived()
+            sleep(0.5)
+            self.offloaded()
+            sleep(0.5)
+            self.return_to_service
+            i += 1
+            # try:
+            #     print('select')
+            #     self.fill_out_form()
+               
+            # except Exception:
+            #     sleep(0.5)
+            #     self.select_hospital()
+            #     try:
+            #         sleep(0.5)
+            #         self.arrived()
+            #     except Exception:
+            #         try:
+            #             sleep(0.5)
+            #             self.offloaded()
+            #         except Exception:
+            #             sleep(0.5)
+            #             self.return_to_service()
 
 
 bot = EMSTest()
 
 bot.login()
-# bot.go_go_thru()
+bot.go_go_thru()

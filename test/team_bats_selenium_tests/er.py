@@ -38,7 +38,13 @@ class ERTest():
         view.click()
         confirm = self.driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/button')
         confirm.click()
+    def integration(self):
+        while True:
+            try:
+                self.accept_ringdown()
+            except Exception:
+                sleep(0.5)
     
 bot = ERTest()
 bot.login()
-# bot.accept_ringdown()
+bot.integration()
