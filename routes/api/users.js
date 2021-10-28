@@ -47,6 +47,8 @@ router.put('/', middleware.isAdminUser, async (req,res) => {
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        isOperationalUser: req.body.isOperationalUser,
+        isAdminUser: req.body.isAdminUser,
         isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
         CreatedById: req.user.id,
         UpdatedById: req.user.id,

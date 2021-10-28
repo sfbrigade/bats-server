@@ -8,10 +8,11 @@ import ApiService from '../ApiService';
 
 import './AdminNavigation.scss';
 
-export default function AdminNavigation({ click, adminInfo, mainUser, match }) {
+export default function AdminNavigation({ click, adminInfo, mainUser, match, editMain, closeEditMain }) {
   const [tabChanged, setTabChanged] = useState('');
 
   const handleClick = (tab) => {
+    closeEditMain()
     setTabChanged(tab);
     click(tab);
   };
@@ -26,7 +27,11 @@ export default function AdminNavigation({ click, adminInfo, mainUser, match }) {
           <div className="logo" />
           <h2>{mainUser ? mainUser.activeHospitals[0].name : ''}</h2>
           <h4>{mainUser ? `${mainUser.firstName} ${mainUser.lastName}` : ''}</h4>
-          <button type="button" className=" edit_profile bg-white border-0 border-bottom button_text">
+          <button 
+          type="button" 
+          className=" edit_profile bg-white border-0 border-bottom button_text"
+          onClick={() => editMain()}
+          >
             Edit Profile
           </button>
         </div>

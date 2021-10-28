@@ -8,7 +8,9 @@ class User {
         this.payload.lastName = this.payload.lastName || '';
         this.payload.email = this.payload.email || '';
         this.payload.password = this.payload.password || '';
-        // this.payload.userType = this.payload.userType || {};
+        this.payload.isOperationalUser = this.payload.isOperationalUser || true;
+        this.payload.isAdminUser = this.payload.isAdminUser || false;
+        this.payload.isAdminUser = this.payload.isAdminUser || false;
     }
 
     get firstName() {
@@ -44,21 +46,21 @@ class User {
         this.payload.password = newValue;
     }
 
-    // get isAdmin() {
-    //     return this.payload.userType.isAdmin;
-    // }
+    get isAdmin() {
+        return this.payload.isAdminUser;
+    }
 
-    // set isAdmin(newValue) {
-    //     this.payload.userType.isAdmin = newValue;
-    // }
+    set isAdmin(newValue) {
+        this.payload.isAdminUser = newValue;
+    }
 
-    // get isOperational() {
-    //     return this.payload.userType.isOperational;
-    // }
+    get isOperational() {
+        return this.payload.isOperational;
+    }
 
-    // set isOperational(newValue) {
-    //     this.payload.userType.isOperational = newValue;
-    // }
+    set isOperational(newValue) {
+        this.payload.isOperational = newValue;
+    }
 
     get isUserValid () {
         return (
@@ -69,11 +71,7 @@ class User {
             this.email !== null &&
             this.email !== '' &&
             this.password !== null &&
-            this.password !== '' 
-            // this.isAdmin !== null &&
-            // this.isAdmin !== '' &&
-            // this.isOperational !== null &&
-            // this.isOperational !== '' 
+            this.password !== ''  
         );
     }
     

@@ -11,12 +11,14 @@ import ApiService from '../../ApiService';
 import Context from '../../Context';
 
 import '../Admin.scss';
+import UserInfo from './UserInfo';
 
 export default function AdminER() {
   const [adminInfo, setAdminInfo] = useState(new AdminInfo());
   const [stateChanged, setStateChanged] = useState(false);
   const [users, setUsers] = useState(null);
   const { user } = useContext(Context);
+  const [editProfile, setEditProfile] = useState(false);
   let match = useRouteMatch();
 
   const handleClick = (tab) => {
@@ -25,6 +27,14 @@ export default function AdminER() {
     // need to remove this variable and use uesEffect instead to trigger rerender
     setStateChanged(!stateChanged);
   };
+
+  const Back = () => {
+    setEditProfile(false);
+  }
+
+  const EditMain = () => {
+    setEditProfile(true);
+  }
 
   useEffect(() => {
     // instead of getting all users create and api that only gets active users according who is signed on
@@ -39,12 +49,13 @@ export default function AdminER() {
     <div className="admin height-full">
       <div className="bottom">
         <div className="grid-col-2 position-fixed">
-          <AdminNavigation click={handleClick} adminInfo={adminInfo} mainUser={user} match={match} />
+          <AdminNavigation click={handleClick} adminInfo={adminInfo} mainUser={user} match={match} editMain={EditMain} closeEditMain={Back} />
         </div>
         <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
-          {adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={user} />}
-          {adminInfo.Tab === 'Users' && <ErUsers users={users} mainUser={user} />}
-          {adminInfo.Tab === 'Ringdowns' && <ErRingdowns />}
+          {editProfile && <UserInfo back={Back} user={user} />}
+          {!editProfile && adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={user} />}
+          {!editProfile && adminInfo.Tab === 'Users' && <ErUsers users={users} mainUser={user} />}
+          {!editProfile && adminInfo.Tab === 'Ringdowns' && <ErRingdowns />}
         </div>
       </div>
     </div>
