@@ -31,7 +31,7 @@ function FormTextArea({ children, label, onChange, property, required, showRequi
           'usa-input--error': validationState === ValidationState.ERROR,
           'usa-input--success': validationState === ValidationState.FIXED,
         })}
-        disabled={!readOnly}
+        // disabled={!readOnly}
       />
       {children}
       <ValidationMessage className="" validationState={validationState} />
