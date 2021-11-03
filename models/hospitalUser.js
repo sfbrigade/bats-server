@@ -37,6 +37,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: true,
       },
+      isAod: {
+        field: 'isAod',
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+      },
       createdAt: {
         field: 'recordcreatetimestamp',
         type: DataTypes.DATE,

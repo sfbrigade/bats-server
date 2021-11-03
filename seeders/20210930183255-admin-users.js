@@ -11,13 +11,6 @@ const hospitalAdmins = [
     email: 'sfgeneral.eradmin@c4sf.me',
   },
   {
-    firstName: 'Susan',
-    lastName: 'Charles',
-    org: 'SF Dept. of Public Health',
-    hospital: 'SF General',
-    email: 'sfgeneral.eraod@c4sf.me',
-  },
-  {
     firstName: 'Mary',
     lastName: 'Albright',
     org: 'Kaiser Permanente',

@@ -11,8 +11,8 @@ function Redirect() {
   useEffect(() => {
     if (user) {
       if (user.isAdminUser) {
-        if (user.email === 'sfgeneral.eraod@c4sf.me') {
-          history.push('/aod');
+        if (user.hospitaluser.isAod) {
+          history.push('/er/aod');
         }
       } else if (user.organization.type === 'HEALTHCARE') {
         history.push('/er');
