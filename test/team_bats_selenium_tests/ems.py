@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 class EMSTest():
     def __init__(self):
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
-    
+        self.i = 0
     def login(self):
         self.driver.get('https://bats-dev.herokuapp.com/auth/local/login')
         sleep(1)
@@ -108,19 +108,20 @@ class EMSTest():
         button.click()
 
     def go_go_thru(self):
-        i=1
-        while i < 5:
-            sleep(0.5)
+        
+        while self.i < 3:
+            sleep(1)
             self.fill_out_form()
-            sleep(0.5)
+            sleep(1)
             self.select_hospital()
-            sleep(0.5)
+            sleep(2.5)
             self.arrived()
-            sleep(0.5)
+            sleep(2.5)
             self.offloaded()
-            sleep(0.5)
-            self.return_to_service
-            i += 1
+            sleep(2.5)
+            self.return_to_service()
+            self.i += 1
+            # sleep(1)
             # try:
             #     print('select')
             #     self.fill_out_form()
@@ -143,4 +144,7 @@ class EMSTest():
 bot = EMSTest()
 
 bot.login()
+# while True:
 bot.go_go_thru()
+bot.close()
+bot.quit()
