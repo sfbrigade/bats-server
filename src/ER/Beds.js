@@ -111,7 +111,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
         </form>
       </div>
 
-      <Heading
+      {/* <Heading
         title="Diversion status"
         subtitle={`Updated ${DateTime.fromISO(statusUpdate.divertStatusUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
       />
@@ -145,7 +145,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
