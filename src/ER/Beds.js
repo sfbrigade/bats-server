@@ -114,8 +114,8 @@ function Beds({ statusUpdate, onStatusUpdate }) {
       {/* <Heading
         title="Diversion status"
         subtitle={`Updated ${DateTime.fromISO(statusUpdate.divertStatusUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
-      />
-      <div className="usa-accordion__content">
+      /> */}
+      <div className="usa-accordion__content hide-diversion-status">
         <div className="usa-fieldset">
           <div className={classNames('beds__diversion', { 'beds__diversion--on': statusUpdate.divertStatusIndicator })}>
             {statusUpdate.divertStatusIndicator && <>On diversion</>}
@@ -145,7 +145,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
             )}
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
