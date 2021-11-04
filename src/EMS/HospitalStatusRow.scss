@@ -49,9 +49,13 @@ $row-height: 6rem;
   display: flex;
 }
 
+.hide-diversion-column {
+  display: none;
+}
+
 .hospitalstatusrow__data {
   @include h4;
-  width: 20%;
+  width: 33%;
   text-align: center;
 }
 
