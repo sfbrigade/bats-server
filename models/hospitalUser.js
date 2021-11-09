@@ -37,10 +37,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: true,
       },
-      isAod: {
-        field: 'isAod',
+      infouserindicator: {
+        field: 'infouserindicator',
         type: DataTypes.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
+        allowNull: false
+      },
+      ringdownuserindicator: {
+        field: 'ringdownuserindicator',
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
         allowNull: false
       },
       createdAt: {

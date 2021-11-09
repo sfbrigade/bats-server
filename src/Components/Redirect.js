@@ -11,7 +11,7 @@ function Redirect() {
   useEffect(() => {
     if (user) {
       if (user.isAdminUser) {
-        if (user.hospitaluser.isAod) {
+        if (user.hospitaluser.infouserindicator) {
           history.push('/er/aod');
         }
       } else if (user.organization.type === 'HEALTHCARE') {

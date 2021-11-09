@@ -49,7 +49,8 @@ module.exports = {
         EdAdminUserId: user.id,
         CreatedById: superuser.id,
         UpdatedById: superuser.id,
-        isAod: true,
+        infouserindicator: true,
+        ringdownuserindicator: false,
       },
       { transaction }
     );

@@ -43,7 +43,8 @@ export default function ER() {
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
-  console.log("help", user)
+  //optional chaining
+  console.log("help", user?.hospitaluser)
 
   return (
     <>
@@ -52,9 +53,12 @@ export default function ER() {
            <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
       </Header>
-      {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
-      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
-      {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />}
+      { !user?.hospitaluser.infouserindicator && incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
+      { !user?.hospitaluser.infouserindicator && incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
+      { !user?.hospitaluser.infouserindicator && incomingRingdowns.length === 0 && selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />}
+      { user?.hospitaluser.infouserindicator && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />}
     </>
   );
 }
+// user?.hospitaluser.ringdownuserindicator
+// user?.hospitaluser.infouserindicator &&
