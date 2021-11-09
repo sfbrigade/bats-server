@@ -92,7 +92,7 @@ module.exports = {
             CreatedById: superuser.id,
             UpdatedById: superuser.id,
             infouserindicator: true,
-            ringdownuserindicator: false,
+            ringdownuserindicator: true,
           },
           { transaction }
         );
