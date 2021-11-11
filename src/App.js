@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ApiService from './ApiService';
 import Context from './Context';
 import EMS from './EMS';
-import ER from './ER/ER';
+import ER from './ER';
 import Redirect from './Components/Redirect';
 
 function App() {
@@ -15,7 +15,6 @@ function App() {
     ApiService.users.me().then((response) => {
       // save the user data into the context
       const user = response.data;
-
       setUser(user);
       if (user.organization.type === 'HEALTHCARE') {
         // TODO: handle user added to multiple hospitals
