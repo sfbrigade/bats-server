@@ -49,7 +49,7 @@ export default function ER() {
 
   return (
     <>
-      <Header name={hospital?.hospital.name || "Hospital Destination Tool"}>
+      <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
         {showTabs && incomingRingdowns.length === 0 && (
           <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
