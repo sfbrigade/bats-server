@@ -14,8 +14,7 @@ import RingDowns from './Ringdowns';
 
 export default function ER() {
   const { hospital } = useContext(Context);
-  const { user } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.id}`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -44,8 +43,8 @@ export default function ER() {
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
 
-  const showRingdown = user?.activeHospitals[0].isRingdownUser;
-  const showInfo = user?.activeHospitals[0].isInfoUser;
+  const showRingdown = hospital?.isRingdownUser;
+  const showInfo = hospital?.isInfoUser;
   const showTabs = showRingdown && showInfo;
 
   return (

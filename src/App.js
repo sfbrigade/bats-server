@@ -18,7 +18,7 @@ function App() {
       setUser(user);
       if (user.organization.type === 'HEALTHCARE') {
         // TODO: handle user added to multiple hospitals
-        setHospital(user.activeHospitals[0].hospital);
+        setHospital(user.activeHospitals[0]);
       }
     });
   }, [setUser, setHospital]);
