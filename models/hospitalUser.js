@@ -37,17 +37,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: true,
       },
-      infouserindicator: {
+      infoUserIndicator: {
         field: 'infouserindicator',
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        allowNull: false
+        allowNull: false,
       },
-      ringdownuserindicator: {
+      ringdownUserIndicator: {
         field: 'ringdownuserindicator',
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        allowNull: false
+        allowNull: false,
       },
       createdAt: {
         field: 'recordcreatetimestamp',

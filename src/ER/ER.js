@@ -14,11 +14,11 @@ import RingDowns from './Ringdowns';
 
 export default function ER() {
   const { hospital } = useContext(Context);
-  const { user } = useContext(Context)
+  const { user } = useContext(Context);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(0);
   const [ringdowns, setRingdowns] = useState([]);
   const [incomingRingdowns, setIncomingRingdowns] = useState([]);
   const [statusUpdate, setStatusUpdate] = useState({});
@@ -43,25 +43,23 @@ export default function ER() {
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
-  //optional chaining
-  console.log("help", user?.hospitaluser, incomingRingdowns.length)
+
+  const showRingdown = user?.hospitaluser.ringdownUserIndicator;
+  const showInfo = user?.hospitaluser.infoUserIndicator;
+  const showTabs = showRingdown && showInfo;
 
   return (
     <>
       <Header name="Hospital Destination Tool">
-        {user?.hospitaluser.ringdownuserindicator && 
-        user?.hospitaluser.infouserindicator &&
-        incomingRingdowns.length === 0 && (
-           <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
+        {showTabs && incomingRingdowns.length === 0 && (
+          <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
       </Header>
-      { user?.hospitaluser.ringdownuserindicator && incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
-      { user?.hospitaluser.ringdownuserindicator && incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
-      { user?.hospitaluser.infouserindicator && incomingRingdowns.length === 0 && selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} /> }
-      {!user?.hospitaluser.ringdownuserindicator && user?.hospitaluser.infouserindicator && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} /> }
-      
+      {showRingdown && incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
+      {showRingdown && incomingRingdowns.length === 0 && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
+      {showInfo && incomingRingdowns.length === 0 && (!showTabs || selectedTab === 1) && (
+        <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />
+      )}
     </>
   );
 }
-// user?.hospitaluser.ringdownuserindicator
-// user?.hospitaluser.infouserindicator &&

@@ -33,11 +33,11 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
     req.user.activeHospitals = await req.user.getActiveHospitals();
     req.user.hospitalUser = await models.HospitalUser.findOne({
       where: {
-        EdAdminUserId: req.user.id
-      }
+        EdAdminUserId: req.user.id,
+      },
     });
   }
-  console.log("hello 6", req.user.toJSON());
+  console.log('hello 6', req.user.toJSON());
   res.json(req.user.toJSON());
 });
 
