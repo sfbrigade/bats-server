@@ -33,9 +33,6 @@ function App() {
         <Route path="/er">
           <ER />
         </Route>
-        <Route path="/er/aod">
-          <ER />
-        </Route>
         <Route exact path="/">
           <Redirect />
         </Route>

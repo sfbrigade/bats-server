@@ -5,22 +5,18 @@ import Context from '../Context';
 import Spinner from './Spinner';
 
 function Redirect() {
-  const { user, setHospital } = useContext(Context);
+  const { user } = useContext(Context);
   const history = useHistory();
 
   useEffect(() => {
     if (user) {
-      if (user.isAdminUser) {
-        if (user.hospitaluser.infouserindicator) {
-          history.push('/er/aod');
-        }
-      } else if (user.organization.type === 'HEALTHCARE') {
+      if (user.organization.type === 'HEALTHCARE') {
         history.push('/er');
       } else {
         history.push('/ems');
       }
     }
-  }, [history, user, setHospital]);
+  }, [history, user]);
 
   return (
     <div className="padding-9">
