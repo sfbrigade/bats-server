@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -8,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
 
       HospitalUser.belongsTo(models.User, { as: 'CreatedBy' });
       HospitalUser.belongsTo(models.User, { as: 'UpdatedBy' });
+    }
+
+    toJSON() {
+      const attributes = { ...this.get() };
+      attributes.hospital = this.Hospital?.toJSON() || { id: this.HospitalId };
+      return _.pick(attributes, ['hospital', 'isActive', 'isInfoUser', 'isRingdownUser']);
     }
   }
 
@@ -37,13 +44,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: true,
       },
-      infoUserIndicator: {
+      isInfoUser: {
         field: 'infouserindicator',
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false,
       },
-      ringdownUserIndicator: {
+      isRingdownUser: {
         field: 'ringdownuserindicator',
         type: DataTypes.BOOLEAN,
         defaultValue: true,

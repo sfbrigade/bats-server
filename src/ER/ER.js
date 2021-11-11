@@ -44,8 +44,8 @@ export default function ER() {
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
 
-  const showRingdown = user?.hospitaluser.ringdownUserIndicator;
-  const showInfo = user?.hospitaluser.infoUserIndicator;
+  const showRingdown = user?.activeHospitals[0].isRingdownUser;
+  const showInfo = user?.activeHospitals[0].isInfoUser;
   const showTabs = showRingdown && showInfo;
 
   return (
