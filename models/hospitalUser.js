@@ -41,13 +41,13 @@ module.exports = (sequelize, DataTypes) => {
         field: 'infouserindicator',
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        allowNull: false
+        allowNull: false,
       },
       ringdownuserindicator: {
         field: 'ringdownuserindicator',
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-        allowNull: false
+        allowNull: false,
       },
       createdAt: {
         field: 'recordcreatetimestamp',
