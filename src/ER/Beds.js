@@ -18,8 +18,6 @@ function Beds({ statusUpdate, onStatusUpdate }) {
   const [showNotesUpdated, setShowNotesUpdated] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
   const [showConfirmUpdate, setShowConfirmUpdate] = useState(false);
-  const [editBeds, setEditBeds] = useState(false);
-  const [editNotes, setEditNotes] = useState(false);
 
   function handleBedUpdate(event) {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
@@ -46,7 +44,6 @@ function Beds({ statusUpdate, onStatusUpdate }) {
     setTimeout(() => {
       setShowNotesUpdated(false);
     }, 1000);
-    setEditNotes(false);
   }
 
   function handleDiversionUpdate() {
@@ -65,39 +62,24 @@ function Beds({ statusUpdate, onStatusUpdate }) {
       <Heading
         title="Bed availability"
         subtitle={`Updated ${DateTime.fromISO(statusUpdate.bedCountUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
-        buttonTitle={editBeds ? 'Confirm' : 'Edit'}
-        readOnly={() => setEditBeds(!editBeds)}
       />
       <div className="usa-accordion__content">
         <form className="usa-form">
-          {editBeds ? (
-            <fieldset className="usa-fieldset beds__availability">
-              <Counter label="ER Beds" name="erBedsCount" min={0} onChange={handleBedUpdate} value={statusUpdate.openEdBedCount} />
-              <Counter
-                label="Behavioral Beds"
-                name="psychBedsCount"
-                min={0}
-                onChange={handleBedUpdate}
-                value={statusUpdate.openPsychBedCount}
-              />
-            </fieldset>
-          ) : (
-            <div>
-              <div className="margin-3">
-                ER Beds<span className="margin-left-205">{statusUpdate.openEdBedCount}</span>
-              </div>
-              <div className="margin-3">
-                Behavioral Beds<span className="margin-left-205">{statusUpdate.openPsychBedCount}</span>
-              </div>
-            </div>
-          )}
+          <fieldset className="usa-fieldset beds__availability">
+            <Counter label="ER Beds" name="erBedsCount" min={0} onChange={handleBedUpdate} value={statusUpdate.openEdBedCount} />
+            <Counter
+              label="Behavioral Beds"
+              name="psychBedsCount"
+              min={0}
+              onChange={handleBedUpdate}
+              value={statusUpdate.openPsychBedCount}
+            />
+          </fieldset>
         </form>
       </div>
       <Heading
         title="Additional Notes"
         subtitle={`Updated ${DateTime.fromISO(statusUpdate.notesUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
-        buttonTitle={editNotes ? undefined : 'Edit'}
-        readOnly={() => setEditNotes(true)}
       />
       <div className="usa-accordion__content">
         <form className="usa-form">
@@ -111,7 +93,6 @@ function Beds({ statusUpdate, onStatusUpdate }) {
               property="additionalNotes"
               value={additionalNotes == null ? statusUpdate.additionalServiceAvailabilityNotes : additionalNotes}
               onChange={(property, value) => setAdditionalNotes(value)}
-              readOnly={editNotes}
             />
             <div className="beds__notes-controls">
               <span className="beds__updated">
@@ -133,7 +114,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
       {/* <Heading
         title="Diversion status"
         subtitle={`Updated ${DateTime.fromISO(statusUpdate.divertStatusUpdateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}`}
-      />
+      /> */}
       <div className="usa-accordion__content hide-diversion-status">
         <div className="usa-fieldset">
           <div className={classNames('beds__diversion', { 'beds__diversion--on': statusUpdate.divertStatusIndicator })}>
@@ -164,7 +145,7 @@ function Beds({ statusUpdate, onStatusUpdate }) {
             )}
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
