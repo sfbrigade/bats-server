@@ -46,17 +46,18 @@ export default function ER() {
   const showRingdown = hospital?.isRingdownUser;
   const showInfo = hospital?.isInfoUser;
   const showTabs = showRingdown && showInfo;
+  const hasIncomingRingdown = incomingRingdowns.length > 0;
 
   return (
     <>
       <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
-        {showTabs && incomingRingdowns.length === 0 && (
+        {showTabs && !hasIncomingRingdown && (
           <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
       </Header>
-      {showRingdown && incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
-      {showRingdown && incomingRingdowns.length === 0 && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
-      {showInfo && incomingRingdowns.length === 0 && (!showTabs || selectedTab === 1) && (
+      {showRingdown && hasIncomingRingdown && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
+      {showRingdown && !hasIncomingRingdown && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
+      {showInfo && (!showTabs || (hasIncomingRingdown && selectedTab === 1)) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />
       )}
     </>
