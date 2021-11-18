@@ -21,7 +21,6 @@ export default function ER() {
   const [ringdowns, setRingdowns] = useState([]);
   const [incomingRingdowns, setIncomingRingdowns] = useState([]);
   const [statusUpdate, setStatusUpdate] = useState({});
-  const [incomingCount, setIncomingCount] = useState(incomingRingdowns.length);
 
   function onConfirm(ringdown) {
     const newIncomingRingdowns = incomingRingdowns.filter((r) => r.id !== ringdown.id);
@@ -40,7 +39,6 @@ export default function ER() {
       const newIncomingRingdowns = data.ringdowns.filter((r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT);
       setRingdowns(newRingdowns);
       setIncomingRingdowns(newIncomingRingdowns);
-      setIncomingCount(data.ringdowns.length);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
