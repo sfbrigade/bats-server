@@ -57,7 +57,7 @@ export default function ER() {
       </Header>
       {showRingdown && hasIncomingRingdown && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
       {showRingdown && !hasIncomingRingdown && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
-      {showInfo && (!showTabs || (hasIncomingRingdown && selectedTab === 1)) && (
+      {showInfo && (!showTabs || (!hasIncomingRingdown && selectedTab === 1)) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />
       )}
     </>
