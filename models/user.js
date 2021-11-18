@@ -10,20 +10,18 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Organization);
       User.belongsTo(models.User, { as: 'CreatedBy' });
       User.belongsTo(models.User, { as: 'UpdatedBy' });
-      User.belongsToMany(models.Hospital, { through: models.HospitalUser, foreignKey: 'edadminuser_uuid' });
-      User.belongsToMany(models.Hospital, {
-        as: 'activeHospitals',
-        through: models.HospitalUser.scope('active'),
+      User.hasMany(models.HospitalUser, { foreignKey: 'edadminuser_uuid' });
+      User.hasMany(models.HospitalUser.scope('active'), {
+        as: 'ActiveHospitalUsers',
         foreignKey: 'edadminuser_uuid',
       });
-      User.hasMany(models.HospitalUser, { foreignKey: 'edadminuser_uuid' });
     }
 
     toJSON() {
       const attributes = { ...this.get() };
       attributes.organization = this.Organization?.toJSON() || { id: this.OrganizationId };
-      if (this.activeHospitals) {
-        attributes.activeHospitals = this.activeHospitals.map((h) => h.toJSON());
+      if (this.ActiveHospitalUsers) {
+        attributes.activeHospitals = this.ActiveHospitalUsers.map((h) => h.toJSON());
       }
       if (this.hospitalUser) {
         attributes.hospitaluser = this.hospitalUser.toJSON() || { isAOD: false };

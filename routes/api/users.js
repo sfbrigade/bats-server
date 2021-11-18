@@ -30,11 +30,8 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
   const org = await req.user.getOrganization();
   req.user.Organization = org;
   if (org.type === 'HEALTHCARE') {
-    req.user.activeHospitals = await req.user.getActiveHospitals();
-    req.user.hospitalUser = await models.HospitalUser.findOne({
-      where: {
-        EdAdminUserId: req.user.id,
-      },
+    req.user.ActiveHospitalUsers = await req.user.getActiveHospitalUsers({
+      include: [models.Hospital],
     });
   }
   res.json(req.user.toJSON());

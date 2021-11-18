@@ -14,8 +14,7 @@ import RingDowns from './Ringdowns';
 
 export default function ER() {
   const { hospital } = useContext(Context);
-  const { user } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.id}`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
   const [selectedTab, setSelectedTab] = useState(1);
@@ -46,25 +45,22 @@ export default function ER() {
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
 
+  const showRingdown = hospital?.isRingdownUser;
+  const showInfo = hospital?.isInfoUser;
+  const showTabs = showRingdown && showInfo;
+  const hasIncomingRingdown = incomingRingdowns.length > 0;
+
   return (
     <>
-      <Header name="Hospital Destination Tool">
-        {user?.hospitaluser.ringdownuserindicator && user?.hospitaluser.infouserindicator && incomingRingdowns.length === 0 && (
+      <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
+        {showTabs && !hasIncomingRingdown && (
           <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
       </Header>
-      {user?.hospitaluser.ringdownuserindicator && incomingRingdowns.length > 0 && (
-        <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />
-      )}
-      {user?.hospitaluser.ringdownuserindicator && incomingRingdowns.length === 0 && selectedTab === 0 && (
-        <RingDowns ringdowns={ringdowns} />
-      )}
-      {user?.hospitaluser.ringdownuserindicator &&
-        user?.hospitaluser.infouserindicator &&
-        incomingRingdowns.length === 0 &&
-        selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incoming={incomingCount} />}
-      {!user?.hospitaluser.ringdownuserindicator && user?.hospitaluser.infouserindicator && (
-        <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incoming={incomingCount} />
+      {showRingdown && hasIncomingRingdown && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
+      {showRingdown && !hasIncomingRingdown && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
+      {showInfo && (!showTabs || (!hasIncomingRingdown && selectedTab === 1)) && (
+        <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />
       )}
     </>
   );
