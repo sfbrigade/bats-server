@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import './Counter.scss';
 
-function Counter({ label, min, max, name, onChange, value }) {
+function Counter({ label, min, max, name, onChange, value, isEditing }) {
   function handleIncrement(event) {
     if (typeof max !== 'undefined' && parseInt(value, 10) >= max) {
       return;
@@ -23,7 +24,7 @@ function Counter({ label, min, max, name, onChange, value }) {
   }
 
   return (
-    <div className="counter">
+    <div className={classNames('counter', { 'counter--editing': isEditing })}>
       <label className="counter__label" htmlFor={name}>
         {label}
       </label>
@@ -42,6 +43,7 @@ function Counter({ label, min, max, name, onChange, value }) {
 
 Counter.propTypes = {
   onChange: PropTypes.func.isRequired,
+  isEditing: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   min: PropTypes.number,
