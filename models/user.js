@@ -23,9 +23,6 @@ module.exports = (sequelize, DataTypes) => {
       if (this.ActiveHospitalUsers) {
         attributes.activeHospitals = this.ActiveHospitalUsers.map((h) => h.toJSON());
       }
-      if (this.hospitalUser) {
-        attributes.hospitaluser = this.hospitalUser.toJSON() || { isAOD: false };
-      }
       return _.pick(attributes, [
         'id',
         'firstName',
@@ -37,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
         'isSuperUser',
         'organization',
         'activeHospitals',
-        'hospitaluser',
       ]);
     }
   }
