@@ -1,6 +1,10 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-custom-mixins';
 
+.beds .heading {
+  border-bottom: 0;
+}
+
 .beds__availability {
   padding: 1rem 1.5rem 0;
 }
@@ -41,13 +45,10 @@
 
 .beds__updated {
   @include h4;
-  align-items: center;
-  color: #00a91c;
-  display: flex;
-
-  .fas {
-    font-size: 0.75rem;
-  }
+  color: color($theme-color-base-light);
+  font-style: italic;
+  margin-top: 0.5rem;
+  text-align: center;
 }
 
 .beds__check-icon {
