@@ -13,7 +13,7 @@ const HospitalStatusRow = ({ hospitalStatus }) => (
     </div>
     <div className="grid-col-8 hospitalstatusrow__info-container">
       <div className="hospitalstatusrow__data-container">
-        <div className={`hospitalstatusrow__data ${hospitalStatus.divertStatusIndicator ? 'text-secondary' : ''}`}>
+        <div className={`hospitalstatusrow__data hide-diversion-column ${hospitalStatus.divertStatusIndicator ? 'text-secondary' : ''}`}>
           {hospitalStatus.divertStatusIndicator ? 'Yes' : 'No'}
         </div>
         <div className={`hospitalstatusrow__data ${hospitalStatus.openEdBedCount === 0 ? 'text-secondary text-bold' : ''}`}>

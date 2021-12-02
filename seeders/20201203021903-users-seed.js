@@ -42,6 +42,8 @@ module.exports = {
           EdAdminUserId: user.id,
           CreatedById: superuser.id,
           UpdatedById: superuser.id,
+          isInfoUser: true,
+          isRingdownUser: true,
         },
         { transaction }
       );
