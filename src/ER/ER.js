@@ -20,7 +20,7 @@ export default function ER() {
   const [selectedTab, setSelectedTab] = useState(1);
   const [ringdowns, setRingdowns] = useState([]);
   const [incomingRingdowns, setIncomingRingdowns] = useState([]);
-  const [statusUpdate, setStatusUpdate] = useState({});
+  const [statusUpdate, setStatusUpdate] = useState(new HospitalStatus({}));
 
   function onConfirm(ringdown) {
     const newIncomingRingdowns = incomingRingdowns.filter((r) => r.id !== ringdown.id);

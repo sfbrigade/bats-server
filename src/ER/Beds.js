@@ -17,11 +17,7 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
 
   function handleChange(event) {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
-    if (event.target.name === 'erBedsCount') {
-      newStatusUpdate.openEdBedCount = event.target.value;
-    } else if (event.target.name === 'psychBedsCount') {
-      newStatusUpdate.openPsychBedCount = event.target.value;
-    }
+    newStatusUpdate[event.target.name] = parseInt(event.target.value, 10);
     onStatusUpdate(newStatusUpdate);
   }
 
@@ -47,7 +43,7 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
             <Counter
               isEditing={isEditing}
               label="ER Beds"
-              name="erBedsCount"
+              name="openEdBedCount"
               min={0}
               onChange={handleChange}
               value={statusUpdate.openEdBedCount}
@@ -55,7 +51,7 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
             <Counter
               isEditing={isEditing}
               label="Behavioral Beds"
-              name="psychBedsCount"
+              name="openPsychBedCount"
               min={0}
               onChange={handleChange}
               value={statusUpdate.openPsychBedCount}

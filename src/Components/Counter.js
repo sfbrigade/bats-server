@@ -32,7 +32,7 @@ function Counter({ label, min, max, name, onChange, value, isEditing }) {
         <button type="button" className="usa-button counter__button counter__button--decrement" onClick={handleDecrement}>
           &minus;
         </button>
-        <input className="usa-input usa-input--small counter__input" type="text" readOnly id={name} name={name} value={value} />
+        {value && <input className="usa-input usa-input--small counter__input" type="text" readOnly id={name} name={name} value={value} />}
         <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement}>
           +
         </button>
@@ -48,12 +48,13 @@ Counter.propTypes = {
   name: PropTypes.string.isRequired,
   min: PropTypes.number,
   max: PropTypes.number,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
 };
 
 Counter.defaultProps = {
   min: undefined,
   max: undefined,
+  value: undefined,
 };
 
 export default Counter;
