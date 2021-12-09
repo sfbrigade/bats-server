@@ -5,7 +5,7 @@ import Heading from '../../Components/Heading';
 
 import './ErDashboardTable.scss';
 
-export default function ErDashboardTable({ more, users, mainUser }) {
+export default function ErDashboardTable({ more, users, mainUser, allRingdowns }) {
   // may be able to replace mainUser with user
   const userRows = [];
   let temp = null;
@@ -26,6 +26,31 @@ export default function ErDashboardTable({ more, users, mainUser }) {
     }
     if (userRows.indexOf(temp) === -1) {
       userRows.push(temp);
+    }
+  }
+
+  const ringdownRows = [];
+  let Rtemp = null;
+
+  for (const ringdown of allRingdowns) {
+    if (ringdown) {
+      // console.log("button", ringdown.patient.chiefComplaintDescription);
+      Rtemp = (
+        <tr>
+        <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
+        <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
+        <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
+        <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
+        <td className="padding-2 row-border">
+          <button type="button" className="bg-white border-0" onClick={() => more()}>
+            !
+          </button>
+        </td>
+      </tr>
+      );
+    }
+    if (ringdownRows.indexOf(Rtemp) === -1) {
+      ringdownRows.push(Rtemp);
     }
   }
 
@@ -52,39 +77,7 @@ export default function ErDashboardTable({ more, users, mainUser }) {
             <th className="padding-2">Ambulance #</th>
             <th className="padding-2">Chief Complaint</th>
           </tr>
-          <tr className>
-            <td className="padding-2 row-border">10 min</td>
-            <td className="padding-2 row-border">On the way</td>
-            <td className="padding-2 row-border">5678</td>
-            <td className="padding-2 row-border">Headache</td>
-            <td className="padding-2 row-border">
-              <button type="button" className="bg-white border-0">
-                More &gt;
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td className="padding-2 row-border">5min</td>
-            <td className="padding-2 row-border">Offloading</td>
-            <td className="padding-2 row-border">4567</td>
-            <td className="padding-2 row-border">Headache</td>
-            <td className="padding-2 row-border">
-              <button type="button" className="bg-white border-0">
-                More &gt;
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td className="padding-2 row-border">2 min</td>
-            <td className="padding-2 row-border">Waiting</td>
-            <td className="padding-2 row-border">4327</td>
-            <td className="padding-2 row-border">Headache</td>
-            <td className="padding-2 row-border">
-              <button type="button" className="bg-white border-0">
-                More &gt;
-              </button>
-            </td>
-          </tr>
+          {ringdownRows}
         </table>
       </div>
     </div>

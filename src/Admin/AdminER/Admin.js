@@ -66,7 +66,7 @@ export default function AdminER() {
         </div>
         <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
           {editProfile && <UserInfo back={Back} user={user} />}
-          {!editProfile && adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={user} />}
+          {!editProfile && adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={user} allRingdowns={ringdowns} />}
           {!editProfile && adminInfo.Tab === 'Users' && <ErUsers users={users} mainUser={user} />}
           {!editProfile && adminInfo.Tab === 'Ringdowns' && <ErRingdowns allRingdowns={ringdowns} />}
         </div>

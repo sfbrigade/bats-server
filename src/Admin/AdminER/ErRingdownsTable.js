@@ -12,12 +12,13 @@ export default function ErRingdownsTable({ more, allRingdowns }) {
 
   for (const ringdown of allRingdowns) {
     if (ringdown) {
-      console.log("button", ringdown.ambulance.ambulanceIdentifier);
+      // console.log("button", ringdown.patient.chiefComplaintDescription);
       temp = (
         <tr>
-        <td className="padding-2 row-border">hello</td>
+        <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
         <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
-        <td className="padding-2 row-border">38654</td>
+        <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
+        <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
         <td className="padding-2 row-border">
           <button type="button" className="bg-white border-0" onClick={() => more()}>
             !
@@ -31,6 +32,7 @@ export default function ErRingdownsTable({ more, allRingdowns }) {
     }
   }
 
+console.log('ringdownRows', ringdownRows);
 
   return (
     <div className="margin-y-5">
@@ -85,36 +87,7 @@ export default function ErRingdownsTable({ more, allRingdowns }) {
           </th>
           <th className="padding-2">Show details</th>
         </tr>
-        <tr>
-          <td className="padding-2 row-border">5:30 am</td>
-          <td className="padding-2 row-border">9876</td>
-          <td className="padding-2 row-border">38654</td>
-          <td className="padding-2 row-border">
-            <button type="button" className="bg-white border-0" onClick={() => more()}>
-              !
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td className="padding-2 row-border">7:30 pm</td>
-          <td className="padding-2 row-border">4563</td>
-          <td className="padding-2 row-border">48867</td>
-          <td className="padding-2 row-border">
-            <button type="button" className="bg-white border-0" onClick={() => more()}>
-              !
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td className="padding-2 row-border">8:30 am</td>
-          <td className="padding-2 row-border">3957</td>
-          <td className="padding-2 row-border">48375</td>
-          <td className="padding-2 row-border">
-            <button type="button" className="bg-white border-0" onClick={() => more()}>
-              !
-            </button>
-          </td>
-        </tr>
+        {ringdownRows}
       </table>
     </div>
   );

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import UserInfo from './UserInfo';
 import ErDashboardTable from './ErDashboardTable';
 
-export default function ErDashboard({ users, mainUser }) {
+export default function ErDashboard({ users, mainUser, allRingdowns }) {
   const [showMore, setShowMore] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -20,7 +20,7 @@ export default function ErDashboard({ users, mainUser }) {
   return (
     <div className="margin-left-9 padding-left-2">
       {showMore === true && <UserInfo back={Back} user={user} />}
-      {showMore === false && <ErDashboardTable more={More} users={users} mainUser={mainUser} />}
+      {showMore === false && <ErDashboardTable more={More} users={users} mainUser={mainUser} allRingdowns={allRingdowns} />}
     </div>
   );
 }
