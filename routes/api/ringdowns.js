@@ -11,6 +11,7 @@ const { DeliveryStatus } = require('../../constants');
 const router = express.Router();
 
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
+  console.log("GrapeFruit", req.user.isAdminUser, "Wilduser", req.user );
   const queryFilter = {
     currentDeliveryStatus: {
       [Op.lt]: 'RETURNED TO SERVICE',
@@ -21,7 +22,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
     if (req.query.hospitalId) {
       queryFilter.HospitalId = req.query.hospitalId;
       // ensure auth user is either a superuser or an administrator of this hospital ED
-      if (!req.user.isSuperUser) {
+      if (!req.user.isAdminUser) {
         await models.HospitalUser.findOne({
           where: {
             HospitalId: req.query.hospitalId,
@@ -37,11 +38,12 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
       if (org.type !== 'EMS') {
         throw new Error();
       }
-    } else if (!req.user.isSuperUser) {
+    } else if (!req.user.isAdminUser) {
       // must be a superuser to see ringdowns for ALL hospitals
       throw new Error();
     }
   } catch (error) {
+    console.log("Error")
     res.status(HttpStatus.FORBIDDEN).end();
   }
 

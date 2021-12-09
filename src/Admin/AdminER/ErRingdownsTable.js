@@ -5,7 +5,33 @@ import Heading from '../../Components/Heading';
 
 import './ErRingdownsTable.scss';
 
-export default function ErRingdownsTable({ more }) {
+export default function ErRingdownsTable({ more, allRingdowns }) {
+  console.log('in Table', allRingdowns[0])
+  const ringdownRows = [];
+  let temp = null;
+
+  for (const ringdown of allRingdowns) {
+    if (ringdown) {
+      console.log("button", ringdown.ambulance.ambulanceIdentifier);
+      temp = (
+        <tr>
+        <td className="padding-2 row-border">hello</td>
+        <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
+        <td className="padding-2 row-border">38654</td>
+        <td className="padding-2 row-border">
+          <button type="button" className="bg-white border-0" onClick={() => more()}>
+            !
+          </button>
+        </td>
+      </tr>
+      );
+    }
+    if (ringdownRows.indexOf(temp) === -1) {
+      ringdownRows.push(temp);
+    }
+  }
+
+
   return (
     <div className="margin-y-5">
       <span>
@@ -95,4 +121,5 @@ export default function ErRingdownsTable({ more }) {
 }
 ErRingdownsTable.propTypes = {
   more: PropTypes.func.isRequired,
+  allRingdowns: PropTypes.array.isRequired
 };

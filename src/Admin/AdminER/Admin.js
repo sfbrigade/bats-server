@@ -19,6 +19,7 @@ export default function AdminER() {
   const [users, setUsers] = useState(null);
   const { user } = useContext(Context);
   const [editProfile, setEditProfile] = useState(false);
+  const [ringdowns, setRingdowns] = useState(null);
   let match = useRouteMatch();
 
   const handleClick = (tab) => {
@@ -43,7 +44,19 @@ export default function AdminER() {
         setUsers(response.data);
       }
     });
+    ApiService.ringdowns.get(user?.activeHospitals[0].hospital.id).then((response) => {
+      console.log("Response: ", response.data);
+      if (ringdowns === null) {
+        setRingdowns(response.data);
+      }
+    }).catch((error) => {
+      console.log("Error", error);
+    });
+
+    console.log("hello", user);
   });
+
+  console.log("Ringdowns", ringdowns)
 
   return (
     <div className="admin height-full">
@@ -55,7 +68,7 @@ export default function AdminER() {
           {editProfile && <UserInfo back={Back} user={user} />}
           {!editProfile && adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={user} />}
           {!editProfile && adminInfo.Tab === 'Users' && <ErUsers users={users} mainUser={user} />}
-          {!editProfile && adminInfo.Tab === 'Ringdowns' && <ErRingdowns />}
+          {!editProfile && adminInfo.Tab === 'Ringdowns' && <ErRingdowns allRingdowns={ringdowns} />}
         </div>
       </div>
     </div>
