@@ -13,7 +13,7 @@ const IncomingRingDown = ({ onConfirm, ringdown }) => {
 
   async function confirm() {
     try {
-      const response = await ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
+      const response = await ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN CONFIRMED', new Date());
       onConfirm(response.data);
     } catch (error) {
       // eslint-disable-next-line no-console

@@ -137,9 +137,9 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
         transaction,
       });
       // check if calling user is allowed to modify this record
-
       if (
         req.body.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+        req.body.deliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED ||
         req.body.deliveryStatus === DeliveryStatus.CANCEL_ACKNOWLEDGED ||
         req.body.deliveryStatus === DeliveryStatus.REDIRECT_ACKNOWLEDGED
       ) {
