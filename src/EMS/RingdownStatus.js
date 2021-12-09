@@ -8,6 +8,8 @@ import Alert from '../Components/Alert';
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  // const [color, setColor] = useState("yellow");
+  // const [ringdownStatus, setRingdownStatus] = useState("Delivered");
 
   function handleCancel() {
     setShowCancel(false);
@@ -19,21 +21,32 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
+  // function handleRingdownStatus(status) {
+  //   if (status !== "Confirmed") {
+  //     setColor("yellow")
+  //   }
+  //   else {
+  //     setColor("lightgreen")
+  //   }
+  // }
+
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <h3 className="h1 margin-0">{ringdown.hospital.name}</h3>
-          <h4 className="text-base-light margin-top-2">ETA {ringdown.etaMinutes} minutes</h4>
+          <h4 className="text-base-light margin-top-2 margin-bottom-0">Ringdown Status: <span className={`layer1 ringdown--${ringdown.payload.patientDelivery.currentDeliveryStatus.split(" ")[1]}`}> {ringdown.payload.patientDelivery.currentDeliveryStatus} </span></h4>
+          <h4 className="text-base-light margin-top-2">ETA: <b> {(DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])).plus({minutes: ringdown.etaMinutes}).toLocaleString(DateTime.TIME_24_WITH_SECONDS)} </b></h4>
           <ol className="status-list">
             <li className="status-list-item status-list-item--completed">
               <div className="status-list-item__icon" />
               <div className="status-list-item__text">
                 Ringdown sent{' '}
                 <span>
-                  {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                  Sent: {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
                 </span>
               </div>
+              
             </li>
             <li
               className={classNames('status-list-item', {
@@ -68,6 +81,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                   >
                     Mark arrived
                   </button>
+                 
                 )}
                 {ringdown.currentDeliveryStatus !== Ringdown.Status.RINGDOWN_RECEIVED && 'Arrived at ED'}
                 {ringdown.timestamps[Ringdown.Status.ARRIVED] && (

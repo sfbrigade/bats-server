@@ -171,9 +171,33 @@ $spinner-border-width-sm: 0.2em;
   span {
     @include h4;
     color: color($theme-color-base-light);
-    display: block;
-    position: absolute;
+    display: grid;
   }
+}
+
+.layer1, .layer2 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.ringdown--RECEIVED, .ringdown--PENDING {
+  background-color: #FFECBA;
+  color: #DF7800;
+}
+
+.ringdown--CONFIRMED{
+  background-color: #D5FEC7;
+  color: #007922;
+}
+
+
+.margin-top-2 .layer2 { 
+  display: inline-flex;
+  background-color: #D5FEC7;
+  color: #007922;
+  padding-left: 5px;
+  padding-right: 5px;
+  
 }
 
 .status-list-item:first-child .status-list-item__icon::before {
