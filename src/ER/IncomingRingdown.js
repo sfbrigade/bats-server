@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -10,6 +10,10 @@ import './IncomingRingdown.scss';
 
 const IncomingRingDown = ({ onConfirm, ringdown }) => {
   const [isViewed, setIsViewed] = useState(false);
+
+  useEffect(() => {
+    ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
+  }, [ringdown.id]);
 
   async function confirm() {
     try {

@@ -36,7 +36,9 @@ export default function ER() {
       const data = JSON.parse(lastMessage.data);
       data.ringdowns = data.ringdowns.map((r) => new Ringdown(r));
       const newRingdowns = data.ringdowns.sort((a, b) => a.etaDateTimeLocalObj.toMillis() - b.etaDateTimeLocalObj.toMillis());
-      const newIncomingRingdowns = data.ringdowns.filter((r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT);
+      const newIncomingRingdowns = data.ringdowns.filter(
+        (r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT || r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED
+      );
       setRingdowns(newRingdowns);
       setIncomingRingdowns(newIncomingRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
