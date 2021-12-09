@@ -53,6 +53,9 @@ h4,
 input,
 select,
 textarea {
+  &.usa-input--disabled {
+    border-color: color($theme-color-base-lighter);
+  }
   &:not([disabled]):not(.usa-input--error):not(.usa-input--success):focus {
     @include focus-shadow();
   }

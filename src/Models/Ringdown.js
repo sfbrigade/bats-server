@@ -5,6 +5,7 @@ import { PatientFieldData, ValidationState } from './PatientFieldData';
 const DeliveryStatus = {
   RINGDOWN_SENT: 'RINGDOWN SENT',
   RINGDOWN_RECEIVED: 'RINGDOWN RECEIVED',
+  RINGDOWN_CONFIRMED: 'RINGDOWN CONFIRMED',
   ARRIVED: 'ARRIVED',
   OFFLOADED: 'OFFLOADED',
   RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
@@ -17,6 +18,7 @@ const DeliveryStatus = {
 DeliveryStatus.ALL_STATUSES = [
   DeliveryStatus.RINGDOWN_SENT,
   DeliveryStatus.RINGDOWN_RECEIVED,
+  DeliveryStatus.RINGDOWN_CONFIRMED,
   DeliveryStatus.ARRIVED,
   DeliveryStatus.OFFLOADED,
   DeliveryStatus.RETURNED_TO_SERVICE,

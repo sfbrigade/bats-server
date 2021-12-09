@@ -1,11 +1,19 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-custom-mixins';
+@import '../../theme/uswds-theme-color';
 
 .counter {
   align-items: center;
+  border: 1px solid color($theme-color-base-lighter);
+  border-radius: 0.25rem;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.75rem;
+}
+
+.counter__label {
+  font-weight: bold;
 }
 
 .counter__control {
@@ -15,6 +23,8 @@
 
 .counter__input {
   text-align: center;
+  border: 0;
+  max-width: 3rem !important;
 }
 
 .counter__button {
@@ -28,4 +38,12 @@
   margin: 0 0.5rem !important;
   padding: 0;
   width: 1.5rem;
+  visibility: hidden;
+}
+
+.counter--editing {
+  border-color: color($theme-color-base-dark);
+  .counter__button {
+    visibility: visible;
+  }
 }

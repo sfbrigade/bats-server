@@ -14,13 +14,13 @@ import RingDowns from './Ringdowns';
 
 export default function ER() {
   const { hospital } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.id}`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(1);
   const [ringdowns, setRingdowns] = useState([]);
   const [incomingRingdowns, setIncomingRingdowns] = useState([]);
-  const [statusUpdate, setStatusUpdate] = useState({});
+  const [statusUpdate, setStatusUpdate] = useState(new HospitalStatus({}));
 
   function onConfirm(ringdown) {
     const newIncomingRingdowns = incomingRingdowns.filter((r) => r.id !== ringdown.id);
@@ -36,23 +36,32 @@ export default function ER() {
       const data = JSON.parse(lastMessage.data);
       data.ringdowns = data.ringdowns.map((r) => new Ringdown(r));
       const newRingdowns = data.ringdowns.sort((a, b) => a.etaDateTimeLocalObj.toMillis() - b.etaDateTimeLocalObj.toMillis());
-      const newIncomingRingdowns = data.ringdowns.filter((r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT);
+      const newIncomingRingdowns = data.ringdowns.filter(
+        (r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT || r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED
+      );
       setRingdowns(newRingdowns);
       setIncomingRingdowns(newIncomingRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
     }
   }, [lastMessage, setRingdowns, setIncomingRingdowns, setStatusUpdate]);
 
+  const showRingdown = hospital?.isRingdownUser;
+  const showInfo = hospital?.isInfoUser;
+  const showTabs = showRingdown && showInfo;
+  const hasIncomingRingdown = incomingRingdowns.length > 0;
+
   return (
     <>
-      <Header name="Hospital Destination Tool">
-        {incomingRingdowns.length === 0 && (
+      <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
+        {showTabs && !hasIncomingRingdown && (
           <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
       </Header>
-      {incomingRingdowns.length > 0 && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
-      {incomingRingdowns.length === 0 && selectedTab === 0 && <RingDowns ringdowns={ringdowns} />}
-      {incomingRingdowns.length === 0 && selectedTab === 1 && <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} />}
+      {showRingdown && hasIncomingRingdown && <IncomingRingdown onConfirm={onConfirm} ringdown={incomingRingdowns[0]} />}
+      {showRingdown && !hasIncomingRingdown && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
+      {showInfo && (!showTabs || (!hasIncomingRingdown && selectedTab === 1)) && (
+        <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdowns.length} />
+      )}
     </>
   );
 }

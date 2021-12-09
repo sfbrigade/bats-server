@@ -73,7 +73,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
             >
               <div className="status-list-item__icon" />
               <div className="status-list-item__text">
-                {ringdown.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED && (
+                {Ringdown.Status.ALL_STATUSES.indexOf(ringdown.currentDeliveryStatus) <
+                  Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED) && (
                   <button
                     onClick={() => onStatusChange(ringdown, Ringdown.Status.ARRIVED)}
                     className="usa-button usa-button--primary width-full"
@@ -83,7 +84,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                   </button>
                  
                 )}
-                {ringdown.currentDeliveryStatus !== Ringdown.Status.RINGDOWN_RECEIVED && 'Arrived at ED'}
+                {Ringdown.Status.ALL_STATUSES.indexOf(ringdown.currentDeliveryStatus) >=
+                  Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED) && 'Arrived at ED'}
                 {ringdown.timestamps[Ringdown.Status.ARRIVED] && (
                   <span>
                     {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.ARRIVED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
