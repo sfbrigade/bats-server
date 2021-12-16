@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 
 import AdminNavLink from './AdminNavLink';
 import AdminInfo from '../Models/AdminInfo';
 import ApiService from '../ApiService';
 
+import UserInfo from './AdminER/UserInfo';
+
 import './AdminNavigation.scss';
+import { Router } from 'express';
 
 export default function AdminNavigation({ click, adminInfo, mainUser, match, editMain, closeEditMain }) {
   const [tabChanged, setTabChanged] = useState('');
+  const [editProfile, setEditProfile] = useState(false);
 
   const handleClick = (tab) => {
     closeEditMain()
@@ -17,13 +21,16 @@ export default function AdminNavigation({ click, adminInfo, mainUser, match, edi
     click(tab);
   };
 
+  const Back = () => {
+    setEditProfile(false);
+  }
+
   return (
     <div className="margin-y-6 padding-bottom-9">
       <nav aria-label="Secondary navigation,">
         <a className="text-base-darkest" href="/auth/local/logout">
           Logout
         </a>
-        <div>
           <div className="logo" />
           <h2>{mainUser ? mainUser.activeHospitals[0].name : ''}</h2>
           <h4>{mainUser ? `${mainUser.firstName} ${mainUser.lastName}` : ''}</h4>
@@ -34,19 +41,37 @@ export default function AdminNavigation({ click, adminInfo, mainUser, match, edi
           >
             Edit Profile
           </button>
-        </div>
-        <ul className="usa-sidenav margin-y-1 padding-bottom-2">
+        
+      <Router>
+        <div>
         <Link to={`${match.url}/dashboard`}>
-          <AdminNavLink title="Dashboard" click={handleClick} isCurrent={adminInfo.tabStatus.DashBoardTab.currentStatus === 'CURRENT'} />
+          Dashboard
+          {/* <AdminNavLink title="Dashboard" click={handleClick} isCurrent={adminInfo.tabStatus.DashBoardTab.currentStatus === 'CURRENT'} /> */}
           </Link>
           <Link to={`${match.url}/user`}>
-          <AdminNavLink title="Users" click={handleClick} isCurrent={adminInfo.tabStatus.UsersTab.currentStatus === 'CURRENT'} />
+            Users
+          {/* <AdminNavLink title="Users" click={handleClick} isCurrent={adminInfo.tabStatus.UsersTab.currentStatus === 'CURRENT'} /> */}
           </Link>
           <Link to={`${match.url}/ringdowns`}>
-          <AdminNavLink title="Ringdowns" click={handleClick} isCurrent={adminInfo.tabStatus.RingDownTab.currentStatus === 'CURRENT'} />
+            Ringdowns
+          {/* <AdminNavLink title="Ringdowns" click={handleClick} isCurrent={adminInfo.tabStatus.RingDownTab.currentStatus === 'CURRENT'} /> */}
           </Link>
+
+          <Switch>
+          <Route path="/dashboard">
+          <UserInfo back={Back} user={mainUser} /> 
+          </Route>
+          {/* <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route> */}
+        </Switch>
+      </div>
+    </Router>
           
-        </ul>
+        
       </nav>
     </div>
   );

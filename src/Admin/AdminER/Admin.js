@@ -59,12 +59,12 @@ export default function AdminER() {
   console.log("Ringdowns", ringdowns)
 
   return (
-    <div className="admin height-full">
-      <div className="bottom">
-        <div className="grid-col-2 position-fixed">
+    <div>
+      <div >
+        <div className="border-bottom border-base-lightest height-15 width-full">
           <AdminNavigation click={handleClick} adminInfo={adminInfo} mainUser={user} match={match} editMain={EditMain} closeEditMain={Back} />
         </div>
-        <div className="grid-col flex-4 margin-left-9 padding-left-9 ">
+        <div className="height-card-lg width-full">
           {editProfile && <UserInfo back={Back} user={user} />}
           {!editProfile && adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={user} allRingdowns={ringdowns} />}
           {!editProfile && adminInfo.Tab === 'Users' && <ErUsers users={users} mainUser={user} />}

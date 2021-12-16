@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 // it is possible this component can go into the component folder.
 export default function AdminNavLink({ click, title, isCurrent }) {
   return (
-    <li className="usa-sidenav__item margin-bottom-3 padding-y-1 margin-left-4">
       <a href="#" onClick={() => click(title)} className={isCurrent ? 'usa-current' : ''}>
         {title}
       </a>
-    </li>
+  
   );
 }
 AdminNavLink.propTypes = {
