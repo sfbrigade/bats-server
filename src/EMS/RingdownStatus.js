@@ -8,7 +8,7 @@ import Alert from '../Components/Alert';
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-  const [ringdownStatus, setRingdownStatus] = useState("Delivered");
+  const [ringdownStatus, setRingdownStatus] = useState('Delivered');
 
   function handleCancel() {
     setShowCancel(false);
@@ -22,17 +22,19 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
 
   useEffect(() => {
     switch (ringdown.payload.patientDelivery.currentDeliveryStatus) {
-      case "RECEIVED":
-        setRingdownStatus("Delivered")
+      case 'RECEIVED':
+        setRingdownStatus('Delivered');
         break;
-      case "ARRIVED":
-        setRingdownStatus("Confirmed")
+      case 'ARRIVED':
+        setRingdownStatus('Confirmed');
         break;
-      case "OFFLOADED":
-        setRingdownStatus("Pending")
+      case 'OFFLOADED':
+        setRingdownStatus('Pending');
+        break;
+      default:
         break;
     }
-  })
+  }, [ringdown.payload.patientDelivery.currentDeliveryStatus]);
 
   return (
     <div className={classNames('usa-accordion', className)}>
@@ -40,16 +42,15 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
         <fieldset className="usa-fieldset">
           <h3 className="h1 margin-0">{ringdown.hospital.name}</h3>
           <h4 className="text-base-light margin-bottom-0">
-            Ringdown Status: 
-            {" "}
-            <span className={`ringdown--${ringdown.payload.patientDelivery.currentDeliveryStatus.replace(/\s/g, "")}`}>
+            Ringdown Status:{' '}
+            <span className={`ringdown--${ringdown.payload.patientDelivery.currentDeliveryStatus.replace(/\s/g, '')}`}>
               {ringdownStatus}
             </span>
           </h4>
           <h4 className="text-base-light">
             ETA:
-            <b style={{color: "black"}}>
-              {" "}  
+            <b style={{ color: 'black' }}>
+              {' '}
               {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])
                 .plus({ minutes: ringdown.etaMinutes })
                 .toLocaleString(DateTime.TIME_SIMPLE)}
@@ -61,7 +62,12 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               <div className="status-list-item__text">
                 Ringdown sent{' '}
                 <span>
-                  {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT]).toLocaleString(DateTime.TIME_WITH_SECONDS).toString().split(" ")[0]}
+                  {
+                    DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])
+                      .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                      .toString()
+                      .split(' ')[0]
+                  }
                 </span>
               </div>
             </li>
@@ -88,7 +94,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                   Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED),
               })}
             >
-             <div className="status-list-item__icon" />
+              <div className="status-list-item__icon" />
               <div className="status-list-item__text">
                 {Ringdown.Status.ALL_STATUSES.indexOf(ringdown.currentDeliveryStatus) <
                   Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED) && (
@@ -103,11 +109,16 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                 {Ringdown.Status.ALL_STATUSES.indexOf(ringdown.currentDeliveryStatus) >=
                   Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED) && 'Arrived at ED'}
                 {ringdown.timestamps[Ringdown.Status.ARRIVED] && (
-    
                   <span>
-                    
-                    {ringdown.timestamps[Ringdown.Status.ARRIVED] ? DateTime.fromISO(ringdown.timestamps[Ringdown.Status.ARRIVED]).toLocaleString(DateTime.TIME_WITH_SECONDS).toString().split(" ")[0] : DateTime.fromISO(ringdown.timestamps["RINGDOWN CONFIRMED"]).toLocaleString(DateTime.TIME_WITH_SECONDS).toString().split(" ")[0]}
-                    
+                    {ringdown.timestamps[Ringdown.Status.ARRIVED]
+                      ? DateTime.fromISO(ringdown.timestamps[Ringdown.Status.ARRIVED])
+                          .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                          .toString()
+                          .split(' ')[0]
+                      : DateTime.fromISO(ringdown.timestamps['RINGDOWN CONFIRMED'])
+                          .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                          .toString()
+                          .split(' ')[0]}
                   </span>
                 )}
               </div>
@@ -133,7 +144,12 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                 {ringdown.currentDeliveryStatus !== Ringdown.Status.ARRIVED && 'Patient offloaded'}
                 {ringdown.timestamps[Ringdown.Status.OFFLOADED] && (
                   <span>
-                    {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_WITH_SECONDS).toString().split(" ")[0]}
+                    {
+                      DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED])
+                        .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                        .toString()
+                        .split(' ')[0]
+                    }
                   </span>
                 )}
               </div>
