@@ -178,29 +178,28 @@ $spinner-border-width-sm: 0.2em;
   }
 }
 
-.layer1, .layer2 {
-  grid-column: 1;
-  grid-row: 1;
+.ringdown--RINGDOWNCONFIRMED,
+.ringdown--RINGDOWNRECEIVED,
+.ringdown--OFFLOADED {
+  background-color: #ffecba;
+  color: #df7800;
+  padding: 0px 6px 0px 6px;
+  border-radius: 4px;
 }
 
-.ringdown--RECEIVED, .ringdown--PENDING {
-  background-color: #FFECBA;
-  color: #DF7800;
-}
-
-.ringdown--CONFIRMED{
-  background-color: #D5FEC7;
+.ringdown--ARRIVED {
+  background-color: #d5fec7;
   color: #007922;
+  padding: 0px 6px 0px 6px;
+  border-radius: 4px;
 }
 
-
-.margin-top-2 .layer2 { 
+.margin-top-2 {
   display: inline-flex;
   background-color: #D5FEC7;
   color: #007922;
   padding-left: 5px;
   padding-right: 5px;
-  
 }
 
 .status-list-item:first-child .status-list-item__icon::before {
