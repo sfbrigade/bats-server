@@ -1,69 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useRouteMatch } from "react-router-dom";
-
-import AdminNavLink from './AdminNavLink';
-import AdminInfo from '../Models/AdminInfo';
-import ApiService from '../ApiService';
-
-import UserInfo from './AdminER/UserInfo';
+import { NavLink } from "react-router-dom";
 
 import './AdminNavigation.scss';
-// import { Router } from 'express';
 
-export default function AdminNavigation({ click, adminInfo, mainUser, editMain, closeEditMain }) {
-  const [tabChanged, setTabChanged] = useState('');
-  let match = useRouteMatch();
-  let ref = React.createRef()
-  const handleClick = (tab) => {
-    // closeEditMain()
-    setTabChanged(tab);
-    click(tab);
+export default function AdminNavigation({ mainUser, editMain, match }) {
+  const linkStyle = {
+    color: '#a9aeb1',
+    margin: '0% 6% 0% 0%',
+    position: 'relative',
+    top: '4rem',
+    fontSize: '24px',
   };
-
-  // const Back = () => {
-  //   setEditProfile(false);
-  // }
-// console.log(mainUser);
+  const linkStyle_not_current = {
+    color: '#005EA2'
+  };
   return (
     <div className="margin-y-6 padding-bottom-9">
-      <nav aria-label="Secondary navigation,">
         <a className="text-base-darkest adminnav_login_logout" href="/auth/local/logout">
           Logout
         </a>
           <div className="adminnav_logo" />
           <h2 className="adminnav_hospital_name">{mainUser ? mainUser.activeHospitals[0].hospital.name : ''}</h2>
-          {/* <h4>{mainUser ? `${mainUser.firstName} ${mainUser.lastName}` : ''}</h4> */}
           <button 
           type="button" 
-          className=" adminnav_edit_profile text-primary bg-white border-0 border-bottom adminnav_button_text"
+          className=" adminnav_edit_profile border-0 border-bottom"
           onClick={() => editMain()}
           >
             Edit Profile
           </button>
         
-        <Link 
-          to={`${match.url}/dashboard`} 
-          className="adminnav_link"
-          // component={AdminNavLink}
+        <NavLink 
+          to={`${match.url}dashboard`} 
+          style={linkStyle}
         >
-          {/* Dashboard */}
-          <AdminNavLink title="Dashboard" click={handleClick} isCurrent={adminInfo.tabStatus.DashBoardTab.currentStatus === 'CURRENT'} />
-          </Link>
-          <Link to={`${match.url}/user`} className="adminnav_link">
-            {/* Users */}
-          <AdminNavLink title="Users" click={handleClick} isCurrent={adminInfo.tabStatus.UsersTab.currentStatus === 'CURRENT'} />
-          </Link>
-          <Link to={`${match.url}/ringdowns`} className="adminnav_link">
-            {/* Ringdowns */}
-          <AdminNavLink title="Ringdowns" click={handleClick} isCurrent={adminInfo.tabStatus.RingDownTab.currentStatus === 'CURRENT'} />
-          </Link>
-        
-      </nav>
+          Dashboard
+          </NavLink>
+          <NavLink 
+          to={`${match.url}users`} 
+          style={linkStyle}
+          >
+            Users
+          </NavLink>
+          <NavLink 
+          to={`${match.url}ringdowns`} 
+          style={linkStyle}
+          >
+            Ringdowns
+          </NavLink>
     </div>
   );
 }
 AdminNavigation.propTypes = {
-  adminInfo: PropTypes.instanceOf(AdminInfo).isRequired,
-  click: PropTypes.func.isRequired,
+  
 };

@@ -3,28 +3,36 @@
   width: 100px;
   border-radius: 50%;
   background-color: darkgray;
-  margin: -2% 0% -6.7% 5%;
+  margin: -3% 0% -6.7% 4%;
 }
 
 .adminnav_hospital_name {
-  margin: 0% 0% 1% 15%;
+  margin: 0% 0% 0% 15%;
 }
 
 .adminnav_edit_profile {
   margin: 0% 13% 0% 15%;
   font-size: 13px;
+  color: #005EA2;
+  background-color: transparent;
 }
-
-// .adminnav_button_text {
-//   font-size: 13px;
-// }
 
 .adminnav_login_logout {
-  padding-left: 94%;
+  padding-left: 91%;
 }
 
-.adminnav_link {
-  margin: 0% 12% 0% 0%;
+.adminnav_link_current {
+  margin: 0% 6% 0% 0%;
   position: relative;
-  top: 3rem;
+  top: 4rem;
+  font-size: 24px;
+  color: #005EA2;
+}
+
+.adminnav_link_not_current {
+  margin: 0% 6% 0% 0%;
+  position: relative;
+  top: 4rem;
+  font-size: 24px;
+  color:#a9aeb1;
 }
