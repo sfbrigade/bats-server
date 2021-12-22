@@ -51,6 +51,7 @@ console.log('ringdownRows', ringdownRows);
       <Heading title="Ringdown History" />
 
       <table cellSpacing="0" cellPadding="0">
+        <tbody>
         <tr>
           <th className="padding-2">
             Time
@@ -88,6 +89,7 @@ console.log('ringdownRows', ringdownRows);
           <th className="padding-2">Show details</th>
         </tr>
         {ringdownRows}
+        </tbody>
       </table>
     </div>
   );

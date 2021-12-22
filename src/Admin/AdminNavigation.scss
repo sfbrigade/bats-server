@@ -1,14 +1,30 @@
-.logo {
+.adminnav_logo {
   height: 100px;
   width: 100px;
   border-radius: 50%;
   background-color: darkgray;
-  margin: 0% auto;
-}
-.edit_profile {
-  margin: 0% 28%;
+  margin: -2% 0% -6.7% 5%;
 }
 
-.button_text {
+.adminnav_hospital_name {
+  margin: 0% 0% 1% 15%;
+}
+
+.adminnav_edit_profile {
+  margin: 0% 13% 0% 15%;
   font-size: 13px;
+}
+
+// .adminnav_button_text {
+//   font-size: 13px;
+// }
+
+.adminnav_login_logout {
+  padding-left: 94%;
+}
+
+.adminnav_link {
+  margin: 0% 12% 0% 0%;
+  position: relative;
+  top: 3rem;
 }

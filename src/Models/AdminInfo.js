@@ -11,7 +11,7 @@ export default class AdminInfo {
     this.currentTab = this.currentTab || '';
     this.tabStatus = {
       UsersTab: new TabData('Users', currentStatus.NOT_CURRENT),
-      DashBoardTab: new TabData('Dashboard', currentStatus.CURRENT),
+      DashBoardTab: new TabData('Dashboard', currentStatus.NOT_CURRENT),
       RingDownTab: new TabData('Ringdowns', currentStatus.NOT_CURRENT),
     };
   }

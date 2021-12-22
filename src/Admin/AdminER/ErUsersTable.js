@@ -10,8 +10,7 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
   const userRows = [];
   let temp = null;
 
-  
-
+  // console.log(users)
   for (const user of users) {
     if (user.organization.id === mainUser.organization.id && !user.isAdminUser) {
       temp = (
@@ -30,6 +29,7 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
       userRows.push(temp);
     }
   }
+
 
   return (
     <div className="margin-y-5">

@@ -20,7 +20,6 @@ export default function AdminER() {
   const { user } = useContext(Context);
   const [editProfile, setEditProfile] = useState(false);
   const [ringdowns, setRingdowns] = useState(null);
-  let match = useRouteMatch();
 
   const handleClick = (tab) => {
     adminInfo.Tab = tab;
@@ -38,6 +37,7 @@ export default function AdminER() {
   }
 
   useEffect(() => {
+    console.log("admin tab", adminInfo.Tab);
     // instead of getting all users create and api that only gets active users according who is signed on
     ApiService.users.all().then((response) => {
       if (users === null) {
@@ -45,26 +45,29 @@ export default function AdminER() {
       }
     });
     ApiService.ringdowns.get(user?.activeHospitals[0].hospital.id).then((response) => {
-      console.log("Response: ", response.data);
+      // console.log("Response: ", response.data);
       if (ringdowns === null) {
         setRingdowns(response.data);
       }
     }).catch((error) => {
-      console.log("Error", error);
+      // console.log("Error", error);
     });
 
-    console.log("hello", user);
-  });
+    // console.log("hello", user);
+  },[]);
 
-  console.log("Ringdowns", ringdowns)
-
+  // console.log("Ringdowns", ringdowns)
+  // console.log("admin tab", adminInfo.Tab);
   return (
     <div>
       <div >
         <div className="border-bottom border-base-lightest height-15 width-full">
-          <AdminNavigation click={handleClick} adminInfo={adminInfo} mainUser={user} match={match} editMain={EditMain} closeEditMain={Back} />
+          <AdminNavigation click={handleClick} adminInfo={adminInfo} mainUser={user} editMain={EditMain} closeEditMain={Back} />
         </div>
         <div className="height-card-lg width-full">
+        
+
+
           {editProfile && <UserInfo back={Back} user={user} />}
           {!editProfile && adminInfo.Tab === 'Dashboard' && <ErDashboard users={users} mainUser={user} allRingdowns={ringdowns} />}
           {!editProfile && adminInfo.Tab === 'Users' && <ErUsers users={users} mainUser={user} />}

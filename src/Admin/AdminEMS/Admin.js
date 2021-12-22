@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import AdminNavigation from '../AdminNavigation';
+// import AdminNavigation from '../AdminNavigation';
 import AdminInfo from '../../Models/AdminInfo';
 
 import '../Admin.scss';
@@ -20,7 +20,7 @@ export default function AdminEMS() {
     <div className="admin height-full">
       <div className="bottom">
         <div className="grid-col bg-base-lighter height-full">
-          <AdminNavigation click={handleClick} adminInfo={adminInfo} />
+          {/* <AdminNavigation click={handleClick} adminInfo={adminInfo} /> */}
         </div>
         <div className="grid-col flex-4">
           {adminInfo.Tab === 'Dashboard' && <div>Dashboard</div>}
