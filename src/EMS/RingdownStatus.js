@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
+import './RingdownStatus.scss';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
-  const [ringdownStatus, setRingdownStatus] = useState('Delivered');
 
   function handleCancel() {
     setShowCancel(false);
@@ -20,47 +20,39 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
-  useEffect(() => {
-    switch (ringdown.payload.patientDelivery.currentDeliveryStatus) {
-      case 'RECEIVED':
-        setRingdownStatus('Delivered');
-        break;
-      case 'ARRIVED':
-        setRingdownStatus('Confirmed');
-        break;
-      case 'OFFLOADED':
-        setRingdownStatus('Pending');
-        break;
-      default:
-        break;
-    }
-  }, [ringdown.payload.patientDelivery.currentDeliveryStatus]);
+  let ringdownStatus = 'pending';
+  if (ringdown.timestamps[Ringdown.Status.RINGDOWN_CONFIRMED]) {
+    ringdownStatus = 'confirmed';
+  } else if (ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED]) {
+    ringdownStatus = 'delivered';
+  }
 
   return (
     <div className={classNames('usa-accordion', className)}>
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <h3 className="h1 margin-0">{ringdown.hospital.name}</h3>
-          <h4 className="text-base-light margin-bottom-0">
-            Ringdown Status:{' '}
-            <span className={`ringdown--${ringdown.payload.patientDelivery.currentDeliveryStatus.replace(/\s/g, '')}`}>
-              {ringdownStatus}
+          <h4 className={`ringdownstatus ringdownstatus--${ringdownStatus}`}>
+            Ringdown Status:&nbsp;
+            <span>
+              {ringdownStatus === 'pending' && 'Pending'}
+              {ringdownStatus === 'delivered' && 'Delivered'}
+              {ringdownStatus === 'confirmed' && 'Confirmed'}
             </span>
           </h4>
-          <h4 className="text-base-light">
-            ETA:
-            <b style={{ color: 'black' }}>
-              {' '}
+          <h4 className="ringdownstatus">
+            ETA:&nbsp;
+            <span>
               {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])
                 .plus({ minutes: ringdown.etaMinutes })
                 .toLocaleString(DateTime.TIME_SIMPLE)}
-            </b>
+            </span>
           </h4>
           <ol className="status-list">
             <li className="status-list-item status-list-item--completed">
               <div className="status-list-item__icon" />
               <div className="status-list-item__text">
-                Ringdown sent{' '}
+                Ringdown sent
                 <span>
                   {
                     DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])
@@ -71,22 +63,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                 </span>
               </div>
             </li>
-            {/* <li
-              className={classNames('status-list-item', {
-                'status-list-item--noninteractive': !ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED],
-                'status-list-item--completed': ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED],
-              })}
-            >
-              <div className="status-list-item__icon" />
-              <div className="status-list-item__text">
-                Ringdown received
-                {ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED] && (
-                  <span>
-                    {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
-                  </span>
-                )}
-              </div>
-            </li> */}
             <li
               className={classNames('status-list-item', {
                 'status-list-item--completed':
