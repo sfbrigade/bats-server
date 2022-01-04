@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       counts.forEach((count) => {
         if (
           count.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
-          count.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED
+          count.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+          count.currentDeliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED
         ) {
           ambulanceCounts.enRoute += parseInt(count.count, 10);
         } else if (count.currentDeliveryStatus === DeliveryStatus.ARRIVED) {

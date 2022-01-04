@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
         };
         if (
           delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
-          delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED
+          delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+          delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED
         ) {
           ambulanceCounts.enRoute += 1;
         } else if (delivery.currentDeliveryStatus === DeliveryStatus.ARRIVED) {
