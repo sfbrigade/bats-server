@@ -85,6 +85,76 @@ describe('models.PatientDelivery', () => {
       assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
     });
 
+    it('can be redirected before being received', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_SENT);
+
+      const now = new Date();
+      await patientDelivery.createDeliveryStatusUpdate('0a1f4d2e-689d-4b54-bb3c-7feba4444bb8', DeliveryStatus.REDIRECTED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.REDIRECTED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+    });
+
+    it('can be redirected before being confirmed', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_SENT);
+
+      let now = new Date();
+      await patientDelivery.createDeliveryStatusUpdate('449b1f54-7583-417c-8c25-8da7dde65f6d', DeliveryStatus.RINGDOWN_RECEIVED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_RECEIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date(now.getTime() + 10000);
+      await patientDelivery.createDeliveryStatusUpdate('0a1f4d2e-689d-4b54-bb3c-7feba4444bb8', DeliveryStatus.REDIRECTED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.REDIRECTED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+    });
+
+    it('can be redirected before arrival', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_SENT);
+
+      let now = new Date();
+      await patientDelivery.createDeliveryStatusUpdate('449b1f54-7583-417c-8c25-8da7dde65f6d', DeliveryStatus.RINGDOWN_RECEIVED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_RECEIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date(now.getTime() + 10000);
+      await patientDelivery.createDeliveryStatusUpdate('449b1f54-7583-417c-8c25-8da7dde65f6d', DeliveryStatus.RINGDOWN_CONFIRMED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_CONFIRMED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date(now.getTime() + 10000);
+      await patientDelivery.createDeliveryStatusUpdate('0a1f4d2e-689d-4b54-bb3c-7feba4444bb8', DeliveryStatus.REDIRECTED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.REDIRECTED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+    });
+
+    it('can be redirected before offloading', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_SENT);
+
+      let now = new Date();
+      await patientDelivery.createDeliveryStatusUpdate('449b1f54-7583-417c-8c25-8da7dde65f6d', DeliveryStatus.RINGDOWN_RECEIVED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_RECEIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date(now.getTime() + 10000);
+      await patientDelivery.createDeliveryStatusUpdate('449b1f54-7583-417c-8c25-8da7dde65f6d', DeliveryStatus.RINGDOWN_CONFIRMED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_CONFIRMED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date(now.getTime() + 10000);
+      await patientDelivery.createDeliveryStatusUpdate('0a1f4d2e-689d-4b54-bb3c-7feba4444bb8', DeliveryStatus.ARRIVED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.ARRIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date(now.getTime() + 10000);
+      await patientDelivery.createDeliveryStatusUpdate('0a1f4d2e-689d-4b54-bb3c-7feba4444bb8', DeliveryStatus.REDIRECTED, now);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.REDIRECTED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+    });
+
     it('can skip received state directly to arrived', async () => {
       const patientDelivery = await models.PatientDelivery.findByPk('4889b0c8-ce48-474a-ac5b-c5aca708451c');
       const now = new Date();
