@@ -13,7 +13,7 @@
 .adminnav_edit_profile {
   margin: 0% 13% 0% 15%;
   font-size: 13px;
-  color: #005EA2;
+  color: #005ea2;
   background-color: transparent;
 }
 
@@ -21,18 +21,17 @@
   padding-left: 91%;
 }
 
-.adminnav_link_current {
+.nav_link {
   margin: 0% 6% 0% 0%;
   position: relative;
   top: 4rem;
   font-size: 24px;
-  color: #005EA2;
 }
 
-.adminnav_link_not_current {
-  margin: 0% 6% 0% 0%;
-  position: relative;
-  top: 4rem;
-  font-size: 24px;
-  color:#a9aeb1;
+.unselected {
+  color: #a9aeb1;
+}
+
+.selected {
+  color: #005ea2;
 }

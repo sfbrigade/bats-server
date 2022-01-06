@@ -3,7 +3,6 @@ import axios from 'axios';
 const instance = axios.create({
   headers: {
     Accept: 'application/json',
-    
   },
 });
 
@@ -67,8 +66,8 @@ export default {
       return instance.put('/api/users/', data);
     },
     deleteUser(data) {
-        return instance.delete('/api/users/remove', {params: {data}});
-    }
+      return instance.delete('/api/users/remove', { params: { data } });
+    },
   },
   orgs: {
     // this may not be needed will keep for now

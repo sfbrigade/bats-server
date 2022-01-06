@@ -9,32 +9,30 @@ import UserFields from '../UserFields';
 export default function UserInfo({ back, user }) {
   const [updatedUser, setUpdatedUser] = useState(new User(user));
 
-  console.log(updatedUser)
   const handleChange = (property, value) => {
     updatedUser.payload[property] = value;
     setUpdatedUser(new User(updatedUser.payload));
-  }
+  };
 
   const send = () => {
     // api call update for current user
     try {
       ApiService.users.update(updatedUser.toJson());
-      back()
-    } catch(error) {
+      back();
+    } catch (error) {
       // eslint-disable-next-line no-console
-      console.log("updating", error.request);
-    };
+      console.log('updating', error.request);
+    }
   };
   const deleteUser = () => {
-    try{
-    console.log(user)
-    ApiService.users.deleteUser(user.email)
+    try {
+      ApiService.users.deleteUser(user.email);
       back();
-    } catch(error){
-       // eslint-disable-next-line no-console
-       console.log("request", error.request)
-    }; 
-  }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('request', error.request);
+    }
+  };
 
   return (
     <div className="margin-x-9 margin-top-4 padding-x-9">
@@ -63,4 +61,14 @@ export default function UserInfo({ back, user }) {
 }
 UserInfo.propTypes = {
   back: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    id: PropTypes.string,
+    isActive: PropTypes.bool,
+    isAdminUser: PropTypes.bool,
+    isOperationalUser: PropTypes.bool,
+    isSuperUser: PropTypes.bool,
+    lastName: PropTypes.string,
+  }).isRequired,
 };

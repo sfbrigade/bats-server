@@ -11,7 +11,6 @@ const { DeliveryStatus } = require('../../constants');
 const router = express.Router();
 
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
-  console.log("GrapeFruit", req.user.isAdminUser, "Wilduser", req.user );
   const queryFilter = {
     currentDeliveryStatus: {
       [Op.lt]: 'RETURNED TO SERVICE',
@@ -43,7 +42,6 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
       throw new Error();
     }
   } catch (error) {
-    console.log("Error")
     res.status(HttpStatus.FORBIDDEN).end();
   }
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import User from '../Models/User';
 import ApiService from '../ApiService';
@@ -15,23 +15,22 @@ export default function NewUserForm({ createdUser }) {
   }
 
   function createUser() {
-    // console.log(newUser.firstName, newUser.lastName, newUser.email, newUser.password);
-    ApiService.users.create(newUser.toJson())
-    .then((response) => {   
-      setNewUser(new User);
-       createdUser()
-    })
-    .catch((error) => {
-       // eslint-disable-next-line no-console
-       console.log(error.response.data);
-       console.log("request", error.request)
-    }); 
+    ApiService.users
+      .create(newUser.toJson())
+      .then(() => {
+        setNewUser(new User());
+        createdUser();
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error.response.data);
+      });
   }
 
   function cancel() {
-    createdUser()
+    createdUser();
   }
- 
+
   return (
     <div className="margin-7">
       <h1> Create New User </h1>
@@ -44,4 +43,7 @@ export default function NewUserForm({ createdUser }) {
       </button>
     </div>
   );
+}
+NewUserForm.propTypes = {
+  createdUser: PropTypes.func.isRequired,
 }

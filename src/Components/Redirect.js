@@ -16,13 +16,11 @@ function Redirect() {
         } else {
           history.push('/admin/ems');
         }
-      } else {
-        if (user.organization.type === 'HEALTHCARE') {
+      } else if (user.organization.type === 'HEALTHCARE') {
           history.push('/er');
         } else {
           history.push('/ems');
         }
-      }
     }
   }, [history, user]);
 

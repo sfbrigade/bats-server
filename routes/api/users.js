@@ -25,7 +25,6 @@ router.post('/', middleware.isAdminUser, async (req, res) => {
     });
     res.status(HttpStatus.CREATED).json(user.toJSON());
   } catch (err) {
-    console.log(err);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -41,9 +40,9 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
   res.json(req.user.toJSON());
 });
 
-router.put('/', middleware.isAdminUser, async (req,res) => {
+router.put('/', middleware.isAdminUser, async (req, res) => {
   try {
-    await models.User.update( 
+    await models.User.update(
       {
         email: req.body.email,
         password: req.body.password,
@@ -54,21 +53,22 @@ router.put('/', middleware.isAdminUser, async (req,res) => {
         isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
         CreatedById: req.user.id,
         UpdatedById: req.user.id,
-    }, {where: {id: req.body.id}});
+      },
+      { where: { id: req.body.id } }
+    );
     res.status(HttpStatus.ACCEPTED).end();
   } catch (err) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
-
 });
 
 router.delete('/remove', middleware.isAdminUser, async (req, res) => {
-  try{
+  try {
     await models.User.destroy({
       where: {
         email: req.query.data,
-      }
-    })
+      },
+    });
     res.status(HttpStatus.ACCEPTED).end();
   } catch (err) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();

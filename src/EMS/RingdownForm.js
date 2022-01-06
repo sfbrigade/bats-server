@@ -37,7 +37,6 @@ function RingdownForm({ className }) {
     ApiService.ringdowns
       .create(ringdown.toJSON())
       .then((response) => {
-        console.log(response)
         setRingdowns([new Ringdown(response.data)]);
         setRingdown(new Ringdown());
         setStep(0);

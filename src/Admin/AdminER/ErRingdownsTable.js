@@ -1,30 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Heading from '../../Components/Heading';
-
 import './ErRingdownsTable.scss';
 
 export default function ErRingdownsTable({ more, allRingdowns }) {
-  console.log('in Table', allRingdowns[0])
   const ringdownRows = [];
   let temp = null;
 
+  
+  // need to remove loop and use mapping.
+  // no-restricted-syntax
   for (const ringdown of allRingdowns) {
     if (ringdown) {
-      // console.log("button", ringdown.patient.chiefComplaintDescription);
       temp = (
         <tr>
-        <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
-        <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
-        <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
-        <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
-        <td className="padding-2 row-border">
-          <button type="button" className="bg-white border-0" onClick={() => more()}>
-            !
-          </button>
-        </td>
-      </tr>
+          <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
+          <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
+          <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
+          <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
+          <td className="padding-2 row-border">
+            <button type="button" className="bg-white border-0" onClick={() => more()}>
+              !
+            </button>
+          </td>
+        </tr>
       );
     }
     if (ringdownRows.indexOf(temp) === -1) {
@@ -32,10 +31,8 @@ export default function ErRingdownsTable({ more, allRingdowns }) {
     }
   }
 
-console.log('ringdownRows', ringdownRows);
-
   return (
-    <div className="margin-y-5">
+    <div>
       <span>
         <button type="button" className="bg-white border-0 border-bottom margin-x-2">
           Today
@@ -48,47 +45,16 @@ console.log('ringdownRows', ringdownRows);
         </button>
         <input type="date" />
       </span>
-      <Heading title="Ringdown History" />
-
+      <h2>Ringdown History</h2>
       <table cellSpacing="0" cellPadding="0">
         <tbody>
-        <tr>
-          <th className="padding-2">
-            Time
-            <div className="shift">
-              <button type="button" className="bg-white border-0">
-                &lt;
-              </button>
-              <button type="button" className="bg-white border-0">
-                &gt;
-              </button>
-            </div>
-          </th>
-          <th className="padding-2">
-            Ambulance #
-            <div className="shift">
-              <button type="button" className="bg-white border-0">
-                &lt;
-              </button>
-              <button type="button" className="bg-white border-0">
-                &gt;
-              </button>
-            </div>
-          </th>
-          <th className="padding-2">
-            Incident #
-            <div className="shift">
-              <button type="button" className="bg-white border-0">
-                &lt;
-              </button>
-              <button type="button" className="bg-white border-0">
-                &gt;
-              </button>
-            </div>
-          </th>
-          <th className="padding-2">Show details</th>
-        </tr>
-        {ringdownRows}
+          <tr>
+            <th className="padding-2">Time</th>
+            <th className="padding-2">Ambulance #</th>
+            <th className="padding-2">Incident #</th>
+            <th className="padding-2">Show details</th>
+          </tr>
+          {ringdownRows}
         </tbody>
       </table>
     </div>
@@ -96,5 +62,33 @@ console.log('ringdownRows', ringdownRows);
 }
 ErRingdownsTable.propTypes = {
   more: PropTypes.func.isRequired,
-  allRingdowns: PropTypes.array.isRequired
+  allRingdowns: PropTypes.shape({
+    id: PropTypes.string,
+    ambulance: PropTypes.shape({
+      ambulanceIdentifier: PropTypes.string,
+    }),
+    emsCall: PropTypes.shape({
+      dispatchCallNumber: PropTypes.number,
+    }) ,
+    hospital:PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+    }) ,
+    patient: PropTypes.shape({
+      age: PropTypes.number,
+      sex: PropTypes.string,
+      emergencyServiceResponseType: PropTypes.string,
+    }) ,
+    patientDelivery: PropTypes.shape({
+      currentDeliveryStatus: PropTypes.string,
+      currentDeliveryStatusDateTimeLocal: PropTypes.string,
+      etaMinutes: PropTypes.number,
+      timestamps: PropTypes.shape({
+        ARRIVED: PropTypes.string,
+        "RINGDOWN RECEIVED": PropTypes.string,
+        "RINGDOWN SENT": PropTypes.string
+      })
+
+    }),
+  }).isRequired
 };

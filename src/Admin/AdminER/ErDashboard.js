@@ -8,9 +8,9 @@ export default function ErDashboard({ users, mainUser, allRingdowns }) {
   const [showMore, setShowMore] = useState(false);
   const [user, setUser] = useState(null);
 
-  const More = (user) => {
+  const More = (userUpdate) => {
     setShowMore(true);
-    setUser(user);
+    setUser(userUpdate);
   };
 
   const Back = () => {
@@ -24,7 +24,7 @@ export default function ErDashboard({ users, mainUser, allRingdowns }) {
     </div>
   );
 }
-ErDashboard.prototypes = {
+ErDashboard.propTypes = {
   users: PropTypes.shape({
     email: PropTypes.string,
     firstName: PropTypes.string,
@@ -34,7 +34,7 @@ ErDashboard.prototypes = {
     isOperationalUser: PropTypes.bool,
     isSuperUser: PropTypes.bool,
     lastName: PropTypes.string,
-  }),
+  }).isRequired,
 
   mainUser: PropTypes.shape({
     email: PropTypes.string,
@@ -45,5 +45,34 @@ ErDashboard.prototypes = {
     isOperationalUser: PropTypes.bool,
     isSuperUser: PropTypes.bool,
     lastName: PropTypes.string,
-  }),
+  }).isRequired,
+  allRingdowns: PropTypes.shape({
+    id: PropTypes.string,
+    ambulance: PropTypes.shape({
+      ambulanceIdentifier: PropTypes.string,
+    }),
+    emsCall: PropTypes.shape({
+      dispatchCallNumber: PropTypes.number,
+    }) ,
+    hospital:PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+    }) ,
+    patient: PropTypes.shape({
+      age: PropTypes.number,
+      sex: PropTypes.string,
+      emergencyServiceResponseType: PropTypes.string,
+    }) ,
+    patientDelivery: PropTypes.shape({
+      currentDeliveryStatus: PropTypes.string,
+      currentDeliveryStatusDateTimeLocal: PropTypes.string,
+      etaMinutes: PropTypes.number,
+      timestamps: PropTypes.shape({
+        ARRIVED: PropTypes.string,
+        "RINGDOWN RECEIVED": PropTypes.string,
+        "RINGDOWN SENT": PropTypes.string
+      })
+
+    }),
+  }).isRequired
 };

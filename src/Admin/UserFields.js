@@ -11,7 +11,6 @@ export default function UserFields({ user, handleChange }) {
 
   return (
     <div className="margin-5 padding-3">
-    
       <FormInput
         label="First Name"
         onChange={handleChange}
@@ -58,4 +57,16 @@ export default function UserFields({ user, handleChange }) {
     </div>
   );
 }
-
+UserFields.propTypes = {
+  user: PropTypes.shape({
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    id: PropTypes.string,
+    isActive: PropTypes.bool,
+    isAdminUser: PropTypes.bool,
+    isOperationalUser: PropTypes.bool,
+    isSuperUser: PropTypes.bool,
+    lastName: PropTypes.string,
+  }).isRequired,
+  handleChange: PropTypes.func.isRequired,
+}

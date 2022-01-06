@@ -5,15 +5,14 @@ import UserInfo from './UserInfo';
 import ErUsersTable from './ErUsersTable';
 import NewUserForm from '../NewUserForm';
 
-
 export default function ErUsers({ users, mainUser }) {
   const [showMore, setShowMore] = useState(false);
   const [addUser, setAddUser] = useState(false);
   const [user, setUser] = useState(null);
 
-  const More = (user) => {
+  const More = (userUpdate) => {
     setShowMore(true);
-    setUser(user);
+    setUser(userUpdate);
   };
 
   const Back = () => {
@@ -21,16 +20,15 @@ export default function ErUsers({ users, mainUser }) {
   };
 
   const addNewUser = () => {
-    setAddUser(true)
-  }
+    setAddUser(true);
+  };
 
-  // change name. Current name makes the assumption that a user will be created but UI allows for the 
+  // change name. Current name makes the assumption that a user will be created but UI allows for the
   // process to be cancelled. Alternatively there could be a second function of course that function
   // could exist in the new user form.
   const savedUser = () => {
-
-    setAddUser(false)
-  }
+    setAddUser(false);
+  };
 
   return (
     <div className="margin-left-9 padding-left-2">
@@ -39,4 +37,27 @@ export default function ErUsers({ users, mainUser }) {
       {addUser === true && <NewUserForm createdUser={savedUser} />}
     </div>
   );
+}
+ErUsers.propTypes = {
+  users: PropTypes.shape({
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    id: PropTypes.string,
+    isActive: PropTypes.bool,
+    isAdminUser: PropTypes.bool,
+    isOperationalUser: PropTypes.bool,
+    isSuperUser: PropTypes.bool,
+    lastName: PropTypes.string,
+  }).isRequired,
+
+  mainUser: PropTypes.shape({
+    email: PropTypes.string,
+    firstName: PropTypes.string,
+    id: PropTypes.string,
+    isActive: PropTypes.bool,
+    isAdminUser: PropTypes.bool,
+    isOperationalUser: PropTypes.bool,
+    isSuperUser: PropTypes.bool,
+    lastName: PropTypes.string,
+  }).isRequired,
 }
