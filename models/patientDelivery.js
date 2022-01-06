@@ -95,6 +95,7 @@ module.exports = (sequelize, DataTypes) => {
           if (
             this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
             this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED ||
             this.currentDeliveryStatus === DeliveryStatus.ARRIVED
           ) {
             break;
