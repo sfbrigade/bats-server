@@ -37,7 +37,11 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
       <div className="usa-accordion__content">
         <form className="usa-form">
           <Heading title="Available Beds">
-            {incomingRingdownsCount > 0 && <span className="beds__incoming">{incomingRingdownsCount} incoming</span>}
+            {incomingRingdownsCount > 0 && (
+              <span className="beds__incoming">
+                <i className="fas fa-exclamation-circle" /> {incomingRingdownsCount} incoming
+              </span>
+            )}
           </Heading>
           <fieldset className="usa-fieldset beds__availability">
             <Counter

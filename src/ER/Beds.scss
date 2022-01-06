@@ -5,6 +5,11 @@
   border-bottom: 0;
 }
 
+.beds__incoming {
+  font-style: normal !important;
+  color: color($theme-color-error) !important;
+}
+
 .beds__availability {
   padding: 1rem 1.5rem 0;
 }
