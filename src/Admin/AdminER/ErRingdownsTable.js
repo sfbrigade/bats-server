@@ -4,33 +4,6 @@ import PropTypes from 'prop-types';
 import './ErRingdownsTable.scss';
 
 export default function ErRingdownsTable({ more, allRingdowns }) {
-  const ringdownRows = [];
-  let temp = null;
-
-  
-  // need to remove loop and use mapping.
-  // no-restricted-syntax
-  for (const ringdown of allRingdowns) {
-    if (ringdown) {
-      temp = (
-        <tr>
-          <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
-          <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
-          <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
-          <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
-          <td className="padding-2 row-border">
-            <button type="button" className="bg-white border-0" onClick={() => more()}>
-              !
-            </button>
-          </td>
-        </tr>
-      );
-    }
-    if (ringdownRows.indexOf(temp) === -1) {
-      ringdownRows.push(temp);
-    }
-  }
-
   return (
     <div>
       <span>
@@ -54,7 +27,19 @@ export default function ErRingdownsTable({ more, allRingdowns }) {
             <th className="padding-2">Incident #</th>
             <th className="padding-2">Show details</th>
           </tr>
-          {ringdownRows}
+          {allRingdowns.map((ringdown) => (
+            <tr>
+              <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
+              <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
+              <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
+              <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
+              <td className="padding-2 row-border">
+                <button type="button" className="bg-white border-0" onClick={() => more()}>
+                  !
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
@@ -69,26 +54,25 @@ ErRingdownsTable.propTypes = {
     }),
     emsCall: PropTypes.shape({
       dispatchCallNumber: PropTypes.number,
-    }) ,
-    hospital:PropTypes.shape({
+    }),
+    hospital: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
-    }) ,
+    }),
     patient: PropTypes.shape({
       age: PropTypes.number,
       sex: PropTypes.string,
       emergencyServiceResponseType: PropTypes.string,
-    }) ,
+    }),
     patientDelivery: PropTypes.shape({
       currentDeliveryStatus: PropTypes.string,
       currentDeliveryStatusDateTimeLocal: PropTypes.string,
       etaMinutes: PropTypes.number,
       timestamps: PropTypes.shape({
         ARRIVED: PropTypes.string,
-        "RINGDOWN RECEIVED": PropTypes.string,
-        "RINGDOWN SENT": PropTypes.string
-      })
-
+        'RINGDOWN RECEIVED': PropTypes.string,
+        'RINGDOWN SENT': PropTypes.string,
+      }),
     }),
-  }).isRequired
+  }).isRequired,
 };

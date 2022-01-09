@@ -53,18 +53,19 @@ AdminNavigation.propTypes = {
     organization: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
-      type: PropTypes.string
+      type: PropTypes.string,
     }),
     activeHospitals: PropTypes.arrayOf(
       PropTypes.shape({
         isActive: PropTypes.bool,
         isInfoUser: PropTypes.bool,
         isRingdownUser: PropTypes.bool,
-        hospital: PropTypes.shape({ 
-          id: PropTypes.sting, 
-          name: PropTypes.sting, 
-          sortSequenceNumber: PropTypes.number})
+        hospital: PropTypes.shape({
+          id: PropTypes.sting,
+          name: PropTypes.sting,
+          sortSequenceNumber: PropTypes.number,
+        }),
       })
-    )
+    ),
   }).isRequired,
 };

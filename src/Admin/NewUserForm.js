@@ -46,4 +46,4 @@ export default function NewUserForm({ createdUser }) {
 }
 NewUserForm.propTypes = {
   createdUser: PropTypes.func.isRequired,
-}
+};

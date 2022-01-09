@@ -60,4 +60,4 @@ ErUsers.propTypes = {
     isSuperUser: PropTypes.bool,
     lastName: PropTypes.string,
   }).isRequired,
-}
+};

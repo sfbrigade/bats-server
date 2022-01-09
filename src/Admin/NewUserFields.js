@@ -39,5 +39,5 @@ export default function NewUserFields({ newUser, onChange }) {
 }
 NewUserFields.propTypes = {
   newUser: PropTypes.instanceOf(User).isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };

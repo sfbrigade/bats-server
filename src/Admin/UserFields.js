@@ -69,4 +69,4 @@ UserFields.propTypes = {
     lastName: PropTypes.string,
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
-}
+};

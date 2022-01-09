@@ -4,34 +4,6 @@ import PropTypes from 'prop-types';
 import './ErUsersTable.scss';
 
 export default function ErUsersTable({ more, users, mainUser, addUser }) {
-  // may be able to replace mainUser with user
-  const userRows = [];
-  let temp = null;
-
-  
-  // need to remove loop and use mapping.
-  // no-restricted-syntax
-  for (const user of users) {
-    if (user.organization.id === mainUser.organization.id && !user.isAdminUser) {
-      temp = (
-        <tr>
-          <td className="padding-2 row-border">
-            {user.firstName} {user.lastName}
-          </td>
-          <td className="padding-2 row-border">{user.email}</td>
-          <td className="padding-2 row-border">
-            <button type="button" className="border-0 bg-white" onClick={() => more(user)}>
-              More &gt;
-            </button>
-          </td>
-        </tr>
-      );
-    }
-    if (userRows.indexOf(temp) === -1) {
-      userRows.push(temp);
-    }
-  }
-
   return (
     <div>
       <button type="button" className="bg-white" onClick={() => addUser()}>
@@ -43,7 +15,21 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
           <th className="padding-2">Name</th>
           <th className="padding-2">Email</th>
         </tr>
-        {userRows}
+        {users.map((user) =>
+          user.organization.id === mainUser.organization.id && !user.isAdminUser ? (
+            <tr>
+              <td className="padding-2 row-border">
+                {user.firstName} {user.lastName}
+              </td>
+              <td className="padding-2 row-border">{user.email}</td>
+              <td className="padding-2 row-border">
+                <button type="button" className="border-0 bg-white" onClick={() => more(user)}>
+                  More &gt;
+                </button>
+              </td>
+            </tr>
+          ) : null
+        )}
       </table>
     </div>
   );
@@ -73,8 +59,7 @@ ErUsersTable.propTypes = {
     organization: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
-      type: PropTypes.string
-    })
+      type: PropTypes.string,
+    }),
   }).isRequired,
-
 };

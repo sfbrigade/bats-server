@@ -53,26 +53,25 @@ ErDashboard.propTypes = {
     }),
     emsCall: PropTypes.shape({
       dispatchCallNumber: PropTypes.number,
-    }) ,
-    hospital:PropTypes.shape({
+    }),
+    hospital: PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
-    }) ,
+    }),
     patient: PropTypes.shape({
       age: PropTypes.number,
       sex: PropTypes.string,
       emergencyServiceResponseType: PropTypes.string,
-    }) ,
+    }),
     patientDelivery: PropTypes.shape({
       currentDeliveryStatus: PropTypes.string,
       currentDeliveryStatusDateTimeLocal: PropTypes.string,
       etaMinutes: PropTypes.number,
       timestamps: PropTypes.shape({
         ARRIVED: PropTypes.string,
-        "RINGDOWN RECEIVED": PropTypes.string,
-        "RINGDOWN SENT": PropTypes.string
-      })
-
+        'RINGDOWN RECEIVED': PropTypes.string,
+        'RINGDOWN SENT': PropTypes.string,
+      }),
     }),
-  }).isRequired
+  }).isRequired,
 };

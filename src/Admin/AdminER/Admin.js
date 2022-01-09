@@ -33,14 +33,12 @@ export default function AdminER() {
         setUsers(response.data);
       }
     });
-    ApiService.ringdowns
-      .get(user?.activeHospitals[0].hospital.id)
-      .then((response) => {
-        if (ringdowns === null) {
-          setRingdowns(response.data);
-        }
-      })
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    ApiService.ringdowns.get(user?.activeHospitals[0].hospital.id).then((response) => {
+      if (ringdowns === null) {
+        setRingdowns(response.data);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
