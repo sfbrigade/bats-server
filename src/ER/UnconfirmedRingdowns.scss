@@ -15,7 +15,7 @@ body > .grid-container > .grid-row > div > #root {
   height: 100%;
 }
 
-.incoming-ringdown-container {
+.unconfirmed-ringdowns-container {
   border: 0.5rem solid color($theme-color-warning);
   display: flex;
   flex-direction: column;
@@ -23,11 +23,11 @@ body > .grid-container > .grid-row > div > #root {
   justify-content: center;
 }
 
-.incoming-ringdown-container--viewed {
+.unconfirmed-ringdowns-container--viewed {
   justify-content: flex-start;
 }
 
-.incoming-ringdown {
+.unconfirmed-ringdowns {
   padding: 1rem;
   text-align: center;
 
@@ -41,7 +41,7 @@ body > .grid-container > .grid-row > div > #root {
   }
 }
 
-.incoming-ringdown__details {
+.unconfirmed-ringdowns__details {
   border-bottom: 1px solid color($theme-color-base-lighter);
   margin: -1rem -1rem 1rem;
 }

@@ -63,7 +63,7 @@ export default function ER() {
           <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
       </Header>
-      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdown={unconfirmedRingdowns[0]} />}
+      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
       {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} />}
       {showInfo && (!showTabs || (!hasUnconfirmedRingdowns && selectedTab === 1)) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />

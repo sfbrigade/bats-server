@@ -8,14 +8,18 @@ import RingdownEta from '../Components/RingdownEta';
 import Ringdown from '../Models/Ringdown';
 import './UnconfirmedRingdowns.scss';
 
-const UnconfirmedRingdowns = ({ onConfirm, ringdown }) => {
+const UnconfirmedRingdowns = ({ onConfirm, ringdowns }) => {
   const [isViewed, setIsViewed] = useState(false);
 
   useEffect(() => {
-    ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
-  }, [ringdown.id]);
+    for (const ringdown of ringdowns) {
+      if (!ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED]) {
+        ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
+      }
+    }
+  }, [ringdowns]);
 
-  async function confirm() {
+  async function confirm(ringdown) {
     try {
       const response = await ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN CONFIRMED', new Date());
       onConfirm(response.data);
@@ -26,14 +30,14 @@ const UnconfirmedRingdowns = ({ onConfirm, ringdown }) => {
   }
 
   return (
-    <div className={classNames('incoming-ringdown-container', { 'incoming-ringdown-container--viewed': isViewed })}>
-      <div className="incoming-ringdown">
+    <div className={classNames('unconfirmed-ringdowns-container', { 'unconfirmed-ringdowns-container--viewed': isViewed })}>
+      <div className="unconfirmed-ringdowns">
         {isViewed && (
           <>
-            <div className="incoming-ringdown__details">
-              <RingdownDetails isIncoming ringdown={ringdown} />
+            <div className="unconfirmed-ringdowns__details">
+              <RingdownDetails isIncoming ringdown={ringdowns[0]} />
             </div>
-            <button className="usa-button width-full" onClick={confirm} type="button">
+            <button className="usa-button width-full" onClick={() => confirm(ringdowns[0])} type="button">
               Confirm Receipt
             </button>
           </>
@@ -46,7 +50,7 @@ const UnconfirmedRingdowns = ({ onConfirm, ringdown }) => {
               Ringdown
             </h1>
             <h2>
-              <RingdownEta ringdown={ringdown} />
+              <RingdownEta ringdown={ringdowns[0]} />
             </h2>
             <button className="usa-button width-full" onClick={() => setIsViewed(true)} type="button">
               View ringdown
@@ -60,7 +64,7 @@ const UnconfirmedRingdowns = ({ onConfirm, ringdown }) => {
 
 UnconfirmedRingdowns.propTypes = {
   onConfirm: PropTypes.func.isRequired,
-  ringdown: PropTypes.instanceOf(Ringdown).isRequired,
+  ringdowns: PropTypes.arrayOf(PropTypes.instanceOf(Ringdown)).isRequired,
 };
 
 export default UnconfirmedRingdowns;
