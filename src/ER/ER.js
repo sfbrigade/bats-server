@@ -10,7 +10,7 @@ import Ringdown from '../Models/Ringdown';
 import HospitalStatus from '../Models/HospitalStatus';
 
 import Beds from './Beds';
-import RingDowns from './Ringdowns';
+import Ringdowns from './Ringdowns';
 
 export default function ER() {
   const { hospital } = useContext(Context);
@@ -64,7 +64,7 @@ export default function ER() {
         )}
       </Header>
       {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdown={unconfirmedRingdowns[0]} />}
-      {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
+      {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} />}
       {showInfo && (!showTabs || (!hasUnconfirmedRingdowns && selectedTab === 1)) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
       )}
