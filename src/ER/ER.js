@@ -3,7 +3,7 @@ import useWebSocket from 'react-use-websocket';
 
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
-import UnconfirmedRingdown from './IncomingRingdown';
+import UnconfirmedRingdowns from './UnconfirmedRingdowns';
 
 import Context from '../Context';
 import Ringdown from '../Models/Ringdown';
@@ -63,7 +63,7 @@ export default function ER() {
           <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
         )}
       </Header>
-      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdown onConfirm={onConfirm} ringdown={unconfirmedRingdowns[0]} />}
+      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdown={unconfirmedRingdowns[0]} />}
       {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
       {showInfo && (!showTabs || (!hasUnconfirmedRingdowns && selectedTab === 1)) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />

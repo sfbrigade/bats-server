@@ -6,9 +6,9 @@ import ApiService from '../ApiService';
 import RingdownDetails from '../Components/RingdownDetails';
 import RingdownEta from '../Components/RingdownEta';
 import Ringdown from '../Models/Ringdown';
-import './IncomingRingdown.scss';
+import './UnconfirmedRingdowns.scss';
 
-const IncomingRingDown = ({ onConfirm, ringdown }) => {
+const UnconfirmedRingdowns = ({ onConfirm, ringdown }) => {
   const [isViewed, setIsViewed] = useState(false);
 
   useEffect(() => {
@@ -58,9 +58,9 @@ const IncomingRingDown = ({ onConfirm, ringdown }) => {
   );
 };
 
-IncomingRingDown.propTypes = {
+UnconfirmedRingdowns.propTypes = {
   onConfirm: PropTypes.func.isRequired,
   ringdown: PropTypes.instanceOf(Ringdown).isRequired,
 };
 
-export default IncomingRingDown;
+export default UnconfirmedRingdowns;
