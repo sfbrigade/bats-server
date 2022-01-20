@@ -38,6 +38,7 @@ const UnconfirmedRingdowns = ({ onConfirm, ringdowns }) => {
             </div>
           </RingdownCard>
         ))}
+        {ringdowns.length > 3 && <h2 className="unconfirmed-ringdowns__more">+ {ringdowns.length - 3} More</h2>}
       </div>
     </div>
   );
