@@ -59,15 +59,13 @@ export default function ER() {
   return (
     <>
       <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
-        {showTabs && !hasUnconfirmedRingdowns && (
-          <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
-        )}
+        {showTabs && <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />}
       </Header>
-      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
-      {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} />}
-      {showInfo && (!showTabs || (!hasUnconfirmedRingdowns && selectedTab === 1)) && (
+      {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} />}
+      {showInfo && (!showTabs || selectedTab === 1) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
       )}
+      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
     </>
   );
 }

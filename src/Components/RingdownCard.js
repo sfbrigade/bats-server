@@ -11,7 +11,7 @@ import RingdownEta from './RingdownEta';
 import Alert from './Alert';
 import './RingdownCard.scss';
 
-function RingdownCard({ className, ringdown, onStatusChange }) {
+function RingdownCard({ children, className, ringdown, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
@@ -71,6 +71,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
             onToggle={() => setExpanded(!isExpanded)}
           >
             <RingdownDetails ringdown={ringdown} />
+            {children}
           </Drawer>
         )}
       {showCancel && (
@@ -100,14 +101,16 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
 }
 
 RingdownCard.propTypes = {
+  children: PropTypes.node,
   className: PropTypes.string,
   ringdown: PropTypes.instanceOf(Ringdown).isRequired,
   onStatusChange: PropTypes.instanceOf(Function),
 };
 
 RingdownCard.defaultProps = {
-  className: null,
-  onStatusChange: null,
+  children: undefined,
+  className: undefined,
+  onStatusChange: undefined,
 };
 
 export default RingdownCard;

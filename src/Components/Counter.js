@@ -32,7 +32,9 @@ function Counter({ label, min, max, name, onChange, value, isEditing }) {
         <button type="button" className="usa-button counter__button counter__button--decrement" onClick={handleDecrement}>
           &minus;
         </button>
-        {value && <input className="usa-input usa-input--small counter__input" type="text" readOnly id={name} name={name} value={value} />}
+        {!Number.isNaN(value) && (
+          <input className="usa-input usa-input--small counter__input" type="text" readOnly id={name} name={name} value={value} />
+        )}
         <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement}>
           +
         </button>
