@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import './ErDashboardTable.scss';
 
 export default function ErDashboardTable({ more, users, mainUser, allRingdowns }) {
+  const [usersList, setUsersList] = useState(users)
   return (
     <div>
       <div>
@@ -11,15 +12,21 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
         <table cellSpacing="0" cellPadding="0">
           <tbody>
             <tr>
-              <th className="padding-2">Status</th>
-              <th className="padding-2">Name</th>
+              <th className="padding-2">
+                First Name <button type="button">^</button>
+              </th>
+              <th className="padding-2">
+                Last Name <button type="button">^</button>
+              </th>
+              <th className="padding-2">
+                Email <button type="button">^</button>
+              </th>
             </tr>
-            {users.map((user) =>
+            {usersList.map((user) =>
               user.organization.id === mainUser.organization.id && !user.isAdminUser ? (
                 <tr>
-                  <td className="padding-2 row-border">
-                    {user.firstName} {user.lastName}
-                  </td>
+                  <td className="padding-2 row-border">{user.firstName}</td>
+                  <td className="padding-2 row-border">{user.lastName}</td>
                   <td className="padding-2 row-border">{user.email}</td>
                   <td className="padding-2 row-border">
                     <button type="button" className="border-0 bg-white" onClick={() => more(user)}>
