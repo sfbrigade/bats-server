@@ -2,7 +2,7 @@
 @import '../../theme/uswds-theme-color';
 @import '../../theme/uswds-theme-custom-mixins';
 
-.ringdownstatus {
+.ringdownstatus__label {
   color: color($theme-color-base-light);
   margin: 0;
   span {
@@ -15,21 +15,31 @@
   }
 }
 
-[class*=' ringdownstatus--'] {
+[class*=' ringdownstatus__label--'] {
   margin-top: 0.75rem;
 }
 
-.ringdownstatus--pending,
-.ringdownstatus--delivered {
+.ringdownstatus__label--pending,
+.ringdownstatus__label--delivered {
   span {
     background-color: #ffecba;
     color: #df7800;
   }
 }
 
-.ringdownstatus--confirmed {
+.ringdownstatus__label--confirmed {
   span {
     background-color: #d5fec7;
     color: #007922;
+  }
+}
+
+.ringdownstatus {
+  .usa-fieldset + .usa-fieldset {
+    padding-top: 1.5rem;
+  }
+
+  .usa-fieldset:last-child {
+    background-color: color($theme-color-base-lightest);
   }
 }
