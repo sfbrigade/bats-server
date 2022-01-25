@@ -3,7 +3,7 @@ import useWebSocket from 'react-use-websocket';
 
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
-import UnconfirmedRingdown from './IncomingRingdown';
+import UnconfirmedRingdowns from './UnconfirmedRingdowns';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -11,7 +11,7 @@ import Ringdown from '../Models/Ringdown';
 import HospitalStatus from '../Models/HospitalStatus';
 
 import Beds from './Beds';
-import RingDowns from './Ringdowns';
+import Ringdowns from './Ringdowns';
 
 export default function ER() {
   const { hospital } = useContext(Context);
@@ -69,17 +69,13 @@ export default function ER() {
   return (
     <>
       <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
-        {showTabs && !hasUnconfirmedRingdowns && (
-          <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />
-        )}
+        {showTabs && <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />}
       </Header>
-      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdown onConfirm={onConfirm} ringdown={unconfirmedRingdowns[0]} />}
-      {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && (
-        <RingDowns ringdowns={ringdowns} onStatusChange={onStatusChange} />
-      )}
-      {showInfo && (!showTabs || (!hasUnconfirmedRingdowns && selectedTab === 1)) && (
+      {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
+      {showInfo && (!showTabs || selectedTab === 1) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
       )}
+      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
     </>
   );
 }
