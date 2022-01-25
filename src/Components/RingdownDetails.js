@@ -11,10 +11,14 @@ function RingdownDetails({ className, ringdown, isIncoming }) {
     <table className={classNames('usa-table usa-table--borderless width-full ringdown-details', className)}>
       <tbody>
         <tr>
-          <th colSpan="2">
+          <th colSpan="2">Patient info</th>
+        </tr>
+        <tr>
+          <th>
             {isIncoming && <>Incoming Ambulance</>}
-            {!isIncoming && <>Incident #{ringdown.dispatchCallNumber}</>}
+            {!isIncoming && <>Incident #</>}
           </th>
+          <td>{!isIncoming && <>{ringdown.dispatchCallNumber}</>}</td>
         </tr>
         <tr>
           <th>Unit #</th>
@@ -32,9 +36,6 @@ function RingdownDetails({ className, ringdown, isIncoming }) {
             </tr>
           </>
         )}
-        <tr>
-          <th colSpan="2">Patient info</th>
-        </tr>
         <tr>
           <th>Estim. Age</th>
           <td>{ringdown.age}</td>

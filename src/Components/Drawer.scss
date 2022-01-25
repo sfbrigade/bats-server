@@ -11,7 +11,7 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  margin: 0.75rem;
 
   &:focus {
     border: inherit;
@@ -28,9 +28,5 @@
 .drawer--opened {
   .drawer__content {
     display: block;
-  }
-
-  .drawer__handle {
-    border-top: 1px solid color($theme-color-base-lighter);
   }
 }

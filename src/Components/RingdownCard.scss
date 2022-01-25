@@ -3,45 +3,51 @@
 @import '../../theme/uswds-theme-color';
 
 .ringdown-card {
-  .drawer {
-    margin: -1rem -1.5rem;
-  }
+  border: 1px solid color($theme-color-base-light);
+  box-sizing: border-box;
+  border-radius: 8px;
+}
 
-  .ringdown-details tr:first-child {
-    td,
-    th {
-      &:first-child {
-        border-top-left-radius: 0.25rem;
-      }
-      &:last-child {
-        border-top-right-radius: 0.25rem;
-      }
-    }
-  }
+.ringdown-card__background {
+  background: color($theme-color-base-lightest);
+}
+
+.ringdown-card__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem;
+}
+
+.ringdown-card__body {
+  align-items: center;
+  display: flex;
+  margin: 0.75rem;
+  color: color($theme-color-base);
+}
+
+.ringdown-card__header button {
+  border: none;
+  color: color($theme-color-primary);
+  font-weight: 600;
+  cursor: pointer;
+  background-color: transparent;
 }
 
 .ringdown-card__status {
-  @include h4-italic;
-  color: color($theme-color-base-light);
+  border-radius: 4px;
+  padding: 0px 4px;
 }
 
 .ringdown-card--offloaded {
-  &.usa-card__container {
-    background-color: color($theme-color-success-lighter);
-  }
-  .ringdown-card__status {
-    color: color($theme-color-base-ink);
-  }
+  background-color: color($theme-color-success);
+  color: white;
 }
-
+.ringdown-card--redirected {
+  background-color: color($theme-color-warning);
+  color: white;
+}
 .ringdown-card--cancelled {
-  &.usa-card__container {
-    background-color: color($theme-color-warning);
-  }
-  .ringdown-card__status {
-    color: color($theme-color-base-ink);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  background-color: color($theme-color-error);
+  color: white;
 }

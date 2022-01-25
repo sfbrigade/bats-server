@@ -5,6 +5,7 @@ import ApiService from '../ApiService';
 import Heading from '../Components/Heading';
 import RingdownCard from '../Components/RingdownCard';
 import Ringdown from '../Models/Ringdown';
+import RingdownSection from './RingdownSection';
 
 function Ringdowns({ ringdowns }) {
   const waiting = ringdowns.filter(
@@ -31,22 +32,8 @@ function Ringdowns({ ringdowns }) {
   return (
     <>
       <div className="usa-accordion ringdowns">
-        {waiting.length > 0 && (
-          <>
-            <Heading title="Waiting" badge={`${waiting.length}`} />
-            {waiting.map((r) => (
-              <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} />
-            ))}
-          </>
-        )}
-        {enroute.length > 0 && (
-          <>
-            <Heading title="En route" badge={`${enroute.length}`} />
-            {enroute.map((r) => (
-              <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} onStatusChange={onStatusChange} />
-            ))}
-          </>
-        )}
+        <RingdownSection title="Waiting" ringdowns={waiting} />
+        <RingdownSection title="Incoming" ringdowns={enroute} />
       </div>
     </>
   );

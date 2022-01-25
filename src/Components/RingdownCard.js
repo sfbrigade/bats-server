@@ -26,53 +26,50 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
     onStatusChange(ringdown, Ringdown.Status.REDIRECT_ACKNOWLEDGED);
   }
 
+  const canBeDismissed =
+    ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED ||
+    ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED ||
+    ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED;
+
+  const backgroundClass = canBeDismissed ? 'ringdown-card__background' : null;
+
   return (
-    <Card
-      className={classNames(
-        'ringdown-card',
-        { 'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED },
-        { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED },
-        { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED },
-        className
-      )}
-      header={
-        isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : `Incident #${ringdown.dispatchCallNumber}`
-      }
-      body={isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : ringdown.chiefComplaintDescription}
-    >
+    <div className={classNames('ringdown-card height-auto', className, backgroundClass)}>
       {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
-        <span className="ringdown-card__status">
-          <span>Cancelled </span>
-          <button className="usa-button width-card" type="button" onClick={() => setShowCancel(true)}>
+        <div className="ringdown-card__header">
+          <span className="ringdown-card__status ringdown-card--cancelled">Cancelled</span>
+          <button type="button" onClick={() => setShowCancel(true)}>
             Dismiss
           </button>
-        </span>
+        </div>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && (
-        <span className="ringdown-card__status">
-          <span>Redirected </span>
-          <button className="usa-button width-card" type="button" onClick={() => setShowRedirect(true)}>
+        <div className="ringdown-card__header">
+          <span className="ringdown-card__status ringdown-card--redirected">Redirected</span>
+          <button type="button" onClick={() => setShowRedirect(true)}>
             Dismiss
           </button>
-        </span>
+        </div>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
-        <span className="ringdown-card__status">
-          <span>Offloaded: </span>
-          {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
-        </span>
+        <div className="ringdown-card__header">
+          <span className="ringdown-card__status ringdown-card--offloaded">Offloaded</span>
+          <button type="button" onClick={() => setShowRedirect(true)}>
+            Dismiss
+          </button>
+        </div>
       )}
-      {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
-        ringdown.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
-        ringdown.currentDeliveryStatus !== Ringdown.Status.REDIRECTED && (
-          <Drawer
-            title={<RingdownEta className="ringdown-card__status" ringdown={ringdown} />}
-            isOpened={isExpanded}
-            onToggle={() => setExpanded(!isExpanded)}
-          >
-            <RingdownDetails ringdown={ringdown} />
-          </Drawer>
-        )}
+      {canBeDismissed && <div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+      {!canBeDismissed && (
+        <Drawer
+          title={<RingdownEta className="ringdown-card__status" ringdown={ringdown} />}
+          subtitle={<div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+          isOpened={isExpanded}
+          onToggle={() => setExpanded(!isExpanded)}
+        >
+          <RingdownDetails ringdown={ringdown} />
+        </Drawer>
+      )}
       {showCancel && (
         <Alert
           type="warning"
@@ -95,7 +92,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
           onCancel={() => setShowRedirect(false)}
         />
       )}
-    </Card>
+    </div>
   );
 }
 
