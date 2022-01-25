@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import RingdownCard from '../Components/RingdownCard';
-import PropTypes from 'prop-types';
 import './RingdownSection.scss';
 
-function RingdownSection({ title, ringdowns }) {
+function RingdownSection({ title, ringdowns, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(true);
 
   return ringdowns.length === 0 ? (
@@ -24,15 +24,12 @@ function RingdownSection({ title, ringdowns }) {
           {title}
           <div className="ringdown-section__badge">{ringdowns.length}</div>
         </div>
-        <div className="ringodwn-section__caret">
-          {isExpanded ? (
-            <i className="fas fa-caret-up btn" onClick={() => setExpanded(false)} />
-          ) : (
-            <i className="fas fa-caret-down btn" onClick={() => setExpanded(true)} />
-          )}
+        <div className="ringdown-section__caret">
+          {isExpanded ? <i className="fas fa-caret-up btn" /> : <i className="fas fa-caret-down btn" />}
         </div>
       </div>
-      {isExpanded && ringdowns.map((r) => <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} />)}
+      {isExpanded &&
+        ringdowns.map((r) => <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} onStatusChange={onStatusChange} />)}
     </div>
   );
 }
@@ -40,6 +37,7 @@ function RingdownSection({ title, ringdowns }) {
 RingdownSection.propTypes = {
   title: PropTypes.node.isRequired,
   ringdowns: PropTypes.node.isRequired,
+  onStatusChange: PropTypes.instanceOf(Function).isRequired,
 };
 
 export default RingdownSection;

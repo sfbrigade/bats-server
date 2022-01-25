@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ApiService from '../ApiService';
 
-import Heading from '../Components/Heading';
-import RingdownCard from '../Components/RingdownCard';
 import Ringdown from '../Models/Ringdown';
 import RingdownSection from './RingdownSection';
 
-function Ringdowns({ ringdowns }) {
+function Ringdowns({ ringdowns, onStatusChange }) {
   const waiting = ringdowns.filter(
     (r) => r.currentDeliveryStatus === Ringdown.Status.ARRIVED || r.currentDeliveryStatus === Ringdown.Status.OFFLOADED
   );
@@ -21,19 +18,11 @@ function Ringdowns({ ringdowns }) {
       r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
   );
 
-  function onStatusChange(rd, status) {
-    // submit to server
-    const now = new Date();
-    ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
-    // update local object for immediate feedback
-    rd.currentDeliveryStatus = status;
-  }
-
   return (
     <>
       <div className="usa-accordion ringdowns">
-        <RingdownSection title="Waiting" ringdowns={waiting} />
-        <RingdownSection title="Incoming" ringdowns={enroute} />
+        <RingdownSection title="Waiting" ringdowns={waiting} onStatusChange={onStatusChange} />
+        <RingdownSection title="Incoming" ringdowns={enroute} onStatusChange={onStatusChange} />
       </div>
     </>
   );
@@ -41,6 +30,7 @@ function Ringdowns({ ringdowns }) {
 
 Ringdowns.propTypes = {
   ringdowns: PropTypes.arrayOf(PropTypes.instanceOf(Ringdown)).isRequired,
+  onStatusChange: PropTypes.instanceOf(Function).isRequired,
 };
 
 export default Ringdowns;

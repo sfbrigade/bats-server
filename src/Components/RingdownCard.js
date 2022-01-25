@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 
-import Card from './Card';
 import Drawer from './Drawer';
 import Ringdown from '../Models/Ringdown';
 import RingdownDetails from './RingdownDetails';
