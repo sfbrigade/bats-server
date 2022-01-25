@@ -29,13 +29,19 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
     ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED ||
     ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED;
 
-  const backgroundClass = canBeDismissed ? 'ringdown-card__background' : null;
-
   return (
-    <div className={classNames('ringdown-card height-auto', className, backgroundClass)}>
+    <div
+      className={classNames('ringdown-card height-auto', className, {
+        'ringdown-card--dismissable': canBeDismissed,
+        'ringdown-card--expanded': isExpanded,
+        'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED,
+        'ringdown-card--redirected': ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED,
+        'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED,
+      })}
+    >
       {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
         <div className="ringdown-card__header">
-          <span className="ringdown-card__status ringdown-card--cancelled">Cancelled</span>
+          <span className="ringdown-card__status">Cancelled</span>
           <button type="button" onClick={() => setShowCancel(true)}>
             Dismiss
           </button>
@@ -43,7 +49,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && (
         <div className="ringdown-card__header">
-          <span className="ringdown-card__status ringdown-card--redirected">Redirected</span>
+          <span className="ringdown-card__status">Redirected</span>
           <button type="button" onClick={() => setShowRedirect(true)}>
             Dismiss
           </button>
@@ -51,7 +57,7 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
         <div className="ringdown-card__header">
-          <span className="ringdown-card__status ringdown-card--offloaded">Offloaded</span>
+          <span className="ringdown-card__status">Offloaded</span>
           <button type="button" onClick={() => setShowRedirect(true)}>
             Dismiss
           </button>

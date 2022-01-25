@@ -10,7 +10,7 @@ function RingdownEta({ className, prefix, ringdown }) {
       {ringdown.etaDateTimeLocalObj && (
         <span className={classNames('ringdown-eta', className)}>
           <span className="ringdown-eta__prefix">{prefix}</span>
-          {ringdown.etaDateTimeLocalObj.toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+          {ringdown.etaDateTimeLocalObj.toLocaleString(DateTime.TIME_24_SIMPLE)}
         </span>
       )}
     </>
