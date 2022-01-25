@@ -2,13 +2,17 @@
 @import '../../theme/uswds-theme-custom-mixins';
 @import '../../theme/uswds-theme-color';
 
+.ringdown-section + .ringdown-section {
+  border-top: 1px solid color($theme-color-base-light);
+}
+
 .ringdown-section__header {
   border-bottom: 0;
   display: flex;
   justify-content: space-between;
   cursor: pointer;
   &:focus {
-    border: inherit;
+    border: none;
     outline: inherit;
   }
 }
