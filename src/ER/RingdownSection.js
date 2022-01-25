@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import RingdownCard from '../Components/RingdownCard';
+import PropTypes from 'prop-types';
 import './RingdownSection.scss';
 
 function RingdownSection({ title, ringdowns }) {
