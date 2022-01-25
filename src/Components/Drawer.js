@@ -4,10 +4,9 @@ import classNames from 'classnames';
 
 import './Drawer.scss';
 
-function Drawer({ title, children, isOpened, onToggle }) {
+function Drawer({ title, subtitle, children, isOpened, onToggle }) {
   return (
     <div className={classNames('drawer', { 'drawer--opened': isOpened })}>
-      <div className="drawer__content">{children}</div>
       <div
         className="drawer__handle"
         onClick={() => onToggle()}
@@ -26,17 +25,21 @@ function Drawer({ title, children, isOpened, onToggle }) {
           )}
           {isOpened && (
             <>
-              Collapse <i className="fas fa-caret-up" />
+              Less info <i className="fas fa-caret-up" />
             </>
           )}
         </div>
       </div>
+      {subtitle}
+
+      <div className="drawer__content">{children}</div>
     </div>
   );
 }
 
 Drawer.propTypes = {
   title: PropTypes.node.isRequired,
+  subtitle: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired,
   isOpened: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,

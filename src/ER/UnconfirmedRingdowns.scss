@@ -1,0 +1,62 @@
+@import '~uswds/dist/scss/packages/required';
+@import '../../theme/uswds-theme-color';
+
+html,
+body,
+body > .grid-container,
+body > .grid-container > .grid-row,
+body > .grid-container > .grid-row > div {
+  height: 100%;
+}
+
+body > .grid-container > .grid-row > div > #root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.unconfirmed-ringdowns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(27, 27, 27, 0.5);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: end;
+}
+
+.unconfirmed-ringdowns__container {
+  background-color: white;
+  border-radius: 1rem 1rem 0 0;
+  max-height: 90%;
+  padding: 1.25rem;
+
+  h2 {
+    text-align: center;
+  }
+
+  .ringdown-card {
+    margin: 1rem 0;
+
+    &:first-child {
+      border: 3px solid color($theme-color-warning);
+    }
+    &:not(:first-child) {
+      pointer-events: none;
+      .drawer__prompt {
+        color: color($theme-color-base-light);
+      }
+    }
+  }
+}
+
+.unconfirmed-ringdowns__confirm {
+  padding: 0.625rem;
+}
+
+.unconfirmed-ringdowns__more {
+  color: color($theme-color-base);
+}

@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
+import RingdownCard from '../Components/RingdownCard';
 import './RingdownStatus.scss';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
@@ -28,11 +29,11 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
   }
 
   return (
-    <div className={classNames('usa-accordion', className)}>
+    <div className={classNames('usa-accordion ringdownstatus', className)}>
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <h3 className="h1 margin-0">{ringdown.hospital.name}</h3>
-          <h4 className={`ringdownstatus ringdownstatus--${ringdownStatus}`}>
+          <h4 className={`ringdownstatus__label ringdownstatus__label--${ringdownStatus}`}>
             Ringdown Status:&nbsp;
             <span>
               {ringdownStatus === 'pending' && 'Pending'}
@@ -40,7 +41,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               {ringdownStatus === 'confirmed' && 'Confirmed'}
             </span>
           </h4>
-          <h4 className="ringdownstatus">
+          <h4 className="ringdownstatus__label">
             ETA:&nbsp;
             <span>
               {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])
@@ -180,6 +181,9 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               onCancel={() => setShowRedirect(false)}
             />
           )}
+        </fieldset>
+        <fieldset className="usa-fieldset border-top border-base-lighter">
+          <RingdownCard ringdown={ringdown} />
         </fieldset>
       </div>
     </div>
