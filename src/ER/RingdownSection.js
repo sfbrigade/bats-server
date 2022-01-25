@@ -36,4 +36,9 @@ function RingdownSection({ title, ringdowns }) {
   );
 }
 
+RingdownSection.propTypes = {
+  title: PropTypes.node.isRequired,
+  ringdowns: PropTypes.node.isRequired,
+};
+
 export default RingdownSection;
