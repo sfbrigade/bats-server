@@ -21,6 +21,7 @@
   display: flex;
   margin: 0.75rem;
   color: color($theme-color-base);
+  @include h3;
 }
 
 .ringdown-card__header button {
