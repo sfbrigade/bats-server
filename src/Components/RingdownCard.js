@@ -69,6 +69,7 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
           onToggle={() => setExpanded(!isExpanded)}
         >
           <RingdownDetails ringdown={ringdown} />
+          {children}
         </Drawer>
       )}
       {showCancel && (

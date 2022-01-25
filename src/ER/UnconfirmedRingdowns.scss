@@ -15,7 +15,7 @@ body > .grid-container > .grid-row > div > #root {
   height: 100%;
 }
 
-.unconfirmed-ringdowns-container {
+.unconfirmed-ringdowns {
   position: absolute;
   top: 0;
   left: 0;
@@ -28,7 +28,7 @@ body > .grid-container > .grid-row > div > #root {
   justify-content: end;
 }
 
-.unconfirmed-ringdowns {
+.unconfirmed-ringdowns__container {
   background-color: white;
   border-radius: 1rem 1rem 0 0;
   max-height: 90%;
@@ -40,6 +40,16 @@ body > .grid-container > .grid-row > div > #root {
 
   .ringdown-card {
     margin: 1rem 0;
+
+    &:first-child {
+      border: 3px solid color($theme-color-warning);
+    }
+    &:not(:first-child) {
+      pointer-events: none;
+      .drawer__prompt {
+        color: color($theme-color-base-light);
+      }
+    }
   }
 }
 

@@ -26,18 +26,20 @@ const UnconfirmedRingdowns = ({ onConfirm, ringdowns }) => {
   }
 
   return (
-    <div className="unconfirmed-ringdowns-container">
-      <div className="unconfirmed-ringdowns">
+    <div className="unconfirmed-ringdowns">
+      <div className="unconfirmed-ringdowns__container">
         <h2>New Ringdowns</h2>
-        {ringdowns.slice(0, 3).map((ringdown) => (
-          <RingdownCard key={ringdown.id} ringdown={ringdown}>
-            <div className="unconfirmed-ringdowns__confirm">
-              <button type="button" className="usa-button width-full" onClick={() => confirm(ringdown)}>
-                Confirm Receipt
-              </button>
-            </div>
-          </RingdownCard>
-        ))}
+        <div>
+          {ringdowns.slice(0, 3).map((ringdown) => (
+            <RingdownCard key={ringdown.id} ringdown={ringdown}>
+              <div className="unconfirmed-ringdowns__confirm">
+                <button type="button" className="usa-button width-full" onClick={() => confirm(ringdown)}>
+                  Confirm Receipt
+                </button>
+              </div>
+            </RingdownCard>
+          ))}
+        </div>
         {ringdowns.length > 3 && <h2 className="unconfirmed-ringdowns__more">+ {ringdowns.length - 3} More</h2>}
       </div>
     </div>
