@@ -58,9 +58,6 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
         <div className="ringdown-card__header">
           <span className="ringdown-card__status">Offloaded</span>
-          <button type="button" onClick={() => setShowRedirect(true)}>
-            Dismiss
-          </button>
         </div>
       )}
       {canBeDismissed && <div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
