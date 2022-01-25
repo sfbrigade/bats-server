@@ -3,31 +3,37 @@
 @import '../../theme/uswds-theme-color';
 
 .ringdown-details {
-  margin: 0;
+  background: color($theme-color-base-lightest);
+  padding: 0 0.5rem 0.75rem;
+  table {
+    margin: 0;
+  }
   td,
   th {
     @include h4;
-    border-color: color($theme-color-base-lighter);
+    background: color($theme-color-base-lightest);
+    border-color: color($theme-color-base-light);
+    border-width: 1px 0 0 0;
+    padding: 0.25rem 0 !important;
   }
 
   td {
     padding-left: 0.75rem;
     text-align: left;
+    background: color($theme-color-base-lightest);
+    color: color($theme-color-base-darker);
   }
 
   th {
-    color: color($theme-color-base-light);
-    text-align: right;
-    padding-right: 0;
+    color: color($theme-color-base);
     vertical-align: top;
   }
 
   th[colspan='2'] {
     @include h4-bold;
-    border-bottom-color: color($theme-color-base-ink);
-    color: color($theme-color-base-ink);
-    text-align: left;
-    padding: 1rem 1.5rem 0.5rem;
+    border-top-color: transparent;
+    color: color($theme-color-base-darker);
+    padding-top: 1rem !important;
   }
 
   tr:first-child {
@@ -41,5 +47,12 @@
     th {
       border-bottom: 0;
     }
+  }
+}
+
+.ringdown-details__header + tr {
+  & > td,
+  th {
+    border-top-color: transparent;
   }
 }
