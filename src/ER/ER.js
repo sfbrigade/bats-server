@@ -5,6 +5,7 @@ import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
 import UnconfirmedRingdown from './IncomingRingdown';
 
+import ApiService from '../ApiService';
 import Context from '../Context';
 import Ringdown from '../Models/Ringdown';
 import HospitalStatus from '../Models/HospitalStatus';
@@ -25,6 +26,15 @@ export default function ER() {
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
     setUnconfirmedRingdowns(newUnconfirmedRingdowns);
+  }
+
+  function onStatusChange(rd, status) {
+    // submit to server
+    const now = new Date();
+    ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
+    // update local object for immediate feedback
+    rd.currentDeliveryStatus = status;
+    setRingdowns([...ringdowns]);
   }
 
   function onStatusUpdate(newStatusUpdate) {
@@ -64,7 +74,9 @@ export default function ER() {
         )}
       </Header>
       {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdown onConfirm={onConfirm} ringdown={unconfirmedRingdowns[0]} />}
-      {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && <RingDowns ringdowns={ringdowns} />}
+      {showRingdown && !hasUnconfirmedRingdowns && (!showTabs || selectedTab === 0) && (
+        <RingDowns ringdowns={ringdowns} onStatusChange={onStatusChange} />
+      )}
       {showInfo && (!showTabs || (!hasUnconfirmedRingdowns && selectedTab === 1)) && (
         <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
       )}
