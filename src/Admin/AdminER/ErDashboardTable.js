@@ -146,7 +146,7 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
                 <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
                 <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
                 <td className="padding-2 row-border">
-                  <button type="button" className="bg-white border-0" onClick={() => showModal}>
+                  <button type="button" className="bg-white border-0" onClick={showModal}>
                     !
                   </button>
                 </td>

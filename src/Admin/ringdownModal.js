@@ -10,7 +10,7 @@ export default function RingdownModal({ showModal, handleClose }) {
     <div className={showHideClassName}>
       <section className="ringdown__modal__main">
         Ringdown Modal
-        <button type="button" onClick={() => handleClose}>
+        <button type="button" onClick={handleClose}>
           Close
         </button>
       </section>
