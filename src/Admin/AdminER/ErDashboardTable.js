@@ -1,10 +1,90 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import RingdownModal from '../ringdownModal';
+
 import './ErDashboardTable.scss';
 
 export default function ErDashboardTable({ more, users, mainUser, allRingdowns }) {
-  const [usersList, setUsersList] = useState(users)
+  const [usersList, setUsersList] = useState(users);
+  const [sortDirection, setSortDirection] = useState(1);
+  const [modalDisplay, setModalDisplay] = useState(false);
+
+  function userSort(field) {
+    const sortedList = usersList;
+    // create sort function where I can pass the key and sort by case
+    // place sting in square brackets
+    switch (field) {
+      case 'firstName':
+        if (sortDirection === 1) {
+          sortedList.sort((a, b) => {
+            if (a.firstName > b.firstName) {
+              return 1;
+            }
+            return -1;
+          });
+        } else {
+          sortedList.sort((a, b) => {
+            if (a.firstName < b.firstName) {
+              return 1;
+            }
+            return -1;
+          });
+        }
+        break;
+      case 'lastName':
+        if (sortDirection === 1) {
+          sortedList.sort((a, b) => {
+            if (a.lastName > b.lastName) {
+              return 1;
+            }
+            return -1;
+          });
+        } else {
+          sortedList.sort((a, b) => {
+            if (a.lastName < b.lastName) {
+              return 1;
+            }
+            return -1;
+          });
+        }
+        break;
+      case 'email':
+        if (sortDirection === 1) {
+          sortedList.sort((a, b) => {
+            if (a.email > b.email) {
+              return 1;
+            }
+            return -1;
+          });
+        } else {
+          sortedList.sort((a, b) => {
+            if (a.email < b.email) {
+              return 1;
+            }
+            return -1;
+          });
+        }
+        break;
+      default:
+        break;
+    }
+    setUsersList(sortedList);
+    if (sortDirection === 1) {
+      setSortDirection(0);
+    } else {
+      setSortDirection(1);
+    }
+  }
+
+  function showModal() {
+    setModalDisplay(true);
+  }
+
+  function hideModal() {
+    setModalDisplay(false);
+  }
+
   return (
     <div>
       <div>
@@ -13,13 +93,22 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
           <tbody>
             <tr>
               <th className="padding-2">
-                First Name <button type="button">^</button>
+                First Name{' '}
+                <button type="button" onClick={() => userSort('firstName')}>
+                  ^
+                </button>
               </th>
               <th className="padding-2">
-                Last Name <button type="button">^</button>
+                Last Name{' '}
+                <button type="button" onClick={() => userSort('lastName')}>
+                  ^
+                </button>
               </th>
               <th className="padding-2">
-                Email <button type="button">^</button>
+                Email{' '}
+                <button type="button" onClick={() => userSort('email')}>
+                  ^
+                </button>
               </th>
             </tr>
             {usersList.map((user) =>
@@ -57,7 +146,7 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
                 <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
                 <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
                 <td className="padding-2 row-border">
-                  <button type="button" className="bg-white border-0" onClick={() => more()}>
+                  <button type="button" className="bg-white border-0" onClick={() => showModal}>
                     !
                   </button>
                 </td>
@@ -65,6 +154,7 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
             ))}
           </tbody>
         </table>
+        <RingdownModal showModal={modalDisplay} handleClose={hideModal} />
       </div>
     </div>
   );

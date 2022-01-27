@@ -17,15 +17,15 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
           sortedList.sort((a, b) => {
             if (a.firstName > b.firstName) {
               return 1;
-            } 
-            return -1
+            }
+            return -1;
           });
         } else {
           sortedList.sort((a, b) => {
             if (a.firstName < b.firstName) {
               return 1;
-            } 
-            return -1
+            }
+            return -1;
           });
         }
         break;
@@ -34,15 +34,15 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
           sortedList.sort((a, b) => {
             if (a.lastName > b.lastName) {
               return 1;
-            } 
-            return -1
+            }
+            return -1;
           });
         } else {
           sortedList.sort((a, b) => {
             if (a.lastName < b.lastName) {
               return 1;
-            } 
-            return -1
+            }
+            return -1;
           });
         }
         break;
@@ -51,15 +51,15 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
           sortedList.sort((a, b) => {
             if (a.email > b.email) {
               return 1;
-            } 
-            return -1
+            }
+            return -1;
           });
         } else {
           sortedList.sort((a, b) => {
             if (a.email < b.email) {
               return 1;
-            } 
-            return -1
+            }
+            return -1;
           });
         }
         break;

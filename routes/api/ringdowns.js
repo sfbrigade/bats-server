@@ -1,5 +1,4 @@
 const express = require('express');
-const { Op } = require('sequelize');
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
 
@@ -11,11 +10,7 @@ const { DeliveryStatus } = require('../../constants');
 const router = express.Router();
 
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
-  const queryFilter = {
-    currentDeliveryStatus: {
-      [Op.lt]: 'RETURNED TO SERVICE',
-    },
-  };
+  const queryFilter = {};
 
   try {
     if (req.query.hospitalId) {
