@@ -13,6 +13,7 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [showDismissConfirmation, setShowDismissConfirmation] = useState(false);
 
   function handleCancel() {
     setShowCancel(false);
@@ -22,6 +23,11 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
   function handleRedirect() {
     setShowRedirect(false);
     onStatusChange(ringdown, Ringdown.Status.REDIRECT_ACKNOWLEDGED);
+  }
+
+  function handleOffloaded() {
+    setShowDismissConfirmation(false);
+    onStatusChange(ringdown, Ringdown.Status.OFFLOADED_ACKNOWLEDGED);
   }
 
   const canBeDismissed =
@@ -58,6 +64,9 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
         <div className="ringdown-card__header">
           <span className="ringdown-card__status">Offloaded</span>
+          <button type="button" onClick={() => setShowDismissConfirmation(true)}>
+            Dismiss
+          </button>
         </div>
       )}
       {canBeDismissed && <div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
@@ -92,6 +101,17 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
           destructive="Dismiss"
           onDestructive={handleRedirect}
           onCancel={() => setShowRedirect(false)}
+        />
+      )}
+      {showDismissConfirmation && (
+        <Alert
+          type="warning"
+          title="Dismiss Notice"
+          message="The Ringdown will be removed from the docket."
+          cancel="Keep"
+          destructive="Dismiss"
+          onDestructive={handleOffloaded}
+          onCancel={() => setShowDismissConfirmation(false)}
         />
       )}
     </div>

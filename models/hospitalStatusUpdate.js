@@ -19,14 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       const activeDeliveries = await sequelize.models.PatientDelivery.findAll({
         include: [sequelize.models.Hospital],
         where: {
-          [Op.and]: [
-            {
-              currentDeliveryStatus: { [Op.ne]: DeliveryStatus.OFFLOADED },
-            },
-            {
-              currentDeliveryStatus: { [Op.ne]: DeliveryStatus.RETURNED_TO_SERVICE },
-            },
-          ],
+          currentDeliveryStatus: {
+            [Op.lt]: DeliveryStatus.OFFLOADED,
+          },
         },
         transaction: options?.transaction,
       });
