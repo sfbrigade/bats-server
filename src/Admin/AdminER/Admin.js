@@ -28,6 +28,7 @@ export default function AdminER() {
   };
 
   useEffect(() => {
+    // remove api calls and create reusable component
     ApiService.users.all().then((response) => {
       if (users === null) {
         setUsers(response.data);

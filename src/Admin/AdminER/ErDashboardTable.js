@@ -9,6 +9,7 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
   const [usersList, setUsersList] = useState(users);
   const [sortDirection, setSortDirection] = useState(1);
   const [modalDisplay, setModalDisplay] = useState(false);
+  const [modalRingdown, setModalRingdown] = useState(null);
 
   function userSort(field) {
     const sortedList = usersList;
@@ -77,7 +78,8 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
     }
   }
 
-  function showModal() {
+  function showModal(ringdown) {
+    setModalRingdown(ringdown);
     setModalDisplay(true);
   }
 
@@ -146,7 +148,7 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
                 <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
                 <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
                 <td className="padding-2 row-border">
-                  <button type="button" className="bg-white border-0" onClick={showModal}>
+                  <button type="button" className="bg-white border-0" onClick={() => showModal(ringdown)}>
                     !
                   </button>
                 </td>
@@ -154,7 +156,7 @@ export default function ErDashboardTable({ more, users, mainUser, allRingdowns }
             ))}
           </tbody>
         </table>
-        <RingdownModal showModal={modalDisplay} handleClose={hideModal} />
+        <RingdownModal ringdown={modalRingdown} showModal={modalDisplay} handleClose={hideModal} />
       </div>
     </div>
   );
