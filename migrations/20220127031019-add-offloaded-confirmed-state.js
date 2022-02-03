@@ -7,6 +7,8 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     await queryInterface.sequelize.query(`ALTER TYPE deliverystatus ADD VALUE 'OFFLOADED ACKNOWLEDGED' BEFORE 'RETURNED TO SERVICE'`);
+    await queryInterface.sequelize.query(`ALTER TYPE deliverystatus RENAME VALUE 'CANCEL ACKNOWLEGED' TO 'CANCEL ACKNOWLEDGED'`);
+    await queryInterface.sequelize.query(`ALTER TYPE deliverystatus RENAME VALUE 'REDIRECT ACKNOWLEGED' TO 'REDIRECT ACKNOWLEDGED'`);
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -16,6 +18,8 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+    await queryInterface.sequelize.query(`ALTER TYPE deliverystatus RENAME VALUE 'REDIRECT ACKNOWLEDGED' TO 'REDIRECT ACKNOWLEGED'`);
+    await queryInterface.sequelize.query(`ALTER TYPE deliverystatus RENAME VALUE 'CANCEL ACKNOWLEDGED' TO 'CANCEL ACKNOWLEGED'`);
     await queryInterface.sequelize.query(`DELETE FROM patientdeliveryupdate WHERE deliverystatusenum='OFFLOADED ACKNOWLEDGED';`);
     await queryInterface.sequelize.query(`ALTER TYPE deliverystatus RENAME TO deliverystatus_old;`);
     await queryInterface.sequelize.query(
