@@ -134,7 +134,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
             <li className="status-list-item">
               <div className="status-list-item__icon" />
               <div className="status-list-item__text">
-                {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
+                {(ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED ||
+                  ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED_ACKNOWLEDGED) && (
                   <button
                     onClick={() => onStatusChange(ringdown, Ringdown.Status.RETURNED_TO_SERVICE)}
                     className="usa-button usa-button--primary width-full"
@@ -143,7 +144,9 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                     Return to service
                   </button>
                 )}
-                {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED && 'Return to service'}
+                {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+                  ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED_ACKNOWLEDGED &&
+                  'Return to service'}
               </div>
             </li>
           </ol>
