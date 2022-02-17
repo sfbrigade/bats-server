@@ -52,7 +52,7 @@
     "ws": "^7.4.3"
   },
   "engines": {
-    "node": "14.8"
+    "node": "16.13.1"
   },
   "scripts": {
     "start": "react-scripts start",

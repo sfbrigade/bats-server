@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 
-import Card from './Card';
 import Drawer from './Drawer';
 import Ringdown from '../Models/Ringdown';
 import RingdownDetails from './RingdownDetails';
@@ -11,10 +9,11 @@ import RingdownEta from './RingdownEta';
 import Alert from './Alert';
 import './RingdownCard.scss';
 
-function RingdownCard({ className, ringdown, onStatusChange }) {
+function RingdownCard({ children, className, ringdown, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  const [showDismissConfirmation, setShowDismissConfirmation] = useState(false);
 
   function handleCancel() {
     setShowCancel(false);
@@ -26,53 +25,62 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
     onStatusChange(ringdown, Ringdown.Status.REDIRECT_ACKNOWLEDGED);
   }
 
+  function handleOffloaded() {
+    setShowDismissConfirmation(false);
+    onStatusChange(ringdown, Ringdown.Status.OFFLOADED_ACKNOWLEDGED);
+  }
+
+  const canBeDismissed =
+    ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED ||
+    ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED ||
+    ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED;
+
   return (
-    <Card
-      className={classNames(
-        'ringdown-card',
-        { 'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED },
-        { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED },
-        { 'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED },
-        className
-      )}
-      header={
-        isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : `Incident #${ringdown.dispatchCallNumber}`
-      }
-      body={isExpanded && ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED ? null : ringdown.chiefComplaintDescription}
+    <div
+      className={classNames('ringdown-card height-auto', className, {
+        'ringdown-card--dismissable': canBeDismissed,
+        'ringdown-card--expanded': isExpanded,
+        'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED,
+        'ringdown-card--redirected': ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED,
+        'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED,
+      })}
     >
       {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
-        <span className="ringdown-card__status">
-          <span>Cancelled </span>
-          <button className="usa-button width-card" type="button" onClick={() => setShowCancel(true)}>
+        <div className="ringdown-card__header">
+          <span className="ringdown-card__status">Cancelled</span>
+          <button type="button" onClick={() => setShowCancel(true)}>
             Dismiss
           </button>
-        </span>
+        </div>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && (
-        <span className="ringdown-card__status">
-          <span>Redirected </span>
-          <button className="usa-button width-card" type="button" onClick={() => setShowRedirect(true)}>
+        <div className="ringdown-card__header">
+          <span className="ringdown-card__status">Redirected</span>
+          <button type="button" onClick={() => setShowRedirect(true)}>
             Dismiss
           </button>
-        </span>
+        </div>
       )}
       {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
-        <span className="ringdown-card__status">
-          <span>Offloaded: </span>
-          {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
-        </span>
+        <div className="ringdown-card__header">
+          <span className="ringdown-card__status">Offloaded</span>
+          <button type="button" onClick={() => setShowDismissConfirmation(true)}>
+            Dismiss
+          </button>
+        </div>
       )}
-      {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
-        ringdown.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
-        ringdown.currentDeliveryStatus !== Ringdown.Status.REDIRECTED && (
-          <Drawer
-            title={<RingdownEta className="ringdown-card__status" ringdown={ringdown} />}
-            isOpened={isExpanded}
-            onToggle={() => setExpanded(!isExpanded)}
-          >
-            <RingdownDetails ringdown={ringdown} />
-          </Drawer>
-        )}
+      {canBeDismissed && <div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+      {!canBeDismissed && (
+        <Drawer
+          title={<RingdownEta className="ringdown-card__status" ringdown={ringdown} />}
+          subtitle={<div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+          isOpened={isExpanded}
+          onToggle={() => setExpanded(!isExpanded)}
+        >
+          <RingdownDetails ringdown={ringdown} />
+          {children}
+        </Drawer>
+      )}
       {showCancel && (
         <Alert
           type="warning"
@@ -95,19 +103,32 @@ function RingdownCard({ className, ringdown, onStatusChange }) {
           onCancel={() => setShowRedirect(false)}
         />
       )}
-    </Card>
+      {showDismissConfirmation && (
+        <Alert
+          type="warning"
+          title="Dismiss Notice"
+          message="The Ringdown will be removed from the docket."
+          cancel="Keep"
+          destructive="Dismiss"
+          onDestructive={handleOffloaded}
+          onCancel={() => setShowDismissConfirmation(false)}
+        />
+      )}
+    </div>
   );
 }
 
 RingdownCard.propTypes = {
+  children: PropTypes.node,
   className: PropTypes.string,
   ringdown: PropTypes.instanceOf(Ringdown).isRequired,
   onStatusChange: PropTypes.instanceOf(Function),
 };
 
 RingdownCard.defaultProps = {
-  className: null,
-  onStatusChange: null,
+  children: undefined,
+  className: undefined,
+  onStatusChange: undefined,
 };
 
 export default RingdownCard;

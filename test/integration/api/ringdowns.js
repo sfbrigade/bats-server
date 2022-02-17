@@ -175,7 +175,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      const now = new Date();
+      let now = new Date();
       await testSession
         .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
         .set('Accept', 'application/json')
@@ -184,10 +184,146 @@ describe('/api/ringdowns', () => {
           dateTimeLocal: now,
         })
         .expect(HttpStatus.OK);
-
       const patientDelivery = await models.PatientDelivery.findByPk('d4fd2478-ecd6-4571-9fb3-842bfc64b511');
       assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_RECEIVED);
       assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: DeliveryStatus.RINGDOWN_CONFIRMED,
+          dateTimeLocal: now,
+        })
+        .expect(HttpStatus.OK);
+      await patientDelivery.reload();
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_CONFIRMED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'king.paramedic@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      now = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: DeliveryStatus.ARRIVED,
+          dateTimeLocal: now,
+        })
+        .expect(HttpStatus.OK);
+      await patientDelivery.reload();
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.ARRIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      now = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: DeliveryStatus.OFFLOADED,
+          dateTimeLocal: now,
+        })
+        .expect(HttpStatus.OK);
+      await patientDelivery.reload();
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.OFFLOADED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      now = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: DeliveryStatus.OFFLOADED_ACKNOWLEDGED,
+          dateTimeLocal: now,
+        })
+        .expect(HttpStatus.OK);
+      await patientDelivery.reload();
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.OFFLOADED_ACKNOWLEDGED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'king.paramedic@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      now = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: DeliveryStatus.RETURNED_TO_SERVICE,
+          dateTimeLocal: now,
+        })
+        .expect(HttpStatus.OK);
+      await patientDelivery.reload();
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RETURNED_TO_SERVICE);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+    });
+
+    it('can transition to ARRIVED before RINGDOWN_RECEIVED/CONFIRMED', async () => {
+      const patientDelivery = await models.PatientDelivery.findByPk('d4fd2478-ecd6-4571-9fb3-842bfc64b511');
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.RINGDOWN_SENT);
+
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'king.paramedic@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      const now = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: DeliveryStatus.ARRIVED,
+          dateTimeLocal: now,
+        })
+        .expect(HttpStatus.OK);
+
+      await patientDelivery.reload();
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.ARRIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+      let updates = await patientDelivery.getPatientDeliveryUpdates();
+      assert.deepStrictEqual(
+        updates.find((pdu) => pdu.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED),
+        undefined
+      );
+
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      const after = new Date();
+      await testSession
+        .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
+        .set('Accept', 'application/json')
+        .send({
+          deliveryStatus: DeliveryStatus.RINGDOWN_RECEIVED,
+          dateTimeLocal: after,
+        })
+        .expect(HttpStatus.OK);
+
+      await patientDelivery.reload();
+      // current delivery status remains as ARRIVED
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatus, DeliveryStatus.ARRIVED);
+      assert.deepStrictEqual(patientDelivery.currentDeliveryStatusDateTimeLocal, now);
+      // but we should now find the ringdown update in the status updates
+      updates = await patientDelivery.getPatientDeliveryUpdates();
+      assert(updates.find((pdu) => pdu.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED));
     });
   });
 

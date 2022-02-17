@@ -63,14 +63,15 @@ module.exports = (sequelize, DataTypes) => {
       // otherwise, check for a valid state transition
       switch (deliveryStatus) {
         case DeliveryStatus.RINGDOWN_RECEIVED:
-          if (this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT) {
-            break;
-          }
-          throw new Error();
+        // fallthrough
+        case DeliveryStatus.RINGDOWN_CONFIRMED:
+          // ER can receive/confirm at any time
+          break;
         case DeliveryStatus.ARRIVED:
           if (
             this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
-            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED
           ) {
             break;
           }
@@ -80,8 +81,16 @@ module.exports = (sequelize, DataTypes) => {
             break;
           }
           throw new Error();
-        case DeliveryStatus.RETURNED_TO_SERVICE:
+        case DeliveryStatus.OFFLOADED_ACKNOWLEDGED:
           if (this.currentDeliveryStatus === DeliveryStatus.OFFLOADED) {
+            break;
+          }
+          throw new Error();
+        case DeliveryStatus.RETURNED_TO_SERVICE:
+          if (
+            this.currentDeliveryStatus === DeliveryStatus.OFFLOADED ||
+            this.currentDeliveryStatus === DeliveryStatus.OFFLOADED_ACKNOWLEDGED
+          ) {
             break;
           }
           throw new Error();
@@ -94,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
           if (
             this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
             this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+            this.currentDeliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED ||
             this.currentDeliveryStatus === DeliveryStatus.ARRIVED
           ) {
             break;
@@ -108,20 +118,30 @@ module.exports = (sequelize, DataTypes) => {
           // fallthrough...
           break;
       }
-      const patientDeliveryUpdate = await sequelize.models.PatientDeliveryUpdate.create(
-        {
+      const [patientDeliveryUpdate, isCreated] = await sequelize.models.PatientDeliveryUpdate.findOrCreate({
+        where: {
           PatientDeliveryId: this.id,
           deliveryStatus,
+        },
+        defaults: {
           deliveryStatusDateTimeLocal: dateTimeLocal,
           CreatedById: userId,
           UpdatedById: userId,
         },
-        options
-      );
-      this.currentDeliveryStatus = deliveryStatus;
-      this.currentDeliveryStatusDateTimeLocal = dateTimeLocal;
-      this.UpdatedById = userId;
-      await this.save(options);
+        transaction: options?.transaction,
+      });
+      let updateCurrentDeliveryStatus = isCreated;
+      if (deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED && this.currentDeliveryStatus !== DeliveryStatus.RINGDOWN_SENT) {
+        updateCurrentDeliveryStatus = false;
+      } else if (deliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED && this.currentDeliveryStatus !== DeliveryStatus.RINGDOWN_RECEIVED) {
+        updateCurrentDeliveryStatus = false;
+      }
+      if (updateCurrentDeliveryStatus) {
+        this.currentDeliveryStatus = deliveryStatus;
+        this.currentDeliveryStatusDateTimeLocal = dateTimeLocal;
+        this.UpdatedById = userId;
+        await this.save(options);
+      }
       return patientDeliveryUpdate;
     }
 

@@ -4,6 +4,8 @@ import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
+import RingdownCard from '../Components/RingdownCard';
+import './RingdownStatus.scss';
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
@@ -19,36 +21,47 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     onStatusChange(ringdown, Ringdown.Status.REDIRECTED);
   }
 
+  let ringdownStatus = 'pending';
+  if (ringdown.timestamps[Ringdown.Status.RINGDOWN_CONFIRMED]) {
+    ringdownStatus = 'confirmed';
+  } else if (ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED]) {
+    ringdownStatus = 'delivered';
+  }
+
   return (
-    <div className={classNames('usa-accordion', className)}>
+    <div className={classNames('usa-accordion ringdownstatus', className)}>
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <h3 className="h1 margin-0">{ringdown.hospital.name}</h3>
-          <h4 className="text-base-light margin-top-2">ETA {ringdown.etaMinutes} minutes</h4>
+          <h4 className={`ringdownstatus__label ringdownstatus__label--${ringdownStatus}`}>
+            Ringdown Status:&nbsp;
+            <span>
+              {ringdownStatus === 'pending' && 'Pending'}
+              {ringdownStatus === 'delivered' && 'Delivered'}
+              {ringdownStatus === 'confirmed' && 'Confirmed'}
+            </span>
+          </h4>
+          <h4 className="ringdownstatus__label">
+            ETA:&nbsp;
+            <span>
+              {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])
+                .plus({ minutes: ringdown.etaMinutes })
+                .toLocaleString(DateTime.TIME_SIMPLE)}
+            </span>
+          </h4>
           <ol className="status-list">
             <li className="status-list-item status-list-item--completed">
               <div className="status-list-item__icon" />
               <div className="status-list-item__text">
-                Ringdown sent{' '}
+                Ringdown sent
                 <span>
-                  {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                  {
+                    DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_SENT])
+                      .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                      .toString()
+                      .split(' ')[0]
+                  }
                 </span>
-              </div>
-            </li>
-            <li
-              className={classNames('status-list-item', {
-                'status-list-item--noninteractive': !ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED],
-                'status-list-item--completed': ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED],
-              })}
-            >
-              <div className="status-list-item__icon" />
-              <div className="status-list-item__text">
-                Ringdown received
-                {ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED] && (
-                  <span>
-                    {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
-                  </span>
-                )}
               </div>
             </li>
             <li
@@ -60,7 +73,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
             >
               <div className="status-list-item__icon" />
               <div className="status-list-item__text">
-                {ringdown.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED && (
+                {Ringdown.Status.ALL_STATUSES.indexOf(ringdown.currentDeliveryStatus) <
+                  Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED) && (
                   <button
                     onClick={() => onStatusChange(ringdown, Ringdown.Status.ARRIVED)}
                     className="usa-button usa-button--primary width-full"
@@ -69,10 +83,19 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                     Mark arrived
                   </button>
                 )}
-                {ringdown.currentDeliveryStatus !== Ringdown.Status.RINGDOWN_RECEIVED && 'Arrived at ED'}
+                {Ringdown.Status.ALL_STATUSES.indexOf(ringdown.currentDeliveryStatus) >=
+                  Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.ARRIVED) && 'Arrived at ED'}
                 {ringdown.timestamps[Ringdown.Status.ARRIVED] && (
                   <span>
-                    {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.ARRIVED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                    {ringdown.timestamps[Ringdown.Status.ARRIVED]
+                      ? DateTime.fromISO(ringdown.timestamps[Ringdown.Status.ARRIVED])
+                          .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                          .toString()
+                          .split(' ')[0]
+                      : DateTime.fromISO(ringdown.timestamps['RINGDOWN CONFIRMED'])
+                          .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                          .toString()
+                          .split(' ')[0]}
                   </span>
                 )}
               </div>
@@ -98,7 +121,12 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                 {ringdown.currentDeliveryStatus !== Ringdown.Status.ARRIVED && 'Patient offloaded'}
                 {ringdown.timestamps[Ringdown.Status.OFFLOADED] && (
                   <span>
-                    {DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED]).toLocaleString(DateTime.TIME_24_WITH_SECONDS)}
+                    {
+                      DateTime.fromISO(ringdown.timestamps[Ringdown.Status.OFFLOADED])
+                        .toLocaleString(DateTime.TIME_WITH_SECONDS)
+                        .toString()
+                        .split(' ')[0]
+                    }
                   </span>
                 )}
               </div>
@@ -106,7 +134,8 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
             <li className="status-list-item">
               <div className="status-list-item__icon" />
               <div className="status-list-item__text">
-                {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
+                {(ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED ||
+                  ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED_ACKNOWLEDGED) && (
                   <button
                     onClick={() => onStatusChange(ringdown, Ringdown.Status.RETURNED_TO_SERVICE)}
                     className="usa-button usa-button--primary width-full"
@@ -115,7 +144,9 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
                     Return to service
                   </button>
                 )}
-                {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED && 'Return to service'}
+                {ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+                  ringdown.currentDeliveryStatus !== Ringdown.Status.OFFLOADED_ACKNOWLEDGED &&
+                  'Return to service'}
               </div>
             </li>
           </ol>
@@ -153,6 +184,9 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
               onCancel={() => setShowRedirect(false)}
             />
           )}
+        </fieldset>
+        <fieldset className="usa-fieldset border-top border-base-lighter">
+          <RingdownCard ringdown={ringdown} />
         </fieldset>
       </div>
     </div>
