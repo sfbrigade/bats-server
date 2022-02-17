@@ -1,4 +1,3 @@
-import AdminER from './AdminER/Admin';
-import AdminEMS from './AdminEMS/Admin';
+import Admin from './Admin';
 
-export { AdminEMS, AdminER };
+export default Admin;

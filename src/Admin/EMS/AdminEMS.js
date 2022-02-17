@@ -1,5 +1,7 @@
 import React from 'react';
 
-export default function AdminER() {
+function AdminEMS() {
   return <div>EMS ADMIN</div>;
 }
+
+export default AdminEMS;
