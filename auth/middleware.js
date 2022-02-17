@@ -28,7 +28,7 @@ const isSuperUser = (req, res, next) => {
 };
 
 const isAdminUser = (req, res, next) => {
-  if (req.user?.isAdminUser) {
+  if (req.user?.isSuperUser || req.user?.isAdminUser) {
     next();
   } else if (req.accepts('html')) {
     res.redirect('/auth/local/login');

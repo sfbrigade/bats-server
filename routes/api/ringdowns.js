@@ -16,7 +16,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
     if (req.query.hospitalId) {
       queryFilter.HospitalId = req.query.hospitalId;
       // ensure auth user is either a superuser or an administrator of this hospital ED
-      if (!req.user.isAdminUser) {
+      if (!req.user.isSuperUser) {
         await models.HospitalUser.findOne({
           where: {
             HospitalId: req.query.hospitalId,
@@ -32,7 +32,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
       if (org.type !== 'EMS') {
         throw new Error();
       }
-    } else if (!req.user.isAdminUser) {
+    } else if (!req.user.isSuperUser) {
       // must be a superuser to see ringdowns for ALL hospitals
       throw new Error();
     }

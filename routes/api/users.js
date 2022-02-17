@@ -7,6 +7,7 @@ const models = require('../../models');
 const router = express.Router();
 
 router.get('/', middleware.isAdminUser, async (req, res) => {
+  // TODO: if not a superuser, only return users for the user's hospital
   const users = await models.User.findAll();
   res.json(users.map((u) => u.toJSON()));
 });
