@@ -5,7 +5,7 @@ import UserInfo from './UserInfo';
 import ErUsersTable from './ErUsersTable';
 import NewUserForm from '../NewUserForm';
 
-export default function ErUsers({ users, mainUser }) {
+export default function ErUsers({ users }) {
   const [showMore, setShowMore] = useState(false);
   const [addUser, setAddUser] = useState(false);
   const [user, setUser] = useState(null);
@@ -33,31 +33,22 @@ export default function ErUsers({ users, mainUser }) {
   return (
     <div className="margin-left-9 padding-left-2">
       {showMore === true && <UserInfo back={Back} user={user} />}
-      {showMore === false && addUser === false && <ErUsersTable more={More} addUser={addNewUser} users={users} mainUser={mainUser} />}
+      {showMore === false && addUser === false && <ErUsersTable more={More} addUser={addNewUser} users={users} />}
       {addUser === true && <NewUserForm createdUser={savedUser} />}
     </div>
   );
 }
 ErUsers.propTypes = {
-  users: PropTypes.shape({
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    id: PropTypes.string,
-    isActive: PropTypes.bool,
-    isAdminUser: PropTypes.bool,
-    isOperationalUser: PropTypes.bool,
-    isSuperUser: PropTypes.bool,
-    lastName: PropTypes.string,
-  }).isRequired,
-
-  mainUser: PropTypes.shape({
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    id: PropTypes.string,
-    isActive: PropTypes.bool,
-    isAdminUser: PropTypes.bool,
-    isOperationalUser: PropTypes.bool,
-    isSuperUser: PropTypes.bool,
-    lastName: PropTypes.string,
-  }).isRequired,
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      email: PropTypes.string,
+      firstName: PropTypes.string,
+      id: PropTypes.string,
+      isActive: PropTypes.bool,
+      isAdminUser: PropTypes.bool,
+      isOperationalUser: PropTypes.bool,
+      isSuperUser: PropTypes.bool,
+      lastName: PropTypes.string,
+    })
+  ).isRequired,
 };

@@ -28,7 +28,7 @@ export default function ErRingdownsTable({ more, allRingdowns }) {
             <th className="padding-2">Show details</th>
           </tr>
           {allRingdowns.map((ringdown) => (
-            <tr>
+            <tr key={ringdown.id}>
               <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
               <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
               <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>

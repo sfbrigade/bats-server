@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
+
+import Context from '../../Context';
 
 import './ErUsersTable.scss';
 
-export default function ErUsersTable({ more, users, mainUser, addUser }) {
+export default function ErUsersTable({ more, users, addUser }) {
+  const { user } = useContext(Context);
+
   const [usersList, setUsersList] = useState(users);
   const [sortDirection, setSortDirection] = useState(1);
 
@@ -80,40 +84,44 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
       </button>
       <h2>Active</h2>
       <table cellSpacing="0" cellPadding="0">
-        <tr>
-          <th className="padding-2">
-            First Name{' '}
-            <button type="button" onClick={() => Sort('firstName')}>
-              ^
-            </button>
-          </th>
-          <th className="padding-2">
-            Last Name{' '}
-            <button type="button" onClick={() => Sort('lastName')}>
-              ^
-            </button>
-          </th>
-          <th className="padding-2">
-            Email{' '}
-            <button type="button" onClick={() => Sort('email')}>
-              ^
-            </button>
-          </th>
-        </tr>
-        {usersList.map((user) =>
-          user.organization.id === mainUser.organization.id && !user.isAdminUser ? (
-            <tr>
-              <td className="padding-2 row-border">{user.firstName}</td>
-              <td className="padding-2 row-border">{user.lastName}</td>
-              <td className="padding-2 row-border">{user.email}</td>
-              <td className="padding-2 row-border">
-                <button type="button" className="border-0 bg-white" onClick={() => more(user)}>
-                  More &gt;
-                </button>
-              </td>
-            </tr>
-          ) : null
-        )}
+        <thead>
+          <tr>
+            <th className="padding-2">
+              First Name{' '}
+              <button type="button" onClick={() => Sort('firstName')}>
+                ^
+              </button>
+            </th>
+            <th className="padding-2">
+              Last Name{' '}
+              <button type="button" onClick={() => Sort('lastName')}>
+                ^
+              </button>
+            </th>
+            <th className="padding-2">
+              Email{' '}
+              <button type="button" onClick={() => Sort('email')}>
+                ^
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {usersList.map((u) =>
+            u.organization.id === user.organization.id && !u.isAdminUser ? (
+              <tr key={u.id}>
+                <td className="padding-2 row-border">{u.firstName}</td>
+                <td className="padding-2 row-border">{u.lastName}</td>
+                <td className="padding-2 row-border">{u.email}</td>
+                <td className="padding-2 row-border">
+                  <button type="button" className="border-0 bg-white" onClick={() => more(u)}>
+                    More &gt;
+                  </button>
+                </td>
+              </tr>
+            ) : null
+          )}
+        </tbody>
       </table>
     </div>
   );
@@ -121,29 +129,16 @@ export default function ErUsersTable({ more, users, mainUser, addUser }) {
 ErUsersTable.propTypes = {
   more: PropTypes.func.isRequired,
   addUser: PropTypes.func.isRequired,
-  users: PropTypes.shape({
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    id: PropTypes.string,
-    isActive: PropTypes.bool,
-    isAdminUser: PropTypes.bool,
-    isOperationalUser: PropTypes.bool,
-    isSuperUser: PropTypes.bool,
-    lastName: PropTypes.string,
-  }).isRequired,
-  mainUser: PropTypes.shape({
-    email: PropTypes.string,
-    firstName: PropTypes.string,
-    id: PropTypes.string,
-    isActive: PropTypes.bool,
-    isAdminUser: PropTypes.bool,
-    isOperationalUser: PropTypes.bool,
-    isSuperUser: PropTypes.bool,
-    lastName: PropTypes.string,
-    organization: PropTypes.shape({
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      email: PropTypes.string,
+      firstName: PropTypes.string,
       id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-    }),
-  }).isRequired,
+      isActive: PropTypes.bool,
+      isAdminUser: PropTypes.bool,
+      isOperationalUser: PropTypes.bool,
+      isSuperUser: PropTypes.bool,
+      lastName: PropTypes.string,
+    })
+  ).isRequired,
 };

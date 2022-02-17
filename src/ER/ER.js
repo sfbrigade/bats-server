@@ -67,15 +67,19 @@ export default function ER() {
   ).length;
 
   return (
-    <>
-      <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
-        {showTabs && <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />}
-      </Header>
-      {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
-      {showInfo && (!showTabs || selectedTab === 1) && (
-        <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
-      )}
-      {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
-    </>
+    <div className="grid-container">
+      <div className="grid-row">
+        <div className="tablet:grid-col-6 tablet:grid-offset-3">
+          <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
+            {showTabs && <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />}
+          </Header>
+          {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
+          {showInfo && (!showTabs || selectedTab === 1) && (
+            <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
+          )}
+          {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
+        </div>
+      </div>
+    </div>
   );
 }
