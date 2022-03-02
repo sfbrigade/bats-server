@@ -16,5 +16,6 @@ passport.deserializeUser(async (id, done) => {
 
 passport.use(require('./local'));
 passport.use('saml', require('./saml'));
+passport.use('peak', require('./peak'));
 
 module.exports = passport;
