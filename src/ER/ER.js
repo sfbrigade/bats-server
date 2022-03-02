@@ -13,6 +13,9 @@ import HospitalStatus from '../Models/HospitalStatus';
 import Beds from './Beds';
 import Ringdowns from './Ringdowns';
 
+import useSound from 'use-sound';
+import notification from '../../src/assets/notification.mp3';
+
 export default function ER() {
   const { hospital } = useContext(Context);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.hospital.id}`;
@@ -22,6 +25,8 @@ export default function ER() {
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
   const [statusUpdate, setStatusUpdate] = useState(new HospitalStatus({}));
+
+  const [playSound] = useSound(notification);
 
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
@@ -52,6 +57,9 @@ export default function ER() {
       setRingdowns(newRingdowns);
       setUnconfirmedRingdowns(newUnconfirmedRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
+    }
+    if (showRingdown && hasUnconfirmedRingdowns) {
+      playSound();
     }
   }, [lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate]);
 
