@@ -1,4 +1,5 @@
 const axios = require('axios');
+const crypto = require('crypto');
 const OAuth2Strategy = require('passport-oauth2');
 
 const models = require('../models');
@@ -20,21 +21,57 @@ const strategy = new OAuth2Strategy(
     clientSecret: PR_CLIENT_SECRET,
     callbackURL: `${BASE_URL}/auth/peak/callback`,
   },
-  async function verify(accessToken, refreshToken, profile, cb) {
-    console.log(accessToken, refreshToken, profile);
+  async function verify(accessToken, refreshToken, profile, done) {
     let user = null;
-    if (profile?.user?.email) {
-      user = await models.User.findOne({
-        where: {
-          email: profile.user.email,
-        },
-      });
-      if (!user && profile?.user?.currentAssignment?.vehicle?.createdByAgency) {
-        // look up corresponding org from agency data
-        // create new user
+    try {
+      if (profile?.user?.email) {
+        user = await models.User.findOne({
+          where: {
+            email: profile.user.email,
+          },
+        });
+        if (!user && profile?.user?.currentAssignment?.vehicle?.createdByAgency) {
+          // look up corresponding org from agency data
+          const { stateId: state, stateUniqueId } = profile.user.currentAssignment.vehicle.createdByAgency;
+          const organization = await models.Organization.findOne({
+            where: {
+              type: 'EMS',
+              state,
+              stateUniqueId,
+            },
+          });
+          // create new user
+          if (organization) {
+            await models.sequelize.transaction(async (transaction) => {
+              const { firstName, lastName, email } = profile.user;
+              user = await models.User.create(
+                {
+                  OrganizationId: organization.id,
+                  firstName,
+                  lastName,
+                  email,
+                  isOperationalUser: true,
+                  password: crypto.randomBytes(8).toString('hex'),
+                  CreatedById: '00000000-0000-0000-0000-000000000000',
+                  UpdatedById: '00000000-0000-0000-0000-000000000000',
+                },
+                { transaction }
+              );
+              await user.update(
+                {
+                  CreatedById: user.id,
+                  UpdatedById: user.id,
+                },
+                { transaction }
+              );
+            });
+          }
+        }
       }
+      done(null, user);
+    } catch (err) {
+      done(err, false);
     }
-    cb(user);
   }
 );
 
