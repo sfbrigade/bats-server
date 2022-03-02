@@ -3,8 +3,8 @@ const models = require('../models');
 
 module.exports = new passportSaml.Strategy(
   {
-    callbackUrl: 'http://localhost:3000/auth/saml/callback',
-    entryPoint: 'http://localhost:8080/simplesaml/saml2/idp/SSOService.php',
+    callbackUrl: `http://localhost:${process.env.HOST_PORT ?? 3000}/auth/saml/callback`,
+    entryPoint: `http://localhost:${process.env.IDP_HOST_PORT ?? 8080}/simplesaml/saml2/idp/SSOService.php`,
     issuer: 'bats-server',
     identifierFormat: null,
     cert: process.env.SAML_IDP_PUBLIC_KEY,
