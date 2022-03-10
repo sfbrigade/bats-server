@@ -113,6 +113,7 @@ describe('models.HospitalStatusUpdate', () => {
         hospital: {
           id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
           name: 'CPMC Davies Campus',
+          sortSequenceNumber: 2,
           ambulancesEnRoute: 1,
           ambulancesOffloading: 1,
         },
