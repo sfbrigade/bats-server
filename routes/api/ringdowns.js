@@ -9,6 +9,43 @@ const { DeliveryStatus } = require('../../constants');
 
 const router = express.Router();
 
+router.get(
+  '/:id([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})',
+  middleware.isAuthenticated,
+  async (req, res) => {
+    try {
+      let patientDelivery;
+      await models.sequelize.transaction(async (transaction) => {
+        patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
+          include: { all: true },
+          rejectOnEmpty: true,
+          transaction,
+        });
+        // check if calling user is allowed to modify this record
+        if (req.user.id !== patientDelivery.CreatedById) {
+          // check if user is in the receiving hospital ED
+          const hospitalUser = await models.HospitalUser.findOne({
+            where: {
+              HospitalId: patientDelivery.HospitalId,
+              EdAdminUserId: req.user.id,
+            },
+            transaction,
+          });
+          if (!hospitalUser || !req.user.isOperationalUser) {
+            res.status(HttpStatus.FORBIDDEN).end();
+            patientDelivery = null;
+          }
+        }
+      });
+      if (patientDelivery) {
+        res.json(await patientDelivery.toRingdownJSON());
+      }
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+    }
+  }
+);
+
 router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   const queryFilter = {};
 

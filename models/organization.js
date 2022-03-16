@@ -36,6 +36,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM('EMS', 'HEALTHCARE', 'C4SF'),
         allowNull: false,
       },
+      state: {
+        field: 'organizationstate',
+        type: DataTypes.STRING,
+      },
+      stateUniqueId: {
+        field: 'organizationstateuniqueid',
+        type: DataTypes.STRING,
+      },
       timeZoneIsoCode: {
         field: 'timezoneisocode',
         type: DataTypes.STRING,
