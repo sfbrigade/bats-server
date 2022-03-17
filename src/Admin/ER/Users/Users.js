@@ -5,6 +5,7 @@ import UsersTable from './UsersTable';
 function Users() {
   return (
     <main>
+      <h1>Users</h1>
       <UsersTable />
     </main>
   );

@@ -7,7 +7,7 @@ export default function Dashboard() {
   return (
     <main>
       <div>
-        <h1>Active Nurses</h1>
+        <h1>Active Users</h1>
         <UsersTable />
       </div>
       <div>
