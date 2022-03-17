@@ -20,33 +20,25 @@ function UsersTable() {
     <table className="usa-table usa-table--borderless width-full">
       <thead>
         <tr>
-          <th>
-            First Name
-          </th>
-          <th>
-            Last Name
-          </th>
-          <th>
-            Email
-          </th>
-          <th>
-
-          </th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th />
         </tr>
       </thead>
       <tbody>
-        {users.map((u) =>
-            <tr key={u.id}>
-              <td>{u.firstName}</td>
-              <td>{u.lastName}</td>
-              <td>{u.email}</td>
-              <td>
-                <button type="button" className="border-0 bg-white">
-                  More &gt;
-                </button>
-              </td>
-            </tr>
-)}
+        {users.map((u) => (
+          <tr key={u.id}>
+            <td>{u.firstName}</td>
+            <td>{u.lastName}</td>
+            <td>{u.email}</td>
+            <td>
+              <button type="button" className="border-0 bg-white">
+                More &gt;
+              </button>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

@@ -23,9 +23,9 @@ function RingdownsTable() {
           <th>Status</th>
           <th>Ambulance #</th>
           <th>Chief Complaint</th>
-          <th></th>
+          <th />
         </tr>
-      </thead>        
+      </thead>
       <tbody>
         {ringdowns.map((ringdown) => (
           <tr key={ringdown.id}>
