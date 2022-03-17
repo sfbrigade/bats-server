@@ -4,9 +4,9 @@ import RingdownsTable from './RingdownsTable';
 
 function Ringdowns() {
   return (
-    <div className="margin-left-9 padding-left-2">
+    <main>
       <RingdownsTable />
-    </div>
+    </main>
   );
 }
 

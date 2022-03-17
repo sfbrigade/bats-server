@@ -16,21 +16,24 @@ function RingdownsTable() {
   }, [user]);
 
   return (
-    <table cellSpacing="0" cellPadding="0">
-      <tbody>
+    <table className="usa-table usa-table--borderless">
+      <thead>
         <tr>
-          <th className="padding-2">ETA</th>
-          <th className="padding-2">Status</th>
-          <th className="padding-2">Ambulance #</th>
-          <th className="padding-2">Chief Complaint</th>
+          <th>ETA</th>
+          <th>Status</th>
+          <th>Ambulance #</th>
+          <th>Chief Complaint</th>
+          <th></th>
         </tr>
+      </thead>        
+      <tbody>
         {ringdowns.map((ringdown) => (
           <tr key={ringdown.id}>
-            <td className="padding-2 row-border">{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
-            <td className="padding-2 row-border">{ringdown.ambulance.ambulanceIdentifier}</td>
-            <td className="padding-2 row-border">{ringdown.emsCall.dispatchCallNumber}</td>
-            <td className="padding-2 row-border">{ringdown.patient.cheifComplaintDescription}</td>
-            <td className="padding-2 row-border">
+            <td>{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
+            <td>{ringdown.ambulance.ambulanceIdentifier}</td>
+            <td>{ringdown.emsCall.dispatchCallNumber}</td>
+            <td>{ringdown.patient.cheifComplaintDescription}</td>
+            <td>
               <button type="button" className="bg-white border-0">
                 !
               </button>

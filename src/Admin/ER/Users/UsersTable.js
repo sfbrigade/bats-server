@@ -17,35 +17,36 @@ function UsersTable() {
   }, [user]);
 
   return (
-    <table>
+    <table className="usa-table usa-table--borderless">
       <thead>
         <tr>
-          <th className="padding-2">
-            First Name <button type="button">^</button>
+          <th>
+            First Name
           </th>
-          <th className="padding-2">
-            Last Name <button type="button">^</button>
+          <th>
+            Last Name
           </th>
-          <th className="padding-2">
-            Email <button type="button">^</button>
+          <th>
+            Email
+          </th>
+          <th>
+
           </th>
         </tr>
       </thead>
       <tbody>
         {users.map((u) =>
-          u.organization.id === user.organization.id && !u.isAdminUser ? (
             <tr key={u.id}>
-              <td className="padding-2 row-border">{u.firstName}</td>
-              <td className="padding-2 row-border">{u.lastName}</td>
-              <td className="padding-2 row-border">{u.email}</td>
-              <td className="padding-2 row-border">
+              <td>{u.firstName}</td>
+              <td>{u.lastName}</td>
+              <td>{u.email}</td>
+              <td>
                 <button type="button" className="border-0 bg-white">
                   More &gt;
                 </button>
               </td>
             </tr>
-          ) : null
-        )}
+)}
       </tbody>
     </table>
   );
