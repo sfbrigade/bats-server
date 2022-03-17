@@ -1,34 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import React from 'react';
+import { Switch, Redirect, Route, useRouteMatch } from 'react-router-dom';
 
 import AdminNavigation from '../AdminNavigation';
-import ErDashboard from './ErDashboard';
-import ErRingdowns from './ErRingdowns';
-import ErUsers from './ErUsers';
-
-import ApiService from '../../ApiService';
-import Context from '../../Context';
+import Dashboard from './Dashboard';
+import Ringdowns from './Ringdowns/Ringdowns';
+import Users from './Users/Users';
 
 import '../Admin.scss';
 
 export default function AdminER() {
   const { path } = useRouteMatch();
-  const { user } = useContext(Context);
-
-  const [users, setUsers] = useState([]);
-  const [ringdowns, setRingdowns] = useState([]);
-
-  useEffect(() => {
-    if (user) {
-      // remove api calls and create reusable component
-      ApiService.users.all().then((response) => {
-        setUsers(response.data);
-      });
-      ApiService.ringdowns.get(user?.activeHospitals[0].hospital.id).then((response) => {
-        setRingdowns(response.data);
-      });
-    }
-  }, [user]);
 
   return (
     <>
@@ -36,13 +17,16 @@ export default function AdminER() {
       <div className="grid-container">
         <Switch>
           <Route path={`${path}/dashboard`}>
-            <ErDashboard users={users} allRingdowns={ringdowns} />
+            <Dashboard />
           </Route>
           <Route path={`${path}/users`}>
-            <ErUsers users={users} />
+            <Users />
           </Route>
           <Route path={`${path}/ringdowns`}>
-            <ErRingdowns allRingdowns={ringdowns} />
+            <Ringdowns />
+          </Route>
+          <Route exact path={path}>
+            <Redirect to={`${path}/dashboard`} />
           </Route>
         </Switch>
       </div>
