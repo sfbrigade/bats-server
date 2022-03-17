@@ -17,7 +17,7 @@ function UsersTable() {
   }, [user]);
 
   return (
-    <table className="usa-table usa-table--borderless">
+    <table className="usa-table usa-table--borderless width-full">
       <thead>
         <tr>
           <th>
