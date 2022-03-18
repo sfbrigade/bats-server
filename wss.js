@@ -131,6 +131,7 @@ function configure(server, app) {
             req.hospital = await models.Hospital.findByPk(query.id);
           }
           if (!req.hospital) {
+            socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
             socket.destroy();
             return;
           }
@@ -139,6 +140,7 @@ function configure(server, app) {
           });
           break;
         default:
+          socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
           socket.destroy();
       }
     });
