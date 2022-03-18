@@ -113,6 +113,7 @@ function configure(server, app) {
         req.user = await models.User.findByPk(req.session.passport.user);
       }
       if (!req.user) {
+        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
         socket.destroy();
         return;
       }
