@@ -26,6 +26,19 @@ router.post('/cad', async (req, res) => {
       .catch((error) => console.log('CAD data repost', error))
       .then((response) => console.log('CAD data repost', response.status));
   }
+  if (process.env.CAD_REPOST_URL) {
+    const urls = process.env.CAD_REPOST_URL.split(',');
+    for (const url of urls) {
+      axios
+        .post(`${url}/webhooks/sffd/cad`, data, {
+          headers: {
+            Accept: 'application/json',
+          },
+        })
+        .catch((error) => console.log('CAD data repost', error))
+        .then((response) => console.log('CAD data repost', response.status));
+    }
+  }
   await models.sequelize.transaction(async (transaction) => {
     const superUser = await models.User.findOne({
       where: { email: 'batsadmin@c4sf.me' },
