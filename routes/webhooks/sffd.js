@@ -24,7 +24,7 @@ router.post('/cad', async (req, res) => {
         },
       })
       .catch((error) => console.log('CAD data repost', error))
-      .then((response) => console.log('CAD data repost', response.status));
+      .then((response) => console.log('CAD data repost', response?.status));
   }
   if (process.env.CAD_REPOST_URL) {
     const urls = process.env.CAD_REPOST_URL.split(',');
@@ -36,7 +36,7 @@ router.post('/cad', async (req, res) => {
           },
         })
         .catch((error) => console.log('CAD data repost', error))
-        .then((response) => console.log('CAD data repost', response.status));
+        .then((response) => console.log('CAD data repost', response?.status));
     }
   }
   await models.sequelize.transaction(async (transaction) => {
