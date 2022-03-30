@@ -7,8 +7,30 @@ const models = require('../../models');
 const router = express.Router();
 
 router.get('/', middleware.isAdminUser, async (req, res) => {
-  // TODO: if not a superuser, only return users for the user's hospital
-  const users = await models.User.findAll();
+  const options = {
+    include: [{ model: models.HospitalUser }],
+  };
+  if (!req.user.isSuperUser) {
+    const ahus = await req.user.getActiveHospitalUsers();
+    if (req.query.hospitalId) {
+      if (!ahus.find((ahu) => ahu.HospitalId === req.query.hospitalId)) {
+        res.status(HttpStatus.FORBIDDEN).end();
+        return;
+      }
+      options.include[0].where = {
+        HospitalId: req.query.hospitalId,
+      };
+    } else {
+      if (ahus.length !== 1) {
+        res.status(HttpStatus.FORBIDDEN).end();
+        return;
+      }
+      options.include[0].where = {
+        HospitalId: ahus[0].HospitalId,
+      };
+    }
+  }
+  const users = await models.User.findAll(options);
   res.json(users.map((u) => u.toJSON()));
 });
 
