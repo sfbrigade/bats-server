@@ -10,25 +10,24 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
   const options = {
     include: [{ model: models.HospitalUser }],
   };
-  if (!req.user.isSuperUser) {
-    const ahus = await req.user.getActiveHospitalUsers();
-    if (req.query.hospitalId) {
-      if (!ahus.find((ahu) => ahu.HospitalId === req.query.hospitalId)) {
-        res.status(HttpStatus.FORBIDDEN).end();
-        return;
-      }
-      options.include[0].where = {
-        HospitalId: req.query.hospitalId,
-      };
-    } else {
-      if (ahus.length !== 1) {
-        res.status(HttpStatus.FORBIDDEN).end();
-        return;
-      }
-      options.include[0].where = {
-        HospitalId: ahus[0].HospitalId,
-      };
+  // if user is not a superuser, only return users for their active hospital
+  const ahus = await req.user.getActiveHospitalUsers();
+  if (req.query.hospitalId) {
+    if (!req.user.isSuperUser && !ahus.find((ahu) => ahu.HospitalId === req.query.hospitalId)) {
+      res.status(HttpStatus.FORBIDDEN).end();
+      return;
     }
+    options.include[0].where = {
+      HospitalId: req.query.hospitalId,
+    };
+  } else {
+    if (ahus.length !== 1) {
+      res.status(HttpStatus.FORBIDDEN).end();
+      return;
+    }
+    options.include[0].where = {
+      HospitalId: ahus[0].HospitalId,
+    };
   }
   const users = await models.User.findAll(options);
   res.json(users.map((u) => u.toJSON()));
