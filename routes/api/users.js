@@ -4,10 +4,14 @@ const HttpStatus = require('http-status-codes');
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
 
+const { setPaginationHeaders } = require('../helpers');
+
 const router = express.Router();
 
 router.get('/', middleware.isAdminUser, async (req, res) => {
+  const page = req.query.page || '1';
   const options = {
+    page,
     include: [{ model: models.HospitalUser }],
   };
   // if user is not a superuser, only return users for their active hospital
@@ -29,8 +33,9 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
       HospitalId: ahus[0].HospitalId,
     };
   }
-  const users = await models.User.findAll(options);
-  res.json(users.map((u) => u.toJSON()));
+  const { records, pages, total } = await models.User.paginate(options);
+  setPaginationHeaders(req, res, page, pages, total);
+  res.json(records.map((u) => u.toJSON()));
 });
 
 router.post('/', middleware.isAdminUser, async (req, res) => {

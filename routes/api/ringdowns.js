@@ -7,6 +7,8 @@ const models = require('../../models');
 const { dispatchRingdownUpdate } = require('../../wss');
 const { DeliveryStatus } = require('../../constants');
 
+const { setPaginationHeaders } = require('../helpers');
+
 const router = express.Router();
 
 router.get(
@@ -78,11 +80,20 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
   }
 
   try {
-    const patientDeliveries = await models.PatientDelivery.findAll({
-      include: { all: true },
+    const page = req.query.page || '1';
+    const { records, pages, total } = await models.PatientDelivery.paginate({
+      page,
+      include: [
+        { model: models.Patient, include: models.EmergencyMedicalServiceCall },
+        models.Ambulance,
+        models.Hospital,
+        models.PatientDeliveryUpdate,
+      ],
       where: queryFilter,
+      order: [['createdAt', 'DESC']],
     });
-    const response = await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON()));
+    const response = await Promise.all(records.map((pd) => pd.toRingdownJSON()));
+    setPaginationHeaders(req, res, page, pages, total);
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
