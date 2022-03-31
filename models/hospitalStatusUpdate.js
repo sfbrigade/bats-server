@@ -19,14 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       const activeDeliveries = await sequelize.models.PatientDelivery.findAll({
         include: [sequelize.models.Hospital],
         where: {
-          [Op.and]: [
-            {
-              currentDeliveryStatus: { [Op.ne]: DeliveryStatus.OFFLOADED },
-            },
-            {
-              currentDeliveryStatus: { [Op.ne]: DeliveryStatus.RETURNED_TO_SERVICE },
-            },
-          ],
+          currentDeliveryStatus: {
+            [Op.lt]: DeliveryStatus.OFFLOADED,
+          },
         },
         transaction: options?.transaction,
       });
@@ -76,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
       json.createdById = this.CreatedById;
       json.updatedById = this.UpdatedById;
       const hospital = this.Hospital || (await this.getHospital(options));
-      json.hospital = _.pick(hospital, ['id', 'name']);
+      json.hospital = _.pick(hospital, ['id', 'name', 'sortSequenceNumber']);
       const ambulanceCounts = hospital.ambulanceCounts || (await hospital.getAmbulanceCounts(options));
       json.hospital.ambulancesEnRoute = ambulanceCounts.enRoute;
       json.hospital.ambulancesOffloading = ambulanceCounts.offloading;

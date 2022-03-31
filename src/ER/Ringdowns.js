@@ -13,6 +13,7 @@ function Ringdowns({ ringdowns, onStatusChange }) {
     (r) =>
       r.currentDeliveryStatus !== Ringdown.Status.ARRIVED &&
       r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED_ACKNOWLEDGED &&
       r.currentDeliveryStatus !== Ringdown.Status.CANCEL_ACKNOWLEDGED &&
       r.currentDeliveryStatus !== Ringdown.Status.REDIRECT_ACKNOWLEDGED &&
       r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE

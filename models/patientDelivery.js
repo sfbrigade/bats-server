@@ -81,8 +81,16 @@ module.exports = (sequelize, DataTypes) => {
             break;
           }
           throw new Error();
-        case DeliveryStatus.RETURNED_TO_SERVICE:
+        case DeliveryStatus.OFFLOADED_ACKNOWLEDGED:
           if (this.currentDeliveryStatus === DeliveryStatus.OFFLOADED) {
+            break;
+          }
+          throw new Error();
+        case DeliveryStatus.RETURNED_TO_SERVICE:
+          if (
+            this.currentDeliveryStatus === DeliveryStatus.OFFLOADED ||
+            this.currentDeliveryStatus === DeliveryStatus.OFFLOADED_ACKNOWLEDGED
+          ) {
             break;
           }
           throw new Error();
