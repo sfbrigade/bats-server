@@ -1,5 +1,6 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
+const _ = require('lodash');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
@@ -67,37 +68,55 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
   res.json(req.user.toJSON());
 });
 
-router.put('/', middleware.isAdminUser, async (req, res) => {
+router.get('/:id', middleware.isAdminUser, async (req, res) => {
   try {
-    await models.User.update(
-      {
-        email: req.body.email,
-        password: req.body.password,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        isOperationalUser: req.body.isOperationalUser,
-        isAdminUser: req.body.isAdminUser,
-        isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
-        CreatedById: req.user.id,
-        UpdatedById: req.user.id,
-      },
-      { where: { id: req.body.id } }
-    );
-    res.status(HttpStatus.ACCEPTED).end();
-  } catch (err) {
+    const user = await models.User.findByPk(req.params.id);
+    if (user) {
+      // TODO: verify user is in same hospital as calling user
+      res.json(user.toJSON());
+    } else {
+      res.status(HttpStatus.NOT_FOUND).end();
+    }
+  } catch {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
 
-router.delete('/remove', middleware.isAdminUser, async (req, res) => {
+router.patch('/:id', middleware.isAdminUser, async (req, res) => {
   try {
-    await models.User.destroy({
-      where: {
-        email: req.query.data,
-      },
+    let user;
+    await models.sequelize.transaction(async (transaction) => {
+      user = await models.User.findByPk(req.params.id, { transaction });
+      if (user) {
+        // TODO: verify user is in same hospital as calling user
+        await user.update(_.pick(req.body, ['firstName', 'lastName', 'email', 'password']), { transaction });
+      }
     });
-    res.status(HttpStatus.ACCEPTED).end();
-  } catch (err) {
+    if (user) {
+      res.json(user.toJSON());
+    } else {
+      res.status(HttpStatus.NOT_FOUND).end();
+    }
+  } catch {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+  }
+});
+
+router.delete('/:id', middleware.isAdminUser, async (req, res) => {
+  try {
+    let user;
+    await models.sequelize.transaction(async (transaction) => {
+      user = await models.User.findByPk(req.params.id, { transaction });
+      if (user) {
+        await user.destroy();
+      }
+    });
+    if (user) {
+      res.status(HttpStatus.OK).end();
+    } else {
+      res.status(HttpStatus.NOT_FOUND).end();
+    }
+  } catch {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });

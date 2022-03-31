@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import ApiService from '../../../ApiService';
 import Context from '../../../Context';
@@ -33,9 +34,7 @@ function UsersTable() {
             <td>{u.lastName}</td>
             <td>{u.email}</td>
             <td>
-              <button type="button" className="border-0 bg-white">
-                More &gt;
-              </button>
+              <Link to={`/admin/er/users/${u.id}`}>More &gt;</Link>
             </td>
           </tr>
         ))}

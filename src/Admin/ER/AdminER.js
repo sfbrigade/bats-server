@@ -6,8 +6,6 @@ import Dashboard from './Dashboard';
 import Ringdowns from './Ringdowns/Ringdowns';
 import Users from './Users/Users';
 
-import '../Admin.scss';
-
 export default function AdminER() {
   const { path } = useRouteMatch();
 
@@ -19,7 +17,7 @@ export default function AdminER() {
           <Route path={`${path}/dashboard`}>
             <Dashboard />
           </Route>
-          <Route path={`${path}/users`}>
+          <Route path={`${path}/users/:userId?`}>
             <Users />
           </Route>
           <Route path={`${path}/ringdowns`}>

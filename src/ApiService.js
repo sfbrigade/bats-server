@@ -62,11 +62,14 @@ export default {
     create(data) {
       return instance.post('/api/users/', data);
     },
-    update(data) {
-      return instance.put('/api/users/', data);
+    get(id) {
+      return instance.get(`/api/users/${id}`);
     },
-    deleteUser(data) {
-      return instance.delete('/api/users/remove', { params: { data } });
+    update(id, data) {
+      return instance.patch(`/api/users/${id}`, data);
+    },
+    delete(id) {
+      return instance.delete(`/api/users/${id}`);
     },
   },
   orgs: {
