@@ -127,6 +127,7 @@ function PatientFields({ ringdown, onChange }) {
               onChange={handleUserInput}
               property="emergencyServiceResponseType"
               value="CODE 3"
+              disabled
             />
           </FormRadioFieldSet>
           <fieldset className="usa-fieldset">
