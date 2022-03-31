@@ -25,14 +25,13 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
     options.include[0].where = {
       HospitalId: req.query.hospitalId,
     };
-  } else {
-    if (ahus.length !== 1) {
-      res.status(HttpStatus.FORBIDDEN).end();
-      return;
-    }
+  } else if (ahus.length === 1) {
     options.include[0].where = {
       HospitalId: ahus[0].HospitalId,
     };
+  } else if (!req.user.isSuperUser) {
+    res.status(HttpStatus.FORBIDDEN).end();
+    return;
   }
   const { records, pages, total } = await models.User.paginate(options);
   setPaginationHeaders(req, res, page, pages, total);
