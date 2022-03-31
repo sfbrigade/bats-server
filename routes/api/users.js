@@ -14,6 +14,10 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
   const options = {
     page,
     include: [{ model: models.HospitalUser }],
+    order: [
+      ['firstName', 'ASC'],
+      ['lastName', 'ASC'],
+    ],
   };
   // if user is not a superuser, only return users for their active hospital
   const ahus = await req.user.getActiveHospitalUsers();

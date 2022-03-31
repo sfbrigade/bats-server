@@ -51,7 +51,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.length, 3);
-      assert.deepStrictEqual(response.body[0].id, '8b95ea8a-0171-483a-be74-ec17bbc12247');
+      assert.deepStrictEqual(response.body[0].id, 'f3ad9b22-719f-11eb-9439-0242ac130002');
     });
 
     it('returns a list of active ringdowns created by the calling EMS user', async () => {
