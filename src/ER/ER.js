@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
+import useSound from 'use-sound';
 
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
@@ -13,8 +14,7 @@ import HospitalStatus from '../Models/HospitalStatus';
 import Beds from './Beds';
 import Ringdowns from './Ringdowns';
 
-import useSound from 'use-sound';
-import notification from '../../src/assets/notification.mp3';
+import notification from '../assets/notification.mp3';
 
 export default function ER() {
   const { hospital } = useContext(Context);
@@ -46,6 +46,17 @@ export default function ER() {
     setStatusUpdate(newStatusUpdate);
   }
 
+  const showRingdown = hospital?.isRingdownUser;
+  const showInfo = hospital?.isInfoUser;
+  const showTabs = showRingdown && showInfo;
+  const hasUnconfirmedRingdowns = unconfirmedRingdowns.length > 0;
+  const incomingRingdownsCount = ringdowns.filter(
+    (r) =>
+      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+      r.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
+      r.currentDeliveryStatus !== Ringdown.Status.REDIRECTED
+  ).length;
+
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
@@ -57,22 +68,11 @@ export default function ER() {
       setRingdowns(newRingdowns);
       setUnconfirmedRingdowns(newUnconfirmedRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
+      if (showRingdown && newUnconfirmedRingdowns.length > 0) {
+        playSound();
+      }
     }
-    if (showRingdown && hasUnconfirmedRingdowns) {
-      playSound();
-    }
-  }, [lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate]);
-
-  const showRingdown = hospital?.isRingdownUser;
-  const showInfo = hospital?.isInfoUser;
-  const showTabs = showRingdown && showInfo;
-  const hasUnconfirmedRingdowns = unconfirmedRingdowns.length > 0;
-  const incomingRingdownsCount = ringdowns.filter(
-    (r) =>
-      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
-      r.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
-      r.currentDeliveryStatus !== Ringdown.Status.REDIRECTED
-  ).length;
+  }, [lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate, showRingdown, playSound]);
 
   return (
     <>
