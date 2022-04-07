@@ -18,13 +18,13 @@ function HospitalStatusRow({ hospitalStatus }) {
       {disabled && (
         <div className="grid-col-8 hospitalstatusrow__info-container">
           <div className="hospitalstatusrow__data-container">
-            <div className="hospitalstatusrow__data hide-diversion-column"></div>
+            <div className="hospitalstatusrow__data hide-diversion-column" />
             <div className="hospitalstatusrow__data">-</div>
             <div className="hospitalstatusrow__data">-</div>
             <div className="hospitalstatusrow__data">-</div>
             <div className="hospitalstatusrow__data">-</div>
           </div>
-          <div className="hospitalstatusrow__notes"></div>
+          <div className="hospitalstatusrow__notes" />
         </div>
       )}
       {!disabled && (
