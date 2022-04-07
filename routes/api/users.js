@@ -89,7 +89,9 @@ router.patch('/:id', middleware.isAdminUser, async (req, res) => {
       user = await models.User.findByPk(req.params.id, { transaction });
       if (user) {
         // TODO: verify user is in same hospital as calling user
-        await user.update(_.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'isAdminUser', 'isOperationalUser']), { transaction });
+        await user.update(_.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'isAdminUser', 'isOperationalUser']), {
+          transaction,
+        });
       }
     });
     if (user) {
