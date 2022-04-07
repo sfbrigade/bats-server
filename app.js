@@ -1,5 +1,6 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+const fs = require('fs');
 const path = require('path');
 const cookieSession = require('cookie-session');
 const logger = require('morgan');
@@ -49,7 +50,9 @@ if (process.env.NODE_ENV !== 'production') {
 app.use('/', require('./routes'));
 
 app.get('/*', isAuthenticated, (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  let data = fs.readFileSync(path.join(__dirname, 'build', 'index.html')).toString('utf8');
+  data = data.replace(/window.env.([^ =]+)[^;]+/g, (match, p1) => `window.env.${p1} = '${process.env[p1] ?? ''}'`);
+  res.send(data);
 });
 
 module.exports = app;
