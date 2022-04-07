@@ -127,7 +127,7 @@ function PatientFields({ ringdown, onChange }) {
               onChange={handleUserInput}
               property="emergencyServiceResponseType"
               value="CODE 3"
-              disabled
+              disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'}
             />
           </FormRadioFieldSet>
           <fieldset className="usa-fieldset">
