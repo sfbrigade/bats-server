@@ -28,7 +28,7 @@ export default function EMS() {
 
   return (
     <>
-      <Header name="Hospital Destination Tool">
+      <Header name="Routed">
         <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdown', 'Hospital Info']} />
       </Header>
       <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 0 })} />
