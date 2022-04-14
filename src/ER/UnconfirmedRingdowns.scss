@@ -1,14 +1,6 @@
 @import '~uswds/dist/scss/packages/required';
 @import '../../theme/uswds-theme-color';
 
-html,
-body,
-body > .grid-container,
-body > .grid-container > .grid-row,
-body > .grid-container > .grid-row > div {
-  height: 100%;
-}
-
 body > .grid-container > .grid-row > div > #root {
   display: flex;
   flex-direction: column;
