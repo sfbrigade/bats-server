@@ -2,6 +2,9 @@
 @import '../../theme/uswds-theme-color';
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   background-color: color($theme-color-primary-dark);
   color: white;
 }
