@@ -32,6 +32,7 @@ function HospitalSelection({ ringdown, onChange }) {
                 onChange={onChange}
                 property="hospitalId"
                 value={hsu.hospital.id}
+                disabled={window.env.DISABLE_PILOT_HOSPITALS && hsu.hospital.name !== 'SF General'}
               />
             ))}
           </fieldset>

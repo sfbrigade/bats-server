@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 
 import FormInput from '../../../Components/FormInput';
+import FormCheckbox from '../../../Components/FormCheckbox';
 import ApiService from '../../../ApiService';
 
 function UserInfo({ userId }) {
@@ -18,6 +19,8 @@ function UserInfo({ userId }) {
         lastName: '',
         email: '',
         password: '',
+        isAdminUser: null,
+        isOperationalUser: null,
       });
     }
   }, [userId]);
@@ -47,48 +50,70 @@ function UserInfo({ userId }) {
       {user && (
         <form onSubmit={onSubmit}>
           <fieldset>
-            <FormInput
-              label="First Name"
-              onChange={onChange}
-              property="firstName"
-              required
-              showRequiredHint
-              size="medium"
-              type="text"
-              value={user.firstName}
-            />
-            <FormInput
-              label="Last Name"
-              onChange={onChange}
-              property="lastName"
-              required
-              showRequiredHint
-              size="medium"
-              type="text"
-              value={user.lastName}
-            />
-            <FormInput
-              label="Email"
-              onChange={onChange}
-              property="email"
-              required
-              showRequiredHint
-              size="medium"
-              type="text"
-              value={user.email}
-            />
-            <FormInput
-              label="Password"
-              onChange={onChange}
-              property="password"
-              showRequiredHint
-              size="medium"
-              type="password"
-              value={user.password}
-            />
-            <button className="usa-button margin-y-3" type="submit">
-              Submit
-            </button>
+            <div className="grid-container">
+              <div className="display-flex flex-row flex-justify">
+                <div className="grid-col">
+                  <FormInput
+                    label="First Name"
+                    onChange={onChange}
+                    property="firstName"
+                    required
+                    showRequiredHint
+                    size="medium"
+                    type="text"
+                    value={user.firstName}
+                  />
+                  <FormInput
+                    label="Last Name"
+                    onChange={onChange}
+                    property="lastName"
+                    required
+                    showRequiredHint
+                    size="medium"
+                    type="text"
+                    value={user.lastName}
+                  />
+                  <FormInput
+                    label="Email"
+                    onChange={onChange}
+                    property="email"
+                    required
+                    showRequiredHint
+                    size="medium"
+                    type="text"
+                    value={user.email}
+                  />
+                  <FormInput
+                    label="Password"
+                    onChange={onChange}
+                    property="password"
+                    showRequiredHint
+                    size="medium"
+                    type="password"
+                    value={user.password}
+                  />
+                </div>
+                <div className="grid-col margin-left-9 padding-left-5">
+                  <FormCheckbox
+                    label="Administrative"
+                    onChange={onChange}
+                    property="isAdminUser"
+                    currentValue={user.isAdminUser}
+                    value={true}
+                  />
+                  <FormCheckbox
+                    label="Operational"
+                    onChange={onChange}
+                    property="isOperationalUser"
+                    currentValue={user.isOperationalUser}
+                    value={true}
+                  />
+                  <button className="usa-button margin-y-3" type="submit">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
           </fieldset>
         </form>
       )}
