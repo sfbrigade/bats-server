@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
+import useSound from 'use-sound';
 
 import Header from '../Components/Header';
 import TabBar from '../Components/TabBar';
@@ -13,6 +14,8 @@ import HospitalStatus from '../Models/HospitalStatus';
 import Beds from './Beds';
 import Ringdowns from './Ringdowns';
 
+import notification from '../assets/notification.mp3';
+
 export default function ER() {
   const { hospital } = useContext(Context);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.hospital.id}`;
@@ -22,6 +25,8 @@ export default function ER() {
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
   const [statusUpdate, setStatusUpdate] = useState(new HospitalStatus({}));
+
+  const [playSound] = useSound(notification);
 
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
@@ -41,6 +46,17 @@ export default function ER() {
     setStatusUpdate(newStatusUpdate);
   }
 
+  const showRingdown = hospital?.isRingdownUser;
+  const showInfo = hospital?.isInfoUser;
+  const showTabs = showRingdown && showInfo;
+  const hasUnconfirmedRingdowns = unconfirmedRingdowns.length > 0;
+  const incomingRingdownsCount = ringdowns.filter(
+    (r) =>
+      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+      r.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
+      r.currentDeliveryStatus !== Ringdown.Status.REDIRECTED
+  ).length;
+
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
@@ -52,19 +68,11 @@ export default function ER() {
       setRingdowns(newRingdowns);
       setUnconfirmedRingdowns(newUnconfirmedRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
+      if (showRingdown && newUnconfirmedRingdowns.length > 0) {
+        playSound();
+      }
     }
-  }, [lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate]);
-
-  const showRingdown = hospital?.isRingdownUser;
-  const showInfo = hospital?.isInfoUser;
-  const showTabs = showRingdown && showInfo;
-  const hasUnconfirmedRingdowns = unconfirmedRingdowns.length > 0;
-  const incomingRingdownsCount = ringdowns.filter(
-    (r) =>
-      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
-      r.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
-      r.currentDeliveryStatus !== Ringdown.Status.REDIRECTED
-  ).length;
+  }, [lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate, showRingdown, playSound]);
 
   return (
     <div className="grid-container">
