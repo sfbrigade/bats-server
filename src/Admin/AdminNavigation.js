@@ -30,9 +30,9 @@ function AdminNavigation() {
           <NavLink to={`${url}/users`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Users
           </NavLink>
-          <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          {/* <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Ringdowns
-          </NavLink>
+          </NavLink> */}
         </div>
       </div>
     </div>
