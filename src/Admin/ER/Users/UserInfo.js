@@ -48,8 +48,8 @@ function UserInfo({ userId }) {
   return (
     <>
       {user && (
-        <form onSubmit={onSubmit}>
-          <fieldset>
+        <form onSubmit={onSubmit} className="usa-form">
+          <fieldset className="usa-fieldset">
             <div className="grid-container">
               <div className="display-flex flex-row flex-justify">
                 <div className="grid-col">
