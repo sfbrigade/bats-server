@@ -26,7 +26,7 @@ function AdminNavigation() {
         <div className="display-flex flex-row flex-justify">
           <div>
             <h2 className="admin-navigation__hospital-name">{user?.activeHospitals?.[0]?.hospital?.name}</h2>
-            <Link to={`/users/${user?.id}`}>Edit Profile</Link>
+            <Link to={`/admin/er/users/${user?.id}`}>Edit Profile</Link>
           </div>
           <div>
             <a className="admin-navigation__logout" href="/auth/local/logout">
