@@ -1,21 +1,27 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import ApiService from '../../../ApiService';
 import Context from '../../../Context';
 
-function UsersTable() {
+function UsersTable({ isActive }) {
   const { user } = useContext(Context);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     if (user) {
-      // remove api calls and create reusable component
-      ApiService.users.all().then((response) => {
+      let request;
+      if (isActive) {
+        request = ApiService.users.active();
+      } else {
+        request = ApiService.users.all();
+      }
+      request.then((response) => {
         setUsers(response.data);
       });
     }
-  }, [user]);
+  }, [user, isActive]);
 
   return (
     <table className="usa-table usa-table--borderless width-full">
@@ -42,5 +48,13 @@ function UsersTable() {
     </table>
   );
 }
+
+UsersTable.propTypes = {
+  isActive: PropTypes.bool,
+};
+
+UsersTable.defaultProps = {
+  isActive: undefined,
+};
 
 export default UsersTable;

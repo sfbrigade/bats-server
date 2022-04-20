@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
+const { getActiveHospitalUsers } = require('../../wss');
 
 const { setPaginationHeaders } = require('../helpers');
 
@@ -74,6 +75,18 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
     });
   }
   res.json(req.user.toJSON());
+});
+
+router.get('/active', middleware.isAuthenticated, setHospitalId, async (req, res) => {
+  if (req.HospitalId) {
+    const userIds = getActiveHospitalUsers(req.HospitalId);
+    const users = await models.User.findAll({
+      where: { id: userIds },
+    });
+    res.json(users.map((u) => u.toJSON()));
+  } else {
+    res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
+  }
 });
 
 router.get('/:id', middleware.isAdminUser, setHospitalId, async (req, res) => {

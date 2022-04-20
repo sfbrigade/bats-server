@@ -59,6 +59,9 @@ export default {
     all() {
       return instance.get('/api/users/');
     },
+    active() {
+      return instance.get('/api/users/active');
+    },
     create(data) {
       return instance.post('/api/users/', data);
     },

@@ -104,6 +104,16 @@ async function dispatchRingdownUpdate(patientDeliveryId) {
   await dispatchStatusUpdate(patientDelivery.HospitalId);
 }
 
+function getActiveHospitalUsers(hospitalId) {
+  const userIds = [];
+  hospitalServer.clients.forEach((ws) => {
+    if (ws.info.hospitalId === hospitalId) {
+      userIds.push(ws.info.userId);
+    }
+  });
+  return userIds;
+}
+
 function configure(server, app) {
   server.on('upgrade', (req, socket, head) => {
     app.sessionParser(req, {}, async () => {
@@ -151,4 +161,5 @@ module.exports = {
   configure,
   dispatchRingdownUpdate,
   dispatchStatusUpdate,
+  getActiveHospitalUsers,
 };

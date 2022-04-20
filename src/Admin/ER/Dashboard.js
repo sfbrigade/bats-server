@@ -8,7 +8,7 @@ export default function Dashboard() {
     <main>
       <div>
         <h1>Active Users</h1>
-        <UsersTable />
+        <UsersTable isActive />
       </div>
       {/* <div>
         <h1>Incoming Ringdowns</h1>
