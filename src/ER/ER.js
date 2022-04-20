@@ -76,7 +76,7 @@ export default function ER() {
 
   return (
     <>
-      <Header name={hospital?.hospital.name || 'Hospital Destination Tool'}>
+      <Header name={`${hospital?.hospital.name} - Routed`}>
         {showTabs && <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />}
       </Header>
       {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
