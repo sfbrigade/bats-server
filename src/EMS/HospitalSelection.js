@@ -38,7 +38,7 @@ function HospitalSelection({ ringdown, onChange }) {
           </fieldset>
           <fieldset className="usa-fieldset">
             <FormInput
-              label="Arrival at ER"
+              label="ETA"
               onChange={onChange}
               property="etaMinutes"
               required
