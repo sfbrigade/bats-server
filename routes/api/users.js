@@ -6,7 +6,7 @@ const middleware = require('../../auth/middleware');
 const models = require('../../models');
 const { getActiveHospitalUsers } = require('../../wss');
 
-const { setPaginationHeaders } = require('../helpers');
+const { setPaginationHeaders, wrapper } = require('../helpers');
 
 const router = express.Router();
 
@@ -48,23 +48,39 @@ router.get('/', middleware.isAdminUser, setHospitalId, async (req, res) => {
   res.json(records.map((u) => u.toJSON()));
 });
 
-router.post('/', middleware.isAdminUser, setHospitalId, async (req, res) => {
-  try {
-    const user = await models.User.create({
-      OrganizationId: req.user.OrganizationId,
-      email: req.body.email,
-      password: req.body.password,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
-      CreatedById: req.user.id,
-      UpdatedById: req.user.id,
+router.post(
+  '/',
+  middleware.isAdminUser,
+  setHospitalId,
+  wrapper(async (req, res) => {
+    let user;
+    await models.sequelize.transaction(async (transaction) => {
+      user = await models.User.create(
+        {
+          ..._.pick(req.body, ['email', 'password', 'firstName', 'lastName', 'isAdminUser', 'isOperationalUser']),
+          OrganizationId: req.user.OrganizationId,
+          isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
+        },
+        { transaction }
+      );
+      if (req.HospitalId) {
+        await models.HospitalUser.create(
+          {
+            ..._.pick(req.body, ['isInfoUser', 'isRingdownUser']),
+            HospitalId: req.HospitalId,
+            EdAdminUserId: user.id,
+            CreatedById: req.user.id,
+            UpdatedById: req.user.id,
+          },
+          { transaction }
+        );
+      }
     });
     res.status(HttpStatus.CREATED).json(user.toJSON());
-  } catch (err) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
-  }
-});
+  })
+);
 
 router.get('/me', middleware.isAuthenticated, async (req, res) => {
   const org = await req.user.getOrganization();
@@ -114,8 +130,11 @@ router.get('/:id', middleware.isAdminUser, setHospitalId, async (req, res) => {
   }
 });
 
-router.patch('/:id', middleware.isAdminUser, setHospitalId, async (req, res) => {
-  try {
+router.patch(
+  '/:id',
+  middleware.isAdminUser,
+  setHospitalId,
+  wrapper(async (req, res) => {
     let user;
     await models.sequelize.transaction(async (transaction) => {
       const options = { transaction };
@@ -146,10 +165,8 @@ router.patch('/:id', middleware.isAdminUser, setHospitalId, async (req, res) => 
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }
-  } catch {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
-  }
-});
+  })
+);
 
 router.delete('/:id', middleware.isAdminUser, async (req, res) => {
   try {

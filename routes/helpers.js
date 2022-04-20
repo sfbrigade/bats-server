@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
 
 function setPaginationHeaders(req, res, page, pages, total) {
@@ -37,6 +38,28 @@ function setPaginationHeaders(req, res, page, pages, total) {
   res.set(headers);
 }
 
+function wrapper(handler) {
+  return (req, res, next) => {
+    Promise.resolve(handler(req, res, next)).catch((error) => {
+      if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
+        /// if we've got a schema validation error, extract the individual errors
+        let originalError = error;
+        if (error.errors.length === 1 && error.errors[0].path === 'schema') {
+          originalError = error.errors[0].original;
+        }
+        res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          messages: originalError.errors.map((e) => _.pick(e, ['path', 'message', 'value'])),
+        });
+      } else {
+        // console.log(error);
+        next(error);
+      }
+    });
+  };
+}
+
 module.exports = {
+  wrapper,
   setPaginationHeaders,
 };
