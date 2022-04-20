@@ -6,6 +6,10 @@
   margin-bottom: 2rem;
 }
 
+.admin-navigation__container {
+  position: relative;
+}
+
 .admin-navigation__hospital-name,
 .admin-navigation__logout {
   display: block;
@@ -35,4 +39,10 @@
   border-bottom: 0.25rem solid color($theme-color-primary);
   color: color($theme-color-primary);
   font-weight: bold;
+}
+
+.admin-navigation__alert {
+  position: absolute;
+  width: 50%;
+  left: 25%;
 }

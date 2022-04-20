@@ -9,7 +9,25 @@ const { setPaginationHeaders } = require('../helpers');
 
 const router = express.Router();
 
-router.get('/', middleware.isAdminUser, async (req, res) => {
+async function setHospitalId(req, res, next) {
+  // if user is not a superuser, only return users for their active hospital
+  const ahus = await req.user.getActiveHospitalUsers();
+  if (req.query.hospitalId) {
+    if (!req.user.isSuperUser && !ahus.find((ahu) => ahu.HospitalId === req.query.hospitalId)) {
+      res.status(HttpStatus.FORBIDDEN).end();
+      return;
+    }
+    req.HospitalId = req.query.hospitalId;
+  } else if (ahus.length === 1) {
+    req.HospitalId = ahus[0].HospitalId;
+  } else if (!req.user.isSuperUser) {
+    res.status(HttpStatus.FORBIDDEN).end();
+    return;
+  }
+  next();
+}
+
+router.get('/', middleware.isAdminUser, setHospitalId, async (req, res) => {
   const page = req.query.page || '1';
   const options = {
     page,
@@ -19,30 +37,17 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
       ['lastName', 'ASC'],
     ],
   };
-  // if user is not a superuser, only return users for their active hospital
-  const ahus = await req.user.getActiveHospitalUsers();
-  if (req.query.hospitalId) {
-    if (!req.user.isSuperUser && !ahus.find((ahu) => ahu.HospitalId === req.query.hospitalId)) {
-      res.status(HttpStatus.FORBIDDEN).end();
-      return;
-    }
+  if (req.HospitalId) {
     options.include[0].where = {
-      HospitalId: req.query.hospitalId,
+      HospitalId: req.HospitalId,
     };
-  } else if (ahus.length === 1) {
-    options.include[0].where = {
-      HospitalId: ahus[0].HospitalId,
-    };
-  } else if (!req.user.isSuperUser) {
-    res.status(HttpStatus.FORBIDDEN).end();
-    return;
   }
   const { records, pages, total } = await models.User.paginate(options);
   setPaginationHeaders(req, res, page, pages, total);
   res.json(records.map((u) => u.toJSON()));
 });
 
-router.post('/', middleware.isAdminUser, async (req, res) => {
+router.post('/', middleware.isAdminUser, setHospitalId, async (req, res) => {
   try {
     const user = await models.User.create({
       OrganizationId: req.user.OrganizationId,
@@ -71,30 +76,56 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
   res.json(req.user.toJSON());
 });
 
-router.get('/:id', middleware.isAdminUser, async (req, res) => {
+router.get('/:id', middleware.isAdminUser, setHospitalId, async (req, res) => {
   try {
-    const user = await models.User.findByPk(req.params.id);
+    const options = {};
+    if (req.HospitalId) {
+      options.include = [
+        {
+          model: models.HospitalUser,
+          as: 'ActiveHospitalUsers',
+          where: {
+            HospitalId: req.HospitalId,
+          },
+        },
+      ];
+    }
+    const user = await models.User.findByPk(req.params.id, options);
     if (user) {
-      // TODO: verify user is in same hospital as calling user
       res.json(user.toJSON());
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }
-  } catch {
+  } catch (err) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
 
-router.patch('/:id', middleware.isAdminUser, async (req, res) => {
+router.patch('/:id', middleware.isAdminUser, setHospitalId, async (req, res) => {
   try {
     let user;
     await models.sequelize.transaction(async (transaction) => {
-      user = await models.User.findByPk(req.params.id, { transaction });
+      const options = { transaction };
+      if (req.HospitalId) {
+        options.include = [
+          {
+            model: models.HospitalUser,
+            as: 'ActiveHospitalUsers',
+            where: {
+              HospitalId: req.HospitalId,
+            },
+          },
+        ];
+      }
+      user = await models.User.findByPk(req.params.id, options);
       if (user) {
-        // TODO: verify user is in same hospital as calling user
         await user.update(_.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'isAdminUser', 'isOperationalUser']), {
           transaction,
         });
+        if (req.HospitalId) {
+          const hospitalUser = user.ActiveHospitalUsers.find((ahu) => ahu.HospitalId === req.HospitalId);
+          await hospitalUser?.update(_.pick(req.body, ['isActive', 'isInfoUser', 'isRingdownUser']), { transaction });
+        }
       }
     });
     if (user) {
