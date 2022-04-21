@@ -1,51 +1,70 @@
 /* eslint-disable no-restricted-syntax, no-await-in-loop */
 const models = require('../models');
-// nurses
-const accounts = [
+
+// hospital admins users to sign in as main user on admin page
+const hospitalAdmins = [
   {
+    firstName: 'Mary',
+    lastName: 'Albright',
     org: 'Kaiser Permanente',
     hospital: 'Kaiser SF',
-    email: 'kaiser.er@c4sf.me',
+    email: 'kaiser.eradmin@c4sf.me',
   },
   {
+    firstName: 'Jane',
+    lastName: 'Austin',
     org: 'Sutter Health CPMC',
     hospital: 'CPMC Davies',
-    email: 'cpmc.davies.er@c4sf.me',
+    email: 'cpmc.davies.eradmin@c4sf.me',
   },
   {
+    firstName: 'Chris',
+    lastName: 'Lincoln',
     org: 'Sutter Health CPMC',
     hospital: 'CPMC Van Ness',
-    email: 'cpmc.vanness.er@c4sf.me',
+    email: 'cpmc.vanness.eradmin@c4sf.me',
   },
   {
+    firstName: 'Johnathan',
+    lastName: 'Strange',
     org: 'Sutter Health CPMC',
     hospital: 'Mission Bernal',
-    email: 'mission.bernal.er@c4sf.me',
+    email: 'mission.bernal.eradmin@c4sf.me',
   },
   {
+    firstName: 'Rebecca',
+    lastName: 'Strange',
     org: 'Dignity Health',
     hospital: 'St. Francis',
-    email: 'stfrancis.er@c4sf.me',
+    email: 'stfrancis.eradmin@c4sf.me',
   },
   {
+    firstName: 'Syndney',
+    lastName: 'Sage',
     org: 'Dignity Health',
     hospital: "St. Mary's",
-    email: 'stmarys.er@c4sf.me',
+    email: 'stmarys.eradmin@c4sf.me',
   },
   {
+    firstName: 'Adrian',
+    lastName: 'Ivashkov',
     org: 'Chinese Hospital',
     hospital: 'Chinese Hospital',
-    email: 'chinese.er@c4sf.me',
+    email: 'chinese.eradmin@c4sf.me',
   },
   {
+    firstName: 'Gary',
+    lastName: 'Coleman',
     org: 'UCSF Health',
     hospital: 'UCSF Parnassus',
-    email: 'ucsf.parnassus.er@c4sf.me',
+    email: 'ucsf.parnassus.eradmin@c4sf.me',
   },
   {
+    firstName: 'Rose',
+    lastName: 'Hathaway',
     org: 'Veterans Health Administration',
     hospital: 'VA Med. Center',
-    email: 'va.er@c4sf.me',
+    email: 'va.eradmin@c4sf.me',
   },
 ];
 
@@ -58,30 +77,30 @@ module.exports = {
         },
         transaction,
       });
-      for (const account of accounts) {
-        // find the org info
+
+      for (const hospitalAdmin of hospitalAdmins) {
         const org = await models.Organization.findOne({
           where: {
-            name: account.org,
+            name: hospitalAdmin.org,
           },
           transaction,
         });
-        // used to find hospital to create hopital user
+
         const hospital = await models.Hospital.findOne({
           where: {
-            name: account.hospital,
+            name: hospitalAdmin.hospital,
           },
         });
+
         const user = await models.User.create(
           {
-            // org.id is how we show each individual hospital
             OrganizationId: org.id,
-            firstName: 'Operational',
-            lastName: 'Healthcare',
-            email: account.email,
+            firstName: hospitalAdmin.firstName,
+            lastName: hospitalAdmin.lastName,
+            email: hospitalAdmin.email,
             hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
             isOperationalUser: true,
-            isAdminUser: false,
+            isAdminUser: true,
             isSuperUser: false,
             CreatedById: superuser.id,
             UpdatedById: superuser.id,
@@ -94,8 +113,6 @@ module.exports = {
             EdAdminUserId: user.id,
             CreatedById: superuser.id,
             UpdatedById: superuser.id,
-            isInfoUser: true,
-            isRingdownUser: true,
           },
           { transaction }
         );
@@ -105,10 +122,10 @@ module.exports = {
 
   down: async (queryInterface) => {
     await queryInterface.sequelize.transaction(async (transaction) => {
-      for (const account of accounts) {
+      for (const hospitalAdmin of hospitalAdmins) {
         const user = await models.User.findOne({
           where: {
-            email: account.email,
+            email: hospitalAdmin.email,
           },
           transaction,
         });
@@ -123,3 +140,4 @@ module.exports = {
     });
   },
 };
+// er admin user

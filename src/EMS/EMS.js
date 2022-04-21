@@ -27,15 +27,19 @@ export default function EMS() {
   }, [lastMessage, setRingdowns, setStatusUpdates]);
 
   return (
-    <>
-      <Header name="Routed">
-        <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdown', 'Hospital Info']} />
-      </Header>
-      <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 0 })} />
-      <HospitalStatuses
-        onReturn={() => setSelectedTab(0)}
-        className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 1 })}
-      />
-    </>
+    <div className="grid-container">
+      <div className="grid-row">
+        <div className="tablet:grid-col-6 tablet:grid-offset-3">
+          <Header name="Routed">
+            <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdown', 'Hospital Info']} />
+          </Header>
+          <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 0 })} />
+          <HospitalStatuses
+            onReturn={() => setSelectedTab(0)}
+            className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 1 })}
+          />
+        </div>
+      </div>
+    </div>
   );
 }

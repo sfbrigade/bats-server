@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
+import FormError from '../Models/FormError';
 
 function FormInput({
   children,
@@ -20,6 +21,7 @@ function FormInput({
   unit,
   value,
   validationState,
+  error,
 }) {
   const [focused, setFocused] = useState(false);
 
@@ -48,7 +50,7 @@ function FormInput({
         min={min}
         max={max}
         className={classNames('usa-input', {
-          'usa-input--error': validationState === ValidationState.ERROR,
+          'usa-input--error': validationState === ValidationState.ERROR || error?.errorsFor(property),
           'usa-input--success': validationState === ValidationState.FIXED,
           'usa-input--medium': size === 'medium',
           'usa-input--small': size === 'small',
@@ -71,7 +73,7 @@ function FormInput({
           className={classNames('usa-label', {
             'usa-label--required': showRequiredHint && required,
             'usa-label--focused': focused,
-            'usa-label--error': validationState === ValidationState.ERROR,
+            'usa-label--error': validationState === ValidationState.ERROR || error?.errorsFor(property),
             'usa-label--success': validationState === ValidationState.FIXED,
           })}
         >
@@ -79,6 +81,15 @@ function FormInput({
         </label>
       )}
       {input}
+      {error?.errorsFor(property) && (
+        <div className="usa-error-message usa-error-message--static">
+          <i className="fas fa-exclamation-circle" />{' '}
+          {error
+            .errorsFor(property)
+            .map((e) => e.message)
+            .join(' ')}
+        </div>
+      )}
       <ValidationMessage validationState={validationState} />
     </>
   );
@@ -94,12 +105,13 @@ FormInput.propTypes = {
   required: PropTypes.bool,
   showRequiredHint: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
-  type: PropTypes.oneOf(['number', 'text']),
+  type: PropTypes.oneOf(['number', 'text', 'password']),
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   unit: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   validationState: PropTypes.oneOf([...ValidationState.ALL_STATES]),
+  error: PropTypes.instanceOf(FormError),
 };
 
 FormInput.defaultProps = {
@@ -116,6 +128,7 @@ FormInput.defaultProps = {
   unit: null,
   value: '',
   validationState: ValidationState.NO_INPUT,
+  error: undefined,
 };
 
 export default FormInput;
