@@ -1,28 +1,31 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import Context from '../Context';
 import Spinner from './Spinner';
 
-function Redirect() {
+function Redirect({ isAdminOnly }) {
   const { user } = useContext(Context);
   const history = useHistory();
 
   useEffect(() => {
     if (user) {
-      if (user.isAdminUser) {
+      if (!isAdminOnly && user.isOperationalUser) {
+        if (user.organization.type === 'HEALTHCARE') {
+          history.push('/er');
+        } else {
+          history.push('/ems');
+        }
+      } else if (user.isAdminUser) {
         if (user.organization.type === 'HEALTHCARE') {
           history.push('/admin/er');
         } else {
           history.push('/admin/ems');
         }
-      } else if (user.organization.type === 'HEALTHCARE') {
-        history.push('/er');
-      } else {
-        history.push('/ems');
       }
     }
-  }, [history, user]);
+  }, [history, user, isAdminOnly]);
 
   return (
     <div className="padding-9">
@@ -30,5 +33,13 @@ function Redirect() {
     </div>
   );
 }
+
+Redirect.propTypes = {
+  isAdminOnly: PropTypes.bool,
+};
+
+Redirect.defaultProps = {
+  isAdminOnly: undefined,
+};
 
 export default Redirect;

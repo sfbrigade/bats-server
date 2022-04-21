@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
+import Redirect from '../Components/Redirect';
 import AdminER from './ER/AdminER';
 import AdminEMS from './EMS/AdminEMS';
 
@@ -14,6 +15,9 @@ function Admin() {
       </Route>
       <Route path={`${path}/er`}>
         <AdminER />
+      </Route>
+      <Route exact path={path}>
+        <Redirect isAdminOnly />
       </Route>
     </Switch>
   );

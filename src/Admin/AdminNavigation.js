@@ -28,10 +28,13 @@ function AdminNavigation() {
             <h2 className="admin-navigation__hospital-name">{user?.activeHospitals?.[0]?.hospital?.name}</h2>
             <Link to={`/admin/er/users/${user?.id}`}>Edit Profile</Link>
           </div>
-          <div>
-            <a className="admin-navigation__logout" href="/auth/local/logout">
-              Logout
-            </a>
+          <div className="admin-navigation__logout">
+            {user?.isOperationalUser && (
+              <>
+                <Link to="/er">Back to ER</Link>&nbsp;|&nbsp;
+              </>
+            )}
+            <a href="/auth/local/logout">Logout</a>
           </div>
         </div>
         <div className="display-flex flex-row flex-justify-center">
