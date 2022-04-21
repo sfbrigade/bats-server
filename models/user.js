@@ -69,6 +69,14 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         field: 'email',
         type: DataTypes.CITEXT,
+        unique: {
+          msg: 'This email address has already been used.',
+        },
+        validate: {
+          isEmail: {
+            msg: 'This is not a valid email address.',
+          },
+        },
       },
       subjectId: {
         field: 'subjectid',
@@ -76,6 +84,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: new DataTypes.VIRTUAL(DataTypes.STRING),
+        validate: {
+          is: {
+            args: [/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/],
+            msg: 'At least 8 characters, including upper and lowercase letters, a number, and a symbol.',
+          },
+        },
       },
       hashedPassword: {
         field: 'hashedpassword',

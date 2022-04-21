@@ -5,6 +5,7 @@ import ApiService from './ApiService';
 import Context from './Context';
 import EMS from './EMS';
 import ER from './ER';
+import Admin from './Admin';
 import Redirect from './Components/Redirect';
 
 function App() {
@@ -31,6 +32,9 @@ function App() {
         </Route>
         <Route path="/er">
           <ER />
+        </Route>
+        <Route path="/admin">
+          <Admin />
         </Route>
         <Route exact path="/">
           <Redirect />

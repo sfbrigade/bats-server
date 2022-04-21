@@ -14,7 +14,7 @@ describe('models.User', () => {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@test.com',
-      password: 'abcd1234!',
+      password: 'Abcd1234!',
       isOperationalUser: true,
       CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
       UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
@@ -30,6 +30,6 @@ describe('models.User', () => {
     assert(user.hashedPassword);
     assert(user.createdAt);
     assert(user.updatedAt);
-    assert(await bcrypt.compare('abcd1234!', user.hashedPassword));
+    assert(await bcrypt.compare('Abcd1234!', user.hashedPassword));
   });
 });

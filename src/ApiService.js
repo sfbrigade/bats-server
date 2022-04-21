@@ -56,5 +56,29 @@ export default {
     me() {
       return instance.get('/api/users/me');
     },
+    all() {
+      return instance.get('/api/users/');
+    },
+    active() {
+      return instance.get('/api/users/active');
+    },
+    create(data) {
+      return instance.post('/api/users/', data);
+    },
+    get(id) {
+      return instance.get(`/api/users/${id}`);
+    },
+    update(id, data) {
+      return instance.patch(`/api/users/${id}`, data);
+    },
+    delete(id) {
+      return instance.delete(`/api/users/${id}`);
+    },
+  },
+  orgs: {
+    // this may not be needed will keep for now
+    all() {
+      return instance.get('/api/organizations/');
+    },
   },
 };

@@ -2,10 +2,23 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 
-/// Assume we're never going to deal with DECIMAL values outside of JS number range
-/// https://github.com/sequelize/sequelize/issues/8019
+// Assume we're never going to deal with DECIMAL values outside of JS number range
+// https://github.com/sequelize/sequelize/issues/8019
 Sequelize.postgres.DECIMAL.parse = function parse(value) {
   return parseFloat(value);
+};
+
+// Add a pagination helper
+Sequelize.Model.paginate = async function paginate(options) {
+  const newOptions = { ...options };
+  const page = parseInt(newOptions.page || '1', 10);
+  delete newOptions.page;
+  const perPage = newOptions.paginate || 25;
+  delete newOptions.paginate;
+  newOptions.offset = (page - 1) * perPage;
+  newOptions.limit = perPage;
+  const { count, rows } = await this.findAndCountAll(newOptions);
+  return { records: rows, pages: Math.ceil(count / perPage), total: count };
 };
 
 const basename = path.basename(__filename);

@@ -27,7 +27,7 @@ describe('/api/ringdowns', () => {
   });
 
   describe('GET /', () => {
-    it('returns a list of all active ringdowns', async () => {
+    it('returns a list of all ringdowns', async () => {
       await testSession
         .post('/auth/local/login')
         .set('Accept', 'application/json')
@@ -35,13 +35,10 @@ describe('/api/ringdowns', () => {
         .expect(HttpStatus.OK);
 
       const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
-      assert.deepStrictEqual(response.body.length, 4);
-      const ids = response.body.map((ringdown) => ringdown.id).sort();
-      assert.deepStrictEqual(ids[0], '4889b0c8-ce48-474a-ac5b-c5aca708451c');
-      assert.deepStrictEqual(ids[1], 'd4fd2478-ecd6-4571-9fb3-842bfc64b511');
+      assert.deepStrictEqual(response.body.length, 5);
     });
 
-    it('returns a list of active ringdowns filtered by hospital', async () => {
+    it('returns a list of all ringdowns filtered by hospital', async () => {
       await testSession
         .post('/auth/local/login')
         .set('Accept', 'application/json')
@@ -53,8 +50,8 @@ describe('/api/ringdowns', () => {
         .query({ hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680' })
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK);
-      assert.deepStrictEqual(response.body.length, 2);
-      assert.deepStrictEqual(response.body[0].id, 'd4fd2478-ecd6-4571-9fb3-842bfc64b511');
+      assert.deepStrictEqual(response.body.length, 3);
+      assert.deepStrictEqual(response.body[0].id, 'f3ad9b22-719f-11eb-9439-0242ac130002');
     });
 
     it('returns a list of active ringdowns created by the calling EMS user', async () => {

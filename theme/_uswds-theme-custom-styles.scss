@@ -305,6 +305,10 @@ $spinner-border-width-sm: 0.2em;
   position: absolute;
 }
 
+.usa-error-message--static {
+  position: static;
+}
+
 .usa-fieldset {
   padding: 1.5rem;
 }
