@@ -6,22 +6,23 @@ import ApiService from '../../ApiService';
 import Context from '../../Context';
 
 function UsersTable({ isActive }) {
-  const { user } = useContext(Context);
+  const { user, organization, hospital } = useContext(Context);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     if (user) {
+      const params = { organizationId: organization?.id, hospitalId: hospital?.id };
       let request;
       if (isActive) {
-        request = ApiService.users.active();
+        request = ApiService.users.active(params);
       } else {
-        request = ApiService.users.all();
+        request = ApiService.users.all(params);
       }
       request.then((response) => {
         setUsers(response.data);
       });
     }
-  }, [user, isActive]);
+  }, [user, organization, hospital, isActive]);
 
   return (
     <table className="usa-table usa-table--borderless width-full">

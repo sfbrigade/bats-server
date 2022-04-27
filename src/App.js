@@ -23,7 +23,7 @@ function App() {
         setHospital(user.activeHospitals[0]);
       }
     });
-  }, [setUser, setHospital]);
+  }, [setUser, setOrganization, setHospital]);
 
   return (
     <Router>

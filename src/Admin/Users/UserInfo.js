@@ -15,27 +15,32 @@ function UserInfo({ userId }) {
   const [error, setError] = useState();
 
   useEffect(() => {
-    if (userId && userId !== 'new' && hospital) {
+    if (userId && userId !== 'new') {
       ApiService.users.get(userId).then((response) => {
         const { data } = response;
-        const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital.hospital?.id);
-        data.isActive = hospitalUser.isActive;
-        data.isInfoUser = hospitalUser.isInfoUser;
-        data.isRingdownUser = hospitalUser.isRingdownUser;
+        if (hospital) {
+          const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital.hospital?.id);
+          data.isActive = hospitalUser.isActive;
+          data.isInfoUser = hospitalUser.isInfoUser;
+          data.isRingdownUser = hospitalUser.isRingdownUser;
+        }
         setUser(response.data);
       });
     } else {
-      setUser({
+      const data = {
         firstName: '',
         lastName: '',
         email: '',
         password: '',
         isAdminUser: false,
         isOperationalUser: true,
-        isActive: true,
-        isInfoUser: true,
-        isRingdownUser: true,
-      });
+      };
+      if (hospital) {
+        data.isActive = true;
+        data.isInfoUser = true;
+        data.isRingdownUser = true;
+      }
+      setUser(data);
     }
   }, [userId, hospital]);
 
@@ -135,16 +140,20 @@ function UserInfo({ userId }) {
                   currentValue={user.isOperationalUser}
                   value={true}
                 />
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label className="usa-label">Tabs</label>
-                <FormCheckbox label="Info tab" onChange={onChange} property="isInfoUser" currentValue={user.isInfoUser} value={true} />
-                <FormCheckbox
-                  label="Ringdowns tab"
-                  onChange={onChange}
-                  property="isRingdownUser"
-                  currentValue={user.isRingdownUser}
-                  value={true}
-                />
+                {hospital && (
+                  <>
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                    <label className="usa-label">Tabs</label>
+                    <FormCheckbox label="Info tab" onChange={onChange} property="isInfoUser" currentValue={user.isInfoUser} value={true} />
+                    <FormCheckbox
+                      label="Ringdowns tab"
+                      onChange={onChange}
+                      property="isRingdownUser"
+                      currentValue={user.isRingdownUser}
+                      value={true}
+                    />
+                  </>
+                )}
                 <button className="usa-button margin-y-3" type="submit">
                   Submit
                 </button>

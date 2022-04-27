@@ -56,8 +56,9 @@ export default {
     me() {
       return instance.get('/api/users/me');
     },
-    all() {
-      return instance.get('/api/users/');
+    all(params) {
+      const { organizationId, hospitalId } = params || {};
+      return instance.get('/api/users/', { params: { organizationId, hospitalId } });
     },
     active() {
       return instance.get('/api/users/active');

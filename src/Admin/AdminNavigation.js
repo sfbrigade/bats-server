@@ -27,11 +27,12 @@ function AdminNavigation() {
           <div>
             <h2 className="admin-navigation__name">
               {organization?.name}
-              {hospital && (<>
-                &nbsp;&gt;&nbsp;&nbsp;{hospital.hospital?.name}
-              </>)}
+              {hospital && <>&nbsp;&gt;&nbsp;&nbsp;{hospital.hospital?.name}</>}
             </h2>
-            <Link to={`${url}/users/${user?.id}`}>My Profile</Link>
+            Welcome,{' '}
+            <Link to={`${url}/users/${user?.id}`}>
+              {user?.firstName} {user?.lastName}
+            </Link>
           </div>
           <div className="admin-navigation__logout">
             {user?.isOperationalUser && (
