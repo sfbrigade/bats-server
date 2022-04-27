@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 
-import FormInput from '../../../Components/FormInput';
-import FormCheckbox from '../../../Components/FormCheckbox';
-import FormError from '../../../Models/FormError';
-import ApiService from '../../../ApiService';
-import Context from '../../../Context';
+import FormInput from '../../Components/FormInput';
+import FormCheckbox from '../../Components/FormCheckbox';
+import FormError from '../../Models/FormError';
+import ApiService from '../../ApiService';
+import Context from '../../Context';
 
 function UserInfo({ userId }) {
   const history = useHistory();
@@ -58,7 +58,7 @@ function UserInfo({ userId }) {
       } else {
         await ApiService.users.create(data);
       }
-      history.push('/admin/er/users', { flash: { info: 'Saved!' } });
+      history.push('/admin/users', { flash: { info: 'Saved!' } });
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);

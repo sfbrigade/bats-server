@@ -1,26 +1,33 @@
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Switch, Redirect, Route, useRouteMatch } from 'react-router-dom';
 
-import Redirect from '../Components/Redirect';
-import AdminER from './ER/AdminER';
-import AdminEMS from './EMS/AdminEMS';
+import AdminNavigation from './AdminNavigation';
+import Dashboard from './Dashboard';
+import Ringdowns from './Ringdowns/Ringdowns';
+import Users from './Users/Users';
 
-function Admin() {
+export default function Admin() {
   const { path } = useRouteMatch();
 
   return (
-    <Switch>
-      <Route path={`${path}/ems`}>
-        <AdminEMS />
-      </Route>
-      <Route path={`${path}/er`}>
-        <AdminER />
-      </Route>
-      <Route exact path={path}>
-        <Redirect isAdminOnly />
-      </Route>
-    </Switch>
+    <>
+      <AdminNavigation />
+      <div className="grid-container">
+        <Switch>
+          <Route path={`${path}/dashboard`}>
+            <Dashboard />
+          </Route>
+          <Route path={`${path}/users/:userId?`}>
+            <Users />
+          </Route>
+          <Route path={`${path}/ringdowns`}>
+            <Ringdowns />
+          </Route>
+          <Route exact path={path}>
+            <Redirect to={`${path}/dashboard`} />
+          </Route>
+        </Switch>
+      </div>
+    </>
   );
 }
-
-export default Admin;

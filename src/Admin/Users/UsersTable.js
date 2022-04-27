@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import ApiService from '../../../ApiService';
-import Context from '../../../Context';
+import ApiService from '../../ApiService';
+import Context from '../../Context';
 
 function UsersTable({ isActive }) {
   const { user } = useContext(Context);
@@ -40,7 +40,7 @@ function UsersTable({ isActive }) {
             <td>{u.lastName}</td>
             <td>{u.email}</td>
             <td>
-              <Link to={`/admin/er/users/${u.id}`}>More &gt;</Link>
+              <Link to={`/admin/users/${u.id}`}>More &gt;</Link>
             </td>
           </tr>
         ))}

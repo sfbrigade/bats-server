@@ -8,7 +8,7 @@ import './AdminNavigation.scss';
 function AdminNavigation() {
   const { location } = useHistory();
   const { url } = useRouteMatch();
-  const { user } = useContext(Context);
+  const { user, organization, hospital } = useContext(Context);
   const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
@@ -25,13 +25,18 @@ function AdminNavigation() {
       <div className="admin-navigation__container grid-container">
         <div className="display-flex flex-row flex-justify">
           <div>
-            <h2 className="admin-navigation__hospital-name">{user?.activeHospitals?.[0]?.hospital?.name}</h2>
-            <Link to={`/admin/er/users/${user?.id}`}>Edit Profile</Link>
+            <h2 className="admin-navigation__name">
+              {organization?.name}
+              {hospital && (<>
+                &nbsp;&gt;&nbsp;&nbsp;{hospital.hospital?.name}
+              </>)}
+            </h2>
+            <Link to={`${url}/users/${user?.id}`}>My Profile</Link>
           </div>
           <div className="admin-navigation__logout">
             {user?.isOperationalUser && (
               <>
-                <Link to="/er">Back to ER</Link>&nbsp;|&nbsp;
+                <Link to="/">Exit Admin</Link>&nbsp;|&nbsp;
               </>
             )}
             <a href="/auth/local/logout">Logout</a>
