@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 
+import ApiService from '../ApiService';
 import Context from '../Context';
 
 import './AdminNavigation.scss';
@@ -8,7 +9,9 @@ import './AdminNavigation.scss';
 function AdminNavigation() {
   const { location } = useHistory();
   const { url } = useRouteMatch();
-  const { user, organization, hospital } = useContext(Context);
+  const { user, organization, setOrganization, hospital, setHospital } = useContext(Context);
+  const [organizations, setOrganizations] = useState([]);
+  const [hospitals, setHospitals] = useState([]);
   const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
@@ -20,15 +23,73 @@ function AdminNavigation() {
     }
   }, [location]);
 
+  useEffect(() => {
+    if (user?.isSuperUser) {
+      ApiService.organizations.index().then((response) => setOrganizations(response.data));
+    }
+  }, [user]);
+
+  function onChangeOrganization(event) {
+    const organizationId = event.target.value;
+    const newOrganization = organizations.find((o) => o.id === organizationId);
+    if (newOrganization) {
+      setOrganization(newOrganization);
+      if (newOrganization.type === 'HEALTHCARE') {
+        setHospitals(newOrganization.Hospitals);
+        setHospital(newOrganization.Hospitals[0]);
+      } else {
+        setHospitals([]);
+        setHospital();
+      }
+    }
+  }
+
+  function onChangeHospital(event) {
+    const hospitalId = event.target.value;
+    const newHospital = hospitals.find((h) => h.id === hospitalId);
+    if (newHospital) {
+      setHospital(newHospital);
+    }
+  }
+
   return (
     <div className="admin-navigation">
       <div className="admin-navigation__container grid-container">
         <div className="display-flex flex-row flex-justify">
           <div>
-            <h2 className="admin-navigation__name">
-              {organization?.name}
-              {hospital && <>&nbsp;&gt;&nbsp;&nbsp;{hospital.hospital?.name}</>}
-            </h2>
+            {user?.isSuperUser && (
+              <h2 className="admin-navigation__name">
+                <div className="display-flex flex-align-center">
+                  {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+                  <select value={organization?.id} onChange={onChangeOrganization} className="usa-select">
+                    {organizations?.map((o) => (
+                      <option key={o.id} value={o.id}>
+                        {o.name}
+                      </option>
+                    ))}
+                  </select>
+                  {organization?.type === 'HEALTHCARE' && (
+                    <>
+                      &nbsp;&gt;&nbsp;
+                      {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+                      <select value={hospital?.id} onChange={onChangeHospital} className="usa-select">
+                        {hospitals?.map((h) => (
+                          <option key={h.id} value={h.id}>
+                            {h.name}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                  )}
+                </div>
+              </h2>
+            )}
+            {!user?.isSuperUser && (
+              <h2 className="admin-navigation__name">
+                {organization?.name}
+                {hospital && <>&nbsp;&gt;&nbsp;&nbsp;{hospital.hospital?.name}</>}
+              </h2>
+            )}
             Welcome,{' '}
             <Link to={`${url}/users/${user?.id}`}>
               {user?.firstName} {user?.lastName}

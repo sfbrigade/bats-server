@@ -56,7 +56,7 @@ export default {
     me() {
       return instance.get('/api/users/me');
     },
-    all(params) {
+    index(params) {
       const { organizationId, hospitalId } = params || {};
       return instance.get('/api/users/', { params: { organizationId, hospitalId } });
     },
@@ -77,9 +77,8 @@ export default {
       return instance.delete(`/api/users/${id}`);
     },
   },
-  orgs: {
-    // this may not be needed will keep for now
-    all() {
+  organizations: {
+    index() {
       return instance.get('/api/organizations/');
     },
   },

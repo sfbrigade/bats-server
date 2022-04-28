@@ -20,8 +20,14 @@ async function setParams(req, res, next) {
       res.status(HttpStatus.FORBIDDEN).end();
       return;
     }
-    req.organizationId = hospitalUser.Hospital.OrganizationId;
-    req.hospitalId = hospitalId;
+    if (hospitalUser) {
+      req.organizationId = hospitalUser.Hospital.OrganizationId;
+      req.hospitalId = hospitalId;
+    } else {
+      const hospital = await models.Hospital.findByPk(hospitalId);
+      req.organizationId = hospital.OrganizationId;
+      req.hospitalId = hospital.id;
+    }
   } else if (req.query.organizationId || req.body.organizationId) {
     const organizationId = req.query.organizationId || req.body.organizationId;
     if (!req.user.isSuperUser && req.user.OrganizationId !== organizationId) {
@@ -69,16 +75,20 @@ router.post(
   wrapper(async (req, res) => {
     let user;
     await models.sequelize.transaction(async (transaction) => {
-      user = await models.User.create(
-        {
+      [user] = await models.User.findOrCreate({
+        where: {
+          email: req.body.email,
+          OrganizationId: req.organizationId,
+        },
+        defaults: {
           ..._.pick(req.body, ['email', 'password', 'firstName', 'lastName', 'isAdminUser', 'isOperationalUser']),
           OrganizationId: req.organizationId,
           isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
           CreatedById: req.user.id,
           UpdatedById: req.user.id,
         },
-        { transaction }
-      );
+        transaction,
+      });
       if (req.hospitalId) {
         await models.HospitalUser.create(
           {
@@ -138,6 +148,10 @@ router.get('/:id', middleware.isAdminUser, setParams, async (req, res) => {
           },
         },
       ];
+    } else if (req.organizationId) {
+      options.where = {
+        OrganizationId: req.organizationId,
+      };
     }
     const user = await models.User.findByPk(req.params.id, options);
     if (user) {

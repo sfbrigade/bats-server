@@ -14,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
     toJSON() {
       const attributes = { ...this.get() };
-      attributes.organization = this.Organization?.toJSON() || { id: this.OrganizationId };
-      return _.pick(attributes, ['id', 'name', 'type', 'timeZoneIsoCode', 'isActive']);
+      return _.pick(attributes, ['id', 'name', 'type', 'timeZoneIsoCode', 'isActive', 'Hospitals']);
     }
   }
   Organization.init(

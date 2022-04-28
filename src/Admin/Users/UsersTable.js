@@ -11,12 +11,12 @@ function UsersTable({ isActive }) {
 
   useEffect(() => {
     if (user && organization) {
-      const params = { organizationId: organization?.id, hospitalId: hospital?.hospital?.id };
+      const params = { organizationId: organization?.id, hospitalId: hospital?.id };
       let request;
       if (isActive) {
         request = ApiService.users.active(params);
       } else {
-        request = ApiService.users.all(params);
+        request = ApiService.users.index(params);
       }
       request.then((response) => {
         setUsers(response.data);

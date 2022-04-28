@@ -17,8 +17,8 @@ import Ringdowns from './Ringdowns';
 import notification from '../assets/notification.mp3';
 
 export default function ER() {
-  const { hospital } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospital?.hospital.id}`;
+  const { hospitalUser } = useContext(Context);
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
   const [selectedTab, setSelectedTab] = useState(1);
@@ -46,8 +46,8 @@ export default function ER() {
     setStatusUpdate(newStatusUpdate);
   }
 
-  const showRingdown = hospital?.isRingdownUser;
-  const showInfo = hospital?.isInfoUser;
+  const showRingdown = hospitalUser?.isRingdownUser;
+  const showInfo = hospitalUser?.isInfoUser;
   const showTabs = showRingdown && showInfo;
   const hasUnconfirmedRingdowns = unconfirmedRingdowns.length > 0;
   const incomingRingdownsCount = ringdowns.filter(
@@ -78,7 +78,7 @@ export default function ER() {
     <div className="grid-container">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <Header name={`${hospital?.hospital.name} - Routed`}>
+          <Header name={`${hospitalUser?.hospital.name} - Routed`}>
             {showTabs && <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />}
           </Header>
           {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}

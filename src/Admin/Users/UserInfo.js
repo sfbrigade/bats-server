@@ -19,7 +19,7 @@ function UserInfo({ userId }) {
       ApiService.users.get(userId).then((response) => {
         const { data } = response;
         if (hospital) {
-          const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital.hospital?.id);
+          const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital?.id);
           data.isActive = hospitalUser.isActive;
           data.isInfoUser = hospitalUser.isInfoUser;
           data.isRingdownUser = hospitalUser.isRingdownUser;
@@ -57,7 +57,7 @@ function UserInfo({ userId }) {
       const data = {
         ...user,
         organizationId: organization.id,
-        hospitalId: hospital?.hospital?.id,
+        hospitalId: hospital?.id,
       };
       if (data.password === '') {
         delete data.password;
