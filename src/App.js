@@ -9,7 +9,7 @@ import Admin from './Admin';
 import Redirect from './Components/Redirect';
 
 function App() {
-  const { setUser, setHospital } = useContext(Context);
+  const { setUser, setOrganization, setHospital, setHospitalUser } = useContext(Context);
 
   useEffect(() => {
     // hit the users endpoint to ensure authenticated
@@ -17,12 +17,14 @@ function App() {
       // save the user data into the context
       const user = response.data;
       setUser(user);
+      setOrganization(user.organization);
       if (user.organization.type === 'HEALTHCARE') {
         // TODO: handle user added to multiple hospitals
-        setHospital(user.activeHospitals[0]);
+        setHospital(user.activeHospitals[0].hospital);
+        setHospitalUser(user.activeHospitals[0]);
       }
     });
-  }, [setUser, setHospital]);
+  }, [setUser, setOrganization, setHospital, setHospitalUser]);
 
   return (
     <Router>

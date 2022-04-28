@@ -2,26 +2,27 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import ApiService from '../../../ApiService';
-import Context from '../../../Context';
+import ApiService from '../../ApiService';
+import Context from '../../Context';
 
 function UsersTable({ isActive }) {
-  const { user } = useContext(Context);
+  const { user, organization, hospital } = useContext(Context);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    if (user) {
+    if (user && organization) {
+      const params = { organizationId: organization?.id, hospitalId: hospital?.id };
       let request;
       if (isActive) {
-        request = ApiService.users.active();
+        request = ApiService.users.active(params);
       } else {
-        request = ApiService.users.all();
+        request = ApiService.users.index(params);
       }
       request.then((response) => {
         setUsers(response.data);
       });
     }
-  }, [user, isActive]);
+  }, [user, organization, hospital, isActive]);
 
   return (
     <table className="usa-table usa-table--borderless width-full">
@@ -40,7 +41,7 @@ function UsersTable({ isActive }) {
             <td>{u.lastName}</td>
             <td>{u.email}</td>
             <td>
-              <Link to={`/admin/er/users/${u.id}`}>More &gt;</Link>
+              <Link to={`/admin/users/${u.id}`}>More &gt;</Link>
             </td>
           </tr>
         ))}
