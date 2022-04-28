@@ -16,16 +16,28 @@ function UserInfo({ userId }) {
 
   useEffect(() => {
     if (userId && userId !== 'new') {
-      ApiService.users.get(userId).then((response) => {
-        const { data } = response;
-        if (hospital) {
-          const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital?.id);
-          data.isActive = hospitalUser.isActive;
-          data.isInfoUser = hospitalUser.isInfoUser;
-          data.isRingdownUser = hospitalUser.isRingdownUser;
-        }
-        setUser(response.data);
-      });
+      ApiService.users
+        .get(userId, { organizationId: organization?.id, hospitalId: hospital?.id })
+        .then((response) => {
+          const { data } = response;
+          if (data.organization?.id !== organization?.id) {
+            history.push('/admin/users');
+          }
+          if (hospital) {
+            const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital?.id);
+            if (hospitalUser) {
+              data.isActive = hospitalUser.isActive;
+              data.isInfoUser = hospitalUser.isInfoUser;
+              data.isRingdownUser = hospitalUser.isRingdownUser;
+            } else {
+              history.push('/admin/users');
+            }
+          }
+          setUser(response.data);
+        })
+        .catch(() => {
+          history.push('/admin/users');
+        });
     } else {
       const data = {
         firstName: '',
@@ -42,7 +54,7 @@ function UserInfo({ userId }) {
       }
       setUser(data);
     }
-  }, [userId, hospital]);
+  }, [userId, organization, hospital, history]);
 
   function onChange(property, value) {
     const newUser = { ...user };

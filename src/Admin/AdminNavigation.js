@@ -35,8 +35,8 @@ function AdminNavigation() {
     if (newOrganization) {
       setOrganization(newOrganization);
       if (newOrganization.type === 'HEALTHCARE') {
-        setHospitals(newOrganization.Hospitals);
-        setHospital(newOrganization.Hospitals[0]);
+        setHospitals(newOrganization.hospitals);
+        setHospital(newOrganization.hospitals[0]);
       } else {
         setHospitals([]);
         setHospital();
@@ -49,6 +49,15 @@ function AdminNavigation() {
     const newHospital = hospitals.find((h) => h.id === hospitalId);
     if (newHospital) {
       setHospital(newHospital);
+    }
+  }
+
+  function reset() {
+    setOrganization(user.organization);
+    if (user.organization.type === 'HEALTHCARE') {
+      setHospital(user.activeHospitals[0].hospital);
+    } else {
+      setHospital();
     }
   }
 
@@ -87,18 +96,22 @@ function AdminNavigation() {
             {!user?.isSuperUser && (
               <h2 className="admin-navigation__name">
                 {organization?.name}
-                {hospital && <>&nbsp;&gt;&nbsp;&nbsp;{hospital.hospital?.name}</>}
+                {hospital && <>&nbsp;&gt;&nbsp;&nbsp;{hospital.name}</>}
               </h2>
             )}
             Welcome,{' '}
-            <Link to={`${url}/users/${user?.id}`}>
+            <Link to={`${url}/users/${user?.id}`} onClick={reset}>
               {user?.firstName} {user?.lastName}
             </Link>
+            !
           </div>
           <div className="admin-navigation__logout">
             {user?.isOperationalUser && (
               <>
-                <Link to="/">Exit Admin</Link>&nbsp;|&nbsp;
+                <Link to="/" onClick={reset}>
+                  Exit Admin
+                </Link>
+                &nbsp;|&nbsp;
               </>
             )}
             <a href="/auth/local/logout">Logout</a>

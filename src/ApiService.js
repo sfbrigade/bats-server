@@ -67,8 +67,9 @@ export default {
     create(data) {
       return instance.post('/api/users/', data);
     },
-    get(id) {
-      return instance.get(`/api/users/${id}`);
+    get(id, params) {
+      const { organizationId, hospitalId } = params || {};
+      return instance.get(`/api/users/${id}`, { params: { organizationId, hospitalId } });
     },
     update(id, data) {
       return instance.patch(`/api/users/${id}`, data);
