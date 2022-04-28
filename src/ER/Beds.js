@@ -43,43 +43,47 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
               </span>
             )}
           </Heading>
-          <fieldset className="usa-fieldset beds__availability">
-            <Counter
-              isEditing={isEditing}
-              label="ER Beds"
-              name="openEdBedCount"
-              min={0}
-              onChange={handleChange}
-              value={statusUpdate.openEdBedCount}
-            />
-            <Counter
-              isEditing={isEditing}
-              label="Behavioral Beds"
-              name="openPsychBedCount"
-              min={0}
-              onChange={handleChange}
-              value={statusUpdate.openPsychBedCount}
-            />
-          </fieldset>
+          {statusUpdate && (
+            <fieldset className="usa-fieldset beds__availability">
+              <Counter
+                isEditing={isEditing}
+                label="ER Beds"
+                name="openEdBedCount"
+                min={0}
+                onChange={handleChange}
+                value={statusUpdate.openEdBedCount}
+              />
+              <Counter
+                isEditing={isEditing}
+                label="Behavioral Beds"
+                name="openPsychBedCount"
+                min={0}
+                onChange={handleChange}
+                value={statusUpdate.openPsychBedCount}
+              />
+            </fieldset>
+          )}
           <Heading title="ER conditions" />
-          <fieldset className="usa-fieldset beds__notes">
-            <FormTextArea
-              property="additionalNotes"
-              disabled={!isEditing}
-              value={additionalNotes == null ? statusUpdate.additionalServiceAvailabilityNotes : additionalNotes}
-              onChange={(property, value) => setAdditionalNotes(value)}
-            />
-            {!isEditing ? (
-              <button className="usa-button usa-button--outline" type="button" onClick={() => setEditing(true)}>
-                Update Hospital Info
-              </button>
-            ) : (
-              <button className="usa-button" type="button" onClick={handleUpdate}>
-                Confirm Updates
-              </button>
-            )}
-            <div className="beds__updated">Updated {DateTime.fromISO(statusUpdate.updateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}</div>
-          </fieldset>
+          {statusUpdate && (
+            <fieldset className="usa-fieldset beds__notes">
+              <FormTextArea
+                property="additionalNotes"
+                disabled={!isEditing}
+                value={additionalNotes == null ? statusUpdate.additionalServiceAvailabilityNotes : additionalNotes}
+                onChange={(property, value) => setAdditionalNotes(value)}
+              />
+              {!isEditing ? (
+                <button className="usa-button usa-button--outline" type="button" onClick={() => setEditing(true)}>
+                  Update Hospital Info
+                </button>
+              ) : (
+                <button className="usa-button" type="button" onClick={handleUpdate}>
+                  Confirm Updates
+                </button>
+              )}
+              <div className="beds__updated">Updated {DateTime.fromISO(statusUpdate.updateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}</div>
+            </fieldset>
+          )}
         </form>
       </div>
     </div>
@@ -88,8 +92,12 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
 
 Beds.propTypes = {
   onStatusUpdate: PropTypes.func.isRequired,
-  statusUpdate: PropTypes.instanceOf(HospitalStatus).isRequired,
+  statusUpdate: PropTypes.instanceOf(HospitalStatus),
   incomingRingdownsCount: PropTypes.number.isRequired,
+};
+
+Beds.defaultProps = {
+  statusUpdate: undefined,
 };
 
 export default Beds;
