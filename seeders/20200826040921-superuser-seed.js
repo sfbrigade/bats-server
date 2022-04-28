@@ -19,7 +19,7 @@ module.exports = {
           lastName: 'Admin',
           email: 'batsadmin@c4sf.me',
           hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
-          isOperationalUser: true,
+          isOperationalUser: false,
           isAdminUser: true,
           isSuperUser: true,
           CreatedById: '00000000-0000-0000-0000-000000000000',

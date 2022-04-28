@@ -8,7 +8,7 @@ const models = require('./models');
 const userServer = new WebSocket.Server({ noServer: true });
 userServer.on('connection', async (ws, req) => {
   // eslint-disable-next-line no-param-reassign
-  ws.info = { userId: req.user.id };
+  ws.info = { userId: req.user.id, organizationId: req.user.OrganizationId };
   // eslint-disable-next-line no-use-before-define
   const data = await getRingdownData(req.user.id);
   ws.send(data);
@@ -114,6 +114,16 @@ function getActiveHospitalUsers(hospitalId) {
   return userIds;
 }
 
+function getActiveOrganizationUsers(organizationId) {
+  const userIds = [];
+  userServer.clients.forEach((ws) => {
+    if (ws.info.organizationId === organizationId) {
+      userIds.push(ws.info.userId);
+    }
+  });
+  return userIds;
+}
+
 function configure(server, app) {
   server.on('upgrade', (req, socket, head) => {
     app.sessionParser(req, {}, async () => {
@@ -162,4 +172,5 @@ module.exports = {
   dispatchRingdownUpdate,
   dispatchStatusUpdate,
   getActiveHospitalUsers,
+  getActiveOrganizationUsers,
 };

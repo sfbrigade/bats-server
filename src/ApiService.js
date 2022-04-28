@@ -56,17 +56,20 @@ export default {
     me() {
       return instance.get('/api/users/me');
     },
-    all() {
-      return instance.get('/api/users/');
+    index(params) {
+      const { organizationId, hospitalId } = params || {};
+      return instance.get('/api/users/', { params: { organizationId, hospitalId } });
     },
-    active() {
-      return instance.get('/api/users/active');
+    active(params) {
+      const { organizationId, hospitalId } = params || {};
+      return instance.get('/api/users/active', { params: { organizationId, hospitalId } });
     },
     create(data) {
       return instance.post('/api/users/', data);
     },
-    get(id) {
-      return instance.get(`/api/users/${id}`);
+    get(id, params) {
+      const { organizationId, hospitalId } = params || {};
+      return instance.get(`/api/users/${id}`, { params: { organizationId, hospitalId } });
     },
     update(id, data) {
       return instance.patch(`/api/users/${id}`, data);
@@ -75,9 +78,8 @@ export default {
       return instance.delete(`/api/users/${id}`);
     },
   },
-  orgs: {
-    // this may not be needed will keep for now
-    all() {
+  organizations: {
+    index() {
       return instance.get('/api/organizations/');
     },
   },

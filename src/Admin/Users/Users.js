@@ -18,7 +18,7 @@ function Users() {
         <main>
           <div className="display-flex flex-align-center flex-justify">
             <h1>Users</h1>
-            <Link to="/admin/er/users/new" className="usa-button usa-button--primary">
+            <Link to="/admin/users/new" className="usa-button usa-button--primary">
               Add New User
             </Link>
           </div>

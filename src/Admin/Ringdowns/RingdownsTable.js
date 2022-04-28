@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import ApiService from '../../../ApiService';
-import Context from '../../../Context';
+import ApiService from '../../ApiService';
+import Context from '../../Context';
 
 function RingdownsTable() {
   const { user } = useContext(Context);

@@ -2,42 +2,59 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
 
-import FormInput from '../../../Components/FormInput';
-import FormCheckbox from '../../../Components/FormCheckbox';
-import FormError from '../../../Models/FormError';
-import ApiService from '../../../ApiService';
-import Context from '../../../Context';
+import FormInput from '../../Components/FormInput';
+import FormCheckbox from '../../Components/FormCheckbox';
+import FormError from '../../Models/FormError';
+import ApiService from '../../ApiService';
+import Context from '../../Context';
 
 function UserInfo({ userId }) {
   const history = useHistory();
-  const { hospital } = useContext(Context);
+  const { organization, hospital } = useContext(Context);
   const [user, setUser] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
-    if (userId && userId !== 'new' && hospital) {
-      ApiService.users.get(userId).then((response) => {
-        const { data } = response;
-        const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital.hospital?.id);
-        data.isActive = hospitalUser.isActive;
-        data.isInfoUser = hospitalUser.isInfoUser;
-        data.isRingdownUser = hospitalUser.isRingdownUser;
-        setUser(response.data);
-      });
+    if (userId && userId !== 'new') {
+      ApiService.users
+        .get(userId, { organizationId: organization?.id, hospitalId: hospital?.id })
+        .then((response) => {
+          const { data } = response;
+          if (data.organization?.id !== organization?.id) {
+            history.push('/admin/users');
+          }
+          if (hospital) {
+            const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital?.id);
+            if (hospitalUser) {
+              data.isActive = hospitalUser.isActive;
+              data.isInfoUser = hospitalUser.isInfoUser;
+              data.isRingdownUser = hospitalUser.isRingdownUser;
+            } else {
+              history.push('/admin/users');
+            }
+          }
+          setUser(response.data);
+        })
+        .catch(() => {
+          history.push('/admin/users');
+        });
     } else {
-      setUser({
+      const data = {
         firstName: '',
         lastName: '',
         email: '',
         password: '',
         isAdminUser: false,
         isOperationalUser: true,
-        isActive: true,
-        isInfoUser: true,
-        isRingdownUser: true,
-      });
+      };
+      if (hospital) {
+        data.isActive = true;
+        data.isInfoUser = true;
+        data.isRingdownUser = true;
+      }
+      setUser(data);
     }
-  }, [userId, hospital]);
+  }, [userId, organization, hospital, history]);
 
   function onChange(property, value) {
     const newUser = { ...user };
@@ -49,7 +66,11 @@ function UserInfo({ userId }) {
     event.preventDefault();
     try {
       setError();
-      const data = { ...user };
+      const data = {
+        ...user,
+        organizationId: organization.id,
+        hospitalId: hospital?.id,
+      };
       if (data.password === '') {
         delete data.password;
       }
@@ -58,7 +79,7 @@ function UserInfo({ userId }) {
       } else {
         await ApiService.users.create(data);
       }
-      history.push('/admin/er/users', { flash: { info: 'Saved!' } });
+      history.push('/admin/users', { flash: { info: 'Saved!' } });
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);
@@ -135,16 +156,20 @@ function UserInfo({ userId }) {
                   currentValue={user.isOperationalUser}
                   value={true}
                 />
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label className="usa-label">Tabs</label>
-                <FormCheckbox label="Info tab" onChange={onChange} property="isInfoUser" currentValue={user.isInfoUser} value={true} />
-                <FormCheckbox
-                  label="Ringdowns tab"
-                  onChange={onChange}
-                  property="isRingdownUser"
-                  currentValue={user.isRingdownUser}
-                  value={true}
-                />
+                {hospital && (
+                  <>
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                    <label className="usa-label">Tabs</label>
+                    <FormCheckbox label="Info tab" onChange={onChange} property="isInfoUser" currentValue={user.isInfoUser} value={true} />
+                    <FormCheckbox
+                      label="Ringdowns tab"
+                      onChange={onChange}
+                      property="isRingdownUser"
+                      currentValue={user.isRingdownUser}
+                      value={true}
+                    />
+                  </>
+                )}
                 <button className="usa-button margin-y-3" type="submit">
                   Submit
                 </button>

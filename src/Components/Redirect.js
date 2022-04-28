@@ -18,11 +18,7 @@ function Redirect({ isAdminOnly }) {
           history.push('/ems');
         }
       } else if (user.isAdminUser) {
-        if (user.organization.type === 'HEALTHCARE') {
-          history.push('/admin/er');
-        } else {
-          history.push('/admin/ems');
-        }
+        history.push('/admin');
       }
     }
   }, [history, user, isAdminOnly]);
