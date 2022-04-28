@@ -24,7 +24,7 @@ export default function ER() {
   const [selectedTab, setSelectedTab] = useState(1);
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
-  const [statusUpdate, setStatusUpdate] = useState(new HospitalStatus({}));
+  const [statusUpdate, setStatusUpdate] = useState();
 
   const [playSound] = useSound(notification);
 
