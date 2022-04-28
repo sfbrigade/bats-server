@@ -10,8 +10,8 @@ function UsersTable({ isActive }) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    if (user) {
-      const params = { organizationId: organization?.id, hospitalId: hospital?.id };
+    if (user && organization) {
+      const params = { organizationId: organization?.id, hospitalId: hospital?.hospital?.id };
       let request;
       if (isActive) {
         request = ApiService.users.active(params);

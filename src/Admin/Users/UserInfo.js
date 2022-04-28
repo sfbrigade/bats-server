@@ -10,7 +10,7 @@ import Context from '../../Context';
 
 function UserInfo({ userId }) {
   const history = useHistory();
-  const { hospital } = useContext(Context);
+  const { organization, hospital } = useContext(Context);
   const [user, setUser] = useState();
   const [error, setError] = useState();
 
@@ -54,7 +54,11 @@ function UserInfo({ userId }) {
     event.preventDefault();
     try {
       setError();
-      const data = { ...user };
+      const data = {
+        ...user,
+        organizationId: organization.id,
+        hospitalId: hospital?.hospital?.id,
+      };
       if (data.password === '') {
         delete data.password;
       }

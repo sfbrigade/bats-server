@@ -60,8 +60,9 @@ export default {
       const { organizationId, hospitalId } = params || {};
       return instance.get('/api/users/', { params: { organizationId, hospitalId } });
     },
-    active() {
-      return instance.get('/api/users/active');
+    active(params) {
+      const { organizationId, hospitalId } = params || {};
+      return instance.get('/api/users/active', { params: { organizationId, hospitalId } });
     },
     create(data) {
       return instance.post('/api/users/', data);

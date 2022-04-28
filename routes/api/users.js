@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
-const { getActiveHospitalUsers } = require('../../wss');
+const { getActiveHospitalUsers, getActiveOrganizationUsers } = require('../../wss');
 
 const { setPaginationHeaders, wrapper } = require('../helpers');
 
@@ -12,20 +12,25 @@ const router = express.Router();
 
 async function setParams(req, res, next) {
   // if user is not a superuser, only return users for their active org/hospital
-  const ahus = await req.user.getActiveHospitalUsers();
-  if (req.query.hospitalId) {
-    if (!req.user.isSuperUser && !ahus.find((ahu) => ahu.HospitalId === req.query.hospitalId)) {
+  const ahus = await req.user.getActiveHospitalUsers({ include: ['Hospital'] });
+  if (req.query.hospitalId || req.body?.hospitalId) {
+    const hospitalId = req.query.hospitalId || req.body?.hospitalId;
+    const hospitalUser = ahus.find((ahu) => ahu.HospitalId === hospitalId);
+    if (!req.user.isSuperUser && !hospitalUser) {
       res.status(HttpStatus.FORBIDDEN).end();
       return;
     }
-    req.hospitalId = req.query.hospitalId;
-  } else if (req.query.organizationId) {
-    if (!req.user.isSuperUser && req.user.OrganizationId !== req.query.organizationId) {
+    req.organizationId = hospitalUser.Hospital.OrganizationId;
+    req.hospitalId = hospitalId;
+  } else if (req.query.organizationId || req.body.organizationId) {
+    const organizationId = req.query.organizationId || req.body.organizationId;
+    if (!req.user.isSuperUser && req.user.OrganizationId !== organizationId) {
       res.status(HttpStatus.FORBIDDEN).end();
       return;
     }
-    req.organizationId = req.query.organizationId;
+    req.organizationId = organizationId;
   } else if (ahus.length === 1) {
+    req.organizationId = ahus[0].Hospital.OrganizationId;
     req.hospitalId = ahus[0].HospitalId;
   } else if (!req.user.isSuperUser) {
     req.organizationId = req.user.organizationId;
@@ -67,7 +72,7 @@ router.post(
       user = await models.User.create(
         {
           ..._.pick(req.body, ['email', 'password', 'firstName', 'lastName', 'isAdminUser', 'isOperationalUser']),
-          OrganizationId: req.user.OrganizationId,
+          OrganizationId: req.organizationId,
           isSuperUser: req.user?.isSuperUser ? req.body.isSuperUser : false,
           CreatedById: req.user.id,
           UpdatedById: req.user.id,
@@ -105,6 +110,12 @@ router.get('/me', middleware.isAuthenticated, async (req, res) => {
 router.get('/active', middleware.isAuthenticated, setParams, async (req, res) => {
   if (req.hospitalId) {
     const userIds = getActiveHospitalUsers(req.hospitalId);
+    const users = await models.User.findAll({
+      where: { id: userIds },
+    });
+    res.json(users.map((u) => u.toJSON()));
+  } else if (req.organizationId) {
+    const userIds = getActiveOrganizationUsers(req.organizationId);
     const users = await models.User.findAll({
       where: { id: userIds },
     });
