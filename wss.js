@@ -51,7 +51,12 @@ async function getStatusUpdateData(hospitalId) {
     where: {
       HospitalId: hospitalId,
       currentDeliveryStatus: {
-        [Op.notIn]: [DeliveryStatus.RETURNED_TO_SERVICE, DeliveryStatus.CANCEL_ACKNOWLEDGED, DeliveryStatus.REDIRECT_ACKNOWLEDGED],
+        [Op.notIn]: [
+          DeliveryStatus.RETURNED_TO_SERVICE,
+          DeliveryStatus.CANCEL_ACKNOWLEDGED,
+          DeliveryStatus.REDIRECT_ACKNOWLEDGED,
+          DeliveryStatus.OFFLOADED_ACKNOWLEDGED,
+        ],
       },
     },
   });
