@@ -14,7 +14,7 @@ const HospitalStatusHeader = () => (
           <h3 className="hospitalstatusheader__column-name">ER Beds</h3>
         </div>
         <div className="hospitalstatusheader__column-container">
-          <h3 className="hospitalstatusheader__column-name">Psych Beds</h3>
+          <h3 className="hospitalstatusheader__column-name">Behav. Beds</h3>
         </div>
         <div className="hospitalstatusheader__column-container">
           <h3 className="hospitalstatusheader__column-name">Amb. en route</h3>
