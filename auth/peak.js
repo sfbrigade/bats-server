@@ -51,7 +51,7 @@ const strategy = new OAuth2Strategy(
                   lastName,
                   email,
                   isOperationalUser: true,
-                  password: crypto.randomBytes(8).toString('hex') + 'Aa!',
+                  password: `${crypto.randomBytes(8).toString('hex')}Aa!`,
                   CreatedById: '00000000-0000-0000-0000-000000000000',
                   UpdatedById: '00000000-0000-0000-0000-000000000000',
                 },
