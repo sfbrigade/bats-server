@@ -5,8 +5,8 @@ const path = require('path');
 const session = require('supertest-session');
 
 const helper = require('../../helper');
-const app = require('../../../app');
-const models = require('../../../models');
+const app = require('../../../server/app');
+const models = require('../../../server/models');
 
 describe('/webhooks/sffd', () => {
   let testSession;
