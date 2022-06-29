@@ -3,9 +3,9 @@ const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 
 const helper = require('../../helper');
-const app = require('../../../app');
-const models = require('../../../models');
-const { DeliveryStatus } = require('../../../constants');
+const app = require('../../../server/app');
+const models = require('../../../server/models');
+const { DeliveryStatus } = require('../../../server/constants');
 
 describe('/api/ringdowns', () => {
   let testSession;

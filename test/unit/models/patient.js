@@ -1,6 +1,6 @@
 const assert = require('assert');
 const helper = require('../../helper');
-const models = require('../../../models');
+const models = require('../../../server/models');
 
 describe('models.Patient', () => {
   beforeEach(async () => {

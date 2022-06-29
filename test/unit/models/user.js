@@ -1,7 +1,7 @@
 const assert = require('assert');
 const bcrypt = require('bcrypt');
 const helper = require('../../helper');
-const models = require('../../../models');
+const models = require('../../../server/models');
 
 describe('models.User', () => {
   beforeEach(async () => {

@@ -1,5 +1,10 @@
 const path = require('path');
 
+const root = (...args) => path.resolve('server', ...args);
+
 module.exports = {
-  'config': path.resolve('config', 'config.js')
-}
+  'config': root('config', 'config.js'),
+  'migrations-path': root('migrations'),
+  'models-path': root('models'),
+  'seeders-path': root('seeders'),
+};
