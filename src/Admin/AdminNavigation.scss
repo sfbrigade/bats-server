@@ -1,5 +1,4 @@
-@import '~uswds/dist/scss/packages/required';
-@import '../../theme/uswds-theme-custom-mixins';
+@import '../../theme/base';
 
 .admin-navigation {
   border-bottom: 1px solid color($theme-color-base-lighter);
