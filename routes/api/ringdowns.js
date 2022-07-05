@@ -165,8 +165,12 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       patientDelivery.Hospital = hospital;
       json = await patientDelivery.toRingdownJSON({ transaction });
     });
-    res.status(HttpStatus.CREATED).json(json);
-    await dispatchRingdownUpdate(patientDelivery.id);
+    if (json) {
+      res.status(HttpStatus.CREATED).json(json);
+    }
+    if (patientDelivery) {
+      await dispatchRingdownUpdate(patientDelivery.id);
+    }
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
@@ -175,6 +179,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
 router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res) => {
   try {
     let patientDelivery;
+    let json;
     await models.sequelize.transaction(async (transaction) => {
       patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
         include: { all: true },
@@ -212,9 +217,14 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
         return;
       }
-      res.status(HttpStatus.OK).json(await patientDelivery.toRingdownJSON({ transaction }));
+      json = await patientDelivery.toRingdownJSON({ transaction });
     });
-    await dispatchRingdownUpdate(patientDelivery.id);
+    if (json) {
+      res.status(HttpStatus.OK).json(json);
+    }
+    if (patientDelivery) {
+      await dispatchRingdownUpdate(patientDelivery.id);
+    }
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
@@ -223,6 +233,7 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
 router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
   try {
     let patientDelivery;
+    let json;
     await models.sequelize.transaction(async (transaction) => {
       patientDelivery = await models.PatientDelivery.findByPk(req.params.id, {
         include: { all: true },
@@ -282,9 +293,14 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       }
 
       await patientDelivery.save({ transaction });
-      res.status(HttpStatus.OK).json(await patientDelivery.toRingdownJSON({ transaction }));
+      json = await patientDelivery.toRingdownJSON({ transaction });
     });
-    await dispatchRingdownUpdate(patientDelivery.id);
+    if (json) {
+      res.status(HttpStatus.OK).json(json);
+    }
+    if (patientDelivery) {
+      await dispatchRingdownUpdate(patientDelivery.id);
+    }
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
