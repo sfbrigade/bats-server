@@ -116,6 +116,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
   }
   try {
     let patientDelivery;
+    let json;
     await models.sequelize.transaction(async (transaction) => {
       const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
         where: {
@@ -162,8 +163,9 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       patientDelivery.Ambulance = ambulance;
       patientDelivery.Patient = patient;
       patientDelivery.Hospital = hospital;
-      res.status(HttpStatus.CREATED).json(await patientDelivery.toRingdownJSON({ transaction }));
+      json = await patientDelivery.toRingdownJSON({ transaction });
     });
+    res.status(HttpStatus.CREATED).json(json);
     await dispatchRingdownUpdate(patientDelivery.id);
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
