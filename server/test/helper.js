@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 const fixtures = require('sequelize-fixtures');
 const path = require('path');
 
-const models = require('../server/models');
+const models = require('../models');
 
 const loadFixtures = async (files) => {
   const filePaths = files.map((f) => path.resolve(__dirname, `fixtures/${f}.json`));

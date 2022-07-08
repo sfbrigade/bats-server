@@ -62,7 +62,7 @@
     "sass": "sass --load-path=node_modules/uswds/dist/scss --no-source-map --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles.css",
     "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",
     "test:client": "react-scripts test",
-    "test:server": "mocha --recursive",
+    "test:server": "mocha --recursive server/test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:changed": "eslint $(git diff --name-only | xargs)",
