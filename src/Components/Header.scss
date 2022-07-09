@@ -1,10 +1,9 @@
-@import '~uswds/dist/scss/packages/required';
-@import '../../theme/uswds-theme-color';
+@import '../../theme/base';
 
 .header {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 1000;
   background-color: color($theme-color-primary-dark);
   color: white;
 }
