@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@uswds/uswds": "^3.0.2",
     "axios": "^0.21.4",
     "bcrypt": "^5.0.1",
     "bootstrap": "^4.6.1",
@@ -47,7 +48,6 @@
     "supertest": "^4.0.2",
     "supertest-session": "^4.1.0",
     "use-sound": "^4.0.1",
-    "uswds": "^2.13.3",
     "utf-8-validate": "^5.0.9",
     "ws": "^7.5.8"
   },
