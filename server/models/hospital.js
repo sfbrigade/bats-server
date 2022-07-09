@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
 
     toJSON() {
       const attributes = { ...this.get() };
-      return _.pick(attributes, ['id', 'name', 'sortSequenceNumber', 'isActive']);
+      return _.pick(attributes, ['id', 'name', 'state', 'stateFacilityCode', 'sortSequenceNumber', 'isActive']);
     }
   }
 
@@ -66,6 +66,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
+      },
+      state: {
+        field: 'hospitalstate',
+        type: DataTypes.STRING,
+      },
+      stateFacilityCode: {
+        field: 'hospitalstatefacilitycode',
+        type: DataTypes.STRING,
       },
       sortSequenceNumber: {
         field: 'sortsequencenumber',
