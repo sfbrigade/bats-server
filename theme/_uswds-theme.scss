@@ -1,0 +1,17 @@
+@use 'uswds-core' with (
+  $theme-image-path: './img',
+  $theme-show-compile-warnings: true,
+  $theme-show-notifications: false,
+  $theme-layout-grid-use-important: false,
+  $theme-global-border-box-sizing: true,
+  $theme-focus-color: 'blue-40v',
+  $theme-focus-offset: 0,
+  $theme-focus-style: solid,
+  $theme-focus-width: 0.5,
+  $theme-icon-image-size: 2,
+  $theme-breadcrumb-background-color: 'white',
+  // including this variable causes a Sass compile error, for some stupid reason
+  //$theme-site-max-width: 'desktop',
+  $theme-font-type-sans: 'public-sans',
+  $theme-font-weight-semibold: 600,
+);

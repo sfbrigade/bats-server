@@ -20,7 +20,13 @@ i.e.
 ----------------------------------------
 */
 
+// TODO: replace these with @use, after figuring out how to override the h1 - h4 mixins that are
+//  defined in uswds-core
+@import 'uswds-core';
+//@use "uswds-core" as *;
+
 @import 'uswds-theme-custom-mixins';
+//@use 'uswds-theme-custom-mixins' as *;
 
 h1,
 .h1 {
