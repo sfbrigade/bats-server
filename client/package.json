@@ -1,0 +1,47 @@
+{
+  "name": "routed-client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.21.4",
+    "classnames": "^2.3.1",
+    "http-proxy-middleware": "^1.3.1",
+    "http-status-codes": "^1.4.0",
+    "luxon": "^1.28.0",
+    "prop-types": "^15.8.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-router": "^5.3.3",
+    "react-router-dom": "^5.3.3",
+    "react-scripts": "3.4.4",
+    "react-use-websocket": "^2.9.1",
+    "sass": "^1.53.0",
+    "sass-loader": "^10.3.0",
+    "use-sound": "^4.0.1",
+    "uswds": "^2.13.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && yarn sass",
+    "sass": "sass --load-path=node_modules/uswds/dist/scss --no-source-map --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles.css",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:4000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
