@@ -19,4 +19,6 @@ RUN mkdir -p $APP_HOME
 ADD . $APP_HOME
 WORKDIR $APP_HOME
 
-RUN yarn && yarn build
+RUN cd client && yarn && yarn build && cd .. && \
+    cd server && yarn && cd .. && \
+    yarn

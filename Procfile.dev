@@ -1,3 +1,3 @@
-sass: cd client && yarn sass --watch
 webpack: cd client && yarn start
+sass: cd client && yarn sass --watch
 web: cd server && PROXY_PORT=4000 yarn start:dev
