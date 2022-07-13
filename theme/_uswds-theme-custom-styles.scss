@@ -56,12 +56,15 @@ textarea {
   &.usa-input--disabled {
     border-color: color($theme-color-base-lighter);
   }
+
   &:not([disabled]):not(.usa-input--error):not(.usa-input--success):focus {
     @include focus-shadow();
   }
+
   &.usa-input--error:not([disabled]):focus {
     @include error-shadow();
   }
+
   &.usa-input--success:not([disabled]):focus {
     @include success-shadow();
   }
@@ -288,7 +291,7 @@ $spinner-border-width-sm: 0.2em;
 
 .usa-checkbox__label,
 .usa-radio__label {
-  margin-top: 1.5rem;
+  @include u-margin-top(2);
 }
 
 .usa-combo-box__clear-input {
@@ -338,7 +341,7 @@ $spinner-border-width-sm: 0.2em;
   }
 
   .usa-button {
-    margin-top: 2rem;
+    @include u-margin-top(4);
   }
 }
 
@@ -357,10 +360,12 @@ $spinner-border-width-sm: 0.2em;
 .usa-textarea {
   @include h3;
   border-radius: 0.25rem;
-  margin-top: 0;
 
-  & + div.usa-hint {
-    margin-top: 0.125rem;
+  // add the same top margin to the hint so it aligns with the field, and make it inline-block,
+  // since it's rendered as a span
+  & + .usa-hint {
+    @include u-margin-top(1);
+    display: inline-block;
   }
 
   &.usa-input--error {
@@ -375,6 +380,7 @@ $spinner-border-width-sm: 0.2em;
 .usa-label {
   @include h4-bold;
   margin-top: 2rem;
+
   &:first-child {
     margin-top: 0;
   }
@@ -391,6 +397,7 @@ $spinner-border-width-sm: 0.2em;
 .usa-label--required {
   color: inherit;
   position: relative;
+
   &::before {
     @include u-text($theme-color-secondary-dark);
     content: '*\00a0';
