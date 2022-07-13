@@ -1,80 +1,62 @@
+const loginForm = document.getElementById('login');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
 const submitButton = document.querySelector('button[type="submit"]');
 
-const errorHTML = `<span class="usa-error-message"><i class="fas fa-exclamation-circle"></i> This is a required section</span>`;
-const successHTML = `<span class="usa-success-message"><i class="fas fa-check-circle"></i> Success</span>`;
-
-function isValidEmail() {
-  const emailParts = email.value.split('@');
-  return email.value !== '' && emailParts.length === 2;
-}
-
-function isValidPassword() {
-  return password.value !== '';
-}
+const errorHTML = `<span class="usa-error-message"><i class="fas fa-exclamation-circle"></i> This is a required field</span>`;
+const inputErrorClass = 'usa-input--error';
+const labelErrorClass = 'usa-label--error';
 
 function isValid() {
-  return isValidEmail() && isValidPassword();
+  return email.value && password.value;
 }
 
-function onFocus(event) {
-  const input = event.target;
+function updateErrorState(input) {
   const label = input.previousElementSibling;
-  label.classList.add('usa-label--focused');
-}
-
-function validate(input, label, validator) {
-  if (validator()) {
-    // if previously in error, show success
-    if (input.classList.contains('usa-input--error')) {
-      label.classList.remove('usa-label--error');
-      input.classList.remove('usa-input--error');
+  if (input.value) {
+    // if previously in error, remove that state
+    if (input.classList.contains(inputErrorClass)) {
+      label.classList.remove(labelErrorClass);
+      input.classList.remove(inputErrorClass);
       input.nextElementSibling.remove();
-      label.classList.add('usa-label--success');
-      input.classList.add('usa-input--success');
-      input.insertAdjacentHTML('afterend', successHTML);
     }
   } else {
     // show error
-    label.classList.remove('usa-label--success');
-    input.classList.remove('usa-input--success');
     if (input.nextElementSibling) {
       input.nextElementSibling.remove();
     }
-    label.classList.add('usa-label--error');
-    input.classList.add('usa-input--error');
+    label.classList.add(labelErrorClass);
+    input.classList.add(inputErrorClass);
     input.insertAdjacentHTML('afterend', errorHTML);
   }
 }
 
-function onInput(validator) {
-  return function onInputInternal(event) {
-    const input = event.target;
-    const label = input.previousElementSibling;
-    // validate on input only if was already previously in error/success
-    if (input.classList.contains('usa-input--error') || input.classList.contains('usa-input--success')) {
-      validate(input, label, validator);
-    }
-    // validate form overall for submit button
-    submitButton.disabled = !isValid();
-  };
+function handleValidationEvent(event) {
+  const input = event.target;
+  const label = input.previousElementSibling;
+  // update the label's focused state
+  label.classList[event.type === 'blur' ? 'remove' : 'add']('usa-label--focused');
+  // update the class on input event only if the element is in the error state
+  if (event.type === 'blur' || (event.type === 'input' && input.classList.contains(inputErrorClass))) {
+    updateErrorState(input);
+  }
+  // validate form overall for submit button
+  submitButton.disabled = !isValid();
 }
 
-function onBlur(validator) {
-  return function onBlurInternal(event) {
-    const input = event.target;
-    const label = input.previousElementSibling;
-    label.classList.remove('usa-label--focused');
-    validate(input, label, validator);
-    submitButton.disabled = !isValid();
-  };
+function onSubmit(event) {
+  if (!isValid()) {
+    updateErrorState(email);
+    updateErrorState(password);
+    submitButton.disabled = true;
+    event.preventDefault();
+  }
 }
 
-email.addEventListener('focus', onFocus);
-email.addEventListener('input', onInput(isValidEmail));
-email.addEventListener('blur', onBlur(isValidEmail));
+[email, password].forEach((el) => {
+  ['focus', 'input', 'blur'].forEach((type) => {
+    el.addEventListener(type, handleValidationEvent);
+  });
+});
 
-password.addEventListener('focus', onFocus);
-password.addEventListener('input', onInput(isValidPassword));
-password.addEventListener('blur', onBlur(isValidPassword));
+loginForm.addEventListener('submit', onSubmit);
