@@ -6,7 +6,8 @@
     "node": "16.13.1"
   },
   "scripts": {
-    "build": "cd client && yarn build",
+    "heroku-prebuild": "cd client && yarn && cd ../server && yarn",
+    "heroku-postbuild": "cd client && yarn build",
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
     "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",

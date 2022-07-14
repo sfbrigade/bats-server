@@ -18,7 +18,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: cd server && yarn
+          command: cd client && yarn && cd ../server && yarn
       - run:
           command: cd server && yarn run sequelize db:create --env test
       - run:
