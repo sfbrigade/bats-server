@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { comboBox } from '../../node_modules/uswds/src/js/components';
+// TODO: fix these paths.  probably need to go to node_modules/@uswds/uswds/packages/usa-combo-box/src
+//  and may need to switch to using .enable() instead of .on()
+//import { comboBox } from '../../node_modules/@uswds/uswds/dist/js/uswds';
+//import { comboBox } from '../../node_modules/uswds/src/js/components';
 
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
@@ -13,7 +16,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
 
   useEffect(() => {
     const { current } = ref;
-    comboBox.on(current);
+//    comboBox.on(current);
     // manually add event handlers to the custom input added by USWDS
     const select = current.querySelector('select');
     const input = current.querySelector('input[type="text"]');
@@ -30,9 +33,9 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
       select.dispatchEvent(event);
     });
     input.value = value;
-    return () => {
-      comboBox.off(current);
-    };
+//    return () => {
+//      comboBox.off(current);
+//    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
