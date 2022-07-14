@@ -18,6 +18,11 @@
     "format": "yarn prettier --write .",
     "format:changed": "yarn prettier --write $(git diff --name-only | xargs)"
   },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules",
+    "server/node_modules"
+  ],
   "dependencies": {
     "foreman": "^3.0.1"
   },
