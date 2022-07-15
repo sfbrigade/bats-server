@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const patient = require('../metadata/patient');
+const patient = require('../src/metadata/patient');
 
 module.exports = (sequelize) => {
   class Patient extends Model {
