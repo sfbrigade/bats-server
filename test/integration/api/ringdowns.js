@@ -371,4 +371,74 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(patient.otherObservationNotes, 'in stable condition');
     });
   });
+
+  describe('GET /:id', () => {
+    it('returns a Ringdown by id', async () => {
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'sffd.paramedic@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      const response = await testSession
+        .get('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247')
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.OK);
+
+      assert.deepStrictEqual(response.body, {
+        id: '8b95ea8a-0171-483a-be74-ec17bbc12247',
+        ambulance: { ambulanceIdentifier: 'SFFD-1' },
+        emsCall: { dispatchCallNumber: 911 },
+        hospital: {
+          id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
+          name: 'CPMC Davies Campus',
+        },
+        patient: {
+          age: null,
+          sex: null,
+          emergencyServiceResponseType: 'CODE 2',
+          chiefComplaintDescription: null,
+          stableIndicator: null,
+          systolicBloodPressure: null,
+          diastolicBloodPressure: null,
+          heartRateBpm: null,
+          respiratoryRate: null,
+          oxygenSaturation: null,
+          lowOxygenResponseType: null,
+          supplementalOxygenAmount: null,
+          temperature: null,
+          etohSuspectedIndicator: null,
+          drugsSuspectedIndicator: null,
+          psychIndicator: null,
+          combativeBehaviorIndicator: null,
+          restraintIndicator: null,
+          covid19SuspectedIndicator: null,
+          ivIndicator: null,
+          otherObservationNotes: null,
+        },
+        patientDelivery: {
+          currentDeliveryStatus: 'RETURNED TO SERVICE',
+          currentDeliveryStatusDateTimeLocal: '2004-10-19T08:27:54.000Z',
+          etaMinutes: 10,
+          timestamps: {
+            'RINGDOWN SENT': '2004-10-19T08:23:54.000Z',
+            'RINGDOWN RECEIVED': '2004-10-19T08:24:54.000Z',
+            ARRIVED: '2004-10-19T08:25:54.000Z',
+            OFFLOADED: '2004-10-19T08:26:54.000Z',
+            'RETURNED TO SERVICE': '2004-10-19T08:27:54.000Z',
+          },
+        },
+      });
+    });
+
+    it('allows other users in same Organization', async () => {
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'second.sffd.paramedic@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+
+      await testSession.get('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247').set('Accept', 'application/json').expect(HttpStatus.OK);
+    });
+  });
 });

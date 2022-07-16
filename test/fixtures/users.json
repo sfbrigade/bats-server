@@ -82,6 +82,22 @@
   {
     "model": "User",
     "data": {
+      "id": "c5e691e1-b2cd-40c8-8c73-07295b4a193d",
+      "OrganizationId": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
+      "firstName": "Second SFFD",
+      "lastName": "Paramedic",
+      "email": "second.sffd.paramedic@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isOperationalUser": true,
+      "isAdminUser": false,
+      "isSuperUser": false,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "User",
+    "data": {
       "id": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
       "OrganizationId": "7c9023ff-dd16-4e87-823a-80567a7b834a",
       "firstName": "AMR",
