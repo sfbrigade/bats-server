@@ -54,7 +54,7 @@ input,
 select,
 textarea {
   &.usa-input--disabled {
-    border-color: color($theme-color-base-lighter);
+    border-color: color('base-lighter');
   }
   &:not([disabled]):not(.usa-input--error):not(.usa-input--success):focus {
     @include focus-shadow();
@@ -134,7 +134,7 @@ $spinner-border-width-sm: 0.2em;
 .status-list-item {
   @include h3;
   align-items: center;
-  color: color($theme-color-base-light);
+  color: color('base-light');
   display: flex;
   height: 4.5rem;
 }
@@ -146,7 +146,7 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .status-list-item__icon::before {
-  background-color: color($theme-color-base-lighter);
+  background-color: color('base-lighter');
   content: ' ';
   display: block;
   height: 100%;
@@ -158,7 +158,7 @@ $spinner-border-width-sm: 0.2em;
 
 .status-list-item__icon::after {
   background-color: white;
-  border: 2px solid color($theme-color-base-lighter);
+  border: 2px solid color('base-lighter');
   border-radius: 50%;
   content: ' ';
   display: block;
@@ -173,7 +173,7 @@ $spinner-border-width-sm: 0.2em;
   flex-grow: 1;
   span {
     @include h4;
-    color: color($theme-color-base-light);
+    color: color('base-light');
     display: block;
     position: absolute;
   }
@@ -189,7 +189,7 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .status-list-item--noninteractive .status-list-item__icon::after {
-  background-color: color($theme-color-base-lighter);
+  background-color: color('base-lighter');
   height: 0.75rem;
   left: 0.8125rem;
   top: 1.875rem;
@@ -197,19 +197,19 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .status-list-item--completed .status-list-item__icon::before {
-  background-color: color($theme-color-primary);
+  background-color: color('primary');
 }
 
 .status-list-item--completed {
-  color: color($theme-color-base-ink);
+  color: color('base-darkest');
 }
 
 .status-list-item--completed .status-list-item__icon::after {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   align-items: center;
-  background-color: color($theme-color-primary);
-  border-color: color($theme-color-primary);
+  background-color: color('primary');
+  border-color: color('primary');
   color: white;
   content: '\f00c';
   display: flex;
@@ -225,13 +225,13 @@ $spinner-border-width-sm: 0.2em;
 
 .usa-accordion__heading {
   @include h2;
-  border-bottom: 1px solid color($theme-color-base-lighter);
+  border-bottom: 1px solid color('base-lighter');
   padding: 1.25rem 1.5rem 0.5rem;
 
   span {
     @include h4-italic;
     display: block;
-    color: color($theme-color-base-light);
+    color: color('base-light');
   }
 }
 
@@ -245,13 +245,13 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .usa-alert--info {
-  background-color: color($theme-color-primary-lighter);
+  background-color: color('primary-lighter');
 }
 
 .usa-button--outline.usa-button--secondary {
   background-color: transparent;
-  box-shadow: inset 0 0 0 2px color($theme-color-secondary);
-  color: color($theme-color-secondary);
+  box-shadow: inset 0 0 0 2px color('secondary');
+  color: color('secondary');
 }
 
 .usa-card__container {
@@ -263,7 +263,7 @@ $spinner-border-width-sm: 0.2em;
 .usa-card__header {
   @include h4;
   background-color: white;
-  color: color($theme-color-base-light);
+  color: color('base-light');
   margin: 0.25rem 0.25rem 0;
   padding: 0.75rem 1.25rem 0;
 }
@@ -276,7 +276,7 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .usa-card__footer {
-  border-top: 1px solid color($theme-color-base-lighter);
+  border-top: 1px solid color('base-lighter');
   padding: 1rem 1.5rem;
 
   &:first-child {
@@ -296,7 +296,7 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .usa-error-message {
-  color: color($theme-color-error);
+  color: color('error');
   font-weight: normal;
 }
 
@@ -343,11 +343,11 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .usa-hint--important {
-  color: color($theme-color-primary-vivid);
+  color: color('primary-vivid');
 }
 
 .usa-hint--unit {
-  color: color($theme-color-base-light);
+  color: color('base-light');
   font-size: 1.25rem;
 }
 
@@ -380,11 +380,11 @@ $spinner-border-width-sm: 0.2em;
   }
 
   &.usa-label--error {
-    color: color($theme-color-error);
+    color: color('error');
   }
 
   &.usa-label--success {
-    color: color($theme-color-success);
+    color: color('success');
   }
 }
 
@@ -400,12 +400,12 @@ $spinner-border-width-sm: 0.2em;
 }
 
 .usa-label--focused {
-  color: color($theme-color-primary-vivid);
+  color: color('primary-vivid');
 }
 
 .usa-success-message {
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
-  color: color($theme-color-success);
+  color: color('success');
   display: block;
 }
