@@ -2,7 +2,7 @@
 
 .ringdown-card {
   background-color: white;
-  border: 1px solid color($theme-color-base-light);
+  border: 1px solid color('base-light');
   box-sizing: border-box;
   border-radius: 8px;
   overflow: hidden;
@@ -19,13 +19,13 @@
   align-items: center;
   display: flex;
   margin: 0.75rem;
-  color: color($theme-color-base);
+  color: color('base');
   @include h3;
 }
 
 .ringdown-card__header button {
   border: none;
-  color: color($theme-color-primary);
+  color: color('primary');
   font-weight: 600;
   cursor: pointer;
   background-color: transparent;
@@ -36,11 +36,11 @@
 }
 
 .ringdown-card--dismissable {
-  background: color($theme-color-base-lightest);
+  background: color('base-lightest');
 }
 
 .ringdown-card--expanded {
-  border: 2px solid color($theme-color-primary-vivid);
+  border: 2px solid color('primary-vivid');
 }
 
 .ringdown-card--offloaded,
@@ -55,18 +55,18 @@
 
 .ringdown-card--offloaded {
   .ringdown-card__status {
-    background-color: color($theme-color-success);
+    background-color: color('success');
   }
 }
 
 .ringdown-card--redirected {
   .ringdown-card__status {
-    background-color: color($theme-color-accent-warm);
+    background-color: color('accent-warm');
   }
 }
 
 .ringdown-card--cancelled {
   .ringdown-card__status {
-    background-color: color($theme-color-error);
+    background-color: color('error');
   }
 }

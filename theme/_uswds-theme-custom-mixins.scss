@@ -42,15 +42,15 @@
 
 @mixin focus-shadow {
   outline: none;
-  border: 2px solid color($theme-color-primary-vivid);
+  border: 2px solid color('primary-vivid');
 }
 
 @mixin error-shadow {
   outline: none;
-  border: 2px solid color($theme-color-error);
+  border: 2px solid color('error');
 }
 
 @mixin success-shadow {
   outline: none;
-  border: 2px solid color($theme-color-success);
+  border: 2px solid color('success');
 }
