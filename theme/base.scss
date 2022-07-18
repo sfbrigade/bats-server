@@ -1,7 +1,8 @@
 $theme-show-notifications: false;
 $theme-show-compile-warnings: false;
 
-// import the overrides before importing the required package so the changes are applied
-@import 'uswds-theme-custom-mixins';
+// import the color overrides before importing the required package so the changes are applied, but
+// import the custom mixins after, since they override the USWDS header mixins
 @import 'uswds-theme-color';
 @import '../node_modules/uswds/dist/scss/packages/required';
+@import 'uswds-theme-custom-mixins';
