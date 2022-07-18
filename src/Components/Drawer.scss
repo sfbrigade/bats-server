@@ -2,7 +2,7 @@
 
 .drawer__content {
   display: none;
-  border-top: 1px solid color($theme-color-base);
+  border-top: 1px solid color('base');
 }
 
 .drawer__handle {
@@ -20,7 +20,7 @@
 
 .drawer__prompt {
   @include h4;
-  color: color($theme-color-primary-vivid);
+  color: color('primary-vivid');
   font-weight: 600;
 }
 

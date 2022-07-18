@@ -1,19 +1,19 @@
 @import '../../theme/base';
 
 .tabbar {
-  border-top: 1px solid color($theme-color-primary-darker);
+  border-top: 1px solid color('primary-darker');
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   display: flex;
 }
 
 .tabbar__tab {
   align-items: center;
-  background-color: color($theme-color-primary);
-  border-bottom: 0.1875rem solid color($theme-color-primary);
+  background-color: color('primary');
+  border-bottom: 0.1875rem solid color('primary');
   border-left: none;
   border-right: none;
   border-top: none;
-  color: color($theme-color-primary-light);
+  color: color('primary-light');
   cursor: pointer;
   display: flex;
   flex-basis: 0;
