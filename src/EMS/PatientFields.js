@@ -180,6 +180,7 @@ function PatientFields({ ringdown, onChange }) {
               max={getRange('systolicBloodPressure', 'max')}
               value={ringdown.systolicBloodPressure}
             >
+              <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;</span>
               <FormInput
                 onChange={handleUserInput}
                 isWrapped={false}

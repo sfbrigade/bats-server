@@ -3,23 +3,23 @@
 $row-height: 6rem;
 
 .hospitalstatusrow__name-container {
-  border-bottom: 1px solid color($theme-color-base-lighter);
-  border-left: 1px solid color($theme-color-base-lighter);
-  border-right: 1px solid color($theme-color-base-lighter);
+  border-bottom: 1px solid color('base-lighter');
+  border-left: 1px solid color('base-lighter');
+  border-right: 1px solid color('base-lighter');
   height: $row-height;
   position: relative;
 }
 
 .hospitalstatusrow__info-container {
-  border-bottom: 1px solid color($theme-color-base-lighter);
-  border-right: 1px solid color($theme-color-base-lighter);
+  border-bottom: 1px solid color('base-lighter');
+  border-right: 1px solid color('base-lighter');
   height: $row-height;
   position: relative;
 }
 
 .grid-row:first-child > .hospitalstatusrow__name-container,
 .grid-row:first-child > .hospitalstatusrow__info-container {
-  border-top: 1px solid color($theme-color-base-lighter);
+  border-top: 1px solid color('base-lighter');
 }
 
 .hospitalstatusrow__name {

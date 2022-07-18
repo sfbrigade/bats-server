@@ -21,9 +21,9 @@
 }
 
 .form-radio-field-set--error .form-radio-field-set__background {
-  background-color: color($theme-color-error-lighter);
+  background-color: color('error-lighter');
 }
 
 .form-radio-field-set--success .form-radio-field-set__background {
-  background-color: color($theme-color-success-lighter);
+  background-color: color('success-lighter');
 }

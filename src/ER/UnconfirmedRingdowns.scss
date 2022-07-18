@@ -33,12 +33,12 @@ body > .grid-container > .grid-row > div > #root {
     margin: 1rem 0;
 
     &:first-child {
-      border: 3px solid color($theme-color-warning);
+      border: 3px solid color('warning');
     }
     &:not(:first-child) {
       pointer-events: none;
       .drawer__prompt {
-        color: color($theme-color-base-light);
+        color: color('base-light');
       }
     }
   }
@@ -49,5 +49,5 @@ body > .grid-container > .grid-row > div > #root {
 }
 
 .unconfirmed-ringdowns__more {
-  color: color($theme-color-base);
+  color: color('base');
 }

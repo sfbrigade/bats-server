@@ -1,7 +1,7 @@
 @import '../../theme/base';
 
 .admin-navigation {
-  border-bottom: 1px solid color($theme-color-base-lighter);
+  border-bottom: 1px solid color('base-lighter');
   margin-bottom: 2rem;
 }
 
@@ -18,7 +18,7 @@
 .admin-navigation__link {
   @include h2;
   border-bottom: 0.25rem solid transparent;
-  color: color($theme-color-base-light);
+  color: color('base-light');
   display: block;
   font-weight: normal;
   padding: 1rem 0 0.75rem;
@@ -35,8 +35,8 @@
 
 .admin-navigation__link--active,
 .admin-navigation__link--active:focus {
-  border-bottom: 0.25rem solid color($theme-color-primary);
-  color: color($theme-color-primary);
+  border-bottom: 0.25rem solid color('primary');
+  color: color('primary');
   font-weight: bold;
 }
 
