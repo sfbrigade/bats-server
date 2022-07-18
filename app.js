@@ -13,6 +13,17 @@ app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
+// redirect all requests to https in production
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.secure) {
+      next();
+    } else {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+  });
+}
+
 // set up the static routes before the logger to reduce console noise
 app.use(express.static(path.join(__dirname, 'build'), { index: false }));
 app.use(express.static(path.join(__dirname, 'public'), { index: false }));
@@ -24,15 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use('/theme', express.static(path.join(__dirname, 'theme')));
   app.use('/node_modules/uswds/dist', express.static(path.join(__dirname, 'node_modules/uswds/dist')));
 }
-if (process.env.NODE_ENV === 'production') {
-  app.use((req, res, next) => {
-    if (req.secure) {
-      next();
-    } else {
-      res.redirect(`https://${req.headers.host}${req.url}`);
-    }
-  });
-}
+
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'));
 }
