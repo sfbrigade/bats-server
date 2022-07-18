@@ -286,6 +286,12 @@ $spinner-border-width-sm: 0.2em;
   }
 }
 
+// remove the white background that USWDS puts behind the checkbox/radio component
+.usa-checkbox,
+.usa-radio {
+  background: none;
+}
+
 .usa-checkbox__label,
 .usa-radio__label {
   margin-top: 1.5rem;
