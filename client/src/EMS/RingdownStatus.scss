@@ -1,11 +1,11 @@
 @import '../theme/base';
 
 .ringdownstatus__label {
-  color: color($theme-color-base-light);
+  color: color('base-light');
   margin: 0;
   span {
     border-radius: 0.25rem;
-    color: color($theme-color-base-ink);
+    color: color('base-darkest');
     display: inline-block;
     font-weight: bold;
     height: 1.5rem;
@@ -38,6 +38,6 @@
   }
 
   .usa-fieldset:last-child {
-    background-color: color($theme-color-base-lightest);
+    background-color: color('base-lightest');
   }
 }

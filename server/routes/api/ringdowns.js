@@ -23,8 +23,8 @@ router.get(
           rejectOnEmpty: true,
           transaction,
         });
-        // check if calling user is allowed to modify this record
-        if (req.user.id !== patientDelivery.CreatedById) {
+        // check if calling user is allowed to access this record
+        if (req.user.id !== patientDelivery.ParamedicUserId && req.user.OrganizationId !== patientDelivery.ParamedicUser.OrganizationId) {
           // check if user is in the receiving hospital ED
           const hospitalUser = await models.HospitalUser.findOne({
             where: {

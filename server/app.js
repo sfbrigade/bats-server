@@ -14,6 +14,7 @@ app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
+// redirect all requests to https in production
 if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
     if (req.secure) {
@@ -23,6 +24,19 @@ if (process.env.NODE_ENV === 'production') {
     }
   });
 }
+
+// set up the static routes before the logger to reduce console noise
+app.use(express.static(client('build'), { index: false }));
+app.use(express.static(client('public'), { index: false }));
+app.use('/libraries/fontawesome-free', express.static(client('node_modules/@fortawesome/fontawesome-free')));
+app.use('/libraries/uswds/theme', express.static(client('node_modules/uswds/dist')));
+
+if (process.env.NODE_ENV !== 'production') {
+  // for theme css sourcemap debugging only
+  app.use('/theme', express.static(client('src/theme')));
+  app.use('/node_modules/uswds/dist', express.static(client('node_modules/uswds/dist')));
+}
+
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'));
 }
@@ -38,16 +52,6 @@ app.use(app.sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(client('build'), { index: false }));
-app.use(express.static(client('public'), { index: false }));
-
-app.use('/libraries/fontawesome-free', express.static(client('node_modules/@fortawesome/fontawesome-free')));
-app.use('/libraries/uswds/theme', express.static(client('node_modules/uswds/dist')));
-if (process.env.NODE_ENV !== 'production') {
-  // for theme css sourcemap debugging only
-  app.use('/theme', express.static(client('src/theme')));
-  app.use('/node_modules/uswds/dist', express.static(client('node_modules/uswds/dist')));
-}
 app.use('/', require('./routes'));
 
 app.get('/*', isAuthenticated, (req, res) => {

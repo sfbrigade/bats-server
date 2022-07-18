@@ -6,7 +6,7 @@
 
 .beds__incoming {
   font-style: normal !important;
-  color: color($theme-color-error) !important;
+  color: color('error') !important;
 }
 
 .beds__availability {
@@ -21,14 +21,14 @@
 .beds__diversion {
   @include h3;
   background: white;
-  border-left: 4px solid color($theme-color-primary);
+  border-left: 4px solid color('primary');
   border-radius: 4px;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
   padding: 0.5625rem 1rem 0.5625rem 0.5625rem;
 }
 
 .beds__diversion--on {
-  border-left-color: color($theme-color-warning);
+  border-left-color: color('warning');
 }
 
 .beds__notes {
@@ -49,7 +49,7 @@
 
 .beds__updated {
   @include h4;
-  color: color($theme-color-base-light);
+  color: color('base-light');
   font-style: italic;
   margin-top: 0.5rem;
   text-align: center;

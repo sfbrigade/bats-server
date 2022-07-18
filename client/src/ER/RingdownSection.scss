@@ -1,7 +1,7 @@
 @import '../theme/base';
 
 .ringdown-section + .ringdown-section {
-  border-top: 1px solid color($theme-color-base-light);
+  border-top: 1px solid color('base-light');
 }
 
 .ringdown-section__header {
@@ -34,7 +34,7 @@
   height: 36px;
   left: 90px;
   top: 0px;
-  background: color($theme-color-base);
+  background: color('base');
   color: white;
   border-radius: 8px;
   flex: none;
@@ -44,5 +44,5 @@
 }
 
 .ringdown-section__caret {
-  color: color($theme-color-base-darker);
+  color: color('base-darker');
 }
