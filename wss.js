@@ -2,7 +2,7 @@ const querystring = require('querystring');
 const { Op } = require('sequelize');
 const url = require('url');
 const WebSocket = require('ws');
-const DeliveryStatus = require('./constants/deliveryStatus');
+const DeliveryStatus = require('./src/constants/DeliveryStatus');
 const models = require('./models');
 
 const userServer = new WebSocket.Server({ noServer: true });

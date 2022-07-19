@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { Model, Op } = require('sequelize');
-const { DeliveryStatus } = require('../constants');
+const { DeliveryStatus } = require('../src/constants');
 
 module.exports = (sequelize, DataTypes) => {
   class HospitalStatusUpdate extends Model {

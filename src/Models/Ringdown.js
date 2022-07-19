@@ -1,26 +1,40 @@
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
+import patient from '../metadata/patient';
+import DeliveryStatus from '../constants/DeliveryStatus';
 
-const DeliveryStatus = {
-  RINGDOWN_SENT: 'RINGDOWN SENT',
-  RINGDOWN_RECEIVED: 'RINGDOWN RECEIVED',
-  RINGDOWN_CONFIRMED: 'RINGDOWN CONFIRMED',
-  ARRIVED: 'ARRIVED',
-  OFFLOADED: 'OFFLOADED',
-  OFFLOADED_ACKNOWLEDGED: 'OFFLOADED ACKNOWLEDGED',
-  RETURNED_TO_SERVICE: 'RETURNED TO SERVICE',
-  CANCELLED: 'CANCELLED',
-  CANCEL_ACKNOWLEDGED: 'CANCEL ACKNOWLEDGED',
-  REDIRECTED: 'REDIRECTED',
-  REDIRECT_ACKNOWLEDGED: 'REDIRECT ACKNOWLEDGED',
-};
+function attachFields(target, fields, data) {
+  const props = {};
 
-DeliveryStatus.ALL_STATUSES = Object.values(DeliveryStatus);
+  fields.forEach((field) => {
+    props[field.name] = {
+      get() {
+        return data[field.name] ?? field.defaultValue;
+      },
+      set(newValue) {
+        data[field.name] = newValue;
+      },
+      configurable: true,
+      enumerable: true,
+    };
+  });
 
-DeliveryStatus.is = (status, target) => DeliveryStatus.ALL_STATUSES.indexOf(status) >= DeliveryStatus.ALL_STATUSES.indexOf(target);
+  Object.defineProperties(target, props);
+}
 
-Object.freeze(DeliveryStatus);
+function overrideSetter(target, key, setter) {
+  const descriptor = Object.getOwnPropertyDescriptor(target, key);
+
+  if (!descriptor || !descriptor.set) {
+    throw new Error(`setter for '${key}' does not exist on the target.`);
+  }
+
+  Object.defineProperty(target, key, {
+    ...descriptor,
+    set: setter,
+  });
+}
 
 class Ringdown {
   static get Status() {
@@ -34,6 +48,22 @@ class Ringdown {
     this.payload.hospital = this.payload.hospital || {};
     this.payload.patient = this.payload.patient || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
+
+    // add getters/setters for patient fields
+    attachFields(this, patient.getObjectFields(), this.payload.patient);
+
+    // add custom setters for these payload fields, since their settings affect other fields
+    overrideSetter(this, 'lowOxygenResponseType', (newValue) => {
+      this.payload.patient.lowOxygenResponseType = newValue;
+      if (newValue !== 'SUPPLEMENTAL OXYGEN') {
+        this.supplementalOxygenAmount = null;
+      }
+    });
+    overrideSetter(this, 'combativeBehaviorIndicator', (newValue) => {
+      this.payload.patient.combativeBehaviorIndicator = newValue;
+      this.restraintIndicator = newValue && this.restraintIndicator;
+    });
+
     this.validationData = validationData || {
       ambulanceIdentifier: new PatientFieldData(
         'ambulanceIdentifier',
@@ -123,115 +153,6 @@ class Ringdown {
 
   // Patient Info
 
-  get age() {
-    return this.payload.patient.age ?? null;
-  }
-
-  set age(newValue) {
-    this.payload.patient.age = newValue;
-  }
-
-  get sex() {
-    return this.payload.patient.sex ?? null;
-  }
-
-  set sex(newValue) {
-    this.payload.patient.sex = newValue;
-  }
-
-  get emergencyServiceResponseType() {
-    return this.payload.patient.emergencyServiceResponseType ?? null;
-  }
-
-  set emergencyServiceResponseType(newValue) {
-    this.payload.patient.emergencyServiceResponseType = newValue;
-  }
-
-  get chiefComplaintDescription() {
-    return this.payload.patient.chiefComplaintDescription ?? null;
-  }
-
-  set chiefComplaintDescription(newValue) {
-    this.payload.patient.chiefComplaintDescription = newValue;
-  }
-
-  get stableIndicator() {
-    return this.payload.patient.stableIndicator ?? null;
-  }
-
-  set stableIndicator(newValue) {
-    this.payload.patient.stableIndicator = newValue;
-  }
-
-  // Vitals
-
-  get systolicBloodPressure() {
-    return this.payload.patient.systolicBloodPressure ?? null;
-  }
-
-  set systolicBloodPressure(newValue) {
-    this.payload.patient.systolicBloodPressure = newValue;
-  }
-
-  get diastolicBloodPressure() {
-    return this.payload.patient.diastolicBloodPressure ?? null;
-  }
-
-  set diastolicBloodPressure(newValue) {
-    this.payload.patient.diastolicBloodPressure = newValue;
-  }
-
-  get heartRateBpm() {
-    return this.payload.patient.heartRateBpm ?? null;
-  }
-
-  set heartRateBpm(newValue) {
-    this.payload.patient.heartRateBpm = newValue;
-  }
-
-  get respiratoryRate() {
-    return this.payload.patient.respiratoryRate ?? null;
-  }
-
-  set respiratoryRate(newValue) {
-    this.payload.patient.respiratoryRate = newValue;
-  }
-
-  get oxygenSaturation() {
-    return this.payload.patient.oxygenSaturation ?? null;
-  }
-
-  set oxygenSaturation(newValue) {
-    this.payload.patient.oxygenSaturation = newValue;
-  }
-
-  get lowOxygenResponseType() {
-    return this.payload.patient.lowOxygenResponseType ?? null;
-  }
-
-  set lowOxygenResponseType(newValue) {
-    this.payload.patient.lowOxygenResponseType = newValue;
-    if (newValue !== 'SUPPLEMENTAL OXYGEN') {
-      this.supplementalOxygenAmount = null;
-    }
-  }
-
-  get supplementalOxygenAmount() {
-    return this.payload.patient.supplementalOxygenAmount ?? null;
-  }
-
-  set supplementalOxygenAmount(newValue) {
-    this.payload.patient.supplementalOxygenAmount = newValue;
-  }
-
-  get temperature() {
-    return this.payload.patient.temperature ?? null;
-  }
-
-  set temperature(newValue) {
-    this.payload.patient.temperature = newValue;
-  }
-
   get hasVitals() {
     return (
       this.systolicBloodPressure ||
@@ -246,71 +167,6 @@ class Ringdown {
   }
 
   // Addtl Notes
-
-  get etohSuspectedIndicator() {
-    return this.payload.patient.etohSuspectedIndicator ?? false;
-  }
-
-  set etohSuspectedIndicator(newValue) {
-    this.payload.patient.etohSuspectedIndicator = newValue;
-  }
-
-  get drugsSuspectedIndicator() {
-    return this.payload.patient.drugsSuspectedIndicator ?? false;
-  }
-
-  set drugsSuspectedIndicator(newValue) {
-    this.payload.patient.drugsSuspectedIndicator = newValue;
-  }
-
-  get psychIndicator() {
-    return this.payload.patient.psychIndicator ?? false;
-  }
-
-  set psychIndicator(newValue) {
-    this.payload.patient.psychIndicator = newValue;
-  }
-
-  get combativeBehaviorIndicator() {
-    return this.payload.patient.combativeBehaviorIndicator ?? false;
-  }
-
-  set combativeBehaviorIndicator(newValue) {
-    this.payload.patient.combativeBehaviorIndicator = newValue;
-    this.restraintIndicator = newValue && this.restraintIndicator;
-  }
-
-  get restraintIndicator() {
-    return this.payload.patient.restraintIndicator ?? false;
-  }
-
-  set restraintIndicator(newValue) {
-    this.payload.patient.restraintIndicator = newValue;
-  }
-
-  get covid19SuspectedIndicator() {
-    return this.payload.patient.covid19SuspectedIndicator ?? false;
-  }
-
-  set covid19SuspectedIndicator(newValue) {
-    this.payload.patient.covid19SuspectedIndicator = newValue;
-  }
-
-  get ivIndicator() {
-    return this.payload.patient.ivIndicator ?? false;
-  }
-
-  set ivIndicator(newValue) {
-    this.payload.patient.ivIndicator = newValue;
-  }
-
-  get otherObservationNotes() {
-    return this.payload.patient.otherObservationNotes ?? null;
-  }
-
-  set otherObservationNotes(newValue) {
-    this.payload.patient.otherObservationNotes = newValue;
-  }
 
   get hasAdditionalNotes() {
     return (
@@ -439,29 +295,7 @@ Ringdown.propTypes = {
   dispatchCallNumber: PropTypes.number.isRequired,
   hospitalId: PropTypes.string.isRequired,
   // Patient Info
-  age: PropTypes.number.isRequired,
-  sex: PropTypes.oneOf(['MALE', 'FEMALE', 'NON-BINARY']).isRequired,
-  emergencyServiceResponseType: PropTypes.oneOf(['CODE 2', 'CODE 3']).isRequired,
-  chiefComplaintDescription: PropTypes.string.isRequired,
-  stableIndicator: PropTypes.bool.isRequired,
-  // Vitals
-  systolicBloodPressure: PropTypes.number,
-  diastolicBloodPressure: PropTypes.number,
-  heartRateBpm: PropTypes.number,
-  respiratoryRate: PropTypes.number,
-  oxygenSaturation: PropTypes.number,
-  lowOxygenResponseType: PropTypes.oneOf(['ROOM AIR', 'SUPPLEMENTAL OXYGEN']),
-  supplementalOxygenAmount: PropTypes.number,
-  temperature: PropTypes.number,
-  // Addtl. Notes
-  etohSuspectedIndicator: PropTypes.bool,
-  drugsSuspectedIndicator: PropTypes.bool,
-  psychIndicator: PropTypes.bool,
-  combativeBehaviorIndicator: PropTypes.bool,
-  restraintIndicator: PropTypes.bool,
-  covid19SuspectedIndicator: PropTypes.bool,
-  ivIndicator: PropTypes.bool,
-  otherObservationNotes: PropTypes.string,
+  ...patient.getPropTypes(PropTypes),
   // Status
   etaMinutes: PropTypes.number.isRequired,
   currentDeliveryStatus: PropTypes.oneOf(DeliveryStatus.ALL_STATUSES),

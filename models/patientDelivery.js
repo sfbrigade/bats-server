@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const { Model } = require('sequelize');
-const { DeliveryStatus } = require('../constants');
+const { DeliveryStatus } = require('../src/constants');
 
 const PatientDeliveryParams = ['currentDeliveryStatus', 'currentDeliveryStatusDateTimeLocal', 'etaMinutes'];
 Object.freeze(PatientDeliveryParams);

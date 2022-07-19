@@ -1,128 +1,133 @@
-const { DataTypes } = require('sequelize');
-const Metadata = require('./Metadata');
+const ModelMetadata = require('./ModelMetadata');
 
 const fields = [
   {
     name: 'id',
     colName: 'patient_uuid',
-    type: DataTypes.UUID,
+    type: 'uuid',
     primaryKey: true,
     autoIncrement: true,
   },
   {
     name: 'EmergencyMedicalServiceCallId',
     colName: 'emergencymedicalservicecall_uuid',
-    type: DataTypes.UUID,
+    type: 'uuid',
     allowNull: false,
     unique: true,
   },
   {
     name: 'age',
-    type: DataTypes.INTEGER,
+    type: 'integer',
+    required: true,
   },
   {
     name: 'sex',
-    type: DataTypes.ENUM('MALE', 'FEMALE', 'NON-BINARY'),
+    type: 'enum',
+    enumValues: ['MALE', 'FEMALE', 'NON-BINARY'],
+    required: true,
   },
   {
     name: 'emergencyServiceResponseType',
-    type: DataTypes.ENUM('CODE 2', 'CODE 3'),
+    type: 'enum',
+    enumValues: ['CODE 2', 'CODE 3'],
+    required: true,
   },
   {
     name: 'chiefComplaintDescription',
-    type: DataTypes.TEXT,
+    type: 'text',
+    required: true,
   },
   {
     name: 'stableIndicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
+    required: true,
   },
   {
     name: 'systolicBloodPressure',
-    type: DataTypes.INTEGER,
+    type: 'integer',
   },
   {
     name: 'diastolicBloodPressure',
-    type: DataTypes.INTEGER,
+    type: 'integer',
   },
   {
     name: 'heartRateBpm',
-    type: DataTypes.INTEGER,
+    type: 'integer',
   },
   {
     name: 'respiratoryRate',
-    type: DataTypes.INTEGER,
+    type: 'integer',
   },
   {
     name: 'oxygenSaturation',
-    type: DataTypes.INTEGER,
+    type: 'integer',
   },
   {
     name: 'lowOxygenResponseType',
-    type: DataTypes.ENUM('ROOM AIR', 'SUPPLEMENTAL OXYGEN'),
+    type: 'enum',
+    enumValues: ['ROOM AIR', 'SUPPLEMENTAL OXYGEN'],
   },
   {
     name: 'supplementalOxygenAmount',
-    type: DataTypes.INTEGER,
+    type: 'integer',
   },
   {
     name: 'temperature',
-    type: DataTypes.DECIMAL,
+    type: 'decimal',
   },
   {
     name: 'etohSuspectedIndicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
   },
   {
     name: 'drugsSuspectedIndicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
   },
   {
     name: 'psychIndicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
   },
   {
     name: 'combativeBehaviorIndicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
   },
   {
     name: 'restraintIndicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
   },
   {
     name: 'covid19SuspectedIndicator',
     colName: 'covid-19suspectedindicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
   },
   {
     name: 'ivIndicator',
-    colName: 'ivindicator',
-    type: DataTypes.BOOLEAN,
+    type: 'boolean',
   },
   {
     name: 'otherObservationNotes',
-    colName: 'otherobservationnotes',
-    type: DataTypes.TEXT,
+    type: 'text',
   },
   {
     name: 'createdAt',
     colName: 'recordcreatetimestamp',
-    type: DataTypes.DATE,
+    type: 'date',
   },
   {
     name: 'CreatedById',
     colName: 'recordcreateuser_uuid',
-    type: DataTypes.UUID,
+    type: 'uuid',
   },
   {
     name: 'updatedAt',
     colName: 'recordupdatetimestamp',
-    type: DataTypes.DATE,
+    type: 'date',
   },
   {
     name: 'UpdatedById',
     colName: 'recordupdateuser_uuid',
-    type: DataTypes.UUID,
+    type: 'uuid',
   },
 ];
 
-module.exports = new Metadata(fields);
+module.exports = new ModelMetadata(fields);

@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { DeliveryStatus } = require('../constants');
+const { DeliveryStatus } = require('../src/constants');
 
 module.exports = (sequelize, DataTypes) => {
   class PatientDeliveryUpdate extends Model {
