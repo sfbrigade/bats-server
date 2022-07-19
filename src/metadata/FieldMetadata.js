@@ -1,13 +1,10 @@
 const Suffixes = {
-  'uuid': '_uuid',
-  'enum': 'enum',
+  uuid: '_uuid',
+  enum: 'enum',
 };
-const NonParamTypes = [
-  'uuid',
-  'date'
-];
+const NonParamTypes = ['uuid', 'date'];
 
-function createColName({ name, type }){
+function createColName({ name, type }) {
   return name.toLowerCase() + (Suffixes[type] || '');
 }
 
@@ -18,10 +15,7 @@ class FieldMetadata {
       {
         colName: createColName(field),
         isParam: !NonParamTypes.includes(field.type),
-        defaultValue: field.defaultValue ??
-          field.type === 'boolean'
-            ? false
-            : null
+        defaultValue: field.defaultValue ?? field.type === 'boolean' ? false : null,
       },
       field
     );
