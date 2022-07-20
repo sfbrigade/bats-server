@@ -46,7 +46,8 @@ class Ringdown {
     this.payload.ambulance = this.payload.ambulance || {};
     this.payload.emsCall = this.payload.emsCall || {};
     this.payload.hospital = this.payload.hospital || {};
-    this.payload.patient = this.payload.patient || {};
+    // default the urgency to Code 2 for a new ringdown
+    this.payload.patient = this.payload.patient || { emergencyServiceResponseType: 'CODE 2' };
     this.payload.patientDelivery = this.payload.patientDelivery || {};
 
     // add getters/setters for patient fields

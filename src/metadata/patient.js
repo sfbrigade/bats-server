@@ -40,6 +40,9 @@ const fields = [
   {
     name: 'stableIndicator',
     type: 'boolean',
+    // though this is stored as a boolean, it's rendered in the UI as two radio buttons, not a
+    // checkbox, so use null as the default so neither radio is selected
+    defaultValue: null,
     required: true,
   },
   {
@@ -76,6 +79,10 @@ const fields = [
     type: 'decimal',
   },
   {
+    name: 'treatmentNotes',
+    type: 'text',
+  },
+  {
     name: 'etohSuspectedIndicator',
     type: 'boolean',
   },
@@ -103,6 +110,10 @@ const fields = [
   {
     name: 'ivIndicator',
     type: 'boolean',
+  },
+  {
+    name: 'glasgowComaScale',
+    type: 'integer',
   },
   {
     name: 'otherObservationNotes',
