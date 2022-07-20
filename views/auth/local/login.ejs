@@ -1,8 +1,8 @@
 <div class="grid-container">
   <div class="grid-row">
     <div class="grid-col-10 grid-offset-1 tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
-      <div class="text-center">
-        <h1 class="hospital-dest-title margin-y-5">Routed</h1>
+      <div class="text-center margin-bottom-6">
+        <h1 class="hospital-dest-title margin-y-6"><img src="/img/logomark-300.png" alt="Routed logo"></h1>
         <h4 class="text-base-light margin-y-4">Start by entering your<br />email and password below.</h4>
       </div>
       <% if (locals.unauthorized) { %>
@@ -13,15 +13,15 @@
         </div>
       <% } %>
       <form method="post" action="/auth/local/login" id="login" class="usa-form">
-        <div class="usa-form-group margin-bottom-4">
+        <div class="usa-form-group margin-y-4">
           <label for="username" class="usa-label usa-label--required">Email</label>
           <input type="email" id="email" name="username" value="<%= locals.username %>" placeholder="name@email.com" class="usa-input" />
         </div>
-        <div class="usa-form-group margin-bottom-1">
+        <div class="usa-form-group margin-y-4">
           <label for="password" class="usa-label usa-label--required">Password</label>
           <input type="password" id="password" name="password" class="usa-input" />
         </div>
-        <button type="submit" class="usa-button margin-0 width-full">Login</button>
+        <button type="submit" class="usa-button width-full">Login</button>
       </form>
     </div>
   </div>
