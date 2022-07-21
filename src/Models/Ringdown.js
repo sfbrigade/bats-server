@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
 import patient from '../metadata/patient';
+import convertToPropType from '../metadata/convertToPropType';
 import DeliveryStatus from '../constants/DeliveryStatus';
 
 function attachFields(target, fields, data) {
@@ -296,7 +297,7 @@ Ringdown.propTypes = {
   dispatchCallNumber: PropTypes.number.isRequired,
   hospitalId: PropTypes.string.isRequired,
   // Patient Info
-  ...patient.getPropTypes(PropTypes),
+  ...patient.getFieldHash(convertToPropType),
   // Status
   etaMinutes: PropTypes.number.isRequired,
   currentDeliveryStatus: PropTypes.oneOf(DeliveryStatus.ALL_STATUSES),

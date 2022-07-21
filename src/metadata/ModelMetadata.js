@@ -1,38 +1,25 @@
 const FieldMetadata = require('./FieldMetadata');
 
-const PropTypeLookup = {
-  text: 'string',
-  integer: 'number',
-  decimal: 'number',
-  boolean: 'bool',
-};
-
 const identity = (field) => [field.name, field];
-
-function createParamsList(fields) {
-  const params = fields.filter(({ isParam }) => isParam).map(({ name }) => name);
-
-  return Object.freeze(params);
-}
 
 class ModelMetadata {
   constructor({ modelName, tableName = modelName.toLowerCase(), fields }) {
     this.modelName = modelName;
     this.tableName = tableName;
     this.fields = Object.freeze(fields.map((field) => new FieldMetadata(field)));
-    this.params = createParamsList(this.fields);
+    this.params = Object.freeze(this.fields.filter(({ isParam }) => isParam).map(({ name }) => name));
   }
 
   getFieldHash(convertField = identity) {
-    const hash = {};
-
-    this.fields.forEach((field) => {
+    return this.fields.reduce((result, field) => {
       const [name, convertedField] = convertField(field);
 
-      hash[name] = convertedField;
-    });
+      if (name && convertedField) {
+        result[name] = convertedField;
+      }
 
-    return hash;
+      return result;
+    }, {});
   }
 
   getParams() {
@@ -41,26 +28,6 @@ class ModelMetadata {
 
   getObjectFields() {
     return this.fields.filter(({ type, isParam }) => isParam || type === 'enum');
-  }
-
-  getPropTypes(PropTypes) {
-    return this.getObjectFields().reduce((result, field) => {
-      const { name, type, enumValues, required } = field;
-      const reactType = PropTypeLookup[type];
-      let propType = PropTypes[reactType];
-
-      if (type === 'enum') {
-        propType = PropTypes.oneOf(enumValues);
-      }
-
-      if (required) {
-        propType = propType.isRequired;
-      }
-
-      result[name] = propType;
-
-      return result;
-    }, {});
   }
 }
 
