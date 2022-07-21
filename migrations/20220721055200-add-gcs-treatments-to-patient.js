@@ -1,32 +1,28 @@
+/* eslint-disable no-await-in-loop, no-restricted-syntax */
 const patient = require('../src/metadata/patient');
 const convertToSequelizeField = require('../src/metadata/convertToSequelizeField');
 
 const fields = patient.getFieldHash(convertToSequelizeField);
-const newFields = ['treatmentNotes', 'glasgowComaScale'];
+const newFieldNames = ['treatmentNotes', 'glasgowComaScale'];
 const { tableName } = patient;
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (transaction) => {
-      for (const fieldName of newFields) {
-        const newField = fields[fieldName];
+      for (const name of newFieldNames) {
+        const { field, type } = fields[name];
 
-        await queryInterface.addColumn(
-          tableName,
-          newField.field,
-          newField,
-          { transaction }
-        );
+        await queryInterface.addColumn(tableName, field, type, { transaction });
       }
     });
   },
 
-  down: async (queryInterface) => {
+  async down(queryInterface) {
     await queryInterface.sequelize.transaction(async (transaction) => {
-      for (const fieldName of newFields) {
-        const newField = fields[fieldName];
+      for (const name of newFieldNames) {
+        const { field } = fields[name];
 
-        await queryInterface.removeColumn(tableName, newField.field, { transaction });
+        await queryInterface.removeColumn(tableName, field, { transaction });
       }
     });
   },
