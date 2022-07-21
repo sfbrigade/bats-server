@@ -19,8 +19,8 @@ module.exports = (sequelize) => {
   Patient.init(patient.getFieldHash(convertToSequelizeField), {
     sequelize,
     timestamps: true,
-    tableName: 'patient',
-    modelName: 'Patient',
+    tableName: patient.tableName,
+    modelName: patient.modelName,
   });
   return Patient;
 };

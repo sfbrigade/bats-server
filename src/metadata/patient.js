@@ -141,4 +141,4 @@ const fields = [
   },
 ];
 
-module.exports = new ModelMetadata(fields);
+module.exports = new ModelMetadata({ modelName: 'Patient', fields });

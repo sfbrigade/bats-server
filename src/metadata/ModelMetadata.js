@@ -16,7 +16,9 @@ function createParamsList(fields) {
 }
 
 class ModelMetadata {
-  constructor(fields) {
+  constructor({ modelName, tableName = modelName.toLowerCase(), fields }) {
+    this.modelName = modelName;
+    this.tableName = tableName;
     this.fields = Object.freeze(fields.map((field) => new FieldMetadata(field)));
     this.params = createParamsList(this.fields);
   }
