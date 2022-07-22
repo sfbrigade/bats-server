@@ -204,6 +204,7 @@ describe('models.PatientDelivery', () => {
           lowOxygenResponseType: null,
           supplementalOxygenAmount: null,
           temperature: null,
+          treatmentNotes: null,
           etohSuspectedIndicator: null,
           drugsSuspectedIndicator: null,
           psychIndicator: null,
@@ -211,6 +212,7 @@ describe('models.PatientDelivery', () => {
           restraintIndicator: null,
           covid19SuspectedIndicator: null,
           ivIndicator: null,
+          glasgowComaScale: null,
           otherObservationNotes: null,
         },
         patientDelivery: {
