@@ -231,9 +231,8 @@ $spinner-border-width-sm: 0.2em;
   border-bottom: 1px solid color('base-lighter');
   padding: 1.25rem 1.5rem 0.5rem;
 
-  span {
+  .heading__subtitle {
     @include h4-italic;
-    display: block;
     color: color('base-light');
   }
 }
