@@ -342,10 +342,6 @@ $spinner-border-width-sm: 0.2em;
     max-width: none;
   }
 
-  .usa-alert::before {
-    display: none;
-  }
-
   .usa-button {
     @include u-margin-top(4);
   }
