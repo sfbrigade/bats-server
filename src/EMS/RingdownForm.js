@@ -13,6 +13,7 @@ import Alert from '../Components/Alert';
 import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
+import Form from '../Components/Form';
 
 function RingdownForm({ className }) {
   const { ringdowns, setRingdowns } = useContext(Context);
@@ -97,7 +98,11 @@ function RingdownForm({ className }) {
   return (
     <>
       {ringdowns && ringdowns.length === 0 && (
-        <form className={classNames('usa-form', className)}>
+        <Form
+          data={ringdown}
+          onChange={onChange}
+          className={classNames('usa-form', className)}
+        >
           <div className="usa-alert usa-alert--info usa-alert--slim usa-alert--no-icon">
             <div className="usa-alert__body">
               <p className="usa-alert__text">
@@ -151,7 +156,7 @@ function RingdownForm({ className }) {
               onPrimary={handleConfirmCancel}
             />
           )}
-        </form>
+        </Form>
       )}
       {ringdowns && ringdowns.length > 0 && (
         <RingdownStatus className={className} onStatusChange={onStatusChange} ringdown={ringdowns[0]} />

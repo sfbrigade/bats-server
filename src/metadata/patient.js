@@ -95,7 +95,7 @@ const fields = [
     name: 'temperature',
     type: 'decimal',
     label: 'Temperature',
-    unit: '&deg;F',
+    unit: '°F',
     range: { min: 80, max: 150 },
   },
   {
