@@ -18,6 +18,8 @@ const fields = [
   {
     name: 'age',
     type: 'integer',
+    label: 'Age (estimated)',
+    unit: 'years',
     required: true,
     range: { min: 0, max: 130 },
   },
@@ -36,6 +38,7 @@ const fields = [
   {
     name: 'chiefComplaintDescription',
     type: 'text',
+    label: 'Chief Complaint',
     required: true,
   },
   {
@@ -59,16 +62,22 @@ const fields = [
   {
     name: 'heartRateBpm',
     type: 'integer',
+    label: 'Pulse',
+    unit: 'beats/min',
     range: { min: 40, max: 200 },
   },
   {
     name: 'respiratoryRate',
     type: 'integer',
+    label: 'Respiratory Rate',
+    unit: 'breaths/min',
     range: { min: 12, max: 25 },
   },
   {
     name: 'oxygenSaturation',
     type: 'integer',
+    label: 'SpO2',
+    unit: '%',
     range: { min: 0, max: 100 },
   },
   {
@@ -79,40 +88,51 @@ const fields = [
   {
     name: 'supplementalOxygenAmount',
     type: 'integer',
+    unit: 'L',
+    range: { min: 1, max: 1000 },
   },
   {
     name: 'temperature',
     type: 'decimal',
+    label: 'Temperature',
+    unit: '&deg;F',
     range: { min: 80, max: 150 },
   },
   {
     name: 'treatmentNotes',
     type: 'text',
+    label: 'Treatments Administered'
   },
   {
     name: 'etohSuspectedIndicator',
     type: 'boolean',
+    label: 'ETOH suspected',
   },
   {
     name: 'drugsSuspectedIndicator',
     type: 'boolean',
+    label: 'Drugs suspected',
   },
   {
     name: 'psychIndicator',
     type: 'boolean',
+    label: 'Behavioral health needs',
   },
   {
     name: 'combativeBehaviorIndicator',
     type: 'boolean',
+    label: 'Combative',
   },
   {
     name: 'restraintIndicator',
     type: 'boolean',
+    label: '4-point restraint',
   },
   {
     name: 'covid19SuspectedIndicator',
     colName: 'covid-19suspectedindicator',
     type: 'boolean',
+    label: 'COVID-19 suspected',
   },
   {
     name: 'ivIndicator',
@@ -121,11 +141,14 @@ const fields = [
   {
     name: 'glasgowComaScale',
     type: 'integer',
+    label: 'GCS',
+    unit: '/ 15',
     range: { min: 3, max: 15 },
   },
   {
     name: 'otherObservationNotes',
     type: 'text',
+    label: 'Other',
   },
   {
     name: 'createdAt',

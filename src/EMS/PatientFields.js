@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { Form, useForm } from '../Components/Form';
 import FormCheckbox from '../Components/FormCheckbox';
 import FormComboBox from '../Components/FormComboBox';
 import FormInput from '../Components/FormInput';
@@ -14,10 +15,10 @@ import ApiService from '../ApiService';
 import Context from '../Context';
 import patient from '../metadata/patient';
 
-const FIELDs = patient.getFieldHash();
+const Patient = patient.getFieldHash();
 
 function getRange(property, extreme) {
-  const { range } = FIELDs[property] || {};
+  const { range } = Patient[property] || {};
 
   return range ? range[extreme] : null;
 }
@@ -25,13 +26,18 @@ function getRange(property, extreme) {
 // use prop-spreading here because all we're doing is defaulting some props and letting the rest
 // pass through to FormInput
 function NumericField({ property, size = 'small', min = getRange(property, 'min'), max = getRange(property, 'max'), ...props }) {
+  const { data, onChange } = useForm();
+
   return (
     <FormInput
       property={property}
+      value={data[property]}
       size={size}
       min={min}
       max={max}
       type="number"
+      validationState={data.getValidationState(property)}
+      onChange={onChange}
       /* eslint-disable-next-line react/jsx-props-no-spreading */
       {...props}
     />
@@ -39,6 +45,65 @@ function NumericField({ property, size = 'small', min = getRange(property, 'min'
 }
 
 NumericField.propTypes = FormInput.propTypes;
+
+/* eslint-disable react/jsx-props-no-spreading */
+function Field({ metadata, ...props }) {
+  const { data, onChange } = useForm();
+  const { name: property, type, label, unit, required } = metadata;
+  const value = data[property];
+  const commonProps = {
+    property,
+    label,
+    value,
+    required,
+    onChange,
+    validationState: data.getValidationState(property)
+  };
+
+	switch (type) {
+    case 'integer':
+    case 'decimal':
+      return (
+        <NumericField
+          {...commonProps}
+          unit={unit}
+          {...props}
+        />
+      );
+
+    case 'boolean':
+      return (
+        <FormCheckbox
+          {...commonProps}
+          currentValue={value}
+          value={true}
+          {...props}
+        />
+      );
+
+    case 'text':
+      return (
+        <FormTextArea
+          {...commonProps}
+          {...props}
+        />
+      );
+
+    default:
+      throw new Error(`Unknown field type: ${type}`);
+  }
+}
+
+function createOptions(ids) {
+  return ids.map((id) => (
+    <option
+      key={id}
+      value={id}
+    >
+      {id}
+    </option>
+  ));
+}
 
 function PatientFields({ ringdown, onChange }) {
   const [ambulanceIds, setAmbulanceIds] = useState([]);
@@ -58,24 +123,12 @@ function PatientFields({ ringdown, onChange }) {
     }
   }, [ringdown.ambulanceIdentifier, user]);
 
-  function createOptions(ids) {
-    const options = [];
-    ids.forEach((id) =>
-      options.push(
-        <option key={id} value={id}>
-          {id}
-        </option>
-      )
-    );
-    return options;
-  }
-
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
   }
 
   return (
-    <>
+    <Form data={ringdown} onChange={handleUserInput}>
       <div className="usa-accordion">
         <Heading title="Unit Info" />
         <div className="usa-accordion__content">
@@ -105,15 +158,7 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Patient Info" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <NumericField
-              label="Age (estimated)"
-              property="age"
-              unit="years"
-              value={ringdown.age}
-              required
-              validationState={ringdown.getValidationState('age')}
-              onChange={handleUserInput}
-            />
+            <Field metadata={Patient.age} />
           </fieldset>
           <FormRadioFieldSet
             label="Gender Identity"
@@ -139,18 +184,11 @@ function PatientFields({ ringdown, onChange }) {
             <FormRadio label="Code 3" value="CODE 3" disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'} />
           </FormRadioFieldSet>
           <fieldset className="usa-fieldset">
-            <FormTextArea
-              label="Chief Complaint"
-              onChange={handleUserInput}
-              property="chiefComplaintDescription"
-              required
-              value={ringdown.chiefComplaintDescription}
-              validationState={ringdown.getValidationState('chiefComplaintDescription')}
-            >
+            <Field metadata={Patient.chiefComplaintDescription}>
               <div className="usa-hint usa-hint--important">
                 <i className="fas fa-info-circle" /> Exclude identifying information.
               </div>
-            </FormTextArea>
+            </Field>
           </fieldset>
           <FormRadioFieldSet
             label="Vitals Stability"
@@ -167,30 +205,21 @@ function PatientFields({ ringdown, onChange }) {
         <Heading title="Vitals" subtitle="optional" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <NumericField
+            <Field
+              metadata={Patient.systolicBloodPressure}
               label="Blood Pressure"
-              property="systolicBloodPressure"
               unit="/"
-              value={ringdown.systolicBloodPressure}
-              onChange={handleUserInput}
             >
               <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;</span>
-              <NumericField
+              <Field
+                metadata={Patient.diastolicBloodPressure}
+                unit="mmHG"
                 isWrapped={false}
-                property="diastolicBloodPressure"
-                unit="mmHg"
-                value={ringdown.diastolicBloodPressure}
-                onChange={handleUserInput}
               />
-            </NumericField>
-            <NumericField label="Pulse" property="heartRateBpm" unit="beats/min" value={ringdown.heartRateBpm} onChange={handleUserInput} />
-            <NumericField
-              label="Respiratory Rate"
-              property="respiratoryRate"
-              unit="breaths/min"
-              value={ringdown.respiratoryRate}
-              onChange={handleUserInput}
-            />
+            </Field>
+            <Field metadata={Patient.heartRateBpm} />
+            <Field metadata={Patient.respiratoryRate} />
+            <Field metadata={Patient.oxygenSaturation} />
             <div className="padding-left-2 margin-bottom-neg-4">
               <FormRadioFieldSet property="lowOxygenResponseType" value={ringdown.lowOxygenResponseType} onChange={handleUserInput}>
                 <FormRadio
@@ -204,14 +233,9 @@ function PatientFields({ ringdown, onChange }) {
                       <div className="display-inline-block margin-right-2">
                         O<sub>2</sub>
                       </div>
-                      <FormInput
+                      <Field
+                        metadata={Patient.supplementalOxygenAmount}
                         disabled={ringdown.lowOxygenResponseType !== 'SUPPLEMENTAL OXYGEN'}
-                        onChange={handleUserInput}
-                        property="supplementalOxygenAmount"
-                        size="small"
-                        type="number"
-                        unit="L"
-                        value={ringdown.supplementalOxygenAmount}
                       />
                     </div>
                   }
@@ -220,74 +244,27 @@ function PatientFields({ ringdown, onChange }) {
                 />
               </FormRadioFieldSet>
             </div>
-            <NumericField label="Temp." property="temperature" unit="&deg;F" value={ringdown.temperature} onChange={handleUserInput} />
+            <Field metadata={Patient.temperature} />
           </fieldset>
         </div>
         <Heading title="Additional Notes" subtitle="optional" />
         <div className="usa-accordion__content">
           <fieldset className="usa-fieldset">
-            <FormTextArea
-              label="Treatments administered"
-              property="treatmentNotes"
-              value={ringdown.treatmentNotes}
-              onChange={handleUserInput}
-            />
-            <FormCheckbox
-              currentValue={ringdown.etohSuspectedIndicator}
-              label="ETOH suspected"
-              onChange={handleUserInput}
-              property="etohSuspectedIndicator"
-            />
-            <FormCheckbox
-              currentValue={ringdown.drugsSuspectedIndicator}
-              label="Drugs suspected"
-              onChange={handleUserInput}
-              property="drugsSuspectedIndicator"
-            />
-            <FormCheckbox
-              currentValue={ringdown.psychIndicator}
-              label="Psych patient"
-              onChange={handleUserInput}
-              property="psychIndicator"
-            />
-            <FormCheckbox
-              currentValue={ringdown.combativeBehaviorIndicator}
-              label="Combative"
-              onChange={handleUserInput}
-              property="combativeBehaviorIndicator"
-            />
+            <Field metadata={Patient.treatmentNotes} />
+            <Field metadata={Patient.etohSuspectedIndicator} />
+            <Field metadata={Patient.drugsSuspectedIndicator} />
+            <Field metadata={Patient.psychIndicator} />
+            <Field metadata={Patient.combativeBehaviorIndicator} />
             <div className="padding-left-4">
-              <FormCheckbox
-                currentValue={ringdown.restraintIndicator}
-                disabled={ringdown.combativeBehaviorIndicator !== true}
-                label="4-point restraint"
-                onChange={handleUserInput}
-                property="restraintIndicator"
-              />
+              <Field metadata={Patient.restraintIndicator} disabled={ringdown.combativeBehaviorIndicator !== true} />
             </div>
-            <FormCheckbox
-              currentValue={ringdown.covid19SuspectedIndicator}
-              label="COVID-19 suspected"
-              onChange={handleUserInput}
-              property="covid19SuspectedIndicator"
-            />
-            <NumericField
-              label="GCS"
-              property="glasgowComaScale"
-              unit="/ 15"
-              value={ringdown.glasgowComaScale}
-              onChange={handleUserInput}
-            />
-            <FormTextArea
-              label="Other"
-              property="otherObservationNotes"
-              value={ringdown.otherObservationNotes}
-              onChange={handleUserInput}
-            />
+            <Field metadata={Patient.covid19SuspectedIndicator} />
+            <Field metadata={Patient.glasgowComaScale} />
+            <Field metadata={Patient.otherObservationNotes} />
           </fieldset>
         </div>
       </div>
-    </>
+    </Form>
   );
 }
 

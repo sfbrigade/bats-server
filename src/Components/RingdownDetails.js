@@ -128,7 +128,7 @@ function RingdownDetails({ className, ringdown, isIncoming }) {
                   <th>Combative</th>
                   <td>
                     {ringdown.combativeBehaviorIndicator && 'Yes'}
-                    {ringdown.restraintIndicator && <>&nbsp;Restrained</>}
+                    {ringdown.restraintIndicator && ', Restrained'}
                   </td>
                 </tr>
               )}

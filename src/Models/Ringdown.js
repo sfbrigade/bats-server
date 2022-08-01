@@ -288,7 +288,7 @@ class Ringdown {
   }
 
   getValidationState(fieldName) {
-    return this.validationData[fieldName].validationState;
+    return this.validationData[fieldName]?.validationState;
   }
 }
 
