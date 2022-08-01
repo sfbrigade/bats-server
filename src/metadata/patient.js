@@ -19,6 +19,7 @@ const fields = [
     name: 'age',
     type: 'integer',
     required: true,
+    range: { min: 0, max: 130 },
   },
   {
     name: 'sex',
@@ -48,22 +49,27 @@ const fields = [
   {
     name: 'systolicBloodPressure',
     type: 'integer',
+    range: { min: 90, max: 180 },
   },
   {
     name: 'diastolicBloodPressure',
     type: 'integer',
+    range: { min: 60, max: 120 },
   },
   {
     name: 'heartRateBpm',
     type: 'integer',
+    range: { min: 40, max: 200 },
   },
   {
     name: 'respiratoryRate',
     type: 'integer',
+    range: { min: 12, max: 25 },
   },
   {
     name: 'oxygenSaturation',
     type: 'integer',
+    range: { min: 0, max: 100 },
   },
   {
     name: 'lowOxygenResponseType',
@@ -77,6 +83,7 @@ const fields = [
   {
     name: 'temperature',
     type: 'decimal',
+    range: { min: 80, max: 150 },
   },
   {
     name: 'treatmentNotes',
@@ -114,6 +121,7 @@ const fields = [
   {
     name: 'glasgowComaScale',
     type: 'integer',
+    range: { min: 3, max: 15 },
   },
   {
     name: 'otherObservationNotes',

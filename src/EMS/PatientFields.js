@@ -12,20 +12,14 @@ import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
 import Context from '../Context';
+import patient from '../metadata/patient';
 
-const INPUT_RANGES = {
-  age: { min: 0, max: 130 },
-  systolicBloodPressure: { min: 90, max: 180 },
-  diastolicBloodPressure: { min: 60, max: 120 },
-  heartRateBpm: { min: 40, max: 200 },
-  respiratoryRate: { min: 12, max: 25 },
-  oxygenSaturation: { min: 0, max: 100 },
-  temperature: { min: 80, max: 150 },
-  glasgowComaScale: { min: 3, max: 15 },
-};
+const FIELDs = patient.getFieldHash();
 
 function getRange(property, extreme) {
-  return INPUT_RANGES[property] ? INPUT_RANGES[property][extreme] : null;
+  const { range } = FIELDs[property] || {};
+
+  return range ? range[extreme] : null;
 }
 
 // use prop-spreading here because all we're doing is defaulting some props and letting the rest
