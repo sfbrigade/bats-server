@@ -101,7 +101,7 @@ const fields = [
   {
     name: 'treatmentNotes',
     type: 'text',
-    label: 'Treatments Administered'
+    label: 'Treatments Administered',
   },
   {
     name: 'etohSuspectedIndicator',

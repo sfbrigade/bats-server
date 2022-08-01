@@ -17,15 +17,13 @@ const Patient = patient.getFieldHash();
 
 function createOptions(ids) {
   return ids.map((id) => (
-    <option
-      key={id}
-      value={id}
-    >
+    <option key={id} value={id}>
       {id}
     </option>
   ));
 }
 
+// prettier-ignore
 function PatientFields({ ringdown, onChange }) {
   const [ambulanceIds, setAmbulanceIds] = useState([]);
   const [dispatchCallNumbers, setDispatchCallNumbers] = useState([]);

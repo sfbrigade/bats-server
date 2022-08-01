@@ -10,10 +10,10 @@ import Spinner from '../Components/Spinner';
 import RingdownCard from '../Components/RingdownCard';
 import Heading from '../Components/Heading';
 import Alert from '../Components/Alert';
+import Form from '../Components/Form';
 import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
-import Form from '../Components/Form';
 
 function RingdownForm({ className }) {
   const { ringdowns, setRingdowns } = useContext(Context);
@@ -95,6 +95,7 @@ function RingdownForm({ className }) {
     setRingdowns([...ringdowns]);
   }
 
+  // prettier-ignore
   return (
     <>
       {ringdowns && ringdowns.length === 0 && (

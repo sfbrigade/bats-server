@@ -6,6 +6,7 @@ import FormInput from './FormInput';
 import FormTextArea from './FormTextArea';
 import { useForm } from './Form';
 
+// prettier-ignore
 export default function FormField({ metadata, ...props }) {
   const { data, onChange } = useForm();
   const { name: property, type, label, required } = metadata;
@@ -16,10 +17,10 @@ export default function FormField({ metadata, ...props }) {
     value,
     required,
     onChange,
-    validationState: data.getValidationState(property)
+    validationState: data.getValidationState(property),
   };
 
-	switch (type) {
+  switch (type) {
     case 'integer':
     case 'decimal': {
       const { unit = metadata.unit, range = metadata.range, size = 'small' } = props;
