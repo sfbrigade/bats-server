@@ -58,8 +58,9 @@
     "start": "react-scripts start",
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
-    "build": "react-scripts build && yarn sass",
+    "build": "react-scripts build && yarn sass && yarn postcss",
     "sass": "sass --load-path=node_modules/uswds/dist/scss --no-source-map --style=compressed theme/styles.scss build/libraries/uswds/theme/styles.css",
+    "postcss": "postcss build/libraries/uswds/theme/*.css --use autoprefixer --replace",
     "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",
     "test:client": "react-scripts test",
     "test:server": "mocha --recursive",
@@ -144,6 +145,7 @@
   },
   "proxy": "http://localhost:4000",
   "devDependencies": {
+    "autoprefixer": "^10.4.8",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-react-app": "^5.2.1",
@@ -152,6 +154,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
+    "postcss": "^8.4.14",
+    "postcss-cli": "^10.0.0",
     "prettier": "2.1.1"
   }
 }
