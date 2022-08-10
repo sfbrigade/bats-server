@@ -9,14 +9,28 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 1000;
 
   .usa-button-group {
-    margin-top: 3rem;
+    @include u-margin-top(6);
+    @include u-padding-x(2);
+    @include u-padding-y(0);
+
+    .usa-button-group__item {
+      @include u-margin-bottom(2);
+    }
+
+    // the USWDS style zeroes out the right margin on the last button, which makes sense for a row
+    // of buttons, but not a stack.  so restore the right margin and reduce the bottom one.
+    .usa-button-group__item:last-child {
+      @include u-margin-right(0.5);
+      @include u-margin-bottom(0.5);
+    }
   }
 }
 
 .alert__content {
   max-width: 400px;
   margin: auto;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }

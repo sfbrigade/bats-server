@@ -165,10 +165,10 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           {showCancel && (
             <Alert
               type="warning"
-              title="Cancel Delivery?"
-              message="Patient data will be erased and hospital will be notified."
-              cancel="Maintain delivery"
-              destructive="Confirm cancel delivery"
+              title="Cancel delivery?"
+              message="The hospital will be notified and the ringdown will be cleared."
+              destructive="Yes, cancel delivery"
+              cancel="No, don't cancel"
               onDestructive={handleCancel}
               onCancel={() => setShowCancel(false)}
             />
@@ -176,10 +176,10 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           {showRedirect && (
             <Alert
               type="warning"
-              title="Redirect Patient?"
-              message="Patient data will be saved and you will be prompted to select a new destination."
-              cancel="Maintain destination"
-              destructive="Confirm redirect patient"
+              title="Redirect patient?"
+              message="You will need to choose a new hospital destination for the patient."
+              destructive="Choose new destination"
+              cancel="Keep destination"
               onDestructive={handleRedirect}
               onCancel={() => setShowRedirect(false)}
             />
