@@ -18,6 +18,7 @@ function RingdownForm({ className }) {
   const { ringdowns, setRingdowns } = useContext(Context);
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
+  const [showConfirmClear, setShowConfirmClear] = useState(false);
   const [showConfirmRedirect, setShowConfirmRedirect] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
 
@@ -30,7 +31,7 @@ function RingdownForm({ className }) {
   }
 
   function clear() {
-    setRingdown(new Ringdown());
+    setShowConfirmClear(true);
   }
 
   function send() {
@@ -51,6 +52,17 @@ function RingdownForm({ className }) {
     ringdown[property] = value;
     ringdown.validatePatientFields(property, value);
     setRingdown(new Ringdown(ringdown.payload, ringdown.validationData));
+  }
+
+  function handleConfirmClear() {
+    setRingdown(new Ringdown());
+    setShowConfirmClear(false);
+    // scroll the HTML element to the top to show the user the form has been cleared
+    document.documentElement.scrollTop = 0;
+  }
+
+  function handleCancelClear() {
+    setShowConfirmClear(false);
   }
 
   function handleEditForm() {
@@ -130,13 +142,24 @@ function RingdownForm({ className }) {
               </>
             )}
           </fieldset>
+          {showConfirmClear && (
+            <Alert
+              type="warning"
+              title="Clear form?"
+              message="All of the fields will be reset."
+              destructive="Clear form"
+              cancel="Keep editing"
+              onDestructive={handleConfirmClear}
+              onCancel={handleCancelClear}
+            />
+          )}
           {showConfirmRedirect && (
             <Alert
               type="success"
               title="Hospital notified"
               message="Please select a new destination."
-              cancel="Edit ringdown"
               primary="Return to hospital list"
+              cancel="Edit ringdown"
               onPrimary={handleConfirmRedirect}
               onCancel={handleEditForm}
             />

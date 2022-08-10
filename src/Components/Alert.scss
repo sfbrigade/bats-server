@@ -26,6 +26,12 @@
       @include u-margin-right(0.5);
       @include u-margin-bottom(0.5);
     }
+
+    // the custom styles file sets a 2rem top margin on buttons in a form, so reset that in case the
+    // alert is rendered inside a form
+    .usa-button {
+      margin-top: unset;
+    }
   }
 }
 
