@@ -7,7 +7,7 @@ import { ValidationState } from '../Models/PatientFieldData';
 function ValidationMessage({ className, validationState }) {
   const errorHtml = (
     <div className={classNames('usa-error-message', className)}>
-      <i className="fas fa-exclamation-circle" /> This is a required section
+      <i className="fas fa-exclamation-circle" /> This is a required field
     </div>
   );
   const successHtml = (
