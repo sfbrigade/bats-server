@@ -6,6 +6,7 @@ module.exports = (app) => {
     createProxyMiddleware({
       target: 'http://localhost:4000',
       changeOrigin: true,
+      ws: true,
     })
   );
 };
