@@ -32,17 +32,20 @@ $theme-color-base: 'gray-cool-50';
 $theme-color-base-dark: 'gray-cool-60';
 $theme-color-base-darker: 'gray-cool-70';
 $theme-color-base-darkest: 'gray-90';
-$theme-color-base-ink: 'gray-90';
 
 // Primary colors
 $theme-color-primary-family: 'blue';
 $theme-color-primary-lightest: false;
 $theme-color-primary-lighter: 'blue-10';
 $theme-color-primary-light: 'blue-30';
-$theme-color-primary: 'blue-60v';
-$theme-color-primary-vivid: 'blue-warm-60v';
-$theme-color-primary-dark: 'blue-warm-70v';
-$theme-color-primary-darker: 'blue-warm-80v';
+// button standard background color
+$theme-color-primary: #425cc7;
+// USWDS uses primary-vivid as the focus color, which we want to match the primary color
+$theme-color-primary-vivid: #425cc7;
+// button hover background color
+$theme-color-primary-dark: #354a9f;
+// button active background color
+$theme-color-primary-darker: #283777;
 $theme-color-primary-darkest: false;
 
 // Secondary colors

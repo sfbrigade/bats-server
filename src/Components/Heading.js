@@ -8,7 +8,7 @@ function Heading({ title, subtitle, badge, children }) {
     <h3 className="usa-accordion__heading heading">
       <div>
         {title}
-        {subtitle && <span>{subtitle}</span>}
+        {subtitle && <div className="heading__subtitle">{subtitle}</div>}
       </div>
       {badge && <div className="heading__badge">{badge}</div>}
       {children}
@@ -17,9 +17,9 @@ function Heading({ title, subtitle, badge, children }) {
 }
 
 Heading.propTypes = {
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string,
-  badge: PropTypes.string,
+  title: PropTypes.node.isRequired,
+  subtitle: PropTypes.node,
+  badge: PropTypes.node,
   children: PropTypes.node,
 };
 
