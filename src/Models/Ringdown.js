@@ -16,19 +16,9 @@ const DeliveryStatus = {
   REDIRECT_ACKNOWLEDGED: 'REDIRECT ACKNOWLEDGED',
 };
 
-DeliveryStatus.ALL_STATUSES = [
-  DeliveryStatus.RINGDOWN_SENT,
-  DeliveryStatus.RINGDOWN_RECEIVED,
-  DeliveryStatus.RINGDOWN_CONFIRMED,
-  DeliveryStatus.ARRIVED,
-  DeliveryStatus.OFFLOADED,
-  DeliveryStatus.OFFLOADED_ACKNOWLEDGED,
-  DeliveryStatus.RETURNED_TO_SERVICE,
-  DeliveryStatus.CANCELLED,
-  DeliveryStatus.CANCEL_ACKNOWLEDGED,
-  DeliveryStatus.REDIRECTED,
-  DeliveryStatus.REDIRECT_ACKNOWLEDGED,
-];
+DeliveryStatus.ALL_STATUSES = Object.values(DeliveryStatus);
+
+DeliveryStatus.is = (status, target) => DeliveryStatus.ALL_STATUSES.indexOf(status) >= DeliveryStatus.ALL_STATUSES.indexOf(target);
 
 Object.freeze(DeliveryStatus);
 
