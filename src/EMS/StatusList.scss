@@ -46,7 +46,7 @@
 .status-list-item__text {
   flex-grow: 1;
 
-  span {
+  .timestamp__time {
     @include h4;
     color: color('base-light');
     display: block;

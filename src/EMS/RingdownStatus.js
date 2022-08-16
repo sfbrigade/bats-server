@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
 import RingdownCard from '../Components/RingdownCard';
+import Timestamp from '../Components/Timestamp';
 import { StatusList, StatusStep } from './StatusList';
 
 import './RingdownStatus.scss';
@@ -18,18 +19,6 @@ function StatusButton({ label, status, onClick }) {
     <button type="button" className="usa-button usa-button--primary width-full" onClick={() => onClick(status)}>
       {label}
     </button>
-  );
-}
-
-// eslint-disable-next-line react/prop-types
-function Timestamp({ label, time }) {
-  const timeString = time && DateTime.fromISO(time).toLocaleString(DateTime.TIME_WITH_SECONDS);
-
-  return (
-    <div>
-      {label}
-      <span>{timeString}</span>
-    </div>
   );
 }
 
@@ -65,14 +54,11 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
         <fieldset className="usa-fieldset">
           <h3 className="h1 margin-0">{hospital.name}</h3>
           <h4 className={`ringdownstatus__label ringdownstatus__label--${ringdownStatus}`}>
-            Ringdown Status:&nbsp;
-            <span>{ringdownStatus[0].toUpperCase() + ringdownStatus.slice(1)}</span>
+            Ringdown Status:
+            <span className="ringdownstatus__badge">{ringdownStatus[0].toUpperCase() + ringdownStatus.slice(1)}</span>
           </h4>
           <h4 className="ringdownstatus__label">
-            ETA:&nbsp;
-            <span>
-              {DateTime.fromISO(timestamps[Status.RINGDOWN_SENT]).plus({ minutes: etaMinutes }).toLocaleString(DateTime.TIME_SIMPLE)}
-            </span>
+            <Timestamp label="ETA:" time={DateTime.fromISO(timestamps[Status.RINGDOWN_SENT]).plus({ minutes: etaMinutes })} />
           </h4>
           <StatusList>
             <StatusStep isCompleted inactive={<Timestamp label="Ringdown sent" time={timestamps[Status.RINGDOWN_SENT]} />} />

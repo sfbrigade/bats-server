@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import './StatusList.scss';
 
 export function StatusList({ children }) {
-  return <div className="status-list">{children}</div>;
+  return <ol className="status-list">{children}</ol>;
 }
 
 StatusList.propTypes = {

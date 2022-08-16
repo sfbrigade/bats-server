@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import Drawer from './Drawer';
 import Ringdown from '../Models/Ringdown';
 import RingdownDetails from './RingdownDetails';
-import RingdownEta from './RingdownEta';
+import Drawer from './Drawer';
 import Alert from './Alert';
+import Timestamp from './Timestamp';
+
 import './RingdownCard.scss';
 
 function RingdownCard({ children, className, ringdown, onStatusChange }) {
@@ -72,7 +73,7 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
       {canBeDismissed && <div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
       {!canBeDismissed && (
         <Drawer
-          title={<RingdownEta className="ringdown-card__status" ringdown={ringdown} />}
+          title={<Timestamp className="ringdown-card__status" label="ETA:" time={ringdown.etaDateTimeLocalObj} />}
           subtitle={<div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
