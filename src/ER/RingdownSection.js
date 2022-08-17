@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import Ringdown from '../Models/Ringdown';
 import RingdownCard from '../Components/RingdownCard';
+
 import './RingdownSection.scss';
 
 function RingdownSection({ title, ringdowns, onStatusChange }) {
@@ -36,7 +38,7 @@ function RingdownSection({ title, ringdowns, onStatusChange }) {
 
 RingdownSection.propTypes = {
   title: PropTypes.node.isRequired,
-  ringdowns: PropTypes.node.isRequired,
+  ringdowns: PropTypes.arrayOf(PropTypes.instanceOf(Ringdown)).isRequired,
   onStatusChange: PropTypes.instanceOf(Function).isRequired,
 };
 

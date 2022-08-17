@@ -31,42 +31,10 @@
   background-color: transparent;
 }
 
-.ringdown-card__status {
-  @include h4-bold;
-}
-
 .ringdown-card--dismissable {
   background: color('base-lightest');
 }
 
 .ringdown-card--expanded {
   border: 2px solid color('primary-vivid');
-}
-
-.ringdown-card--offloaded,
-.ringdown-card--redirected,
-.ringdown-card--cancelled {
-  .ringdown-card__status {
-    border-radius: 4px;
-    color: white;
-    padding: 0px 4px;
-  }
-}
-
-.ringdown-card--offloaded {
-  .ringdown-card__status {
-    background-color: color('success');
-  }
-}
-
-.ringdown-card--redirected {
-  .ringdown-card__status {
-    background-color: color('accent-warm');
-  }
-}
-
-.ringdown-card--cancelled {
-  .ringdown-card__status {
-    background-color: color('error');
-  }
 }

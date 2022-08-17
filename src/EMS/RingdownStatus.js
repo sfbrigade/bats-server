@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
 import RingdownCard from '../Components/RingdownCard';
+import RingdownBadge from '../Components/RingdownBadge';
 import Timestamp from '../Components/Timestamp';
 import { StatusList, StatusStep } from './StatusList';
 
@@ -25,6 +26,14 @@ function StatusButton({ label, status, onClick }) {
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
   const [showRedirect, setShowRedirect] = useState(false);
+  const { hospital, currentDeliveryStatus, etaMinutes, timestamps } = ringdown;
+  let ringdownStatus = Status.RINGDOWN_SENT;
+
+  if (timestamps[Status.RINGDOWN_CONFIRMED]) {
+    ringdownStatus = Status.RINGDOWN_CONFIRMED;
+  } else if (timestamps[Status.RINGDOWN_RECEIVED]) {
+    ringdownStatus = Status.RINGDOWN_RECEIVED;
+  }
 
   function handleStatusChange(status) {
     onStatusChange(ringdown, status);
@@ -40,22 +49,14 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     onStatusChange(ringdown, Status.REDIRECTED);
   }
 
-  const { hospital, currentDeliveryStatus, etaMinutes, timestamps } = ringdown;
-  let ringdownStatus = 'pending';
-  if (timestamps[Status.RINGDOWN_CONFIRMED]) {
-    ringdownStatus = 'confirmed';
-  } else if (timestamps[Status.RINGDOWN_RECEIVED]) {
-    ringdownStatus = 'delivered';
-  }
-
   return (
     <div className={classNames('usa-accordion ringdownstatus', className)}>
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <h3 className="h1 margin-0">{hospital.name}</h3>
-          <h4 className={`ringdownstatus__label ringdownstatus__label--${ringdownStatus}`}>
-            Ringdown Status:
-            <span className="ringdownstatus__badge">{ringdownStatus[0].toUpperCase() + ringdownStatus.slice(1)}</span>
+          <h4 className="ringdownstatus__label">
+            <span className="ringdownstatus__label-text">Ringdown Status:</span>
+            <RingdownBadge status={ringdownStatus} />
           </h4>
           <h4 className="ringdownstatus__label">
             <Timestamp label="ETA:" time={DateTime.fromISO(timestamps[Status.RINGDOWN_SENT]).plus({ minutes: etaMinutes })} />
