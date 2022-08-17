@@ -11,7 +11,6 @@ function FormRadioFieldSet({ children, labelText, property, isRequired, validati
     <fieldset
       className={classNames('usa-fieldset form-radio-field-set', {
         'form-radio-field-set--error': validationState === ValidationState.ERROR,
-        'form-radio-field-set--success': validationState === ValidationState.FIXED,
       })}
     >
       <div className="form-radio-field-set__background">

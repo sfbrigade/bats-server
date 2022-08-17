@@ -10,19 +10,12 @@ function ValidationMessage({ className, validationState }) {
       <i className="fas fa-exclamation-circle" /> This is a required field
     </div>
   );
-  const successHtml = (
-    <div className={classNames('usa-success-message', className)}>
-      <i className="fas fa-check-circle" /> Success
-    </div>
-  );
 
   if (validationState === ValidationState.ERROR) {
     return errorHtml;
   }
-  if (validationState === ValidationState.FIXED) {
-    return successHtml;
-  }
-  return <></>;
+
+  return null;
 }
 
 ValidationMessage.propTypes = {
