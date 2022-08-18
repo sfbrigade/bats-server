@@ -60,7 +60,7 @@
     "start:prod": "nf start",
     "build": "react-scripts build && yarn sass && yarn postcss",
     "sass": "sass --load-path=node_modules/uswds/dist/scss --no-source-map --style=compressed theme/styles.scss build/libraries/uswds/theme/styles.css",
-    "postcss": "postcss build/libraries/uswds/theme/*.css --use autoprefixer --replace",
+    "postcss": "postcss build/libraries/uswds/theme/*.css --use autoprefixer --replace --no-map",
     "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",
     "test:client": "react-scripts test",
     "test:server": "mocha --recursive",
