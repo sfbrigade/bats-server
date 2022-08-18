@@ -69,11 +69,11 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
           </button>
         </div>
       )}
-      {canBeDismissed && <div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+      {canBeDismissed && <div className="ringdown-card__complaint-summary">{ringdown.chiefComplaintDescription}</div>}
       {!canBeDismissed && (
         <Drawer
           title={<RingdownEta className="ringdown-card__status" ringdown={ringdown} />}
-          subtitle={<div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+          subtitle={<div className="ringdown-card__complaint-summary">{ringdown.chiefComplaintDescription}</div>}
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
         >
