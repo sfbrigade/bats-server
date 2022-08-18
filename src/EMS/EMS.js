@@ -12,7 +12,7 @@ import HospitalStatuses from './HospitalStatuses';
 import RingdownForm from './RingdownForm';
 
 export default function EMS() {
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/user`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
 

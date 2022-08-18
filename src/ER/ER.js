@@ -18,7 +18,7 @@ import notification from '../assets/notification.mp3';
 
 export default function ER() {
   const { hospitalUser } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospitalUser?.hospital.id}`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
   const [selectedTab, setSelectedTab] = useState(1);
