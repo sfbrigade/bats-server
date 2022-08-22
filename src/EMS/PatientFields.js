@@ -103,32 +103,28 @@ function PatientFields({ ringdown, onChange }) {
               validationState={ringdown.getValidationState('age')}
             />
           </fieldset>
-          <FormRadioFieldSet labelText="Gender Identity" property="sex" isRequired validationState={ringdown.getValidationState('sex')}>
-            <FormRadio currentValue={ringdown.sex} label="Male" onChange={handleUserInput} property="sex" value="MALE" />
-            <FormRadio currentValue={ringdown.sex} label="Female" onChange={handleUserInput} property="sex" value="FEMALE" />
-            <FormRadio currentValue={ringdown.sex} label="Non-binary" onChange={handleUserInput} property="sex" value="NON-BINARY" />
+          <FormRadioFieldSet
+            label="Gender Identity"
+            property="sex"
+            value={ringdown.sex}
+            validationState={ringdown.getValidationState('sex')}
+            required
+            onChange={handleUserInput}
+          >
+            <FormRadio label="Male" value="MALE" />
+            <FormRadio label="Female" value="FEMALE" />
+            <FormRadio label="Non-binary" value="NON-BINARY" />
           </FormRadioFieldSet>
           <FormRadioFieldSet
-            labelText="Urgency"
+            label="Urgency"
             property="emergencyServiceResponseType"
-            isRequired
+            value={ringdown.emergencyServiceResponseType}
             validationState={ringdown.getValidationState('emergencyServiceResponseType')}
+            required
+            onChange={handleUserInput}
           >
-            <FormRadio
-              currentValue={ringdown.emergencyServiceResponseType}
-              label="Code 2"
-              onChange={handleUserInput}
-              property="emergencyServiceResponseType"
-              value="CODE 2"
-            />
-            <FormRadio
-              currentValue={ringdown.emergencyServiceResponseType}
-              label="Code 3"
-              onChange={handleUserInput}
-              property="emergencyServiceResponseType"
-              value="CODE 3"
-              disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'}
-            />
+            <FormRadio label="Code 2" value="CODE 2" />
+            <FormRadio label="Code 3" value="CODE 3" disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'} />
           </FormRadioFieldSet>
           <fieldset className="usa-fieldset">
             <FormTextArea
@@ -145,25 +141,15 @@ function PatientFields({ ringdown, onChange }) {
             </FormTextArea>
           </fieldset>
           <FormRadioFieldSet
-            labelText="Vitals Stability"
+            label="Vitals Stability"
             property="stableIndicator"
+            value={ringdown.stableIndicator}
             validationState={ringdown.getValidationState('stableIndicator')}
-            isRequired
+            required
+            onChange={handleUserInput}
           >
-            <FormRadio
-              currentValue={ringdown.stableIndicator}
-              label="Vitals stable"
-              onChange={handleUserInput}
-              property="stableIndicator"
-              value={true}
-            />
-            <FormRadio
-              currentValue={ringdown.stableIndicator}
-              label="Vitals not stable"
-              onChange={handleUserInput}
-              property="stableIndicator"
-              value={false}
-            />
+            <FormRadio label="Vitals stable" value={true} />
+            <FormRadio label="Vitals not stable" value={false} />
           </FormRadioFieldSet>
         </div>
         <Heading title="Vitals" subtitle="(optional)" />
@@ -227,36 +213,34 @@ function PatientFields({ ringdown, onChange }) {
               max={getRange('oxygenSaturation', 'max')}
               value={ringdown.oxygenSaturation}
             />
-            <div className="padding-left-4">
-              <FormRadio
-                currentValue={ringdown.lowOxygenResponseType}
-                disabled={ringdown.oxygenSaturation === null || ringdown.oxygenSaturation === ''}
-                label="RA"
-                onChange={handleUserInput}
-                property="lowOxygenResponseType"
-                value="ROOM AIR"
-              />
-              <div className="display-flex flex-row flex-align-center margin-top-2">
+            <div className="padding-left-2 margin-bottom-neg-4">
+              <FormRadioFieldSet property="lowOxygenResponseType" value={ringdown.lowOxygenResponseType} onChange={handleUserInput}>
                 <FormRadio
-                  currentValue={ringdown.lowOxygenResponseType}
+                  label="Room Air"
+                  value="ROOM AIR"
                   disabled={ringdown.oxygenSaturation === null || ringdown.oxygenSaturation === ''}
-                  label="O2"
-                  onChange={handleUserInput}
-                  property="lowOxygenResponseType"
-                  value="SUPPLEMENTAL OXYGEN"
                 />
-                <div className="margin-left-4">
-                  <FormInput
-                    disabled={ringdown.lowOxygenResponseType !== 'SUPPLEMENTAL OXYGEN'}
-                    onChange={handleUserInput}
-                    property="supplementalOxygenAmount"
-                    size="small"
-                    type="number"
-                    unit="L"
-                    value={ringdown.supplementalOxygenAmount}
-                  />
-                </div>
-              </div>
+                <FormRadio
+                  label={
+                    <div className="display-flex flex-row flex-align-center position-relative" style={{ top: '-.8rem' }}>
+                      <div className="display-inline-block margin-right-2">
+                        O<sub>2</sub>
+                      </div>
+                      <FormInput
+                        disabled={ringdown.lowOxygenResponseType !== 'SUPPLEMENTAL OXYGEN'}
+                        onChange={handleUserInput}
+                        property="supplementalOxygenAmount"
+                        size="small"
+                        type="number"
+                        unit="L"
+                        value={ringdown.supplementalOxygenAmount}
+                      />
+                    </div>
+                  }
+                  value="SUPPLEMENTAL OXYGEN"
+                  disabled={ringdown.oxygenSaturation === null || ringdown.oxygenSaturation === ''}
+                />
+              </FormRadioFieldSet>
             </div>
             <FormInput
               label="Temp."
