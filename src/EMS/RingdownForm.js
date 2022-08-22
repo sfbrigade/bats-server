@@ -1,7 +1,7 @@
+import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
-import PropTypes from 'prop-types';
-import React, { useContext, useState } from 'react';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -19,7 +19,6 @@ function RingdownForm({ className }) {
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
   const [showConfirmClear, setShowConfirmClear] = useState(false);
-  const [showConfirmRedirect, setShowConfirmRedirect] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
 
   function next() {
@@ -65,15 +64,6 @@ function RingdownForm({ className }) {
     setShowConfirmClear(false);
   }
 
-  function handleEditForm() {
-    edit();
-    setShowConfirmRedirect(false);
-  }
-
-  function handleConfirmRedirect() {
-    setShowConfirmRedirect(false);
-  }
-
   function handleConfirmCancel() {
     setShowConfirmCancel(false);
   }
@@ -84,11 +74,10 @@ function RingdownForm({ className }) {
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
     rd.currentDeliveryStatus = status;
-    const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
       case Ringdown.Status.REDIRECTED:
-        // create a new ringdown with the same patient data, but no hospital selected yet
-        setShowConfirmRedirect(true);
+        // create a new ringdown with the same patient data, but no hospital selected yet.  clone() clears the hospital, delivery status
+        // and ETA properties of the cloned ringdown.
         setRingdown(rd.clone());
         next();
         return;
@@ -100,7 +89,7 @@ function RingdownForm({ className }) {
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
         return;
       default:
-        rd.timestamps[status] = isoNow;
+        rd.timestamps[status] = DateTime.fromJSDate(now).toISO();
     }
     setRingdowns([...ringdowns]);
   }
@@ -151,17 +140,6 @@ function RingdownForm({ className }) {
               cancel="Keep editing"
               onDestructive={handleConfirmClear}
               onCancel={handleCancelClear}
-            />
-          )}
-          {showConfirmRedirect && (
-            <Alert
-              type="success"
-              title="Hospital notified"
-              message="Please select a new destination."
-              primary="Return to hospital list"
-              cancel="Edit ringdown"
-              onPrimary={handleConfirmRedirect}
-              onCancel={handleEditForm}
             />
           )}
           {showConfirmCancel && (
