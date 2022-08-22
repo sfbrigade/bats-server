@@ -2,12 +2,10 @@ import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 
+import RoutedHeader from '../Components/RoutedHeader';
 import Context from '../Context';
-import Header from '../Components/Header';
-import TabBar from '../Components/TabBar';
 import Ringdown from '../Models/Ringdown';
 import HospitalStatus from '../Models/HospitalStatus';
-
 import HospitalStatuses from './HospitalStatuses';
 import RingdownForm from './RingdownForm';
 
@@ -30,9 +28,7 @@ export default function EMS() {
     <div className="grid-container">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <Header name="Routed">
-            <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdown', 'Hospital Info']} />
-          </Header>
+          <RoutedHeader selectedTab={selectedTab} onSelect={setSelectedTab} />
           <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 0 })} />
           <HospitalStatuses
             onReturn={() => setSelectedTab(0)}
