@@ -25,12 +25,12 @@ function HospitalSelection({ ringdown, onChange }) {
         <fieldset className="usa-fieldset">
           {hospitalStatuses.map((hsu) => (
             <FormRadio
-              currentValue={ringdown.hospitalId}
               key={hsu.hospital.id}
               label={hsu.hospital.name}
               onChange={onChange}
-              property="hospitalId"
+              name="hospitalId"
               value={hsu.hospital.id}
+              checked={hsu.hospital.id === ringdown.hospitalId}
               disabled={window.env.DISABLE_PILOT_HOSPITALS && hsu.hospital.name !== 'SF General'}
             />
           ))}

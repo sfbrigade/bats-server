@@ -51,7 +51,6 @@ function FormInput({
         max={max}
         className={classNames('usa-input', {
           'usa-input--error': validationState === ValidationState.ERROR || error?.errorsFor(property),
-          'usa-input--success': validationState === ValidationState.FIXED,
           'usa-input--medium': size === 'medium',
           'usa-input--small': size === 'small',
         })}
@@ -74,7 +73,6 @@ function FormInput({
             'usa-label--required': showRequiredHint && required,
             'usa-label--focused': focused,
             'usa-label--error': validationState === ValidationState.ERROR || error?.errorsFor(property),
-            'usa-label--success': validationState === ValidationState.FIXED,
           })}
         >
           {label}

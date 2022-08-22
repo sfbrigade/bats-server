@@ -34,3 +34,17 @@ StatusStep.defaultProps = {
   active: null,
   inactive: null,
 };
+
+export function StatusButton({ label, status, onClick }) {
+  return (
+    <button type="button" className="usa-button usa-button--primary width-full" onClick={() => onClick(status)}>
+      {label}
+    </button>
+  );
+}
+
+StatusButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};

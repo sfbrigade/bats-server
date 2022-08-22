@@ -145,12 +145,12 @@ function configure(server, app) {
       /// connect based on pathname
       const { pathname } = url.parse(req.url);
       switch (pathname) {
-        case '/user':
+        case '/wss/user':
           userServer.handleUpgrade(req, socket, head, (ws) => {
             userServer.emit('connection', ws, req);
           });
           break;
-        case '/hospital':
+        case '/wss/hospital':
           /// ensure valid hospital
           if (query.id && query.id !== 'undefined') {
             req.hospital = await models.Hospital.findByPk(query.id);

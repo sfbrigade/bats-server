@@ -3,10 +3,11 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import Ringdown from '../Models/Ringdown';
-import RingdownDetails from './RingdownDetails';
-import RingdownBadge from './RingdownBadge';
-import Drawer from './Drawer';
+
 import Alert from './Alert';
+import Drawer from './Drawer';
+import RingdownBadge from './RingdownBadge';
+import RingdownDetails from './RingdownDetails';
 import Timestamp from './Timestamp';
 
 import './RingdownCard.scss';
@@ -52,7 +53,7 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
       {!canBeDismissed && (
         <Drawer
           title={<Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />}
-          subtitle={<div className="ringdown-card__body flex-auto">{chiefComplaintDescription}</div>}
+          subtitle={<div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>}
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
         >

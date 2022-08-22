@@ -57,7 +57,11 @@ class Ringdown {
         5,
         this.chiefComplaintDescription ? ValidationState.INPUT : ValidationState.NO_INPUT
       ),
-      stableIndicator: new PatientFieldData('stableIndicator', 6, this.stableIndicator ? ValidationState.INPUT : ValidationState.NO_INPUT),
+      stableIndicator: new PatientFieldData(
+        'stableIndicator',
+        6,
+        typeof this.stableIndicator === 'boolean' ? ValidationState.INPUT : ValidationState.NO_INPUT
+      ),
       all: new PatientFieldData('all', 7, ValidationState.NO_INPUT),
     };
   }
@@ -410,13 +414,17 @@ class Ringdown {
   }
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
-    if (currentState === ValidationState.ERROR && inputValue) {
+    const inputValueType = typeof inputValue;
+    // count 0 and false as non-empty values
+    const isInputValueEmpty = inputValueType !== 'number' && inputValueType !== 'boolean' && !inputValue;
+
+    if (currentState === ValidationState.ERROR && !isInputValueEmpty) {
       this.validationData[fieldName].validationState = ValidationState.FIXED;
     } else if (currentState === ValidationState.NO_INPUT) {
       this.validationData[fieldName].validationState = ValidationState.INPUT;
-    } else if (currentState === ValidationState.INPUT && !inputValue) {
+    } else if (currentState === ValidationState.INPUT && isInputValueEmpty) {
       this.validationData[fieldName].validationState = ValidationState.ERROR;
-    } else if (currentState === ValidationState.FIXED && !inputValue) {
+    } else if (currentState === ValidationState.FIXED && isInputValueEmpty) {
       this.validationData[fieldName].validationState = ValidationState.ERROR;
     }
   }

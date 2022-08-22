@@ -62,16 +62,12 @@ textarea {
     border-color: color('base-lighter');
   }
 
-  &:not([disabled]):not(.usa-input--error):not(.usa-input--success):focus {
+  &:not([disabled]):not(.usa-input--error):focus {
     @include focus-shadow();
   }
 
   &.usa-input--error:not([disabled]):focus {
     @include error-shadow();
-  }
-
-  &.usa-input--success:not([disabled]):focus {
-    @include success-shadow();
   }
 }
 
@@ -216,8 +212,7 @@ $spinner-border-width-sm: 0.2em;
   font-weight: normal;
 }
 
-.usa-error-message,
-.usa-success-message {
+.usa-error-message {
   position: absolute;
 }
 
@@ -280,10 +275,6 @@ $spinner-border-width-sm: 0.2em;
   &.usa-input--error {
     @include error-shadow();
   }
-
-  &.usa-input--success {
-    @include success-shadow();
-  }
 }
 
 .usa-label {
@@ -296,10 +287,6 @@ $spinner-border-width-sm: 0.2em;
 
   &.usa-label--error {
     color: color('error');
-  }
-
-  &.usa-label--success {
-    color: color('success');
   }
 }
 
@@ -317,11 +304,4 @@ $spinner-border-width-sm: 0.2em;
 
 .usa-label--focused {
   color: color('primary-vivid');
-}
-
-.usa-success-message {
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  color: color('success');
-  display: block;
 }

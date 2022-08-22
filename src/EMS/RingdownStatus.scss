@@ -24,36 +24,6 @@
   }
 }
 
-.ringdownstatus__badge {
-  border-radius: units(0.5);
-  border-width: 1px;
-  border-style: solid;
-  border-color: transparent;
-  color: color('base-darkest');
-  display: inline-block;
-  font-weight: bold;
-  height: 1.5rem;
-  padding: 0 units(0.5) units(3) units(0.5);
-  margin-left: units(0.5);
-}
-
 [class*=' ringdownstatus__label--'] {
   margin-top: 0.75rem;
-}
-
-.ringdownstatus__label--pending,
-.ringdownstatus__label--delivered {
-  .ringdownstatus__badge {
-    background-color: color('warning');
-    border-color: color('warning-darker');
-    color: color('warning-darker');
-  }
-}
-
-.ringdownstatus__label--confirmed {
-  .ringdownstatus__badge {
-    background-color: color('success-lighter');
-    border-color: color('success');
-    color: color('success');
-  }
 }

@@ -4,24 +4,17 @@ import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 
 import Ringdown from '../Models/Ringdown';
+
 import Alert from '../Components/Alert';
 import RingdownCard from '../Components/RingdownCard';
 import RingdownBadge from '../Components/RingdownBadge';
 import Timestamp from '../Components/Timestamp';
-import { StatusList, StatusStep } from './StatusList';
+
+import { StatusButton, StatusList, StatusStep } from './StatusList';
 
 import './RingdownStatus.scss';
 
 const { Status } = Ringdown;
-
-// eslint-disable-next-line react/prop-types
-function StatusButton({ label, status, onClick }) {
-  return (
-    <button type="button" className="usa-button usa-button--primary width-full" onClick={() => onClick(status)}>
-      {label}
-    </button>
-  );
-}
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
@@ -33,6 +26,10 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     ringdownStatus = Status.RINGDOWN_CONFIRMED;
   } else if (timestamps[Status.RINGDOWN_RECEIVED]) {
     ringdownStatus = Status.RINGDOWN_RECEIVED;
+  }
+
+  function handleStatusChange(status) {
+    onStatusChange(ringdown, status);
   }
 
   function handleStatusChange(status) {
