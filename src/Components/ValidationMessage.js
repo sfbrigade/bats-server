@@ -7,22 +7,15 @@ import { ValidationState } from '../Models/PatientFieldData';
 function ValidationMessage({ className, validationState }) {
   const errorHtml = (
     <div className={classNames('usa-error-message', className)}>
-      <i className="fas fa-exclamation-circle" /> This is a required section
-    </div>
-  );
-  const successHtml = (
-    <div className={classNames('usa-success-message', className)}>
-      <i className="fas fa-check-circle" /> Success
+      <i className="fas fa-exclamation-circle" /> This is a required field
     </div>
   );
 
   if (validationState === ValidationState.ERROR) {
     return errorHtml;
   }
-  if (validationState === ValidationState.FIXED) {
-    return successHtml;
-  }
-  return <></>;
+
+  return null;
 }
 
 ValidationMessage.propTypes = {

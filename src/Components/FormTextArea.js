@@ -16,7 +16,6 @@ function FormTextArea({ children, label, onChange, property, disabled, required,
             'usa-label--required': showRequiredHint && required,
             'usa-label--focused': focused,
             'usa-label--error': validationState === ValidationState.ERROR,
-            'usa-label--success': validationState === ValidationState.FIXED,
           })}
         >
           {label}
@@ -33,7 +32,6 @@ function FormTextArea({ children, label, onChange, property, disabled, required,
         className={classNames('usa-textarea', {
           'usa-input--disabled': disabled,
           'usa-input--error': validationState === ValidationState.ERROR,
-          'usa-input--success': validationState === ValidationState.FIXED,
         })}
       />
       {children}

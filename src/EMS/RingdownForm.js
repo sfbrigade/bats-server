@@ -1,7 +1,7 @@
+import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
-import PropTypes from 'prop-types';
-import React, { useContext, useState } from 'react';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -18,7 +18,7 @@ function RingdownForm({ className }) {
   const { ringdowns, setRingdowns } = useContext(Context);
   const [ringdown, setRingdown] = useState(new Ringdown());
   const [step, setStep] = useState(0);
-  const [showConfirmRedirect, setShowConfirmRedirect] = useState(false);
+  const [showConfirmClear, setShowConfirmClear] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
 
   function next() {
@@ -30,7 +30,7 @@ function RingdownForm({ className }) {
   }
 
   function clear() {
-    setRingdown(new Ringdown());
+    setShowConfirmClear(true);
   }
 
   function send() {
@@ -53,13 +53,15 @@ function RingdownForm({ className }) {
     setRingdown(new Ringdown(ringdown.payload, ringdown.validationData));
   }
 
-  function handleEditForm() {
-    edit();
-    setShowConfirmRedirect(false);
+  function handleConfirmClear() {
+    setRingdown(new Ringdown());
+    setShowConfirmClear(false);
+    // scroll the HTML element to the top to show the user the form has been cleared
+    document.documentElement.scrollTop = 0;
   }
 
-  function handleConfirmRedirect() {
-    setShowConfirmRedirect(false);
+  function handleCancelClear() {
+    setShowConfirmClear(false);
   }
 
   function handleConfirmCancel() {
@@ -72,11 +74,10 @@ function RingdownForm({ className }) {
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
     rd.currentDeliveryStatus = status;
-    const isoNow = DateTime.fromJSDate(now).toISO();
     switch (status) {
       case Ringdown.Status.REDIRECTED:
-        // create a new ringdown with the same patient data, but no hospital selected yet
-        setShowConfirmRedirect(true);
+        // create a new ringdown with the same patient data, but no hospital selected yet.  clone() clears the hospital, delivery status
+        // and ETA properties of the cloned ringdown.
         setRingdown(rd.clone());
         next();
         return;
@@ -88,7 +89,7 @@ function RingdownForm({ className }) {
         setRingdowns(ringdowns.filter((r) => r.id !== rd.id));
         return;
       default:
-        rd.timestamps[status] = isoNow;
+        rd.timestamps[status] = DateTime.fromJSDate(now).toISO();
     }
     setRingdowns([...ringdowns]);
   }
@@ -130,15 +131,15 @@ function RingdownForm({ className }) {
               </>
             )}
           </fieldset>
-          {showConfirmRedirect && (
+          {showConfirmClear && (
             <Alert
-              type="success"
-              title="Hospital notified"
-              message="Please select a new destination."
-              cancel="Edit ringdown"
-              primary="Return to hospital list"
-              onPrimary={handleConfirmRedirect}
-              onCancel={handleEditForm}
+              type="warning"
+              title="Clear form?"
+              message="All of the fields will be reset."
+              destructive="Clear form"
+              cancel="Keep editing"
+              onDestructive={handleConfirmClear}
+              onCancel={handleCancelClear}
             />
           )}
           {showConfirmCancel && (

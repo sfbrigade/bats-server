@@ -1,19 +1,25 @@
 @import '../../theme/base';
 
 .header {
-  position: sticky;
   top: 0;
+  @include u-padding(2);
+  background-color: white;
+  position: sticky;
   z-index: 1000;
-  background-color: color('primary-dark');
-  color: white;
+  box-shadow: 0 6px 6px -6px rgba(0, 0, 0, 0.1);
+}
+
+.header__logo {
+  height: units(2);
+  user-select: none;
 }
 
 .header__logout {
-  padding: 0.5rem 1.5rem 0;
+  top: 0;
+  right: units(2);
+  @include u-padding-x(0);
+  @include u-padding-y(1);
   position: absolute;
-  a {
-    color: white;
-  }
 }
 
 .header__name {

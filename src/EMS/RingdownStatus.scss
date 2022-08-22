@@ -1,37 +1,5 @@
 @import '../../theme/base';
 
-.ringdownstatus__label {
-  color: color('base-light');
-  margin: 0;
-  span {
-    border-radius: 0.25rem;
-    color: color('base-darkest');
-    display: inline-block;
-    font-weight: bold;
-    height: 1.5rem;
-    padding: 0 0.25rem;
-  }
-}
-
-[class*=' ringdownstatus__label--'] {
-  margin-top: 0.75rem;
-}
-
-.ringdownstatus__label--pending,
-.ringdownstatus__label--delivered {
-  span {
-    background-color: #ffecba;
-    color: #df7800;
-  }
-}
-
-.ringdownstatus__label--confirmed {
-  span {
-    background-color: #d5fec7;
-    color: #007922;
-  }
-}
-
 .ringdownstatus {
   .usa-fieldset + .usa-fieldset {
     padding-top: 1.5rem;
@@ -40,4 +8,22 @@
   .usa-fieldset:last-child {
     background-color: color('base-lightest');
   }
+}
+
+.ringdownstatus__label {
+  color: color('base-light');
+  margin: 0;
+
+  .ringdownstatus__label-text {
+    padding-right: units(1);
+  }
+
+  .timestamp__time {
+    color: color('base-darkest');
+    font-weight: bold;
+  }
+}
+
+[class*=' ringdownstatus__label--'] {
+  margin-top: 0.75rem;
 }

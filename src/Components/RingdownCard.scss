@@ -15,12 +15,15 @@
   margin: 0.75rem;
 }
 
-.ringdown-card__body {
+.ringdown-card__complaint-summary {
+  @include h3;
   align-items: center;
-  display: flex;
   margin: 0.75rem;
   color: color('base');
-  @include h3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .ringdown-card__header button {
@@ -32,7 +35,8 @@
 }
 
 .ringdown-card__status {
-  @include h4-bold;
+  color: color('base-darkest');
+  font-weight: bold;
 }
 
 .ringdown-card--dismissable {
@@ -41,32 +45,4 @@
 
 .ringdown-card--expanded {
   border: 2px solid color('primary-vivid');
-}
-
-.ringdown-card--offloaded,
-.ringdown-card--redirected,
-.ringdown-card--cancelled {
-  .ringdown-card__status {
-    border-radius: 4px;
-    color: white;
-    padding: 0px 4px;
-  }
-}
-
-.ringdown-card--offloaded {
-  .ringdown-card__status {
-    background-color: color('success');
-  }
-}
-
-.ringdown-card--redirected {
-  .ringdown-card__status {
-    background-color: color('accent-warm');
-  }
-}
-
-.ringdown-card--cancelled {
-  .ringdown-card__status {
-    background-color: color('error');
-  }
 }
