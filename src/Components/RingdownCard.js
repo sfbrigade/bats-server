@@ -3,78 +3,57 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import Ringdown from '../Models/Ringdown';
-import RingdownDetails from './RingdownDetails';
-import Drawer from './Drawer';
+
 import Alert from './Alert';
+import Drawer from './Drawer';
+import RingdownBadge from './RingdownBadge';
+import RingdownDetails from './RingdownDetails';
 import Timestamp from './Timestamp';
 
 import './RingdownCard.scss';
 
+const { Status } = Ringdown;
+const AcknowledgedStatus = {
+  [Status.OFFLOADED]: Status.OFFLOADED_ACKNOWLEDGED,
+  [Status.CANCELLED]: Status.CANCEL_ACKNOWLEDGED,
+  [Status.REDIRECTED]: Status.REDIRECT_ACKNOWLEDGED,
+};
+
 function RingdownCard({ children, className, ringdown, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
-  const [showCancel, setShowCancel] = useState(false);
-  const [showRedirect, setShowRedirect] = useState(false);
-  const [showDismissConfirmation, setShowDismissConfirmation] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const { currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj } = ringdown;
 
-  function handleCancel() {
-    setShowCancel(false);
-    onStatusChange(ringdown, Ringdown.Status.CANCEL_ACKNOWLEDGED);
-  }
-
-  function handleRedirect() {
-    setShowRedirect(false);
-    onStatusChange(ringdown, Ringdown.Status.REDIRECT_ACKNOWLEDGED);
-  }
-
-  function handleOffloaded() {
-    setShowDismissConfirmation(false);
-    onStatusChange(ringdown, Ringdown.Status.OFFLOADED_ACKNOWLEDGED);
+  function handleDismiss() {
+    setShowConfirmation(false);
+    onStatusChange(ringdown, AcknowledgedStatus[currentDeliveryStatus]);
   }
 
   const canBeDismissed =
-    ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED ||
-    ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED ||
-    ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED;
+    currentDeliveryStatus === Status.OFFLOADED || currentDeliveryStatus === Status.CANCELLED || currentDeliveryStatus === Status.REDIRECTED;
 
   return (
     <div
       className={classNames('ringdown-card height-auto', className, {
         'ringdown-card--dismissable': canBeDismissed,
         'ringdown-card--expanded': isExpanded,
-        'ringdown-card--cancelled': ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED,
-        'ringdown-card--redirected': ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED,
-        'ringdown-card--offloaded': ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED,
       })}
     >
-      {ringdown.currentDeliveryStatus === Ringdown.Status.CANCELLED && (
-        <div className="ringdown-card__header">
-          <span className="ringdown-card__status">Cancelled</span>
-          <button type="button" onClick={() => setShowCancel(true)}>
-            Dismiss
-          </button>
-        </div>
+      {canBeDismissed && (
+        <>
+          <div className="ringdown-card__header">
+            <RingdownBadge status={currentDeliveryStatus} />
+            <button type="button" onClick={() => setShowConfirmation(true)}>
+              Dismiss
+            </button>
+          </div>
+          <div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>
+        </>
       )}
-      {ringdown.currentDeliveryStatus === Ringdown.Status.REDIRECTED && (
-        <div className="ringdown-card__header">
-          <span className="ringdown-card__status">Redirected</span>
-          <button type="button" onClick={() => setShowRedirect(true)}>
-            Dismiss
-          </button>
-        </div>
-      )}
-      {ringdown.currentDeliveryStatus === Ringdown.Status.OFFLOADED && (
-        <div className="ringdown-card__header">
-          <span className="ringdown-card__status">Offloaded</span>
-          <button type="button" onClick={() => setShowDismissConfirmation(true)}>
-            Dismiss
-          </button>
-        </div>
-      )}
-      {canBeDismissed && <div className="ringdown-card__complaint-summary">{ringdown.chiefComplaintDescription}</div>}
       {!canBeDismissed && (
         <Drawer
-          title={<Timestamp className="ringdown-card__status" label="ETA:" time={ringdown.etaDateTimeLocalObj} />}
-          subtitle={<div className="ringdown-card__complaint-summary">{ringdown.chiefComplaintDescription}</div>}
+          title={<Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />}
+          subtitle={<div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>}
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
         >
@@ -82,37 +61,15 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
           {children}
         </Drawer>
       )}
-      {showCancel && (
+      {showConfirmation && (
         <Alert
           type="warning"
           title="Dismiss Notice"
           message="The Ringdown will be removed from the docket."
           cancel="Keep"
           destructive="Dismiss"
-          onDestructive={handleCancel}
-          onCancel={() => setShowCancel(false)}
-        />
-      )}
-      {showRedirect && (
-        <Alert
-          type="warning"
-          title="Dismiss Notice"
-          message="The Ringdown will be removed from the docket."
-          cancel="Keep"
-          destructive="Dismiss"
-          onDestructive={handleRedirect}
-          onCancel={() => setShowRedirect(false)}
-        />
-      )}
-      {showDismissConfirmation && (
-        <Alert
-          type="warning"
-          title="Dismiss Notice"
-          message="The Ringdown will be removed from the docket."
-          cancel="Keep"
-          destructive="Dismiss"
-          onDestructive={handleOffloaded}
-          onCancel={() => setShowDismissConfirmation(false)}
+          onDestructive={handleDismiss}
+          onCancel={() => setShowConfirmation(false)}
         />
       )}
     </div>

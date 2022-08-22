@@ -14,14 +14,8 @@
   color: color('base-light');
   margin: 0;
 
-  .ringdownstatus__badge {
-    border-radius: units(0.5);
-    color: color('base-darkest');
-    display: inline-block;
-    font-weight: bold;
-    height: 1.5rem;
-    padding: 0 units(0.5);
-    margin-left: units(0.5);
+  .ringdownstatus__label-text {
+    padding-right: units(1);
   }
 
   .timestamp__time {
@@ -32,19 +26,4 @@
 
 [class*=' ringdownstatus__label--'] {
   margin-top: 0.75rem;
-}
-
-.ringdownstatus__label--pending,
-.ringdownstatus__label--delivered {
-  .ringdownstatus__badge {
-    background-color: #ffecba;
-    color: #df7800;
-  }
-}
-
-.ringdownstatus__label--confirmed {
-  .ringdownstatus__badge {
-    background-color: #d5fec7;
-    color: #007922;
-  }
 }
