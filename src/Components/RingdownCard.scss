@@ -15,12 +15,15 @@
   margin: 0.75rem;
 }
 
-.ringdown-card__body {
+.ringdown-card__complaint-summary {
+  @include h3;
   align-items: center;
-  display: flex;
   margin: 0.75rem;
   color: color('base');
-  @include h3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .ringdown-card__header button {
