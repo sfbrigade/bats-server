@@ -1,15 +1,32 @@
 @import '../../theme/base';
 
+.ringdownstatus {
+  .usa-fieldset + .usa-fieldset {
+    padding-top: 1.5rem;
+  }
+
+  .usa-fieldset:last-child {
+    background-color: color('base-lightest');
+  }
+}
+
 .ringdownstatus__label {
   color: color('base-light');
   margin: 0;
-  span {
-    border-radius: 0.25rem;
+
+  .ringdownstatus__badge {
+    border-radius: units(0.5);
     color: color('base-darkest');
     display: inline-block;
     font-weight: bold;
     height: 1.5rem;
-    padding: 0 0.25rem;
+    padding: 0 units(0.5);
+    margin-left: units(0.5);
+  }
+
+  .timestamp__time {
+    color: color('base-darkest');
+    font-weight: bold;
   }
 }
 
@@ -19,25 +36,15 @@
 
 .ringdownstatus__label--pending,
 .ringdownstatus__label--delivered {
-  span {
+  .ringdownstatus__badge {
     background-color: #ffecba;
     color: #df7800;
   }
 }
 
 .ringdownstatus__label--confirmed {
-  span {
+  .ringdownstatus__badge {
     background-color: #d5fec7;
     color: #007922;
-  }
-}
-
-.ringdownstatus {
-  .usa-fieldset + .usa-fieldset {
-    padding-top: 1.5rem;
-  }
-
-  .usa-fieldset:last-child {
-    background-color: color('base-lightest');
   }
 }
