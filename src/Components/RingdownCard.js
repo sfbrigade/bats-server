@@ -47,7 +47,7 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
               Dismiss
             </button>
           </div>
-          <div className="ringdown-card__body flex-auto">{chiefComplaintDescription}</div>
+          <div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>
         </>
       )}
       {!canBeDismissed && (

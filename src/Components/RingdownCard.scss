@@ -34,6 +34,11 @@
   background-color: transparent;
 }
 
+.ringdown-card__status {
+  color: color('base-darkest');
+  font-weight: bold;
+}
+
 .ringdown-card--dismissable {
   background: color('base-lightest');
 }
