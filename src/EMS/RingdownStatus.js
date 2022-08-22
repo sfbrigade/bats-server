@@ -32,10 +32,6 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
     onStatusChange(ringdown, status);
   }
 
-  function handleStatusChange(status) {
-    onStatusChange(ringdown, status);
-  }
-
   function handleCancel() {
     setShowCancel(false);
     onStatusChange(ringdown, Status.CANCELLED);
