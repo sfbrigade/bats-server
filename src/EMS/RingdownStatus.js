@@ -151,40 +151,43 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
             </li>
           </ol>
         </fieldset>
-        <fieldset className="usa-fieldset border-top border-base-lighter">
-          <button
-            className="usa-button usa-button--outline usa-button--secondary width-full"
-            type="button"
-            onClick={() => setShowRedirect(true)}
-          >
-            Redirect patient
-          </button>
-          <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowCancel(true)}>
-            Cancel delivery
-          </button>
-          {showCancel && (
-            <Alert
-              type="warning"
-              title="Cancel delivery?"
-              message="The hospital will be notified and the ringdown will be cleared."
-              destructive="Yes, cancel delivery"
-              cancel="No, don't cancel"
-              onDestructive={handleCancel}
-              onCancel={() => setShowCancel(false)}
-            />
-          )}
-          {showRedirect && (
-            <Alert
-              type="warning"
-              title="Redirect patient?"
-              message="You will need to choose a new hospital destination for the patient."
-              destructive="Choose new destination"
-              cancel="Keep destination"
-              onDestructive={handleRedirect}
-              onCancel={() => setShowRedirect(false)}
-            />
-          )}
-        </fieldset>
+        {Ringdown.Status.ALL_STATUSES.indexOf(ringdown.currentDeliveryStatus) <
+          Ringdown.Status.ALL_STATUSES.indexOf(Ringdown.Status.OFFLOADED) && (
+          <fieldset className="usa-fieldset border-top border-base-lighter">
+            <button
+              className="usa-button usa-button--outline usa-button--secondary width-full"
+              type="button"
+              onClick={() => setShowRedirect(true)}
+            >
+              Redirect patient
+            </button>
+            <button className="usa-button usa-button--secondary width-full margin-top-4" type="button" onClick={() => setShowCancel(true)}>
+              Cancel delivery
+            </button>
+            {showCancel && (
+              <Alert
+                type="warning"
+                title="Cancel delivery?"
+                message="The hospital will be notified and the ringdown will be cleared."
+                destructive="Yes, cancel delivery"
+                cancel="No, don't cancel"
+                onDestructive={handleCancel}
+                onCancel={() => setShowCancel(false)}
+              />
+            )}
+            {showRedirect && (
+              <Alert
+                type="warning"
+                title="Redirect patient?"
+                message="You will need to choose a new hospital destination for the patient."
+                destructive="Choose new destination"
+                cancel="Keep destination"
+                onDestructive={handleRedirect}
+                onCancel={() => setShowRedirect(false)}
+              />
+            )}
+          </fieldset>
+        )}
         <fieldset className="usa-fieldset border-top border-base-lighter">
           <RingdownCard ringdown={ringdown} />
         </fieldset>
