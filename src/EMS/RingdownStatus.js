@@ -7,20 +7,11 @@ import Ringdown from '../Models/Ringdown';
 import Alert from '../Components/Alert';
 import RingdownCard from '../Components/RingdownCard';
 import Timestamp from '../Components/Timestamp';
-import { StatusList, StatusStep } from './StatusList';
+import { StatusButton, StatusList, StatusStep } from './StatusList';
 
 import './RingdownStatus.scss';
 
 const { Status } = Ringdown;
-
-// eslint-disable-next-line react/prop-types
-function StatusButton({ label, status, onClick }) {
-  return (
-    <button type="button" className="usa-button usa-button--primary width-full" onClick={() => onClick(status)}>
-      {label}
-    </button>
-  );
-}
 
 function RingdownStatus({ className, onStatusChange, ringdown }) {
   const [showCancel, setShowCancel] = useState(false);
