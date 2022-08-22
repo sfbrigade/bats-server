@@ -45,11 +45,6 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     } else {
       input.classList.remove('usa-input--error');
     }
-    if (validationState === ValidationState.FIXED) {
-      input.classList.add('usa-input--success');
-    } else {
-      input.classList.remove('usa-input--success');
-    }
   }, [validationState]);
 
   // first check if value exists as customOption or in options, if not, set as the custom option
@@ -80,7 +75,6 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
           'usa-label--required': showRequiredHint && required,
           'usa-label--focused': focused,
           'usa-label--error': validationState === ValidationState.ERROR,
-          'usa-label--success': validationState === ValidationState.FIXED,
         })}
         htmlFor={property}
       >
