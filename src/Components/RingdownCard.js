@@ -70,11 +70,11 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
           </button>
         </div>
       )}
-      {canBeDismissed && <div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+      {canBeDismissed && <div className="ringdown-card__complaint-summary">{ringdown.chiefComplaintDescription}</div>}
       {!canBeDismissed && (
         <Drawer
           title={<Timestamp className="ringdown-card__status" label="ETA:" time={ringdown.etaDateTimeLocalObj} />}
-          subtitle={<div className="ringdown-card__body flex-auto">{ringdown.chiefComplaintDescription}</div>}
+          subtitle={<div className="ringdown-card__complaint-summary">{ringdown.chiefComplaintDescription}</div>}
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
         >
