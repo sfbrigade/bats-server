@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import Form from '../Components/Form';
 import FormComboBox from '../Components/FormComboBox';
 import FormRadio from '../Components/FormRadio';
 import FormRadioFieldSet from '../Components/FormRadioFieldSet';
@@ -47,78 +46,77 @@ function PatientFields({ ringdown, onChange }) {
   }
 
   return (
-    <Form data={ringdown} onChange={handleUserInput}>
-      <div className="usa-accordion">
-        <Heading title="Unit Info" />
-        <div className="usa-accordion__content">
-          <fieldset className="usa-fieldset">
-            <FormComboBox
-              label="Unit #"
-              property="ambulanceIdentifier"
-              required
-              onChange={handleUserInput}
-              options={createOptions(ambulanceIds)}
-              validationState={ringdown.getValidationState('ambulanceIdentifier')}
-              value={ringdown.ambulanceIdentifier}
-            />
-          </fieldset>
-          <fieldset className="usa-fieldset">
-            <FormComboBox
-              label="Incident #"
-              property="dispatchCallNumber"
-              required
-              onChange={handleUserInput}
-              options={createOptions(dispatchCallNumbers)}
-              validationState={ringdown.getValidationState('dispatchCallNumber')}
-              value={ringdown.dispatchCallNumber}
-            />
-          </fieldset>
-        </div>
-        <Heading title="Patient Info" />
-        <div className="usa-accordion__content">
-          <fieldset className="usa-fieldset">
-            <FormField metadata={Patient.age} />
-          </fieldset>
-          <FormRadioFieldSet
-            label="Gender Identity"
-            property="sex"
-            value={ringdown.sex}
-            validationState={ringdown.getValidationState('sex')}
+    <div className="usa-accordion">
+      <Heading title="Unit Info" />
+      <div className="usa-accordion__content">
+        <fieldset className="usa-fieldset">
+          <FormComboBox
+            label="Unit #"
+            property="ambulanceIdentifier"
             required
             onChange={handleUserInput}
-          >
-            <FormRadio label="Male" value="MALE" />
-            <FormRadio label="Female" value="FEMALE" />
-            <FormRadio label="Non-binary" value="NON-BINARY" />
-          </FormRadioFieldSet>
-          <FormRadioFieldSet
-            label="Urgency"
-            property="emergencyServiceResponseType"
-            value={ringdown.emergencyServiceResponseType}
-            validationState={ringdown.getValidationState('emergencyServiceResponseType')}
+            options={createOptions(ambulanceIds)}
+            validationState={ringdown.getValidationState('ambulanceIdentifier')}
+            value={ringdown.ambulanceIdentifier}
+          />
+        </fieldset>
+        <fieldset className="usa-fieldset">
+          <FormComboBox
+            label="Incident #"
+            property="dispatchCallNumber"
             required
             onChange={handleUserInput}
-          >
-            <FormRadio label="Code 2" value="CODE 2" />
-            <FormRadio label="Code 3" value="CODE 3" disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'} />
-          </FormRadioFieldSet>
-          <fieldset className="usa-fieldset">
-            <FormField metadata={Patient.chiefComplaintDescription}>
-              <div className="usa-hint usa-hint--important">
-                <i className="fas fa-info-circle" /> Exclude identifying information.
-              </div>
-            </FormField>
-          </fieldset>
-          <FormRadioFieldSet
-            label="Vitals Stability"
-            property="stableIndicator"
-            value={ringdown.stableIndicator}
-            validationState={ringdown.getValidationState('stableIndicator')}
-            required
-            onChange={handleUserInput}
-          >
-            <FormRadio label="Vitals stable" value={true} />
-            <FormRadio label="Vitals not stable" value={false} />
+            options={createOptions(dispatchCallNumbers)}
+            validationState={ringdown.getValidationState('dispatchCallNumber')}
+            value={ringdown.dispatchCallNumber}
+          />
+        </fieldset>
+      </div>
+      <Heading title="Patient Info" />
+      <div className="usa-accordion__content">
+        <fieldset className="usa-fieldset">
+          <FormField metadata={Patient.age} />
+        </fieldset>
+        <FormRadioFieldSet
+          label="Gender Identity"
+          property="sex"
+          value={ringdown.sex}
+          validationState={ringdown.getValidationState('sex')}
+          required
+          onChange={handleUserInput}
+        >
+          <FormRadio label="Male" value="MALE" />
+          <FormRadio label="Female" value="FEMALE" />
+          <FormRadio label="Non-binary" value="NON-BINARY" />
+        </FormRadioFieldSet>
+        <FormRadioFieldSet
+          label="Urgency"
+          property="emergencyServiceResponseType"
+          value={ringdown.emergencyServiceResponseType}
+          validationState={ringdown.getValidationState('emergencyServiceResponseType')}
+          required
+          onChange={handleUserInput}
+        >
+          <FormRadio label="Code 2" value="CODE 2" />
+          <FormRadio label="Code 3" value="CODE 3" disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'} />
+        </FormRadioFieldSet>
+        <fieldset className="usa-fieldset">
+          <FormField metadata={Patient.chiefComplaintDescription}>
+            <div className="usa-hint usa-hint--important">
+              <i className="fas fa-info-circle" /> Exclude identifying information.
+            </div>
+          </FormField>
+        </fieldset>
+        <FormRadioFieldSet
+          label="Vitals Stability"
+          property="stableIndicator"
+          value={ringdown.stableIndicator}
+          validationState={ringdown.getValidationState('stableIndicator')}
+          required
+          onChange={handleUserInput}
+        >
+          <FormRadio label="Vitals stable" value={true} />
+          <FormRadio label="Vitals not stable" value={false} />
         </FormRadioFieldSet>
       </div>
       <Heading title="Vitals" subtitle="optional" />
@@ -183,7 +181,6 @@ function PatientFields({ ringdown, onChange }) {
         </fieldset>
       </div>
     </div>
-  </Form>
   );
 }
 

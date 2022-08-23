@@ -14,4 +14,6 @@ const DeliveryStatus = {
 
 DeliveryStatus.ALL_STATUSES = Object.values(DeliveryStatus);
 
+DeliveryStatus.is = (status, target) => DeliveryStatus.ALL_STATUSES.indexOf(status) >= DeliveryStatus.ALL_STATUSES.indexOf(target);
+
 module.exports = Object.freeze(DeliveryStatus);
