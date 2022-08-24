@@ -153,6 +153,9 @@ function PatientFields({ ringdown, onChange }) {
                     <FormField
                       metadata={Patient.supplementalOxygenAmount}
                       disabled={ringdown.lowOxygenResponseType !== 'SUPPLEMENTAL OXYGEN'}
+                      // we don't want to wrap this input as inputs with min/max values resize differently in Chrome, which then causes
+                      // the unit label to wrap to the next line, due to the `flex-wrap: wrap` in .grid-row
+                      isWrapped={false}
                     />
                   </div>
                 }

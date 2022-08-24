@@ -6,10 +6,8 @@ import './Heading.scss';
 function Heading({ title, subtitle, badge, children }) {
   return (
     <h3 className="usa-accordion__heading heading">
-      <div>
-        {title}
-        {subtitle && <div className="heading__subtitle">{subtitle}</div>}
-      </div>
+      {title}
+      {subtitle && <div className="heading__subtitle">{subtitle}</div>}
       {badge && <div className="heading__badge">{badge}</div>}
       {children}
     </h3>
