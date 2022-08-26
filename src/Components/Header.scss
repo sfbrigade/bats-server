@@ -1,12 +1,18 @@
 @import '../../theme/base';
 
 .header {
-  top: 0;
   @include u-padding(2);
   background-color: white;
+  height: units(15);
   position: sticky;
+  top: 0;
+  width: 100%;
   z-index: 1000;
   box-shadow: 0 6px 6px -6px rgba(0, 0, 0, 0.1);
+}
+
+html.no-scrolling .header {
+  position: fixed;
 }
 
 .header__logo {

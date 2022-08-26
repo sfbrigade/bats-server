@@ -22,6 +22,14 @@ i.e.
 
 @import 'uswds-theme-custom-mixins';
 
+html.no-scrolling {
+  overflow: hidden;
+}
+
+html.no-scrolling body {
+  padding-top: units(15);
+}
+
 .logo {
   width: 150px;
   height: 35px;
