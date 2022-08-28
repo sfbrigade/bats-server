@@ -6,7 +6,7 @@ import ValidationMessage from './ValidationMessage';
 
 import './FormRadioFieldSet.scss';
 
-function FormRadioFieldSet({ children, label, property, value, required, validationState, onChange }) {
+function FormRadioFieldSet({ children, className, label, property, value, required, validationState, onChange }) {
   const radioButtons = children.map((child) => {
     const {
       props: { value: childValue },
@@ -22,7 +22,7 @@ function FormRadioFieldSet({ children, label, property, value, required, validat
 
   return (
     <fieldset
-      className={classNames('usa-fieldset form-radio-field-set', {
+      className={classNames('usa-fieldset form-radio-field-set', className, {
         'form-radio-field-set--error': validationState === ValidationState.ERROR,
       })}
     >
@@ -47,6 +47,7 @@ FormRadioFieldSet.propTypes = {
   value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   required: PropTypes.bool,
   validationState: PropTypes.string,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 FormRadioFieldSet.defaultProps = {
@@ -54,6 +55,7 @@ FormRadioFieldSet.defaultProps = {
   value: null,
   required: false,
   validationState: ValidityState.NO_INPUT,
+  className: '',
 };
 
 export default FormRadioFieldSet;
