@@ -34,6 +34,7 @@ function FormCheckbox({ currentValue, disabled, label, onChange, property, value
     </div>
   );
 }
+
 FormCheckbox.propTypes = {
   currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   disabled: PropTypes.bool,
@@ -42,9 +43,11 @@ FormCheckbox.propTypes = {
   property: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
 };
+
 FormCheckbox.defaultProps = {
   currentValue: null,
   disabled: false,
-  value: null,
+  value: true,
 };
+
 export default FormCheckbox;

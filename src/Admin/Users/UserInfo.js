@@ -142,32 +142,14 @@ function UserInfo({ userId }) {
                 />
                 {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                 <label className="usa-label">Role</label>
-                <FormCheckbox
-                  label="Administrative"
-                  onChange={onChange}
-                  property="isAdminUser"
-                  currentValue={user.isAdminUser}
-                  value={true}
-                />
-                <FormCheckbox
-                  label="Operational"
-                  onChange={onChange}
-                  property="isOperationalUser"
-                  currentValue={user.isOperationalUser}
-                  value={true}
-                />
+                <FormCheckbox label="Administrative" onChange={onChange} property="isAdminUser" currentValue={user.isAdminUser} />
+                <FormCheckbox label="Operational" onChange={onChange} property="isOperationalUser" currentValue={user.isOperationalUser} />
                 {hospital && (
                   <>
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                     <label className="usa-label">Tabs</label>
-                    <FormCheckbox label="Info tab" onChange={onChange} property="isInfoUser" currentValue={user.isInfoUser} value={true} />
-                    <FormCheckbox
-                      label="Ringdowns tab"
-                      onChange={onChange}
-                      property="isRingdownUser"
-                      currentValue={user.isRingdownUser}
-                      value={true}
-                    />
+                    <FormCheckbox label="Info tab" onChange={onChange} property="isInfoUser" currentValue={user.isInfoUser} />
+                    <FormCheckbox label="Ringdowns tab" onChange={onChange} property="isRingdownUser" currentValue={user.isRingdownUser} />
                   </>
                 )}
                 <button className="usa-button margin-y-3" type="submit">
