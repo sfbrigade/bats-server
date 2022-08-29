@@ -22,8 +22,11 @@ body > .grid-container > .grid-row > div > #root {
 .unconfirmed-ringdowns__container {
   background-color: white;
   border-radius: 1rem 1rem 0 0;
-  max-height: 90%;
+  // the Header is 7.5rem high, so leave a little space between it and the ringdown container
+  max-height: calc(100vh - 8rem);
   padding: 1.25rem;
+  // let the overlay scroll vertically, since the body won't scroll while it's open
+  overflow-y: auto;
 
   h2 {
     text-align: center;
