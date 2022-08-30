@@ -9,7 +9,7 @@
 3. Run:
 
    ```
-   docker-compose up
+   docker compose up
    ```
 
    Wait a while for container images to download/build, then when everything is up
@@ -20,7 +20,7 @@
 4. To log in to the running server container:
 
    ```
-   docker-compose exec server bash -l
+   docker compose exec server bash -l
    ```
 
    After you log in, you can create your database by running:
