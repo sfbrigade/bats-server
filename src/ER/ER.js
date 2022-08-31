@@ -82,7 +82,7 @@ export default function ER() {
   }, [hasUnconfirmedRingdowns]);
 
   return (
-    <div className="grid-container">
+    <div className="grid-container minh-100vh">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
           <RoutedHeader selectedTab={selectedTab} onSelect={setSelectedTab} />

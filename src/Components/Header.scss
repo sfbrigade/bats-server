@@ -11,10 +11,6 @@
   box-shadow: 0 6px 6px -6px rgba(0, 0, 0, 0.1);
 }
 
-html.no-scrolling .header {
-  position: fixed;
-}
-
 .header__logo {
   height: units(2);
   user-select: none;

@@ -1,22 +1,16 @@
 @import '../../theme/base';
 
-body > .grid-container > .grid-row > div > #root {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
 .unconfirmed-ringdowns {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   background: rgba(27, 27, 27, 0.5);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   justify-content: flex-end;
+  height: 100vh;
 }
 
 .unconfirmed-ringdowns__container {

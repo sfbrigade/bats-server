@@ -26,10 +26,6 @@ html.no-scrolling {
   overflow: hidden;
 }
 
-html.no-scrolling body {
-  padding-top: units(15);
-}
-
 .logo {
   width: 150px;
   height: 35px;
@@ -102,6 +98,10 @@ iframe,
 .grid-container {
   padding-left: 0;
   padding-right: 0;
+}
+
+.minh-100vh {
+  min-height: 100vh;
 }
 
 // animated spinner taken from Bootstrap
