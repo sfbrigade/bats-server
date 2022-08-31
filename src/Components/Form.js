@@ -26,7 +26,7 @@ Form.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   data: PropTypes.object.isRequired,
   onChange: PropTypes.func,
-  children: Promise.node,
+  children: PropTypes.node,
 };
 
 Form.defaultProps = {

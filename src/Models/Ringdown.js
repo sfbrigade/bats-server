@@ -37,6 +37,19 @@ function overrideSetter(target, key, setter) {
   });
 }
 
+// specify the fields that must all have valid input to make the ringdown valid.  the second array item is an optional function to determine
+// whether the field's current value is valid as input.  the array order should be the same as the field order in PatientFields.
+const validatedFields = [
+  ['ambulanceIdentifier'],
+  ['dispatchCallNumber'],
+  ['emergencyServiceResponseType'],
+  ['age'],
+  ['sex'],
+  ['chiefComplaintDescription'],
+  ['stableIndicator', (value) => typeof value === 'boolean'],
+  ['all', () => ValidationState.NO_INPUT],
+];
+
 class Ringdown {
   static get Status() {
     return DeliveryStatus;
@@ -48,7 +61,8 @@ class Ringdown {
     this.payload.emsCall = this.payload.emsCall || {};
     this.payload.hospital = this.payload.hospital || {};
     // default the urgency to Code 2 for a new ringdown
-    this.payload.patient = this.payload.patient || { emergencyServiceResponseType: 'CODE 2' };
+    this.payload.patient =
+      this.payload.patient || (window.env.REACT_APP_DISABLE_CODE_3 && { emergencyServiceResponseType: 'CODE 2' }) || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};
 
     // add getters/setters for patient fields
@@ -66,36 +80,7 @@ class Ringdown {
       this.restraintIndicator = newValue && this.restraintIndicator;
     });
 
-    this.validationData = validationData || {
-      ambulanceIdentifier: new PatientFieldData(
-        'ambulanceIdentifier',
-        0,
-        this.ambulanceIdentifier ? ValidationState.INPUT : ValidationState.NO_INPUT
-      ),
-      dispatchCallNumber: new PatientFieldData(
-        'dispatchCallNumber',
-        1,
-        this.dispatchCallNumber ? ValidationState.INPUT : ValidationState.NO_INPUT
-      ),
-      age: new PatientFieldData('age', 2, this.age ? ValidationState.INPUT : ValidationState.NO_INPUT),
-      sex: new PatientFieldData('sex', 3, this.sex ? ValidationState.INPUT : ValidationState.NO_INPUT),
-      emergencyServiceResponseType: new PatientFieldData(
-        'emergencyServiceResponseType',
-        4,
-        this.emergencyServiceResponseType ? ValidationState.INPUT : ValidationState.NO_INPUT
-      ),
-      chiefComplaintDescription: new PatientFieldData(
-        'chiefComplaintDescription',
-        5,
-        this.chiefComplaintDescription ? ValidationState.INPUT : ValidationState.NO_INPUT
-      ),
-      stableIndicator: new PatientFieldData(
-        'stableIndicator',
-        6,
-        typeof this.stableIndicator === 'boolean' ? ValidationState.INPUT : ValidationState.NO_INPUT
-      ),
-      all: new PatientFieldData('all', 7, ValidationState.NO_INPUT),
-    };
+    this.validationData = validationData || this.createValidationData(validatedFields);
   }
 
   clone() {
@@ -251,6 +236,19 @@ class Ringdown {
       return 0;
     }
     return 1;
+  }
+
+  createValidationData(fields) {
+    return fields.reduce((result, field, i) => {
+      const [name, validator] = field;
+      const fieldValue = this[name];
+      const value = typeof validator === 'function' ? validator(fieldValue) : fieldValue;
+      const state = value ? ValidationState.INPUT : ValidationState.NO_INPUT;
+
+      result[name] = new PatientFieldData(name, i, state);
+
+      return result;
+    }, {});
   }
 
   validatePatientFields(updatedField, inputValue) {

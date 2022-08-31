@@ -47,7 +47,7 @@ function PatientFields({ ringdown, onChange }) {
 
   return (
     <div className="usa-accordion">
-      <Heading title="Unit Info" />
+      <Heading title="Incident info" />
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <FormComboBox
@@ -71,8 +71,19 @@ function PatientFields({ ringdown, onChange }) {
             value={ringdown.dispatchCallNumber}
           />
         </fieldset>
+        <FormRadioFieldSet
+          label="Urgency"
+          property="emergencyServiceResponseType"
+          value={ringdown.emergencyServiceResponseType}
+          validationState={ringdown.getValidationState('emergencyServiceResponseType')}
+          required
+          onChange={handleUserInput}
+        >
+          <FormRadio label="Code 2" value="CODE 2" />
+          <FormRadio label="Code 3" value="CODE 3" disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'} />
+        </FormRadioFieldSet>
       </div>
-      <Heading title="Patient Info" />
+      <Heading title="Patient info" />
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <FormField metadata={Patient.age} />
@@ -88,17 +99,6 @@ function PatientFields({ ringdown, onChange }) {
           <FormRadio label="Male" value="MALE" />
           <FormRadio label="Female" value="FEMALE" />
           <FormRadio label="Non-binary" value="NON-BINARY" />
-        </FormRadioFieldSet>
-        <FormRadioFieldSet
-          label="Urgency"
-          property="emergencyServiceResponseType"
-          value={ringdown.emergencyServiceResponseType}
-          validationState={ringdown.getValidationState('emergencyServiceResponseType')}
-          required
-          onChange={handleUserInput}
-        >
-          <FormRadio label="Code 2" value="CODE 2" />
-          <FormRadio label="Code 3" value="CODE 3" disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'} />
         </FormRadioFieldSet>
         <fieldset className="usa-fieldset">
           <FormField metadata={Patient.chiefComplaintDescription}>
@@ -167,7 +167,7 @@ function PatientFields({ ringdown, onChange }) {
           <FormField metadata={Patient.temperature} />
         </fieldset>
       </div>
-      <Heading title="Additional Notes" subtitle="optional" />
+      <Heading title="Additional notes" subtitle="optional" />
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
           <FormField metadata={Patient.treatmentNotes} />

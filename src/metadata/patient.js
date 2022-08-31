@@ -16,6 +16,12 @@ const fields = [
     unique: true,
   },
   {
+    name: 'emergencyServiceResponseType',
+    type: 'enum',
+    enumValues: ['CODE 2', 'CODE 3'],
+    required: true,
+  },
+  {
     name: 'age',
     type: 'integer',
     label: 'Age (estimated)',
@@ -27,12 +33,6 @@ const fields = [
     name: 'sex',
     type: 'enum',
     enumValues: ['MALE', 'FEMALE', 'NON-BINARY'],
-    required: true,
-  },
-  {
-    name: 'emergencyServiceResponseType',
-    type: 'enum',
-    enumValues: ['CODE 2', 'CODE 3'],
     required: true,
   },
   {
