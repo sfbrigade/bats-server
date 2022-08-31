@@ -263,28 +263,24 @@ function PatientFields({ ringdown, onChange }) {
               label="ETOH suspected"
               onChange={handleUserInput}
               property="etohSuspectedIndicator"
-              value={true}
             />
             <FormCheckbox
               currentValue={ringdown.drugsSuspectedIndicator}
               label="Drugs suspected"
               onChange={handleUserInput}
               property="drugsSuspectedIndicator"
-              value={true}
             />
             <FormCheckbox
               currentValue={ringdown.psychIndicator}
               label="Psych patient"
               onChange={handleUserInput}
               property="psychIndicator"
-              value={true}
             />
             <FormCheckbox
               currentValue={ringdown.combativeBehaviorIndicator}
               label="Combative"
               onChange={handleUserInput}
               property="combativeBehaviorIndicator"
-              value={true}
             />
             <div className="padding-left-4">
               <FormCheckbox
@@ -293,7 +289,6 @@ function PatientFields({ ringdown, onChange }) {
                 label="4-point restraint"
                 onChange={handleUserInput}
                 property="restraintIndicator"
-                value={true}
               />
             </div>
             <FormCheckbox
@@ -301,15 +296,8 @@ function PatientFields({ ringdown, onChange }) {
               label="COVID-19 suspected"
               onChange={handleUserInput}
               property="covid19SuspectedIndicator"
-              value={true}
             />
-            <FormCheckbox
-              currentValue={ringdown.ivIndicator}
-              label="IV started"
-              onChange={handleUserInput}
-              property="ivIndicator"
-              value={true}
-            />
+            <FormCheckbox currentValue={ringdown.ivIndicator} label="IV started" onChange={handleUserInput} property="ivIndicator" />
             <FormTextArea label="Other" onChange={onChange} property="otherObservationNotes" value={ringdown.otherObservationNotes} />
           </fieldset>
         </div>

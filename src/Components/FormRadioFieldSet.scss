@@ -20,6 +20,10 @@
 }
 
 .form-radio-field-set--error {
+  .usa-label {
+    color: color('error');
+  }
+
   // turn the empty radio button circles red in the error state
   .usa-radio__label::before {
     box-shadow: 0 0 0 units($theme-input-select-border-width) color('error-dark');
