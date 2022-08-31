@@ -1,29 +1,26 @@
 @import '../../theme/base';
 
-body > .grid-container > .grid-row > div > #root {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
 .unconfirmed-ringdowns {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
   background: rgba(27, 27, 27, 0.5);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   justify-content: flex-end;
+  height: 100vh;
 }
 
 .unconfirmed-ringdowns__container {
   background-color: white;
   border-radius: 1rem 1rem 0 0;
-  max-height: 90%;
+  // the Header is 7.5rem high, so leave a little space between it and the ringdown container
+  max-height: calc(100vh - 8rem);
   padding: 1.25rem;
+  // let the overlay scroll vertically, since the body won't scroll while it's open
+  overflow-y: auto;
 
   h2 {
     text-align: center;
