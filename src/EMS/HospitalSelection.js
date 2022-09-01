@@ -8,6 +8,9 @@ import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 
 import ApiService from '../ApiService';
+import FormRadioFieldSet from '../Components/FormRadioFieldSet';
+
+import './HospitalSelection.scss';
 
 function HospitalSelection({ ringdown, onChange }) {
   const [hospitalStatuses, setHospitalStatuses] = useState([]);
@@ -22,19 +25,11 @@ function HospitalSelection({ ringdown, onChange }) {
     <div className="usa-accordion">
       <Heading title={<span className="usa-label--required">Hospital Selection</span>} />
       <div className="usa-accordion__content">
-        <fieldset className="usa-fieldset">
-          {hospitalStatuses.map((hsu) => (
-            <FormRadio
-              key={hsu.hospital.id}
-              label={hsu.hospital.name}
-              onChange={onChange}
-              name="hospitalId"
-              value={hsu.hospital.id}
-              checked={hsu.hospital.id === ringdown.hospitalId}
-              disabled={window.env.DISABLE_PILOT_HOSPITALS && hsu.hospital.name !== 'SF General'}
-            />
+        <FormRadioFieldSet className="hospital-selection" property="hospitalId" value={ringdown.hospitalId} onChange={onChange}>
+          {hospitalStatuses.map(({ hospital: { id, name } }) => (
+            <FormRadio key={id} label={name} value={id} disabled={window.env.DISABLE_PILOT_HOSPITALS && name !== 'SF General'} />
           ))}
-        </fieldset>
+        </FormRadioFieldSet>
         <fieldset className="usa-fieldset">
           <FormInput
             label="ETA"
