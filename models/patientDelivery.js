@@ -1,11 +1,10 @@
 const _ = require('lodash');
 const { Model } = require('sequelize');
 const { DeliveryStatus } = require('../src/constants');
+const patientDeliveryMeta = require('../src/metadata/patientDelivery');
+const convertToSequelizeField = require('../src/metadata/convertToSequelizeField');
 
-const PatientDeliveryParams = ['currentDeliveryStatus', 'currentDeliveryStatusDateTimeLocal', 'etaMinutes'];
-Object.freeze(PatientDeliveryParams);
-
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class PatientDelivery extends Model {
     static get Status() {
       return DeliveryStatus;
@@ -160,7 +159,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         hospital: _.pick(hospital, ['id', 'name']),
         patient: _.pick(patient, sequelize.models.Patient.Params),
-        patientDelivery: _.pick(this, PatientDeliveryParams),
+        patientDelivery: _.pick(this, patientDeliveryMeta.getParams()),
       };
       json.patientDelivery.timestamps = {};
       const patientDeliveryUpdates = this.PatientDeliveryUpdates || (await this.getPatientDeliveryUpdates(options));
@@ -170,70 +169,11 @@ module.exports = (sequelize, DataTypes) => {
       return json;
     }
   }
-  PatientDelivery.init(
-    {
-      id: {
-        field: 'patientdelivery_uuid',
-        type: DataTypes.UUID,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      AmbulanceId: {
-        field: 'ambulance_uuid',
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      PatientId: {
-        field: 'patient_uuid',
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      HospitalId: {
-        field: 'hospital_uuid',
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      ParamedicUserId: {
-        field: 'paramedicuser_uuid',
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      currentDeliveryStatus: {
-        field: 'currentdeliverystatusenum',
-        type: DataTypes.ENUM(DeliveryStatus.ALL_STATUSES),
-        allowNull: false,
-      },
-      currentDeliveryStatusDateTimeLocal: {
-        field: 'currentdeliverystatusdatetimelocal',
-        type: DataTypes.DATE,
-      },
-      etaMinutes: {
-        field: 'etaminutes',
-        type: DataTypes.INTEGER,
-      },
-      createdAt: {
-        field: 'recordcreatetimestamp',
-        type: DataTypes.DATE,
-      },
-      CreatedById: {
-        field: 'recordcreateuser_uuid',
-        type: DataTypes.UUID,
-      },
-      updatedAt: {
-        field: 'recordupdatetimestamp',
-        type: DataTypes.DATE,
-      },
-      UpdatedById: {
-        field: 'recordupdateuser_uuid',
-        type: DataTypes.UUID,
-      },
-    },
-    {
-      sequelize,
-      timestamps: true,
-      tableName: 'patientdelivery',
-      modelName: 'PatientDelivery',
-    }
-  );
+  PatientDelivery.init(patientDeliveryMeta.getFieldHash(convertToSequelizeField), {
+    sequelize,
+    timestamps: true,
+    tableName: patientDeliveryMeta.tableName,
+    modelName: patientDeliveryMeta.modelName,
+  });
   return PatientDelivery;
 };

@@ -12,6 +12,7 @@ class FieldMetadata {
   constructor(field) {
     Object.assign(
       this,
+      // assign these default values first so the field can override them below
       {
         colName: createColName(field),
         isParam: !NonParamTypes.includes(field.type),

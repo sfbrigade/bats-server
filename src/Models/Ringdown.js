@@ -60,7 +60,7 @@ class Ringdown {
     this.payload.ambulance = this.payload.ambulance || {};
     this.payload.emsCall = this.payload.emsCall || {};
     this.payload.hospital = this.payload.hospital || {};
-    // default the urgency to Code 2 for a new ringdown
+    // default the urgency to Code 2 for a fresh ringdown if the Code 3 option has been disabled
     this.payload.patient =
       this.payload.patient || (window.env.REACT_APP_DISABLE_CODE_3 && { emergencyServiceResponseType: 'CODE 2' }) || {};
     this.payload.patientDelivery = this.payload.patientDelivery || {};

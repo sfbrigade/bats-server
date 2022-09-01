@@ -150,26 +150,6 @@ const fields = [
     type: 'text',
     label: 'Other',
   },
-  {
-    name: 'createdAt',
-    colName: 'recordcreatetimestamp',
-    type: 'date',
-  },
-  {
-    name: 'CreatedById',
-    colName: 'recordcreateuser_uuid',
-    type: 'uuid',
-  },
-  {
-    name: 'updatedAt',
-    colName: 'recordupdatetimestamp',
-    type: 'date',
-  },
-  {
-    name: 'UpdatedById',
-    colName: 'recordupdateuser_uuid',
-    type: 'uuid',
-  },
 ];
 
 module.exports = new ModelMetadata({ modelName: 'Patient', fields });
