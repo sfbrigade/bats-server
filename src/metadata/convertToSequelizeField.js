@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const SequelizeKeys = ['allowNull', 'primaryKey', 'autoIncrement', 'unique'];
+const SequelizeKeys = ['allowNull', 'autoIncrement', 'defaultValue', 'primaryKey', 'unique'];
 
 const pick = (obj, keys) => Object.fromEntries(keys.filter((key) => key in obj).map((key) => [key, obj[key]]));
 
