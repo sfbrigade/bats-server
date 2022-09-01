@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { Model } = require('sequelize');
 const { DeliveryStatus } = require('../src/constants');
-const patientDeliveryMeta = require('../src/metadata/patientDelivery');
+const metadata = require('../src/metadata/patientDelivery');
 const convertToSequelizeField = require('../src/metadata/convertToSequelizeField');
 
 module.exports = (sequelize) => {
@@ -159,7 +159,7 @@ module.exports = (sequelize) => {
         },
         hospital: _.pick(hospital, ['id', 'name']),
         patient: _.pick(patient, sequelize.models.Patient.Params),
-        patientDelivery: _.pick(this, patientDeliveryMeta.getParams()),
+        patientDelivery: _.pick(this, metadata.getParams()),
       };
       json.patientDelivery.timestamps = {};
       const patientDeliveryUpdates = this.PatientDeliveryUpdates || (await this.getPatientDeliveryUpdates(options));
@@ -169,11 +169,11 @@ module.exports = (sequelize) => {
       return json;
     }
   }
-  PatientDelivery.init(patientDeliveryMeta.getFieldHash(convertToSequelizeField), {
+  PatientDelivery.init(metadata.getFieldHash(convertToSequelizeField), {
     sequelize,
     timestamps: true,
-    tableName: patientDeliveryMeta.tableName,
-    modelName: patientDeliveryMeta.modelName,
+    tableName: metadata.tableName,
+    modelName: metadata.modelName,
   });
   return PatientDelivery;
 };
