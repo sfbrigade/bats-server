@@ -33,8 +33,8 @@ const fields = [
   },
   {
     name: 'timeZoneIsoCode',
-    colName: 'timezoneisocode',
     type: 'string',
+    defaultValue: 'PST',
   },
   {
     name: 'isActive',

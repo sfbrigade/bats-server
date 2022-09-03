@@ -14,14 +14,9 @@ module.exports = function convertToSequelizeField(field) {
   if (typeName === 'enum') {
     type = DataTypes.ENUM(enumValues);
   } else if (typeName === 'virtual' && virtualArgs) {
-    // eslint-disable-next-line prefer-const
-    let [returnType, fields] = virtualArgs;
+    const [returnType, fields] = virtualArgs;
 
-    if (returnType) {
-      returnType = getDataType(returnType);
-    }
-
-    type = new DataTypes.VIRTUAL(returnType, fields);
+    type = new DataTypes.VIRTUAL(returnType && getDataType(returnType), fields);
   }
 
   // virtual fields don't have a column name in the db
