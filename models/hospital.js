@@ -1,8 +1,10 @@
 const _ = require('lodash');
 const { Model } = require('sequelize');
 const { DeliveryStatus } = require('../src/constants');
+const metadata = require('../src/metadata/hospital');
+const convertToSequelizeField = require('../src/metadata/convertToSequelizeField');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class Hospital extends Model {
     static associate(models) {
       Hospital.belongsTo(models.Organization);
@@ -48,66 +50,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  Hospital.init(
-    {
-      // this is the value used to determine who each nurse belongs to
-      id: {
-        field: 'hospital_uuid',
-        type: DataTypes.UUID,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      OrganizationId: {
-        field: 'healthcareorganization_uuid',
-        type: DataTypes.UUID,
-      },
-      name: {
-        field: 'hospitalname',
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      state: {
-        field: 'hospitalstate',
-        type: DataTypes.STRING,
-      },
-      stateFacilityCode: {
-        field: 'hospitalstatefacilitycode',
-        type: DataTypes.STRING,
-      },
-      sortSequenceNumber: {
-        field: 'sortsequencenumber',
-        type: DataTypes.INTEGER,
-      },
-      isActive: {
-        field: 'activeindicator',
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
-      },
-      createdAt: {
-        field: 'recordcreatetimestamp',
-        type: DataTypes.DATE,
-      },
-      CreatedById: {
-        field: 'recordcreateuser_uuid',
-        type: DataTypes.UUID,
-      },
-      updatedAt: {
-        field: 'recordupdatetimestamp',
-        type: DataTypes.DATE,
-      },
-      UpdatedById: {
-        field: 'recordupdateuser_uuid',
-        type: DataTypes.UUID,
-      },
-    },
-    {
-      sequelize,
-      timestamps: true,
-      tableName: 'hospital',
-      modelName: 'Hospital',
-    }
-  );
+  Hospital.init(metadata.getFieldHash(convertToSequelizeField), {
+    sequelize,
+    timestamps: true,
+    tableName: metadata.tableName,
+    modelName: metadata.modelName,
+  });
   return Hospital;
 };
