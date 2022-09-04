@@ -8,7 +8,7 @@ const PropTypeLookup = {
 };
 
 module.exports = function convertToPropType(field) {
-  const { name, type, isParam, enumValues, required } = field;
+  const { name, type, isParam, typeArgs, required } = field;
   // if the field isn't something we want to convert to a propType, then return an empty array so
   // getFieldHash() won't include this field
   let result = [];
@@ -18,7 +18,7 @@ module.exports = function convertToPropType(field) {
     let propType = PropTypes[reactType];
 
     if (type === 'enum') {
-      propType = PropTypes.oneOf(enumValues);
+      propType = PropTypes.oneOf(typeArgs);
     }
 
     if (required) {

@@ -18,7 +18,7 @@ const fields = [
   {
     name: 'deliveryStatus',
     type: 'enum',
-    enumValues: DeliveryStatus.ALL_STATUSES,
+    typeArgs: DeliveryStatus.ALL_STATUSES,
     allowNull: false,
   },
   {

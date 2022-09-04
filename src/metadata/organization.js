@@ -18,7 +18,7 @@ const fields = [
     name: 'type',
     colName: 'organizationtypeenum',
     type: 'enum',
-    enumValues: ['EMS', 'HEALTHCARE', 'C4SF'],
+    typeArgs: ['EMS', 'HEALTHCARE', 'C4SF'],
     allowNull: false,
   },
   {

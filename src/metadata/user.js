@@ -26,7 +26,7 @@ const fields = [
   {
     name: 'name',
     type: 'virtual',
-    virtualArgs: ['string', ['firstName', 'lastName']],
+    typeArgs: ['string', ['firstName', 'lastName']],
     get() {
       return `${this.firstName} ${this.lastName}`.trim();
     },
@@ -50,7 +50,7 @@ const fields = [
   {
     name: 'password',
     type: 'virtual',
-    virtualArgs: ['string'],
+    typeArgs: ['string'],
     validate: {
       is: {
         args: [/^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/],

@@ -18,7 +18,7 @@ const fields = [
   {
     name: 'emergencyServiceResponseType',
     type: 'enum',
-    enumValues: ['CODE 2', 'CODE 3'],
+    typeArgs: ['CODE 2', 'CODE 3'],
     required: true,
   },
   {
@@ -32,7 +32,7 @@ const fields = [
   {
     name: 'sex',
     type: 'enum',
-    enumValues: ['MALE', 'FEMALE', 'NON-BINARY'],
+    typeArgs: ['MALE', 'FEMALE', 'NON-BINARY'],
     required: true,
   },
   {
@@ -83,7 +83,7 @@ const fields = [
   {
     name: 'lowOxygenResponseType',
     type: 'enum',
-    enumValues: ['ROOM AIR', 'SUPPLEMENTAL OXYGEN'],
+    typeArgs: ['ROOM AIR', 'SUPPLEMENTAL OXYGEN'],
   },
   {
     name: 'supplementalOxygenAmount',

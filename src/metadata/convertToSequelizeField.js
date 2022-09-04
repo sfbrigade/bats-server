@@ -7,14 +7,14 @@ const pick = (obj, keys) => Object.fromEntries(keys.filter((key) => key in obj).
 const getDataType = (typeName) => DataTypes[typeName.toUpperCase()];
 
 module.exports = function convertToSequelizeField(field) {
-  const { name, colName, enumValues, virtualArgs, type: typeName } = field;
+  const { name, colName, typeArgs, type: typeName } = field;
   const sqlAttributes = pick(field, SequelizeKeys);
   let type = getDataType(typeName);
 
   if (typeName === 'enum') {
-    type = DataTypes.ENUM(enumValues);
-  } else if (typeName === 'virtual' && virtualArgs) {
-    const [returnType, fields] = virtualArgs;
+    type = new DataTypes.ENUM(typeArgs);
+  } else if (typeName === 'virtual' && typeArgs) {
+    const [returnType, fields] = typeArgs;
 
     type = new DataTypes.VIRTUAL(returnType && getDataType(returnType), fields);
   }
