@@ -21,6 +21,14 @@ class FieldMetadata {
       field
     );
   }
+
+  toString() {
+    return `FieldMetadata: ${this.name}`;
+  }
+
+  get [Symbol.toStringTag]() {
+    return this.toString();
+  }
 }
 
 module.exports = FieldMetadata;

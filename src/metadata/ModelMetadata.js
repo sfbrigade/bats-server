@@ -1,6 +1,8 @@
 const FieldMetadata = require('./FieldMetadata');
 
-const identity = (field) => [field.name, field];
+const identity = (field) => field;
+const keyValue = (field) => [field.name, field];
+const all = () => true;
 
 const createdUpdatedFields = [
   {
@@ -31,19 +33,20 @@ class ModelMetadata {
     this.tableName = tableName;
     // append the standard created and updated fields to all models
     this.fields = Object.freeze([...fields, ...createdUpdatedFields].map((field) => new FieldMetadata(field)));
-    this.params = Object.freeze(this.fields.filter(({ isParam }) => isParam).map(({ name }) => name));
+    this.params = Object.freeze(
+      this.getFields(
+        ({ name }) => name,
+        ({ isParam }) => isParam
+      )
+    );
   }
 
-  getFieldHash(convertField = identity) {
-    return this.fields.reduce((result, field) => {
-      const [name, convertedField] = convertField(field);
+  getFields(convertField = identity, filter = all) {
+    return this.fields.filter(filter).map(convertField);
+  }
 
-      if (name && convertedField) {
-        result[name] = convertedField;
-      }
-
-      return result;
-    }, {});
+  getFieldHash(convertField = keyValue, filter = all) {
+    return Object.fromEntries(this.getFields(convertField, filter));
   }
 
   getParams() {
@@ -51,7 +54,7 @@ class ModelMetadata {
   }
 
   getObjectFields() {
-    return this.fields.filter(({ type, isParam }) => isParam || type === 'enum');
+    return this.getFields(undefined, ({ type, isParam }) => isParam || type === 'enum');
   }
 }
 
