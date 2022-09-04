@@ -1,7 +1,7 @@
 const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
-const { DeliveryStatus } = require('../../../src/constants');
+const { DeliveryStatus } = require('../../../src/shared/constants');
 
 describe('models.PatientDelivery', () => {
   beforeEach(async () => {

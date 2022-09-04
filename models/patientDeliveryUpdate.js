@@ -1,6 +1,6 @@
 const { Model } = require('sequelize');
-const metadata = require('../src/metadata/patientDeliveryUpdate');
-const convertToSequelizeField = require('../src/metadata/convertToSequelizeField');
+const metadata = require('../src/shared/metadata/patientDeliveryUpdate');
+const convertToSequelizeField = require('../src/shared/metadata/convertToSequelizeField');
 
 module.exports = (sequelize) => {
   class PatientDeliveryUpdate extends Model {

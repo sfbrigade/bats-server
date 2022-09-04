@@ -10,7 +10,7 @@ import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
 import Context from '../Context';
-import patient from '../metadata/patient';
+import patient from '../shared/metadata/patient';
 
 const Patient = patient.getFieldHash();
 

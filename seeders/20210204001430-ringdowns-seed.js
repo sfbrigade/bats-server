@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const models = require('../models');
-const { DeliveryStatus } = require('../src/constants');
+const { DeliveryStatus } = require('../src/shared/constants');
 
 async function createRingdown(
   email,

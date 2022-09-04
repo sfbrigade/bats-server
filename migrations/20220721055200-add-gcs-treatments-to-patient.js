@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop, no-restricted-syntax */
-const patient = require('../src/metadata/patient');
-const convertToSequelizeField = require('../src/metadata/convertToSequelizeField');
+const patient = require('../src/shared/metadata/patient');
+const convertToSequelizeField = require('../src/shared/metadata/convertToSequelizeField');
 
 const fields = patient.getFieldHash(convertToSequelizeField);
 const newFieldNames = ['treatmentNotes', 'glasgowComaScale'];

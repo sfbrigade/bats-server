@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
-import patient from '../metadata/patient';
-import convertToPropType from '../metadata/convertToPropType';
-import DeliveryStatus from '../constants/DeliveryStatus';
+import patient from '../shared/metadata/patient';
+import convertToPropType from '../shared/metadata/convertToPropType';
+import DeliveryStatus from '../shared/constants/DeliveryStatus';
 
 function attachFields(target, fields, data) {
   const props = {};
