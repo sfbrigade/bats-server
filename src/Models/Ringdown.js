@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
 import patient from '../shared/metadata/patient';
-import convertToPropType from '../shared/metadata/convertToPropType';
+import convertToPropType from '../shared/convertToPropType';
 import DeliveryStatus from '../shared/constants/DeliveryStatus';
 
 function attachFields(target, fields, data) {

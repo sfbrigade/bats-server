@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { Model, Op } = require('sequelize');
 const { DeliveryStatus } = require('../src/shared/constants');
 const metadata = require('../src/shared/metadata/hospitalStatusUpdate');
-const convertToSequelizeField = require('../src/shared/metadata/convertToSequelizeField');
+const convertToSequelizeField = require('../src/shared/convertToSequelizeField');
 
 module.exports = (sequelize) => {
   class HospitalStatusUpdate extends Model {

@@ -44,6 +44,7 @@ export default function FormField({ metadata, ...props }) {
         <FormCheckbox
           {...commonProps}
           currentValue={value}
+          // default value to true so that the checkbox sends "<property>=true" in a form submission when it's checked
           value={true}
           {...props}
         />

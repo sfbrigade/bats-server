@@ -1,4 +1,4 @@
-const ModelMetadata = require('./ModelMetadata');
+const ModelMetadata = require('../ModelMetadata');
 
 const fields = [
   {
