@@ -1,3 +1,4 @@
+// eslint-disable func-names
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
@@ -5,39 +6,7 @@ import * as metadata from '../shared/metadata';
 import convertToPropType from '../shared/convertToPropType';
 import DeliveryStatus from '../shared/constants/DeliveryStatus';
 
-function attachFields(target, fields, data) {
-  const props = {};
-
-  fields.forEach((field) => {
-    props[field.name] = {
-      get() {
-        return data[field.name] ?? field.defaultValue;
-      },
-      set(newValue) {
-        data[field.name] = newValue;
-      },
-      configurable: true,
-      enumerable: true,
-    };
-  });
-
-  Object.defineProperties(target, props);
-}
-
-function overrideSetter(target, key, setter) {
-  const descriptor = Object.getOwnPropertyDescriptor(target, key);
-
-  if (!descriptor || !descriptor.set) {
-    throw new Error(`setter for '${key}' does not exist on the target.`);
-  }
-
-  Object.defineProperty(target, key, {
-    ...descriptor,
-    set: setter,
-  });
-}
-
-// specify the fields that must all have valid input to make the ringdown valid.  the second array item is an optional function to determine
+// define the fields that must all have valid input to make the ringdown valid.  the second array item is an optional function to determine
 // whether the field's current value is valid as input.  by default, the field is counted as having input if its value is truthy.   the
 // array order should be the same as the field order in PatientFields.
 const validatedFields = [
@@ -51,21 +20,31 @@ const validatedFields = [
   ['all', () => ValidationState.NO_INPUT],
 ];
 
+// define the names of the objects that will be added to the Ringdown payload property, and the list of its fields for which getters/setters
+// will be added.  if the object name is an array, the second string is used as the object name.
 const payloadModels = [
   ['ambulance', ['ambulanceIdentifier']],
   [['emergencyMedicalServiceCall', 'emsCall'], ['dispatchCallNumber']],
+  // we want to expose the hospital id field under a different name, so we'll define it in the class below instead of here
   ['hospital', []],
-//  ['hospital', [['id', 'hospitalId']]],
   ['patient', metadata.patient.getObjectFields()],
   ['patientDelivery', ['etaMinutes', 'currentDeliveryStatus']],
 ];
 
 // build a hash with an empty default object for each sub-object in the payload
-const createDefaultPayload = () => ({
-  ...payloadModels.reduce((result, [name]) => ({ ...result, [name instanceof Array ? name[1] : name]: {} }), {}),
-  // default the urgency to Code 2 for a fresh ringdown if the Code 3 option has been disabled
-  patient: (window.env.REACT_APP_DISABLE_CODE_3 && { emergencyServiceResponseType: 'CODE 2' }) || {},
-});
+function createDefaultPayload() {
+  const emptyPayload = payloadModels.reduce((result, [name]) => {
+    const objectName = name instanceof Array ? name[1] : name;
+    result[objectName] = {};
+    return result;
+  }, {});
+
+  return {
+    ...emptyPayload,
+    // default the urgency to Code 2 for a fresh ringdown if the Code 3 option has been disabled
+    patient: (window.env.REACT_APP_DISABLE_CODE_3 && { emergencyServiceResponseType: 'CODE 2' }) || {},
+  };
+}
 
 class Ringdown {
   static get Status() {
@@ -88,43 +67,7 @@ class Ringdown {
       ...payload,
     };
 
-    payloadModels.forEach(([modelInfo, fieldNames]) => {
-      let metadataName = modelInfo;
-      let objectName = modelInfo;
-
-      if (modelInfo instanceof Array) {
-        [metadataName, objectName] = modelInfo;
-      }
-      const fields = typeof fieldNames[0] === 'string'
-        // get the fields listed by name in payloadModels
-        ? metadata[metadataName].getFields(undefined, ({ name }) => fieldNames.includes(name))
-        // this model's fields have already been extracted
-        : fieldNames;
-      const self = this;
-
-      // add a getter/setter for each field
-      attachFields(this, fields, this.payload[objectName]);
-      // add a getter to return this payload sub-object
-      this[objectName] = {
-        get() { return self.payload[objectName]; },
-        configurable: true,
-        enumerable: true,
-      };
-    });
-
-    // add custom setters for these payload fields, since their values affect other fields
-    overrideSetter(this, 'lowOxygenResponseType', (newValue) => {
-      this.payload.patient.lowOxygenResponseType = newValue;
-      if (newValue !== 'SUPPLEMENTAL OXYGEN') {
-        this.supplementalOxygenAmount = null;
-      }
-    });
-    overrideSetter(this, 'combativeBehaviorIndicator', (newValue) => {
-      this.payload.patient.combativeBehaviorIndicator = newValue;
-      this.restraintIndicator = newValue && this.restraintIndicator;
-    });
-
-    this.setValidationData(validationData)
+    this.setValidationData(validationData);
   }
 
   clone() {
@@ -142,6 +85,7 @@ class Ringdown {
 
   // Hospital
 
+  // special-case this field, since the field name (id) is getting mapped to a different name on the Ringdown (hospitalId)
   get hospitalId() {
     return this.payload.hospital.id ?? null;
   }
@@ -231,12 +175,8 @@ class Ringdown {
       this.validationData = validatedFields.reduce((result, field, i) => {
         const [name, validator] = field;
         const fieldValue = this[name];
-        const value = typeof validator === 'function'
-          ? validator(fieldValue)
-          : fieldValue;
-        const state = value
-          ? ValidationState.INPUT
-          : ValidationState.NO_INPUT;
+        const value = typeof validator === 'function' ? validator(fieldValue) : fieldValue;
+        const state = value ? ValidationState.INPUT : ValidationState.NO_INPUT;
 
         result[name] = new PatientFieldData(name, i, state);
 
@@ -283,6 +223,79 @@ class Ringdown {
     return this.validationData[fieldName]?.validationState;
   }
 }
+
+function attachFields(target, objectName, fields) {
+  const props = {};
+
+  fields.forEach((field) => {
+    props[field.name] = {
+      get() {
+        return this.payload[objectName][field.name] ?? field.defaultValue;
+      },
+      set(newValue) {
+        this.payload[objectName][field.name] = newValue;
+      },
+      configurable: true,
+      enumerable: true,
+    };
+  });
+
+  Object.defineProperties(target, props);
+}
+
+function overrideSetter(target, key, setter) {
+  const descriptor = Object.getOwnPropertyDescriptor(target, key);
+
+  if (!descriptor || !descriptor.set) {
+    throw new Error(`setter for '${key}' does not exist on the target.`);
+  }
+
+  Object.defineProperty(target, key, {
+    ...descriptor,
+    set: setter,
+  });
+}
+
+// add the getters and setters to the Ringdown prototype for each field of each object in the payload
+payloadModels.forEach(([modelInfo, fieldNames]) => {
+  let metadataName = modelInfo;
+  let objectName = modelInfo;
+
+  if (modelInfo instanceof Array) {
+    // this model is being aliased under a different name on the Ringdown
+    [metadataName, objectName] = modelInfo;
+  }
+
+  // get the ModelMetadata fields, either filtering by the list of strings in payloadModels or the prefetched array
+  const fields =
+    typeof fieldNames[0] === 'string' ? metadata[metadataName].getFields(undefined, ({ name }) => fieldNames.includes(name)) : fieldNames;
+
+  // add a getter/setter for each field
+  attachFields(Ringdown.prototype, objectName, fields);
+
+  // add a getter to return this payload sub-object
+  Object.defineProperties(Ringdown.prototype, {
+    [objectName]: {
+      get() {
+        return this.payload[objectName];
+      },
+      configurable: true,
+      enumerable: true,
+    },
+  });
+});
+
+// add custom setters for these payload fields, since their values affect other fields
+overrideSetter(Ringdown.prototype, 'lowOxygenResponseType', function (newValue) {
+  this.payload.patient.lowOxygenResponseType = newValue;
+  if (newValue !== 'SUPPLEMENTAL OXYGEN') {
+    this.supplementalOxygenAmount = null;
+  }
+});
+overrideSetter(Ringdown.prototype, 'combativeBehaviorIndicator', function (newValue) {
+  this.payload.patient.combativeBehaviorIndicator = newValue;
+  this.restraintIndicator = newValue && this.restraintIndicator;
+});
 
 Ringdown.propTypes = {
   ambulanceIdentifier: PropTypes.string.isRequired,
