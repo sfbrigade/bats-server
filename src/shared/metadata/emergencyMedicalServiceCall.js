@@ -12,6 +12,7 @@ const fields = [
     name: 'dispatchCallNumber',
     type: 'integer',
     allowNull: false,
+    defaultValue: '',
   },
   {
     name: 'startDateTimeLocal',
