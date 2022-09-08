@@ -211,6 +211,11 @@ $spinner-border-width-sm: 0.2em;
   @include u-margin-top(2);
 }
 
+textarea + .usa-checkbox > .usa-checkbox__label,
+textarea + .usa-radio > .usa-radio__label {
+  @include u-margin-top(4);
+}
+
 .usa-combo-box__clear-input {
   display: none !important;
 }

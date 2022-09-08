@@ -1,7 +1,8 @@
 const { Model } = require('sequelize');
-const { DeliveryStatus } = require('../constants');
+const metadata = require('../src/shared/metadata/patientDeliveryUpdate');
+const convertToSequelizeField = require('../src/shared/convertToSequelizeField');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class PatientDeliveryUpdate extends Model {
     static associate(models) {
       PatientDeliveryUpdate.belongsTo(models.PatientDelivery);
@@ -9,51 +10,11 @@ module.exports = (sequelize, DataTypes) => {
       PatientDeliveryUpdate.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
-  PatientDeliveryUpdate.init(
-    {
-      id: {
-        field: 'patientdeliveryupdate_uuid',
-        type: DataTypes.UUID,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      PatientDeliveryId: {
-        field: 'patientdelivery_uuid',
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      deliveryStatus: {
-        field: 'deliverystatusenum',
-        type: DataTypes.ENUM(DeliveryStatus.ALL_STATUSES),
-        allowNull: false,
-      },
-      deliveryStatusDateTimeLocal: {
-        field: 'deliverystatusdatetimelocal',
-        type: DataTypes.DATE,
-      },
-      createdAt: {
-        field: 'recordcreatetimestamp',
-        type: DataTypes.DATE,
-      },
-      CreatedById: {
-        field: 'recordcreateuser_uuid',
-        type: DataTypes.UUID,
-      },
-      updatedAt: {
-        field: 'recordupdatetimestamp',
-        type: DataTypes.DATE,
-      },
-      UpdatedById: {
-        field: 'recordupdateuser_uuid',
-        type: DataTypes.UUID,
-      },
-    },
-    {
-      sequelize,
-      timestamps: true,
-      tableName: 'patientdeliveryupdate',
-      modelName: 'PatientDeliveryUpdate',
-    }
-  );
+  PatientDeliveryUpdate.init(metadata.getFieldHash(convertToSequelizeField), {
+    sequelize,
+    timestamps: true,
+    tableName: metadata.tableName,
+    modelName: metadata.modelName,
+  });
   return PatientDeliveryUpdate;
 };

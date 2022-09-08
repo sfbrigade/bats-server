@@ -10,6 +10,7 @@ import Spinner from '../Components/Spinner';
 import RingdownCard from '../Components/RingdownCard';
 import Heading from '../Components/Heading';
 import Alert from '../Components/Alert';
+import Form from '../Components/Form';
 import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
@@ -94,10 +95,15 @@ function RingdownForm({ className }) {
     setRingdowns([...ringdowns]);
   }
 
+  // prettier-ignore
   return (
     <>
       {ringdowns && ringdowns.length === 0 && (
-        <form className={classNames('usa-form', className)}>
+        <Form
+          data={ringdown}
+          onChange={onChange}
+          className={classNames('usa-form', className)}
+        >
           <div className="usa-alert usa-alert--info usa-alert--slim usa-alert--no-icon">
             <div className="usa-alert__body">
               <p className="usa-alert__text">
@@ -151,7 +157,7 @@ function RingdownForm({ className }) {
               onPrimary={handleConfirmCancel}
             />
           )}
-        </form>
+        </Form>
       )}
       {ringdowns && ringdowns.length > 0 && (
         <RingdownStatus className={className} onStatusChange={onStatusChange} ringdown={ringdowns[0]} />
