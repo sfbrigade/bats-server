@@ -1,31 +1,38 @@
 @import '../theme/base';
 
 .tabbar {
-  border-top: 1px solid color('primary-darker');
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  @include u-margin-top(2);
+  background: color('gray-10');
+  border-radius: 12px;
   display: flex;
 }
 
 .tabbar__tab {
+  @include u-margin(0.5);
+  @include u-padding-x(1);
+  @include u-padding-y(0.5);
   align-items: center;
-  background-color: color('primary');
-  border-bottom: 0.1875rem solid color('primary');
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  color: color('primary-light');
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: color('gray-50');
   cursor: pointer;
   display: flex;
   flex-basis: 0;
   flex-grow: 1;
-  height: 2.75rem;
-  justify-content: center;
-  padding: 0;
+  height: units(5);
+  justify-content: left;
 }
 
 .tabbar__tab--selected {
-  border-bottom-color: white;
-  color: white;
+  background-color: white;
+  color: color('primary');
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tabbar__icon {
+  @include u-margin-right(0.5);
 }
 
 .tabbar-content {

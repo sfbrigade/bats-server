@@ -8,6 +8,9 @@ import Heading from '../Components/Heading';
 import Ringdown from '../Models/Ringdown';
 
 import ApiService from '../ApiService';
+import FormRadioFieldSet from '../Components/FormRadioFieldSet';
+
+import './HospitalSelection.scss';
 
 function HospitalSelection({ ringdown, onChange }) {
   const [hospitalStatuses, setHospitalStatuses] = useState([]);
@@ -19,39 +22,28 @@ function HospitalSelection({ ringdown, onChange }) {
   }, []);
 
   return (
-    <>
-      <div className="usa-accordion">
-        <Heading title="Hospital Selection" />
-        <div className="usa-accordion__content">
-          <fieldset className="usa-fieldset">
-            {hospitalStatuses.map((hsu) => (
-              <FormRadio
-                currentValue={ringdown.hospitalId}
-                key={hsu.hospital.id}
-                label={hsu.hospital.name}
-                onChange={onChange}
-                property="hospitalId"
-                value={hsu.hospital.id}
-                disabled={window.env.DISABLE_PILOT_HOSPITALS && hsu.hospital.name !== 'SF General'}
-              />
-            ))}
-          </fieldset>
-          <fieldset className="usa-fieldset">
-            <FormInput
-              label="ETA"
-              onChange={onChange}
-              property="etaMinutes"
-              required
-              showRequiredHint={false}
-              size="small"
-              type="number"
-              unit="min"
-              value={ringdown.etaMinutes}
-            />
-          </fieldset>
-        </div>
+    <div className="usa-accordion">
+      <Heading title={<span className="usa-label--required">Hospital Selection</span>} />
+      <div className="usa-accordion__content">
+        <FormRadioFieldSet className="hospital-selection" property="hospitalId" value={ringdown.hospitalId} onChange={onChange}>
+          {hospitalStatuses.map(({ hospital: { id, name } }) => (
+            <FormRadio key={id} label={name} value={id} disabled={window.env.DISABLE_PILOT_HOSPITALS && name !== 'SF General'} />
+          ))}
+        </FormRadioFieldSet>
+        <fieldset className="usa-fieldset">
+          <FormInput
+            label="ETA"
+            onChange={onChange}
+            property="etaMinutes"
+            required
+            size="small"
+            type="number"
+            unit="min"
+            value={ringdown.etaMinutes}
+          />
+        </fieldset>
       </div>
-    </>
+    </div>
   );
 }
 

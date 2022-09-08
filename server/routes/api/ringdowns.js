@@ -5,7 +5,7 @@ const _ = require('lodash');
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
 const { dispatchRingdownUpdate } = require('../../wss');
-const { DeliveryStatus } = require('../../constants');
+const { DeliveryStatus } = require('../../../client/src/shared/constants');
 
 const { setPaginationHeaders } = require('../helpers');
 

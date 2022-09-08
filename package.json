@@ -6,6 +6,8 @@
     "node": "16.13.1"
   },
   "scripts": {
+    "docker:start": "docker compose up",
+    "docker:bash": "docker compose exec server bash -l",
     "heroku-prebuild": "cd client && yarn && cd ../server && yarn",
     "heroku-postbuild": "cd client && yarn build",
     "start:dev": "nf start -j Procfile.dev",

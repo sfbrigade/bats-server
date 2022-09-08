@@ -1,7 +1,7 @@
 const assert = require('assert');
 const helper = require('../../helper');
 const models = require('../../../models');
-const { DeliveryStatus } = require('../../../constants');
+const { DeliveryStatus } = require('../../../../client/src/shared/constants');
 
 describe('models.PatientDelivery', () => {
   beforeEach(async () => {
@@ -204,13 +204,15 @@ describe('models.PatientDelivery', () => {
           lowOxygenResponseType: null,
           supplementalOxygenAmount: null,
           temperature: null,
-          etohSuspectedIndicator: null,
-          drugsSuspectedIndicator: null,
-          psychIndicator: null,
-          combativeBehaviorIndicator: null,
-          restraintIndicator: null,
-          covid19SuspectedIndicator: null,
-          ivIndicator: null,
+          treatmentNotes: null,
+          etohSuspectedIndicator: false,
+          drugsSuspectedIndicator: false,
+          psychIndicator: false,
+          combativeBehaviorIndicator: false,
+          restraintIndicator: false,
+          covid19SuspectedIndicator: false,
+          ivIndicator: false,
+          glasgowComaScale: null,
           otherObservationNotes: null,
         },
         patientDelivery: {

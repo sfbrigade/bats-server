@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
 
-import Header from '../Components/Header';
-import TabBar from '../Components/TabBar';
+import RoutedHeader from '../Components/RoutedHeader';
 import UnconfirmedRingdowns from './UnconfirmedRingdowns';
 
 import ApiService from '../ApiService';
@@ -18,7 +17,7 @@ import notification from '../assets/notification.mp3';
 
 export default function ER() {
   const { hospitalUser } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/hospital?id=${hospitalUser?.hospital.id}`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
   const [selectedTab, setSelectedTab] = useState(1);
@@ -74,13 +73,19 @@ export default function ER() {
     }
   }, [lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate, showRingdown, playSound]);
 
+  useEffect(() => {
+    if (hasUnconfirmedRingdowns) {
+      document.documentElement.classList.add('no-scrolling');
+    } else {
+      document.documentElement.classList.remove('no-scrolling');
+    }
+  }, [hasUnconfirmedRingdowns]);
+
   return (
-    <div className="grid-container">
+    <div className="grid-container minh-100vh">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <Header name={`${hospitalUser?.hospital.name} - Routed`}>
-            {showTabs && <TabBar onSelect={setSelectedTab} selectedTab={selectedTab} tabs={['Ringdowns', 'Hospital Info']} />}
-          </Header>
+          <RoutedHeader selectedTab={selectedTab} onSelect={setSelectedTab} />
           {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
           {showInfo && (!showTabs || selectedTab === 1) && (
             <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />

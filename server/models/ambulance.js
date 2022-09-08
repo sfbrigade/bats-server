@@ -1,6 +1,8 @@
 const { Model } = require('sequelize');
+const metadata = require('../../client/src/shared/metadata/ambulance');
+const convertToSequelizeField = require('../../client/src/shared/convertToSequelizeField');
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize) => {
   class Ambulance extends Model {
     static associate(models) {
       Ambulance.belongsTo(models.Organization);
@@ -14,53 +16,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  Ambulance.init(
-    {
-      id: {
-        field: 'ambulance_uuid',
-        type: DataTypes.UUID,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      OrganizationId: {
-        field: 'emsorganization_uuid',
-        type: DataTypes.UUID,
-      },
-      ambulanceIdentifier: {
-        field: 'ambulanceidentifier',
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      isActive: {
-        field: 'activeindicator',
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
-      },
-      createdAt: {
-        field: 'recordcreatetimestamp',
-        type: DataTypes.DATE,
-      },
-      CreatedById: {
-        field: 'recordcreateuser_uuid',
-        type: DataTypes.UUID,
-      },
-      updatedAt: {
-        field: 'recordupdatetimestamp',
-        type: DataTypes.DATE,
-      },
-      UpdatedById: {
-        field: 'recordupdateuser_uuid',
-        type: DataTypes.UUID,
-      },
-    },
-    {
-      sequelize,
-      timestamps: true,
-      tableName: 'ambulance',
-      modelName: 'Ambulance',
-    }
-  );
+  Ambulance.init(metadata.getFieldHash(convertToSequelizeField), {
+    sequelize,
+    timestamps: true,
+    tableName: metadata.tableName,
+    modelName: metadata.modelName,
+  });
   return Ambulance;
 };

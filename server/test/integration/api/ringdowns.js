@@ -5,7 +5,7 @@ const session = require('supertest-session');
 const helper = require('../../helper');
 const app = require('../../../app');
 const models = require('../../../models');
-const { DeliveryStatus } = require('../../../constants');
+const { DeliveryStatus } = require('../../../../client/src/shared/constants');
 
 describe('/api/ringdowns', () => {
   let testSession;
@@ -82,12 +82,14 @@ describe('/api/ringdowns', () => {
       lowOxygenResponseType: 'SUPPLEMENTAL OXYGEN',
       supplementalOxygenAmount: 2,
       temperature: 99.4,
+      treatmentNotes: 'Gave px lollipop',
       etohSuspectedIndicator: false,
       drugsSuspectedIndicator: true,
       psychIndicator: false,
       combativeBehaviorIndicator: false,
       restraintIndicator: false,
       covid19SuspectedIndicator: true,
+      glasgowComaScale: 3,
       ivIndicator: false,
       otherObservationNotes: 'Needs assistance walking',
     };
@@ -407,13 +409,15 @@ describe('/api/ringdowns', () => {
           lowOxygenResponseType: null,
           supplementalOxygenAmount: null,
           temperature: null,
-          etohSuspectedIndicator: null,
-          drugsSuspectedIndicator: null,
-          psychIndicator: null,
-          combativeBehaviorIndicator: null,
-          restraintIndicator: null,
-          covid19SuspectedIndicator: null,
-          ivIndicator: null,
+          treatmentNotes: null,
+          etohSuspectedIndicator: false,
+          drugsSuspectedIndicator: false,
+          psychIndicator: false,
+          combativeBehaviorIndicator: false,
+          restraintIndicator: false,
+          covid19SuspectedIndicator: false,
+          ivIndicator: false,
+          glasgowComaScale: null,
           otherObservationNotes: null,
         },
         patientDelivery: {

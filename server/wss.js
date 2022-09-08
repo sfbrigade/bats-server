@@ -2,7 +2,7 @@ const querystring = require('querystring');
 const { Op } = require('sequelize');
 const url = require('url');
 const WebSocket = require('ws');
-const DeliveryStatus = require('./constants/deliveryStatus');
+const DeliveryStatus = require('../client/src/shared/constants/DeliveryStatus');
 const models = require('./models');
 
 const userServer = new WebSocket.Server({ noServer: true });
@@ -145,12 +145,12 @@ function configure(server, app) {
       /// connect based on pathname
       const { pathname } = url.parse(req.url);
       switch (pathname) {
-        case '/user':
+        case '/wss/user':
           userServer.handleUpgrade(req, socket, head, (ws) => {
             userServer.emit('connection', ws, req);
           });
           break;
-        case '/hospital':
+        case '/wss/hospital':
           /// ensure valid hospital
           if (query.id && query.id !== 'undefined') {
             req.hospital = await models.Hospital.findByPk(query.id);

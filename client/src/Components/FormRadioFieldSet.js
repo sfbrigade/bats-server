@@ -6,19 +6,33 @@ import ValidationMessage from './ValidationMessage';
 
 import './FormRadioFieldSet.scss';
 
-function FormRadioFieldSet({ children, labelText, property, isRequired, validationState }) {
+function FormRadioFieldSet({ children, className, label, property, value, required, validationState, onChange }) {
+  const radioButtons = children.map((child) => {
+    const {
+      props: { value: childValue },
+    } = child;
+
+    return React.cloneElement(child, {
+      key: childValue,
+      name: property,
+      checked: childValue === value,
+      onChange,
+    });
+  });
+
   return (
     <fieldset
-      className={classNames('usa-fieldset form-radio-field-set', {
+      className={classNames('usa-fieldset form-radio-field-set', className, {
         'form-radio-field-set--error': validationState === ValidationState.ERROR,
-        'form-radio-field-set--success': validationState === ValidationState.FIXED,
       })}
     >
       <div className="form-radio-field-set__background">
-        <label className={classNames('usa-label', { 'usa-label--required': isRequired })} htmlFor={property}>
-          {labelText}
-        </label>
-        {children}
+        {label && (
+          <label className={classNames('usa-label', { 'usa-label--required': required })} htmlFor={property}>
+            {label}
+          </label>
+        )}
+        {radioButtons}
         <ValidationMessage className="margin-top-1" validationState={validationState} />
       </div>
     </fieldset>
@@ -27,14 +41,21 @@ function FormRadioFieldSet({ children, labelText, property, isRequired, validati
 
 FormRadioFieldSet.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
-  labelText: PropTypes.string.isRequired,
   property: PropTypes.string.isRequired,
-  isRequired: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
+  label: PropTypes.node,
+  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
+  required: PropTypes.bool,
   validationState: PropTypes.string,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 FormRadioFieldSet.defaultProps = {
+  label: null,
+  value: null,
+  required: false,
   validationState: ValidityState.NO_INPUT,
+  className: '',
 };
 
 export default FormRadioFieldSet;

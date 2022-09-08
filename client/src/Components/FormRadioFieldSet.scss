@@ -3,8 +3,7 @@
 .form-radio-field-set {
   padding: 1rem 0;
 
-  .usa-error-message,
-  .usa-success-message {
+  .usa-error-message {
     position: relative;
   }
 }
@@ -20,10 +19,13 @@
   }
 }
 
-.form-radio-field-set--error .form-radio-field-set__background {
-  background-color: color('error-lighter');
-}
+.form-radio-field-set--error {
+  .usa-label {
+    color: color('error');
+  }
 
-.form-radio-field-set--success .form-radio-field-set__background {
-  background-color: color('success-lighter');
+  // turn the empty radio button circles red in the error state
+  .usa-radio__label::before {
+    box-shadow: 0 0 0 units($theme-input-select-border-width) color('error-dark');
+  }
 }
