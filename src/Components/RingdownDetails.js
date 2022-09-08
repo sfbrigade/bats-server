@@ -105,6 +105,12 @@ function RingdownDetails({ className, ringdown, isIncoming }) {
               <tr className="ringdown-details__header">
                 <th colSpan="2">Additional notes</th>
               </tr>
+              {ringdown.treatmentNotes && (
+                <tr>
+                  <th>Treatments Administered</th>
+                  <td>{ringdown.treatmentNotes}</td>
+                </tr>
+              )}
               {ringdown.etohSuspectedIndicator && (
                 <tr>
                   <th>ETOH</th>
@@ -142,6 +148,12 @@ function RingdownDetails({ className, ringdown, isIncoming }) {
                 <tr>
                   <th>IV</th>
                   <td>{ringdown.ivIndicator && 'Started'}</td>
+                </tr>
+              )}
+              {ringdown.glasgowComaScale && (
+                <tr>
+                  <th>GCS</th>
+                  <td>{ringdown.glasgowComaScale}</td>
                 </tr>
               )}
               {ringdown.otherObservationNotes && (

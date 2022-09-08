@@ -113,6 +113,7 @@ class Ringdown {
 
   get hasAdditionalNotes() {
     return (
+      this.treatmentNotes ||
       this.etohSuspectedIndicator ||
       this.drugsSuspectedIndicator ||
       this.psychIndicator ||
@@ -120,6 +121,7 @@ class Ringdown {
       this.restraintIndicator ||
       this.covid19SuspectedIndicator ||
       this.ivIndicator ||
+      this.glasgowComaScale ||
       this.otherObservationNotes
     );
   }
