@@ -1,184 +1,82 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { DateTime } from 'luxon';
+
+import Ringdown from '../Models/Ringdown';
+import { FieldRow, PatientFieldRow, RingdownTable, Section } from './RingdownDetailsTable';
 
 import './RingdownDetails.scss';
-import Ringdown from '../Models/Ringdown';
 
-function RingdownDetails({ className, ringdown, isIncoming }) {
+const toSentenceCase = (value) => (typeof value === 'string' ? value[0] + value.slice(1).toLowerCase() : value);
+
+function RingdownDetails({ className, ringdown }) {
   return (
-    <div className={classNames('ringdown-details', className)}>
-      <table className="usa-table usa-table--borderless width-full">
-        <tbody>
-          <tr className="ringdown-details__header">
-            <th colSpan="2">Patient info</th>
-          </tr>
-          <tr>
-            <th>
-              {isIncoming && <>Incoming Ambulance</>}
-              {!isIncoming && <>Incident #</>}
-            </th>
-            <td>{!isIncoming && <>{ringdown.dispatchCallNumber}</>}</td>
-          </tr>
-          <tr>
-            <th>Unit #</th>
-            <td>{ringdown.ambulanceIdentifier}</td>
-          </tr>
-          {isIncoming && (
-            <>
-              <tr>
-                <th>Incident #</th>
-                <td>{ringdown.dispatchCallNumber}</td>
-              </tr>
-              <tr>
-                <th>ETA</th>
-                <td>{ringdown.etaDateTimeLocalObj.toLocaleString(DateTime.TIME_24_WITH_SECONDS)}</td>
-              </tr>
-            </>
-          )}
-          <tr>
-            <th>Estim. Age</th>
-            <td>{ringdown.age}</td>
-          </tr>
-          <tr>
-            <th>Gender I.D.</th>
-            <td>{ringdown.sex}</td>
-          </tr>
-          <tr>
-            <th>Code</th>
-            <td>{ringdown.emergencyServiceResponseType}</td>
-          </tr>
-          <tr>
-            <th>Complaint</th>
-            <td>{ringdown.chiefComplaintDescription}</td>
-          </tr>
-          <tr>
-            <th>Vitals</th>
-            <td>{ringdown.stableIndicator ? 'Stable' : 'Unstable'}</td>
-          </tr>
-          {ringdown.hasVitals && (
-            <>
-              <tr className="ringdown-details__header">
-                <th colSpan="2">Vitals</th>
-              </tr>
-              {(ringdown.systolicBloodPressure || ringdown.diastolicBloodPressure) && (
-                <tr>
-                  <th>BP</th>
-                  <td>
-                    {ringdown.systolicBloodPressure}/{ringdown.diastolicBloodPressure}
-                  </td>
-                </tr>
-              )}
-              {ringdown.heartRateBpm && (
-                <tr>
-                  <th>Pulse</th>
-                  <td>{ringdown.heartRateBpm}&nbsp;bpm</td>
-                </tr>
-              )}
-              {ringdown.respiratoryRate && (
-                <tr>
-                  <th>RR</th>
-                  <td>{ringdown.respiratoryRate}&nbsp;breath/m</td>
-                </tr>
-              )}
-              {(ringdown.oxygenSaturation || ringdown.lowOxygenResponseType || ringdown.supplementalOxygenAmount) && (
-                <tr>
-                  <th>Sp02</th>
-                  <td>
-                    {ringdown.oxygenSaturation}%<br />
-                    {ringdown.lowOxygenResponseType}
-                    {ringdown.lowOxygenResponseType === 'SUPPLEMENTAL OXYGEN' && <>&nbsp;{ringdown.supplementalOxygenAmount}&nbsp;L</>}
-                  </td>
-                </tr>
-              )}
-              {ringdown.temperature && (
-                <tr>
-                  <th>Temp</th>
-                  <td>{ringdown.temperature}&nbsp;&deg;F</td>
-                </tr>
-              )}
-            </>
-          )}
-          {ringdown.hasAdditionalNotes && (
-            <>
-              <tr className="ringdown-details__header">
-                <th colSpan="2">Additional notes</th>
-              </tr>
-              {ringdown.treatmentNotes && (
-                <tr>
-                  <th>Treatments Administered</th>
-                  <td>{ringdown.treatmentNotes}</td>
-                </tr>
-              )}
-              {ringdown.etohSuspectedIndicator && (
-                <tr>
-                  <th>ETOH</th>
-                  <td>{ringdown.etohSuspectedIndicator && 'Suspected'}</td>
-                </tr>
-              )}
-              {ringdown.drugsSuspectedIndicator && (
-                <tr>
-                  <th>Drugs</th>
-                  <td>{ringdown.drugsSuspectedIndicator && 'Suspected'}</td>
-                </tr>
-              )}
-              {ringdown.psychIndicator && (
-                <tr>
-                  <th>Psych</th>
-                  <td>{ringdown.psychIndicator && 'Yes'}</td>
-                </tr>
-              )}
-              {ringdown.combativeBehaviorIndicator && (
-                <tr>
-                  <th>Combative</th>
-                  <td>
-                    {ringdown.combativeBehaviorIndicator && 'Yes'}
-                    {ringdown.restraintIndicator && ', Restrained'}
-                  </td>
-                </tr>
-              )}
-              {ringdown.covid19SuspectedIndicator && (
-                <tr>
-                  <th>COVID-19</th>
-                  <td>{ringdown.covid19SuspectedIndicator && 'Suspected'}</td>
-                </tr>
-              )}
-              {ringdown.ivIndicator && (
-                <tr>
-                  <th>IV</th>
-                  <td>{ringdown.ivIndicator && 'Started'}</td>
-                </tr>
-              )}
-              {ringdown.glasgowComaScale && (
-                <tr>
-                  <th>GCS</th>
-                  <td>{ringdown.glasgowComaScale}</td>
-                </tr>
-              )}
-              {ringdown.otherObservationNotes && (
-                <tr>
-                  <th>Other</th>
-                  <td>{ringdown.otherObservationNotes}</td>
-                </tr>
-              )}
-            </>
-          )}
-        </tbody>
-      </table>
-    </div>
+    <RingdownTable ringdown={ringdown} className={className}>
+      <Section title="Incident info">
+        <FieldRow label="Unit #" property="ambulanceIdentifier" />
+        <FieldRow label="Incident #" property="dispatchCallNumber" />
+        <PatientFieldRow property="emergencyServiceResponseType" renderValue={toSentenceCase} />
+      </Section>
+      <Section title="Patient info">
+        <PatientFieldRow property="age" />
+        <PatientFieldRow property="sex" renderValue={toSentenceCase} />
+        <PatientFieldRow property="chiefComplaintDescription" />
+        <PatientFieldRow property="stableIndicator" renderValue={(value) => (value ? 'Stable' : 'Unstable')} />
+      </Section>
+      <Section title="Vitals" visible={ringdown.hasVitals}>
+        {(ringdown.systolicBloodPressure || ringdown.diastolicBloodPressure) && (
+          <FieldRow property="systolicBloodPressure" label="BP" renderValue={(value) => `${value} / ${ringdown.diastolicBloodPressure}`} />
+        )}
+        <PatientFieldRow property="heartRateBpm" />
+        <PatientFieldRow property="respiratoryRate" />
+        <PatientFieldRow
+          property="oxygenSaturation"
+          renderValue={(value) => {
+            const { lowOxygenResponseType: type, supplementalOxygenAmount: amount } = ringdown;
+            let response = '';
+
+            if (type === 'ROOM AIR') {
+              response = '(Gave room air)';
+            } else if (type === 'SUPPLEMENTAL OXYGEN') {
+              response = (
+                <>
+                  (Gave {amount && <>{amount} L</>} O<sub>2</sub>)
+                </>
+              );
+            }
+
+            return (
+              <>
+                {value}% {response}
+              </>
+            );
+          }}
+        />
+        <PatientFieldRow property="temperature" renderValue={(value) => `${value}°F`} />
+      </Section>
+      <Section title="Additional notes" visible={ringdown.hasAdditionalNotes}>
+        <PatientFieldRow property="treatmentNotes" />
+        <PatientFieldRow property="etohSuspectedIndicator" renderValue="Suspected" />
+        <PatientFieldRow property="drugsSuspectedIndicator" renderValue="Suspected" />
+        <PatientFieldRow property="psychIndicator" renderValue="Yes" />
+        <PatientFieldRow
+          property="combativeBehaviorIndicator"
+          renderValue={(value) => (value && 'Yes') + (ringdown.restraintIndicator ? ', restrained' : '')}
+        />
+        <PatientFieldRow property="covid19SuspectedIndicator" renderValue="Suspected" />
+        <PatientFieldRow property="glasgowComaScale" />
+        <PatientFieldRow property="otherObservationNotes" />
+      </Section>
+    </RingdownTable>
   );
 }
 
 RingdownDetails.propTypes = {
   className: PropTypes.string,
   ringdown: PropTypes.instanceOf(Ringdown).isRequired,
-  isIncoming: PropTypes.bool,
 };
 
 RingdownDetails.defaultProps = {
   className: null,
-  isIncoming: false,
 };
 
 export default RingdownDetails;
