@@ -12,7 +12,7 @@ const PatientFields = patient.getFieldHash();
 
 const RingdownContext = createContext(undefined);
 
-const useRingdown = () => {
+function useRingdown() {
   const context = useContext(RingdownContext);
 
   if (!context) {
@@ -20,7 +20,7 @@ const useRingdown = () => {
   }
 
   return context;
-};
+}
 
 export function RingdownTable({ ringdown, className, children }) {
   return (
@@ -67,27 +67,21 @@ Section.defaultProps = {
   visible: true,
 };
 
-export function FieldRow({ label, property, unit, renderValue }) {
+export function FieldRow({ label, property, unit, visible, renderValue }) {
   const ringdown = useRingdown();
-  let value = ringdown[property];
+  const value = ringdown[property];
+  // show the row based on a boolean visible prop, if supplied, letting us forcibly hide or show the field regardless of its value.
+  // otherwise, show it if the value is not empty and not false.  (false counts as not empty, but we want to hide unchecked options.)
+  const showRow = visible ?? (!isValueEmpty(value) && value !== false);
 
-  // isValueEmpty treats an explicit boolean false as non-empty, but we want to hide unchecked options
-  if (value === false || isValueEmpty(value)) {
+  if (!showRow) {
     return null;
-  }
-
-  if (typeof renderValue === 'function') {
-    value = renderValue(value);
-  } else if (typeof renderValue === 'string') {
-    value = value && renderValue;
-  } else {
-    value = `${value} ${unit}`;
   }
 
   return (
     <tr>
       <th>{label}</th>
-      <td>{value}</td>
+      <td>{typeof renderValue === 'function' ? renderValue(value, ringdown) : `${value} ${unit}`}</td>
     </tr>
   );
 }
@@ -96,11 +90,13 @@ FieldRow.propTypes = {
   property: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   unit: PropTypes.string,
-  renderValue: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  visible: PropTypes.bool,
+  renderValue: PropTypes.func,
 };
 
 FieldRow.defaultProps = {
   unit: '',
+  visible: null,
   renderValue: null,
 };
 

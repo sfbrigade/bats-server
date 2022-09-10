@@ -50,6 +50,7 @@ const fields = [
     name: 'stableIndicator',
     type: 'boolean',
     label: 'Vitals stability',
+    shortLabel: 'Vitals',
     // though this is stored as a boolean, it's rendered in the UI as two radio buttons, not a
     // checkbox, so use null as the default so neither radio is selected
     defaultValue: null,
