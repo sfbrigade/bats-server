@@ -1,5 +1,5 @@
 const loginForm = document.getElementById('login');
-const email = document.getElementById('email');
+const email = document.getElementById('username');
 const password = document.getElementById('password');
 const submitButton = document.querySelector('button[type="submit"]');
 
