@@ -12,11 +12,15 @@ export class ScreenShooter {
     // eslint-disable-next-line no-plusplus
     this.count++;
 
-    return this.page.screenshot({ path: this.getOutputFilePath(), fullPage: true, ...options });
+    return this.page.screenshot({ path: this.getOutputFilePath(), ...options });
+  }
+
+  getOutputDirPath() {
+    return resolve(this.outputDir, this.name);
   }
 
   getOutputFilePath() {
-    return resolve(this.outputDir, `${this.name}-${this.count}.png`);
+    return resolve(this.getOutputDirPath(), `${this.name}-${this.count}.png`);
   }
 }
 

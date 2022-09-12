@@ -6,19 +6,18 @@ const isString = (value) => typeof value === 'string';
 
 // eslint-disable-next-line import/prefer-default-export
 export class Playscript {
-  static run(...args) {
-    return new Playscript(...args).run();
+  static perform(...args) {
+    return new Playscript(...args).perform();
   }
 
   constructor({ page, screenshots, script }) {
     this.page = page;
     this.script = script;
     this.screenshooter  = new ScreenShooter({ page, ...screenshots });
-
-    this.screenshot = () => this.screenshooter.take();
+    this.screenshot = (options) => this.screenshooter.take(options);
   }
 
-  async run() {
+  async perform() {
     // eslint-disable-next-line no-restricted-syntax
     for (const line of this.script) {
       // eslint-disable-next-line no-await-in-loop
@@ -32,12 +31,19 @@ export class Playscript {
       let args;
       let method;
 
+      if (isArray(selector)) {
+        [method, ...args] = selector;
+        console.log(`page.${method}(${args})`);
+
+        return this.page[method](...args);
+      }
+
       if (isArray(command)) {
-        [method, args = []] = command;
-        args = [].concat(args);
+        [method, ...args] = command;
       } else {
-        args = [String(command)];
+        // the default method is fill(), which requires a string argument
         method = 'fill';
+        args = [String(command)];
       }
 
       console.log(`page.locator(${selector}).${method}(${args})`);
