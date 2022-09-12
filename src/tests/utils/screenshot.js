@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 
-class ScreenShooter {
+export class ScreenShooter {
   constructor({ page, outputDir = '', name = 'screenshot' }) {
     this.page = page;
     this.outputDir = outputDir;
@@ -8,11 +8,11 @@ class ScreenShooter {
     this.count = 0;
   }
 
-  takeScreenshot() {
+  take(options = {}) {
     // eslint-disable-next-line no-plusplus
     this.count++;
 
-    return this.page.screenshot({ path: this.getOutputFilePath(), fullPage: true });
+    return this.page.screenshot({ path: this.getOutputFilePath(), fullPage: true, ...options });
   }
 
   getOutputFilePath() {
@@ -20,10 +20,10 @@ class ScreenShooter {
   }
 }
 
-export default function useScreenshot(options) {
+export function useScreenshot(options) {
   const shooter = new ScreenShooter(options);
 
   return function screenshot(...args) {
-    return shooter.takeScreenshot(...args);
+    return shooter.take(...args);
   };
 }
