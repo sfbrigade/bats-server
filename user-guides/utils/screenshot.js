@@ -1,6 +1,6 @@
-import { resolve } from 'path';
+const { resolve } = require('path');
 
-export class ScreenShooter {
+module.exports = class ScreenShooter {
   constructor({ page, outputDir = '', name = 'screenshot' }) {
     this.page = page;
     this.outputDir = outputDir;
@@ -22,12 +22,4 @@ export class ScreenShooter {
   getOutputFilePath() {
     return resolve(this.getOutputDirPath(), `${this.name}-${this.count}.png`);
   }
-}
-
-export function useScreenshot(options) {
-  const shooter = new ScreenShooter(options);
-
-  return function screenshot(...args) {
-    return shooter.take(...args);
-  };
-}
+};

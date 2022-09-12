@@ -1,11 +1,10 @@
-import { ScreenShooter } from './screenshot';
+const ScreenShooter = require('./screenshot');
 
 const { isArray } = Array;
 const isFunction = (value) => typeof value === 'function';
 const isString = (value) => typeof value === 'string';
 
-// eslint-disable-next-line import/prefer-default-export
-export class Playscript {
+module.exports = class Playscript {
   static perform(...args) {
     return new Playscript(...args).perform();
   }
@@ -67,4 +66,4 @@ export class Playscript {
 
     throw new Error(`Found unreadable line: ${line}`);
   }
-}
+};
