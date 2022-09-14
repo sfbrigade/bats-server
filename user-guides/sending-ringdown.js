@@ -12,16 +12,17 @@ module.exports = {
 
     'screenshot',
 
+    [['press', 'body', 'Enter']],
     ['"Code 2"', ['click']],
     ['"Age (estimated)"', 58],
     ['"Male"', ['click']],
     ['#chiefComplaintDescription', 'Chest pains'],
     ['"Vitals stable"', ['click']],
-    ['"Urgency"', ['scrollIntoViewIfNeeded']],
+    ({ scrollToTop }) => scrollToTop('text=Patient info'),
 
     'screenshot',
 
-    ['text=Blood Pressure', ['scrollIntoViewIfNeeded']],
+    ({ scrollToTop }) => scrollToTop('"Vitals"'),
 
     'screenshot',
 

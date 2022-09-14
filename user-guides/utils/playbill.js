@@ -20,6 +20,7 @@ module.exports = class Playbill {
 
     await Playscript.perform({
       page,
+      context,
       screenshots: { outputDir: this.outputDir, name: this.name },
       script: this.script,
     });

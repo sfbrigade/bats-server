@@ -9,11 +9,14 @@ module.exports = class Playscript {
     return new Playscript(...args).perform();
   }
 
-  constructor({ page, screenshots, script }) {
+  constructor({ page, screenshots, context, script }) {
     this.page = page;
     this.script = script;
     this.screenshooter  = new ScreenShooter({ page, ...screenshots });
+    this.context = context;
+
     this.screenshot = (options) => this.screenshooter.take(options);
+    this.scrollToTop = this.scrollToTop.bind(this);
   }
 
   async perform() {
@@ -53,7 +56,7 @@ module.exports = class Playscript {
     if (isFunction(line)) {
       console.log(String(line).replace(/^.+=> /s, ''));
 
-      return line({ page: this.page, screenshot: this.screenshot });
+      return line(this.getFunctionArgs());
     }
 
     if (isString(line)) {
@@ -65,5 +68,25 @@ module.exports = class Playscript {
     }
 
     throw new Error(`Found unreadable line: ${line}`);
+  }
+
+  async scrollToTop(selector) {
+    const headerHeight = (await this.page.locator('.header').evaluate((node) => node.offsetHeight));
+    const offsetTop = (await this.page.locator(selector).evaluate((node) => node.offsetTop));
+
+    // scroll the page to position the selected element below the header, with some margin.  we have to pass in the values via an argument
+    // to the function, since it's evaluated in a different context outside of this closure.
+    await this.page.evaluate(({ offsetTop, headerHeight }) => {
+      document.documentElement.scrollTop = offsetTop - (headerHeight + 10);
+    }, { offsetTop, headerHeight });
+  }
+
+  getFunctionArgs() {
+    return {
+      page: this.page,
+      screenshot: this.screenshot,
+      context: this.context,
+      scrollToTop: this.scrollToTop,
+    };
   }
 };

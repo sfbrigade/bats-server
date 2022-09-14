@@ -21,10 +21,10 @@ const isJS = (filename) => JSPattern.test(filename);
 (async () => {
   await fs.rm(BuildPath, { recursive: true, force: true });
 
-  const files = await fs.readdir(GuidesPath);
+  const files = (await fs.readdir(GuidesPath)).filter(isJS);
 
   // eslint-disable-next-line no-restricted-syntax
-  for (const filename of files.filter(isJS)) {
+  for (const filename of files) {
     const name = filename.match(JSPattern)[1];
     // eslint-disable-next-line import/no-dynamic-require,global-require
     const guide = require(path.resolve(GuidesPath, filename));
