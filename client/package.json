@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^5.8.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -27,12 +28,12 @@
     "uswds": "^2.13.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && yarn sass --no-source-map && yarn postcss --no-map",
+    "start": "craco start",
+    "build": "craco build && yarn sass --no-source-map && yarn postcss --no-map",
     "sass": "sass --load-path=node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
     "postcss": "postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "browserslist": {
     "production": [
