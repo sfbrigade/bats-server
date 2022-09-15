@@ -5,7 +5,7 @@ const session = require('supertest-session');
 const helper = require('../../helper');
 const app = require('../../../app');
 const models = require('../../../models');
-const { DeliveryStatus } = require('../../../../client/src/shared/constants');
+const { DeliveryStatus } = require('../../../../shared/constants');
 
 describe('/api/ringdowns', () => {
   let testSession;

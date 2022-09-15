@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const { Model } = require('sequelize');
-const metadata = require('../../client/src/shared/metadata/user');
-const convertToSequelizeField = require('../../client/src/shared/convertToSequelizeField');
+const metadata = require('../../shared/metadata/user');
+const convertToSequelizeField = require('../../shared/convertToSequelizeField');
 
 const SALT_ROUNDS = 10;
 
