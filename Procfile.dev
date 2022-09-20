@@ -1,4 +1,4 @@
 client: cd client && yarn start
 server: cd server && PROXY_PORT=4000 yarn start:dev
 sass: cd client && yarn sass --watch
-postcss: cd client && yarn postcss --watch
+postcss: sleep 10 && cd client && yarn postcss --watch

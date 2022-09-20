@@ -35,7 +35,7 @@
     "nodemon": "^2.0.18"
   },
   "scripts": {
-    "start:dev": "nodemon -V --ignore ./test ./bin/www",
+    "start:dev": "yarn; ./bin/init; nodemon -V --ignore ./test ./bin/www",
     "start:prod": "node ./bin/www",
     "test": "mocha --recursive test"
   }

@@ -28,7 +28,7 @@
     "uswds": "^2.13.3"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "yarn; craco start",
     "build": "craco build && yarn sass --no-source-map && yarn postcss --no-map",
     "sass": "sass --load-path=node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
     "postcss": "postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css",
