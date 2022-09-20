@@ -10,7 +10,7 @@ RUN wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | apt-key ad
     apt-get install -y postgresql-client-12
 
 # update path to include any installed node module executables
-RUN echo "export PATH=$APP_HOME/node_modules/.bin:$APP_HOME/node_modules/server/.bin:\$PATH\n" >> /root/.bashrc
+RUN echo "export PATH=$APP_HOME/node_modules/.bin:$APP_HOME/server/node_modules/.bin:$APP_HOME/client/node_modules/.bin:\$PATH\n" >> /root/.bashrc
 
 # Create a directory for the server app to run from
 RUN mkdir -p $APP_HOME
