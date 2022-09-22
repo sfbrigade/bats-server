@@ -10,7 +10,7 @@ node_modules
 
 # production
 client/build
-/user-guides/build
+/client/user-guides/build
 
 # misc
 .DS_Store
