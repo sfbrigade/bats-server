@@ -18,9 +18,11 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: yarn run sequelize db:create --env test
+          command: cd client && yarn && cd ../server && yarn
       - run:
-          command: yarn run sequelize db:migrate --env test
+          command: cd server && yarn run sequelize db:create --env test
+      - run:
+          command: cd server && yarn run sequelize db:migrate --env test
       - run:
           command: eval $(cat example.env | grep -v DATABASE_URL | sed 's/^/export /'); yarn run test
 

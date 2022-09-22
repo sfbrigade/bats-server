@@ -1,0 +1,42 @@
+{
+  "name": "routed-server",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.21.4",
+    "bcrypt": "^5.0.1",
+    "bufferutil": "^4.0.6",
+    "cookie-parser": "^1.4.6",
+    "cookie-session": "^1.4.0",
+    "debug": "^4.3.4",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.3",
+    "http-status-codes": "^1.4.0",
+    "lodash": "^4.17.21",
+    "luxon": "^1.28.0",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-oauth2": "^1.6.1",
+    "pg": "^8.7.3",
+    "sequelize": "^6.21.2",
+    "sequelize-auto": "^0.5.4",
+    "sequelize-cli": "^6.4.1",
+    "sequelize-fixtures": "^1.2.0",
+    "supertest": "^4.0.2",
+    "supertest-session": "^4.1.0",
+    "utf-8-validate": "^5.0.9",
+    "ws": "^7.5.8"
+  },
+  "devDependencies": {
+    "mocha": "^8.4.0",
+    "nodemon": "^2.0.18"
+  },
+  "scripts": {
+    "start:dev": "yarn; ./bin/init; nodemon -V --ignore ./test ./bin/www",
+    "start:prod": "node ./bin/www",
+    "test": "mocha --recursive test"
+  }
+}

@@ -1,0 +1,65 @@
+@import '../theme/base';
+
+.beds .heading {
+  border-bottom: 0;
+}
+
+.beds__incoming {
+  font-style: normal !important;
+  color: color('error') !important;
+}
+
+.beds__availability {
+  padding: 1rem 1.5rem 0;
+}
+
+.beds__change-status {
+  @include h4;
+  display: block;
+}
+
+.beds__diversion {
+  @include h3;
+  background: white;
+  border-left: 4px solid color('primary');
+  border-radius: 4px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+  padding: 0.5625rem 1rem 0.5625rem 0.5625rem;
+}
+
+.beds__diversion--on {
+  border-left-color: color('warning');
+}
+
+.beds__notes {
+  padding-top: 0.25rem;
+}
+
+.beds__notes-controls {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+
+  .usa-button {
+    margin: 0;
+    width: 33%;
+  }
+}
+
+.beds__updated {
+  @include h4;
+  color: color('base-light');
+  font-style: italic;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.beds__check-icon {
+  position: absolute;
+  left: -1.5em;
+}
+
+.hide-diversion-status {
+  display: none;
+}

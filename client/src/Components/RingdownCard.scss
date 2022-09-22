@@ -1,0 +1,48 @@
+@import '../theme/base';
+
+.ringdown-card {
+  background-color: white;
+  border: 1px solid color('base-light');
+  box-sizing: border-box;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ringdown-card__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem;
+}
+
+.ringdown-card__complaint-summary {
+  @include h3;
+  align-items: center;
+  margin: 0.75rem;
+  color: color('base');
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.ringdown-card__header button {
+  border: none;
+  color: color('primary');
+  font-weight: 600;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.ringdown-card__status {
+  color: color('base-darkest');
+  font-weight: bold;
+}
+
+.ringdown-card--dismissable {
+  background: color('base-lightest');
+}
+
+.ringdown-card--expanded {
+  border: 2px solid color('primary-vivid');
+}

@@ -1,0 +1,35 @@
+@import '../theme/base';
+
+.ringdown-badge {
+  border-radius: units(0.5);
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  color: color('base-darkest');
+  display: inline-block;
+  font-weight: bold;
+  height: 1.5rem;
+  padding: 0 units(0.5) units(3) units(0.5);
+}
+
+.ringdown-badge--sent,
+.ringdown-badge--received,
+.ringdown-badge--arrived,
+.ringdown-badge--redirected {
+  background-color: color('warning-lighter');
+  border-color: color('warning-darker');
+  color: color('warning-darker');
+}
+
+.ringdown-badge--confirmed,
+.ringdown-badge--offloaded {
+  background-color: color('success-lighter');
+  border-color: color('success');
+  color: color('success');
+}
+
+.ringdown-badge--canceled {
+  background-color: color('error-lighter');
+  border-color: color('error-dark');
+  color: color('error-dark');
+}
