@@ -2,29 +2,30 @@
 
 .ringdown-details {
   background: color('base-lightest');
-  padding: 0 0.5rem 0.75rem;
+  padding: 0 units(1) units(1.5);
+
   table {
     margin: 0;
   }
-  td,
-  th {
-    @include h4;
-    background: color('base-lightest');
-    border-color: color('base-light');
-    border-width: 1px 0 0 0;
-    padding: 0.25rem 0 !important;
+
+  tr:first-child {
+    td,
+    th {
+      border-top: 0;
+    }
   }
 
-  td {
-    padding-left: 0.75rem;
-    text-align: left;
-    background: color('base-lightest');
-    color: color('base-darker');
+  tr:last-child {
+    td,
+    th {
+      border-bottom: 0;
+    }
   }
 
   th {
     color: color('base');
     vertical-align: top;
+    white-space: nowrap;
   }
 
   th[colspan='2'] {
@@ -34,17 +35,20 @@
     padding-top: 1rem !important;
   }
 
-  tr:first-child {
-    td,
-    th {
-      border-top: 0;
-    }
+  td,
+  th {
+    @include h4;
+    background: color('base-lightest');
+    border-color: color('base-light');
+    border-width: 1px 0 0 0;
+    padding: units(0.5) 0;
   }
-  tr:last-child {
-    td,
-    th {
-      border-bottom: 0;
-    }
+
+  td {
+    padding-left: units(1.5);
+    text-align: left;
+    background: color('base-lightest');
+    color: color('base-darker');
   }
 }
 
