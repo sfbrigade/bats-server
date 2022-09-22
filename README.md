@@ -23,24 +23,7 @@
    docker compose exec server bash -l
    ```
 
-   After you log in, you can create your database by changing into the server dir and running:
-
-   ```
-   cd server
-   sequelize db:create
-   ```
-
-   Execute any pending database migrations by running:
-
-   ```
-   sequelize db:migrate
-   ```
-
-   Seed the database with hospitals and test users by running:
-
-   ```
-   sequelize db:seed:all
-   ```
+   The development server will automatically set up the database on first startup.
 
    The test users include (email/password):
 
