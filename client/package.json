@@ -5,6 +5,7 @@
   "dependencies": {
     "@craco/craco": "^5.8.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
+    "@playwright/test": "^1.25.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
