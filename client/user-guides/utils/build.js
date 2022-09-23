@@ -7,9 +7,13 @@ const GuidesPath = './user-guides';
 const BuildPath = path.resolve(GuidesPath, 'build');
 const JSPattern = /^(.+)\.js$/;
 const PlaybillDefaults = {
+  browserOptions: {
+    timeout: 2000,
+  },
   context: {
     baseURL: 'http://localhost:3000',
     viewport: { width: 500, height: 1000 },
+//    deviceScaleFactor: 2,
   },
   options: {
     outputDir: BuildPath,
