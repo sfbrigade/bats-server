@@ -1,6 +1,8 @@
 import React, { useMemo, useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
 
+const ignoreEnterKey = (e) => e.preventDefault();
+
 const FormContext = createContext(undefined);
 
 const Form = ({ data, onChange, children, ...props }) => {
@@ -26,11 +28,14 @@ Form.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   data: PropTypes.object.isRequired,
   onChange: PropTypes.func,
+  onSubmit: PropTypes.func,
   children: PropTypes.node,
 };
 
 Form.defaultProps = {
   onChange: null,
+  // by default, prevent pressing enter on an input from submitting the form
+  onSubmit: ignoreEnterKey,
   children: null,
 };
 

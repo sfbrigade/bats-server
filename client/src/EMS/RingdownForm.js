@@ -95,6 +95,16 @@ function RingdownForm({ className }) {
     setRingdowns([...ringdowns]);
   }
 
+  function onSubmit(event) {
+    if (!ringdown.isValid) {
+      event.preventDefault();
+    } else if (step === 0) {
+      next();
+    } else {
+      send();
+    }
+  }
+
   // prettier-ignore
   return (
     <>
@@ -102,6 +112,7 @@ function RingdownForm({ className }) {
         <Form
           data={ringdown}
           onChange={onChange}
+          onSubmit={onSubmit}
           className={classNames('usa-form', className)}
         >
           <div className="usa-alert usa-alert--info usa-alert--slim usa-alert--no-icon">
