@@ -34,6 +34,12 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
     (currentDeliveryStatus === Status.OFFLOADED ||
       currentDeliveryStatus === Status.CANCELLED ||
       currentDeliveryStatus === Status.REDIRECTED);
+  const drawerTitle =
+    currentDeliveryStatus === Status.OFFLOADED ? (
+      <RingdownBadge status={currentDeliveryStatus} />
+    ) : (
+      <Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />
+    );
 
   return (
     <div
@@ -55,7 +61,7 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
       )}
       {!canBeDismissed && (
         <Drawer
-          title={<Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />}
+          title={drawerTitle}
           subtitle={<div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>}
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
