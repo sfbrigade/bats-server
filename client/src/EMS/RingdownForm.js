@@ -96,12 +96,13 @@ function RingdownForm({ className }) {
   }
 
   function onSubmit(event) {
-    if (!ringdown.isValid) {
-      event.preventDefault();
-    } else if (step === 0) {
-      next();
-    } else {
-      send();
+    event.preventDefault();
+    if (ringdown.isValid) {
+      if (step === 0) {
+        next();
+      } else {
+        send();
+      }
     }
   }
 
