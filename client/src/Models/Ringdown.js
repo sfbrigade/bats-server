@@ -1,6 +1,7 @@
-// eslint-disable func-names
+/* eslint-disable func-names */
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
+import { isValueEmpty } from '../utils';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
 import * as metadata from '../../../shared/metadata';
 import convertToPropType from '../../../shared/convertToPropType';
@@ -97,7 +98,7 @@ class Ringdown {
   // Patient Info
 
   get hasVitals() {
-    return (
+    return !!(
       this.systolicBloodPressure ||
       this.diastolicBloodPressure ||
       this.heartRateBpm ||
@@ -112,7 +113,7 @@ class Ringdown {
   // Addtl Notes
 
   get hasAdditionalNotes() {
-    return (
+    return !!(
       this.treatmentNotes ||
       this.etohSuspectedIndicator ||
       this.drugsSuspectedIndicator ||
@@ -206,9 +207,7 @@ class Ringdown {
   }
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
-    const inputValueType = typeof inputValue;
-    // count 0 and false as non-empty values
-    const isInputValueEmpty = inputValueType !== 'number' && inputValueType !== 'boolean' && !inputValue;
+    const isInputValueEmpty = isValueEmpty(inputValue);
 
     if (currentState === ValidationState.ERROR && !isInputValueEmpty) {
       this.validationData[fieldName].validationState = ValidationState.FIXED;
