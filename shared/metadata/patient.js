@@ -18,6 +18,7 @@ const fields = [
   {
     name: 'emergencyServiceResponseType',
     type: 'enum',
+    label: 'Code',
     typeArgs: ['CODE 2', 'CODE 3'],
     required: true,
   },
@@ -25,6 +26,7 @@ const fields = [
     name: 'age',
     type: 'integer',
     label: 'Age (estimated)',
+    shortLabel: 'Age (estim.)',
     unit: 'years',
     required: true,
     range: { min: 0, max: 130 },
@@ -33,17 +35,22 @@ const fields = [
     name: 'sex',
     type: 'enum',
     typeArgs: ['MALE', 'FEMALE', 'NON-BINARY'],
+    label: 'Gender identity',
+    shortLabel: 'Gender',
     required: true,
   },
   {
     name: 'chiefComplaintDescription',
     type: 'text',
-    label: 'Chief Complaint',
+    label: 'Chief complaint',
+    shortLabel: 'Complaint',
     required: true,
   },
   {
     name: 'stableIndicator',
     type: 'boolean',
+    label: 'Vitals stability',
+    shortLabel: 'Vitals',
     // though this is stored as a boolean, it's rendered in the UI as two radio buttons, not a
     // checkbox, so use null as the default so neither radio is selected
     defaultValue: null,
@@ -69,7 +76,8 @@ const fields = [
   {
     name: 'respiratoryRate',
     type: 'integer',
-    label: 'Respiratory Rate',
+    label: 'Respiratory rate',
+    shortLabel: 'Resp. rate',
     unit: 'breaths/min',
     range: { min: 12, max: 25 },
   },
@@ -95,28 +103,33 @@ const fields = [
     name: 'temperature',
     type: 'decimal',
     label: 'Temperature',
+    shortLabel: 'Temp.',
     unit: '°F',
     range: { min: 80, max: 150 },
   },
   {
     name: 'treatmentNotes',
     type: 'text',
-    label: 'Treatments Administered',
+    label: 'Treatments administered',
+    shortLabel: 'Treatments',
   },
   {
     name: 'etohSuspectedIndicator',
     type: 'boolean',
     label: 'ETOH suspected',
+    shortLabel: 'ETOH',
   },
   {
     name: 'drugsSuspectedIndicator',
     type: 'boolean',
     label: 'Drugs suspected',
+    shortLabel: 'Drugs',
   },
   {
     name: 'psychIndicator',
     type: 'boolean',
     label: 'Behavioral health needs',
+    shortLabel: 'Behavioral',
   },
   {
     name: 'combativeBehaviorIndicator',
@@ -133,6 +146,7 @@ const fields = [
     colName: 'covid-19suspectedindicator',
     type: 'boolean',
     label: 'COVID-19 suspected',
+    shortLabel: 'COVID-19',
   },
   {
     name: 'ivIndicator',
