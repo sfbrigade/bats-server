@@ -113,7 +113,7 @@ function RingdownStatus({ className, onStatusChange, ringdown }) {
           </fieldset>
         )}
         <fieldset className="usa-fieldset border-top border-base-lighter">
-          <RingdownCard ringdown={ringdown} />
+          <RingdownCard ringdown={ringdown} dismissable={false} />
         </fieldset>
       </div>
     </div>
