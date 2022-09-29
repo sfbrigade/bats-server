@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import { isValueEmpty } from '../utils';
 import Ringdown from '../Models/Ringdown';
-import { patient } from '../shared/metadata';
+import { patient } from '../../../shared/metadata';
 
 const PatientFields = patient.getFieldHash();
 
