@@ -1,18 +1,96 @@
+// eslint-disable no-restricted-syntax
+// eslint-disable no-await-in-loop
+
 // get the .env from the root of the project, above the current /client directory
 require('dotenv').config({ path: '../.env' });
 
 const fs = require('fs/promises');
-const { createReadStream } = require('fs');
-const path = require('path');
-//const contentful = require('contentful-management');
-const { getEnvironment } = require('./contentful');
+const { resolve, parse } = require('path');
+const { getEnvironment, fileAssetFields, fields, node, asset, text } = require('./contentful');
+const { readAsset, writeAsset, isPNG } = require('./files');
 
 const GuidesPath = './user-guides';
-const BuildPath = path.resolve(GuidesPath, 'build');
+const BuildPath = resolve(GuidesPath, 'build');
+const AppIDs = {
+  ems: 'EMS',
+  hospital: 'Hospital'
+};
 
 const stringify = (data) => JSON.stringify(data, null, 2);
 
+function guideItem(
+	textString,
+  assetID)
+{
+  return node('list-item', [
+    asset(assetID),
+    node('paragraph', [
+      text(textString)
+    ])
+  ]);
+}
+
+function guideDocument(
+	items)
+{
+  return node('document', [
+    node('ordered-list', items)
+  ]);
+}
+
 (async () => {
+  // set up the Contentful Management API and get the master environment in the Routed space
+  const environment = await getEnvironment();
+
+  for (const app of await fs.readdir(BuildPath)) {
+    for (const guide of (await fs.readdir(resolve(BuildPath, app))).slice(0, 1)) {
+//    for (const guide of await fs.readdir(resolve(BuildPath, app))) {
+      const guidePath = resolve(BuildPath, app, guide);
+      const screenshots = (await fs.readdir(guidePath)).filter(isPNG);
+      const assets = [];
+
+      for (const screenshot of screenshots) {
+        const { name } = parse(screenshot);
+        const title = `${app}-${name}`;
+        let assetInfo = await readAsset(guidePath, name);
+
+        if (!assetInfo) {
+          // upload and create the image asset
+          const asset = await environment.createAssetFromFiles(fileAssetFields(resolve(guidePath, screenshot), title));
+
+          // after the image is uploaded, it has to be processed to make the asset available
+          assetInfo = await asset.processForAllLocales();
+          console.log(app, guide, screenshot);
+
+          await writeAsset(guidePath, assetInfo);
+        }
+
+        assets.push(assetInfo);
+      }
+
+      console.log(stringify(assets));
+
+      const guideText = guideDocument([
+        guideItem('Navigate to https://sf.routedapp.net.', assets[0].sys.id),
+        guideItem('Enter your Email address and Password and press enter or click Login.', assets[1].sys.id),
+      ]);
+
+      try {
+        const guideAsset = await environment.createEntry('userGuide', fields({
+          title: 'Logging In',
+          slug: guide,
+          app: AppIDs[app],
+          body: guideText
+        }));
+
+        console.log(stringify(guideAsset));
+      } catch (e) {
+        console.error("ERROR", e);
+      }
+    }
+  }
+
+/*
   const environment = await getEnvironment();
   const entry = await environment.getEntry('5LXPhz5CgYR7PbeyKQNY7f');
 
@@ -20,56 +98,9 @@ const stringify = (data) => JSON.stringify(data, null, 2);
   await entry.update();
 
   console.log(stringify(entry));
+*/
 })();
 
-/*
-function fields(
-	data)
-{
-	const entries = Object.entries(data).map(([key, value]) => [key, { 'en-US': value }]);
-
-  return {
-    fields: Object.fromEntries(entries)
-  };
-}
-
-function fileAssetFields(
-	directory,
-  filename,
-  extension = "png")
-{
-  const fullFilename = `${filename}.${extension}`;
-
-  return fields({
-    title: filename,
-    file: {
-      contentType: `image/${extension}`,
-      fileName: fullFilename,
-      file: createReadStream(path.resolve(BuildPath, directory, fullFilename))
-    }
-  });
-}
-
-function node(
-	nodeType,
-  content,
-  props = { data: {} })
-{
-	return {
-    nodeType,
-    ...props,
-    ...(content ? { content } : null),
-  };
-}
-
-function text(
-	value,
-  marks = [],
-  props = { data: {} })
-{
-	return node('text', null, { value, marks, ...props });
-}
-*/
 
 //console.log(stringify(
 //  fields(

@@ -1,3 +1,4 @@
+const { resolve } = require('path');
 const { chromium: targetBrowser } = require('@playwright/test');
 const Playscript = require('./playscript');
 
@@ -6,12 +7,14 @@ module.exports = class Playbill {
     return new Playbill(...args).print();
   }
 
-  constructor({ name, script, context, browserOptions, options = {} }) {
+  constructor({ name, app, script, context, browserOptions, options = {} }) {
     this.name = name;
+    this.app = app;
     this.script = script;
     this.context = context;
     this.browserOptions = browserOptions;
-    this.outputDir = options.outputDir ?? './build';
+    this.outputDir = resolve(options.outputDir ?? './build', app);
+//    this.outputDir = options.outputDir ?? './build';
   }
 
   async print() {

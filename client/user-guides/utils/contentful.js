@@ -5,10 +5,6 @@ const { createReadStream } = require('fs');
 const path = require('path');
 const contentful = require('contentful-management');
 
-const GuidesPath = './user-guides';
-const BuildPath = path.resolve(GuidesPath, 'build');
-
-
 async function getEnvironment(
   props = {})
 {
@@ -35,18 +31,17 @@ function fields(
 }
 
 function fileAssetFields(
-  directory,
-  filename,
-  extension = "png")
+  filePath,
+  title)
 {
-  const fullFilename = `${filename}.${extension}`;
+  const { base, name, ext } = path.parse(filePath);
 
   return fields({
-    title: filename,
+    title: title || name,
     file: {
-      contentType: `image/${extension}`,
-      fileName: fullFilename,
-      file: createReadStream(path.resolve(BuildPath, directory, fullFilename))
+      contentType: `image/${ext.slice(1)}`,
+      fileName: base,
+      file: createReadStream(filePath)
     }
   });
 }
@@ -73,10 +68,27 @@ function text(
   return node('text', null, { value, marks, ...props });
 }
 
+function asset(
+	id)
+{
+  return node('embedded-asset-block', [], {
+    data: {
+      target: {
+        sys: {
+          id,
+          linkType: 'Asset',
+          type: 'Link'
+        }
+      }
+    }
+  });
+}
+
 module.exports = {
   getEnvironment,
   fields,
   fileAssetFields,
   node,
   text,
+  asset,
 };
