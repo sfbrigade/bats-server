@@ -1,4 +1,4 @@
-client: react-scripts start
-server: PROXY_PORT=4000 nodemon -V --ignore ./build --ignore ./src --ignore ./test --ignore ./theme ./bin/www
-sass: sass --load-path=node_modules/uswds/dist/scss --style=compressed --watch theme/styles.scss build/libraries/uswds/theme/styles_pre.css
-postcss: postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css --no-map --watch
+client: cd client && yarn start
+server: cd server && PROXY_PORT=4000 yarn start:dev
+sass: cd client && yarn sass --watch
+postcss: sleep 10 && cd client && yarn postcss --watch

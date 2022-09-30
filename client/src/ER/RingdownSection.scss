@@ -1,0 +1,48 @@
+@import '../theme/base';
+
+.ringdown-section + .ringdown-section {
+  border-top: 1px solid color('base-light');
+}
+
+.ringdown-section__header {
+  border-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  &:focus {
+    border: none;
+    outline: inherit;
+  }
+}
+
+.ringdown-section__title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+}
+
+.ringdown-section__badge {
+  @include h2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 12px;
+  position: static;
+  width: 36px;
+  height: 36px;
+  left: 90px;
+  top: 0px;
+  background: color('base');
+  color: white;
+  border-radius: 8px;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 12px;
+}
+
+.ringdown-section__caret {
+  color: color('base-darker');
+}

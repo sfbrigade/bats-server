@@ -1,0 +1,60 @@
+@import '../theme/base';
+
+.ringdown-details {
+  background: color('base-lightest');
+  padding: 0 units(1) units(1.5);
+
+  table {
+    margin: 0;
+  }
+
+  tr:first-child {
+    td,
+    th {
+      border-top: 0;
+    }
+  }
+
+  tr:last-child {
+    td,
+    th {
+      border-bottom: 0;
+    }
+  }
+
+  th {
+    color: color('base');
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  th[colspan='2'] {
+    @include h4-bold;
+    border-top-color: transparent;
+    color: color('base-darker');
+    padding-top: 1rem !important;
+  }
+
+  td,
+  th {
+    @include h4;
+    background: color('base-lightest');
+    border-color: color('base-light');
+    border-width: 1px 0 0 0;
+    padding: units(0.5) 0;
+  }
+
+  td {
+    padding-left: units(1.5);
+    text-align: left;
+    background: color('base-lightest');
+    color: color('base-darker');
+  }
+}
+
+.ringdown-details__header + tr {
+  & > td,
+  th {
+    border-top-color: transparent;
+  }
+}

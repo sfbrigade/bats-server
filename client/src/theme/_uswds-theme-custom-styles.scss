@@ -1,0 +1,320 @@
+/*
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+========================================
+========================================
+========================================
+----------------------------------------
+USWDS THEME CUSTOM STYLES
+----------------------------------------
+!! Copy this file to your project's
+   sass root. Don't edit the version
+   in node_modules.
+----------------------------------------
+Custom project SASS goes here.
+
+i.e.
+@include u-padding-right('05');
+----------------------------------------
+*/
+
+@import 'uswds-theme-custom-mixins';
+
+html.no-scrolling {
+  overflow: hidden;
+}
+
+.logo {
+  width: 150px;
+  height: 35px;
+}
+
+h1,
+.h1 {
+  @include h1;
+}
+
+h2,
+.h2 {
+  @include h2;
+}
+
+h3,
+.h3 {
+  @include h3;
+}
+
+h4,
+.h4 {
+  @include h4;
+}
+
+.h4-bold {
+  @include h4-bold;
+}
+
+.h4-italic {
+  @include h4-italic;
+}
+
+input,
+select,
+textarea {
+  &.usa-input--disabled {
+    border-color: color('base-lighter');
+  }
+
+  &:not([disabled]):not(.usa-input--error):focus {
+    @include focus-shadow();
+  }
+
+  &.usa-input--error:not([disabled]):focus {
+    @include error-shadow();
+  }
+}
+
+iframe,
+[href],
+[tabindex],
+[contentEditable='true'] {
+  &:focus {
+    @include focus-shadow();
+  }
+}
+
+.usa-focus {
+  @include focus-shadow();
+}
+
+.flex-row {
+  & > .usa-checkbox .usa-checkbox__label,
+  & > .usa-radio .usa-radio__label {
+    margin-top: 0;
+  }
+}
+
+.grid-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.minh-100vh {
+  min-height: 100vh;
+}
+
+// animated spinner taken from Bootstrap
+
+$spinner-width: 2rem;
+$spinner-height: 2rem;
+$spinner-border-width: 0.25em;
+
+$spinner-width-sm: 1rem;
+$spinner-height-sm: 1rem;
+$spinner-border-width-sm: 0.2em;
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-border {
+  display: inline-block;
+  width: $spinner-width;
+  height: $spinner-height;
+  vertical-align: text-bottom;
+  border: $spinner-border-width solid currentColor;
+  border-right-color: transparent;
+  // stylelint-disable-next-line property-blacklist
+  border-radius: 50%;
+  animation: spinner-border 0.75s linear infinite;
+}
+
+.spinner-border-sm {
+  width: $spinner-width-sm;
+  height: $spinner-height-sm;
+  border-width: $spinner-border-width-sm;
+}
+
+.usa-accordion__heading {
+  @include h2;
+  border-bottom: 1px solid color('base-lighter');
+  padding: 1.25rem 1.5rem 0.5rem;
+
+  .heading__subtitle {
+    @include h4-italic;
+    color: color('base-light');
+  }
+}
+
+.usa-accordion__content {
+  overflow: initial;
+  padding: 0;
+}
+
+.usa-alert__heading {
+  @include h2;
+}
+
+.usa-alert--info {
+  background-color: color('primary-lighter');
+}
+
+.usa-button--outline.usa-button--secondary {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 2px color('secondary');
+  color: color('secondary');
+}
+
+.usa-card__container {
+  border: 0;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.usa-card__header {
+  @include h4;
+  background-color: white;
+  color: color('base-light');
+  margin: 0.25rem 0.25rem 0;
+  padding: 0.75rem 1.25rem 0;
+}
+
+.usa-card__body {
+  @include h3;
+  background-color: white;
+  margin: 0 0.25rem;
+  padding: 0 1.25rem 1rem;
+}
+
+.usa-card__footer {
+  border-top: 1px solid color('base-lighter');
+  padding: 1rem 1.5rem;
+
+  &:first-child {
+    border-top: 0;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+  }
+}
+
+// remove the white background that USWDS puts behind the checkbox/radio component
+.usa-checkbox,
+.usa-radio {
+  background: none;
+}
+
+.usa-checkbox__label,
+.usa-radio__label {
+  @include u-margin-top(2);
+}
+
+textarea + .usa-checkbox > .usa-checkbox__label,
+textarea + .usa-radio > .usa-radio__label {
+  @include u-margin-top(4);
+}
+
+.usa-combo-box__clear-input {
+  display: none !important;
+}
+
+.usa-error-message {
+  color: color('error');
+  font-weight: normal;
+}
+
+.usa-error-message {
+  position: absolute;
+}
+
+.usa-error-message--static {
+  position: static;
+}
+
+.usa-fieldset {
+  padding: 1.5rem;
+}
+
+.usa-fieldset + .usa-fieldset {
+  padding-top: 0.5rem;
+}
+
+.usa-fieldset > .usa-button:first-child,
+.usa-fieldset > .usa-checkbox:first-child .usa-checkbox__label,
+.usa-fieldset > .usa-radio:first-child .usa-radio__label {
+  margin-top: 0;
+}
+
+.usa-fieldset > .usa-label + .usa-checkbox .usa-checkbox__label,
+.usa-fieldset > .usa-label + .usa-radio .usa-radio__label {
+  margin-top: 1rem;
+}
+
+.usa-form {
+  @include at-media('mobile-lg') {
+    max-width: none;
+  }
+
+  .usa-button {
+    @include u-margin-top(4);
+  }
+}
+
+.usa-hint--important {
+  color: color('primary-vivid');
+}
+
+.usa-hint--unit {
+  color: color('base-light');
+  font-size: 1.25rem;
+}
+
+.usa-combo-box__input,
+.usa-input,
+.usa-select,
+.usa-textarea {
+  @include h3;
+  border-radius: 0.25rem;
+
+  // add the same top margin to the hint so it aligns with the field, and make it inline-block,
+  // since it's rendered as a span
+  & + .usa-hint {
+    @include u-margin-top(1);
+    display: inline-block;
+  }
+
+  &.usa-input--error {
+    @include error-shadow();
+  }
+}
+
+.usa-label {
+  @include h4-bold;
+  margin-top: 2rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &.usa-label--error {
+    color: color('error');
+  }
+}
+
+.usa-label--required {
+  color: inherit;
+  position: relative;
+
+  &::before {
+    @include u-text($theme-color-secondary-dark);
+    content: '*\00a0';
+    position: absolute;
+    right: 100%;
+  }
+}
+
+.usa-label--focused {
+  color: color('primary-vivid');
+}

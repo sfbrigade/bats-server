@@ -1,81 +1,49 @@
 {
-  "name": "bats-server",
+  "name": "routed",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.4",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.21.4",
-    "bcrypt": "^5.0.1",
-    "bootstrap": "^4.6.1",
-    "bufferutil": "^4.0.6",
-    "classnames": "^2.3.1",
-    "cookie-parser": "^1.4.6",
-    "cookie-session": "^1.4.0",
-    "debug": "^4.3.4",
-    "ejs": "^3.1.8",
-    "express": "^4.18.1",
-    "express-ejs-layouts": "^2.5.1",
-    "express-session": "^1.17.3",
-    "foreman": "^3.0.1",
-    "http-proxy-middleware": "^2.0.6",
-    "http-status-codes": "^1.4.0",
-    "lodash": "^4.17.21",
-    "luxon": "^1.28.0",
-    "mocha": "^8.4.0",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.18",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "passport-oauth2": "^1.6.1",
-    "pg": "^8.7.3",
-    "prop-types": "^15.8.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-router": "^5.3.3",
-    "react-router-dom": "^5.3.3",
-    "react-scripts": "3.4.4",
-    "react-use-websocket": "^2.9.1",
-    "sass": "^1.53.0",
-    "sass-loader": "^10.3.0",
-    "sequelize": "^6.21.2",
-    "sequelize-auto": "^0.5.4",
-    "sequelize-cli": "^6.4.1",
-    "sequelize-fixtures": "^1.2.0",
-    "supertest": "^4.0.2",
-    "supertest-session": "^4.1.0",
-    "use-sound": "^4.0.1",
-    "uswds": "^2.13.3",
-    "utf-8-validate": "^5.0.9",
-    "ws": "^7.5.8"
-  },
   "engines": {
     "node": "16.13.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start:dev": "nf start -j Procfile.dev",
-    "start:prod": "nf start",
     "docker:start": "docker compose up",
     "docker:bash": "docker compose exec server bash -l",
-    "build": "react-scripts build && yarn sass && yarn postcss",
-    "sass": "sass --load-path=node_modules/uswds/dist/scss --no-source-map --style=compressed theme/styles.scss build/libraries/uswds/theme/styles.css",
-    "postcss": "postcss build/libraries/uswds/theme/*.css --use autoprefixer --replace --no-map",
+    "heroku-prebuild": "cd client && yarn && cd ../server && yarn",
+    "heroku-postbuild": "cd client && yarn build",
+    "start:dev": "nf start -j Procfile.dev",
+    "start:prod": "nf start",
     "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",
-    "test:client": "react-scripts test",
-    "test:server": "mocha --recursive",
-    "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "lint:changed": "eslint $(git diff --name-only | xargs)",
+    "test:client": "cd client && yarn test",
+    "test:server": "cd server && yarn test",
+    "lint": "yarn eslint .",
+    "lint:changed": "yarn eslint $(git diff --name-only | xargs)",
     "format": "yarn prettier --write .",
-    "format:changed": "prettier --write $(git diff --name-only | xargs)"
+    "format:changed": "yarn prettier --write $(git diff --name-only | xargs)"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules",
+    "server/node_modules"
+  ],
+  "dependencies": {
+    "foreman": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "prettier": "^2.7.1"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "airbnb",
       "plugin:jsx-a11y/recommended",
       "prettier",
       "prettier/react"
@@ -132,31 +100,5 @@
       "build",
       "node_modules"
     ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.8",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.0",
-    "postcss": "^8.4.14",
-    "postcss-cli": "^10.0.0",
-    "prettier": "2.1.1"
   }
 }

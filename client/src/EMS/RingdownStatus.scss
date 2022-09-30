@@ -1,0 +1,29 @@
+@import '../theme/base';
+
+.ringdownstatus {
+  .usa-fieldset + .usa-fieldset {
+    padding-top: 1.5rem;
+  }
+
+  .usa-fieldset:last-child {
+    background-color: color('base-lightest');
+  }
+}
+
+.ringdownstatus__label {
+  color: color('base-light');
+  margin: 0;
+
+  .ringdownstatus__label-text {
+    padding-right: units(1);
+  }
+
+  .timestamp__time {
+    color: color('base-darkest');
+    font-weight: bold;
+  }
+}
+
+[class*=' ringdownstatus__label--'] {
+  margin-top: 0.75rem;
+}

@@ -1,1 +1,1 @@
-web: node ./bin/www
+web: cd server && yarn start:prod

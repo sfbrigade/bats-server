@@ -1,0 +1,31 @@
+@import '../theme/base';
+
+.form-radio-field-set {
+  padding: 1rem 0;
+
+  .usa-error-message {
+    position: relative;
+  }
+}
+
+.form-radio-field-set__background {
+  padding: 0.5rem 1.5rem;
+}
+
+.form-radio-field-set {
+  & + .form-radio-field-set,
+  & + .usa-fieldset {
+    padding-top: 0;
+  }
+}
+
+.form-radio-field-set--error {
+  .usa-label {
+    color: color('error');
+  }
+
+  // turn the empty radio button circles red in the error state
+  .usa-radio__label::before {
+    box-shadow: 0 0 0 units($theme-input-select-border-width) color('error-dark');
+  }
+}
