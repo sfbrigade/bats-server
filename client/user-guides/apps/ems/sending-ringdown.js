@@ -1,6 +1,7 @@
-const { loginEMS } = require('./utils/snippets');
+const { loginEMS } = require('../../utils/snippets');
 
 module.exports = {
+  title: 'Sending a Ringdown',
   script: [
     ...loginEMS,
     ['"Unit #"', ['click']],
@@ -16,7 +17,7 @@ module.exports = {
     ['"Code 2"', ['click']],
     ['"Age (estimated)"', 58],
     ['"Male"', ['click']],
-    ['#chiefComplaintDescription', 'Chest pains'],
+    ['#chiefComplaintDescription', 'Chest pain'],
     ['"Vitals stable"', ['click']],
     ({ scrollToTop }) => scrollToTop('text=Patient info'),
 

@@ -1,6 +1,26 @@
 const { writeJson, readJson } = require('fs-extra');
-const { parse, resolve } = require('path');
+const { parse, join } = require('path');
 const createIs = (pattern) => (filename) => pattern.test(filename);
+
+const JSONExtension = '.json';
+
+function writeJSON(
+	path,
+  data,
+  options = { spaces: 2 })
+{
+	let fullPath = path;
+
+  if (Array.isArray(path)) {
+    fullPath = join(...path);
+  }
+
+  if (parse(fullPath).ext !== JSONExtension) {
+    fullPath += JSONExtension;
+  }
+
+	return writeJson(fullPath, data, options);
+}
 
 function writeAsset(
   path,
@@ -8,20 +28,21 @@ function writeAsset(
 {
   const { name } = parse(assetInfo.fields.file['en-US'].fileName);
 
-	return writeJson(resolve(path, name + '.json'), assetInfo, { spaces: 2 });
+	return writeJSON([path, name], assetInfo);
 }
 
 async function readAsset(
   path, name)
 {
   try {
-    return await readJson(resolve(path, name + '.json'));
+    return await readJson(join(path, name + '.json'));
   } catch (e) {
     return null;
   }
 }
 
 module.exports = {
+  writeJSON,
   writeAsset,
   readAsset,
   isJS: createIs(/^(.+)\.js$/),

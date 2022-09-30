@@ -1,20 +1,22 @@
-const { resolve } = require('path');
+const { join } = require('path');
 const { chromium: targetBrowser } = require('@playwright/test');
+
 const Playscript = require('./playscript');
+const { writeJSON } = require('./files');
 
 module.exports = class Playbill {
   static print(...args) {
     return new Playbill(...args).print();
   }
 
-  constructor({ name, app, script, context, browserOptions, options = {} }) {
+  constructor({ name, app, title = name, script, context, browserOptions, options = {} }) {
     this.name = name;
     this.app = app;
+    this.title = title;
     this.script = script;
     this.context = context;
     this.browserOptions = browserOptions;
-    this.outputDir = resolve(options.outputDir ?? './build', app);
-//    this.outputDir = options.outputDir ?? './build';
+    this.outputDir = join(options.outputDir ?? './build', app);
   }
 
   async print() {
@@ -35,5 +37,10 @@ module.exports = class Playbill {
     });
 
     await browser.close();
+    await writeJSON([this.outputDir, this.name, 'metadata'], {
+      title: this.title,
+      name: this.name,
+      buildTime: new Date().toISOString()
+    });
   }
 };

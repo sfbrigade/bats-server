@@ -5,16 +5,11 @@
 require('dotenv').config({ path: '../.env' });
 
 const fs = require('fs/promises');
-const { resolve, parse } = require('path');
+const { join, parse } = require('path');
+
+const { BuildPath, AppIDs } = require('./constants');
 const { getEnvironment, fileAssetFields, fields, node, asset, text } = require('./contentful');
 const { readAsset, writeAsset, isPNG } = require('./files');
-
-const GuidesPath = './user-guides';
-const BuildPath = resolve(GuidesPath, 'build');
-const AppIDs = {
-  ems: 'EMS',
-  hospital: 'Hospital'
-};
 
 const stringify = (data) => JSON.stringify(data, null, 2);
 
@@ -43,9 +38,9 @@ function guideDocument(
   const environment = await getEnvironment();
 
   for (const app of await fs.readdir(BuildPath)) {
-    for (const guide of (await fs.readdir(resolve(BuildPath, app))).slice(0, 1)) {
-//    for (const guide of await fs.readdir(resolve(BuildPath, app))) {
-      const guidePath = resolve(BuildPath, app, guide);
+    for (const guide of (await fs.readdir(join(BuildPath, app))).slice(0, 1)) {
+//    for (const guide of await fs.readdir(join(BuildPath, app))) {
+      const guidePath = join(BuildPath, app, guide);
       const screenshots = (await fs.readdir(guidePath)).filter(isPNG);
       const assets = [];
 
@@ -56,7 +51,7 @@ function guideDocument(
 
         if (!assetInfo) {
           // upload and create the image asset
-          const asset = await environment.createAssetFromFiles(fileAssetFields(resolve(guidePath, screenshot), title));
+          const asset = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), title));
 
           // after the image is uploaded, it has to be processed to make the asset available
           assetInfo = await asset.processForAllLocales();
@@ -257,7 +252,7 @@ client.getSpace(process.env.CONTENTFUL_SPACE_ID).then((space) => {
 const Playbill = require('./playbill');
 
 const GuidesPath = './user-guides';
-const BuildPath = path.resolve(GuidesPath, 'build');
+const BuildPath = path.join(GuidesPath, 'build');
 const JSPattern = /^(.+)\.js$/;
 const PlaybillDefaults = {
   browserOptions: {
@@ -284,7 +279,7 @@ const isJS = (filename) => JSPattern.test(filename);
   for (const filename of files) {
     const name = filename.match(JSPattern)[1];
     // eslint-disable-next-line import/no-dynamic-require,global-require
-    const guide = require(path.resolve(GuidesPath, filename));
+    const guide = require(path.join(Gu`idesPath, filename));
 
     console.log(name);
 

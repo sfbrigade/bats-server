@@ -1,6 +1,7 @@
-const { fillEMS } = require('./utils/snippets');
+const { fillEMS } = require('../../utils/snippets');
 
 module.exports = {
+  title: 'Logging In',
   script: [
     [['goto', '/auth/local/login']],
     ['#username', ['click']],

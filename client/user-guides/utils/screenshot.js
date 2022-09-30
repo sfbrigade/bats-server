@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const { join } = require('path');
 
 module.exports = class ScreenShooter {
   constructor({ page, outputDir = '', name = 'screenshot' }) {
@@ -16,10 +16,10 @@ module.exports = class ScreenShooter {
   }
 
   getOutputDirPath() {
-    return resolve(this.outputDir, this.name);
+    return join(this.outputDir, this.name);
   }
 
   getOutputFilePath() {
-    return resolve(this.getOutputDirPath(), `${this.name}-${this.count}.png`);
+    return join(this.getOutputDirPath(), `${this.name}-${this.count}.png`);
   }
 };

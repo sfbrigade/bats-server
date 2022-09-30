@@ -1,11 +1,12 @@
+// eslint-disable no-restricted-syntax
+// eslint-disable no-await-in-loop
 const fs = require('fs/promises');
-const path = require('path');
+const { join, parse } = require('path');
 
+const { BuildPath, AppsPath } = require('./constants');
 const Playbill = require('./playbill');
+const { isJS } = require('./files');
 
-const GuidesPath = './user-guides';
-const BuildPath = path.resolve(GuidesPath, 'build');
-const JSPattern = /^(.+)\.js$/;
 const PlaybillDefaults = {
   browserOptions: {
     timeout: 2000,
@@ -20,28 +21,27 @@ const PlaybillDefaults = {
   },
 };
 
-const isJS = (filename) => JSPattern.test(filename);
-
 (async () => {
   await fs.rm(BuildPath, { recursive: true, force: true });
 
-  const files = (await fs.readdir(GuidesPath)).filter(isJS);
+  for (const app of await fs.readdir(AppsPath)) {
+    const currentPath = join(AppsPath, app);
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const filename of files) {
-    const name = filename.match(JSPattern)[1];
-    // eslint-disable-next-line import/no-dynamic-require,global-require
-    const guide = require(path.resolve(GuidesPath, filename));
+    for (const filename of (await fs.readdir(currentPath)).filter(isJS)) {
+      const { name } = parse(filename);
+      // eslint-disable-next-line import/no-dynamic-require,global-require
+      const guide = require(join(currentPath, filename));
 
-    console.log(name);
+      console.log(name);
 
-    // eslint-disable-next-line no-await-in-loop
-    await Playbill.print({
-      ...PlaybillDefaults,
-      name,
-      ...guide,
-    });
+      await Playbill.print({
+        ...PlaybillDefaults,
+        name,
+        app,
+        ...guide,
+      });
 
-    console.log('\n');
+      console.log('\n');
+    }
   }
 })();
