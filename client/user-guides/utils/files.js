@@ -1,8 +1,9 @@
 const { writeJson, readJson } = require('fs-extra');
 const { parse, join } = require('path');
-const createIs = (pattern) => (filename) => pattern.test(filename);
 
 const JSONExtension = '.json';
+
+const createIs = (pattern) => (filename) => pattern.test(filename);
 
 function writeJSON(
 	path,
