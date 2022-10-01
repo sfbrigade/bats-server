@@ -1,4 +1,4 @@
-const { fillEMS } = require('../../utils/snippets');
+const { fillEMS } = require('../utils/snippets');
 
 module.exports = {
   title: 'Logging In',

@@ -20,28 +20,28 @@ const PlaybillDefaults = {
     outputDir: BuildPath,
   },
 };
+const AppPattern = /^(\w+)-/;
 
 (async () => {
+  const scriptsPath = AppsPath;
+
   await fs.rm(BuildPath, { recursive: true, force: true });
 
-  for (const app of await fs.readdir(AppsPath)) {
-    const currentPath = join(AppsPath, app);
+  for (const filename of (await fs.readdir(scriptsPath)).filter(isJS)) {
+    const { name } = parse(filename);
+    const app = name.match(AppPattern)[1];
+    // eslint-disable-next-line import/no-dynamic-require,global-require
+    const guide = require(join(scriptsPath, filename));
 
-    for (const filename of (await fs.readdir(currentPath)).filter(isJS)) {
-      const { name } = parse(filename);
-      // eslint-disable-next-line import/no-dynamic-require,global-require
-      const guide = require(join(currentPath, filename));
+    console.log(name);
 
-      console.log(name);
+    await Playbill.print({
+      ...PlaybillDefaults,
+      name,
+      app,
+      ...guide,
+    });
 
-      await Playbill.print({
-        ...PlaybillDefaults,
-        name,
-        app,
-        ...guide,
-      });
-
-      console.log('\n');
-    }
+    console.log('\n');
   }
 })();

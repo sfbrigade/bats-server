@@ -5,6 +5,7 @@
 require('dotenv').config({ path: '../.env' });
 
 const fs = require('fs/promises');
+const { createReadStream } = require('fs');
 const { join, parse } = require('path');
 
 const { BuildPath, AppIDs } = require('./constants');
@@ -33,57 +34,122 @@ function guideDocument(
   ]);
 }
 
+async function getGuideAssets()
+{
+  const guidePattern = /^((ems|hospital)-[-\w]+)-(\d+)$/;
+  const environment = await getEnvironment();
+  const assets = (await environment.getAssets())?.items;
+  const assetsByTitle = assets.reduce((result, asset) => {
+    const title = asset.fields.title['en-US'];
+
+    if (guidePattern.test(title)) {
+      result[title] = asset;
+    }
+
+    return result;
+  }, {});
+
+  return assetsByTitle;
+}
+
 (async () => {
   // set up the Contentful Management API and get the master environment in the Routed space
   const environment = await getEnvironment();
 
-  for (const app of await fs.readdir(BuildPath)) {
-    for (const guide of (await fs.readdir(join(BuildPath, app))).slice(0, 1)) {
+//  const guideScripts = await environment.getEntries({ content_type: 'userGuideSteps', fields: { slug: 'sending-ringdown', app: 'EMS' } });
+//  const guideScripts = await environment.getEntries({ content_type: 'userGuideSteps' });
+
+//  console.log(stringify(guideScripts));
+
+  const assetsByName = await getGuideAssets();
+
+//  console.log(stringify(assetsByName));
+
+//return;
+
+//  for (const app of await fs.readdir(BuildPath)) {
+  for (const guide of (await fs.readdir(BuildPath)).slice(0, 1)) {
+//  for (const guide of await fs.readdir(BuildPath)) {
+//    for (const guide of (await fs.readdir(join(BuildPath, app))).slice(0, 1)) {
 //    for (const guide of await fs.readdir(join(BuildPath, app))) {
-      const guidePath = join(BuildPath, app, guide);
+      const guidePath = join(BuildPath, guide);
+//      const guidePath = join(BuildPath, app, guide);
       const screenshots = (await fs.readdir(guidePath)).filter(isPNG);
       const assets = [];
 
       for (const screenshot of screenshots) {
         const { name } = parse(screenshot);
-        const title = `${app}-${name}`;
-        let assetInfo = await readAsset(guidePath, name);
+//        const title = `${app}-${name}`;
+        let assetInfo = assetsByName[name];
+//        let assetInfo = await readAsset(guidePath, name);
 
-        if (!assetInfo) {
+        if (assetInfo) {
+console.log("upload", name);
+          const upload = await environment.createUpload({
+            file: createReadStream(join(guidePath, screenshot)),
+          });
+          const { contentType, fileName } = assetInfo.fields.file['en-US'];
+
+console.log(upload);
+console.log(assetInfo.fields.file['en-US']);
+
+          assetInfo.fields.file['en-US'] = {
+            contentType,
+            fileName,
+            uploadFrom: {
+              sys: {
+                type: "Link",
+                linkType: "Upload",
+                id: upload.sys.id
+              }
+            }
+          };
+console.log("AFTER", assetInfo.fields.file['en-US']);
+
+          // we have to await the update.  otherwise, the SDK will think it timed out.
+          assetInfo = await assetInfo.update();
+
+console.log("AFTER update", assetInfo);
+        } else {
           // upload and create the image asset
-          const asset = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), title));
-
-          // after the image is uploaded, it has to be processed to make the asset available
-          assetInfo = await asset.processForAllLocales();
-          console.log(app, guide, screenshot);
-
-          await writeAsset(guidePath, assetInfo);
+          assetInfo = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), name));
+//          const asset = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), title));
         }
+
+        // after the image is uploaded, it has to be processed to make the asset available
+        assetInfo = await assetInfo.processForAllLocales();
+console.log(assetInfo);
+        console.log(guide, screenshot);
+
+        assetsByName[name] = assetInfo;
+        await writeAsset(guidePath, assetInfo);
 
         assets.push(assetInfo);
       }
 
-      console.log(stringify(assets));
-
-      const guideText = guideDocument([
-        guideItem('Navigate to https://sf.routedapp.net.', assets[0].sys.id),
-        guideItem('Enter your Email address and Password and press enter or click Login.', assets[1].sys.id),
-      ]);
-
-      try {
-        const guideAsset = await environment.createEntry('userGuide', fields({
-          title: 'Logging In',
-          slug: guide,
-          app: AppIDs[app],
-          body: guideText
-        }));
-
-        console.log(stringify(guideAsset));
-      } catch (e) {
-        console.error("ERROR", e);
-      }
-    }
+//      console.log(stringify(assets));
+//
+//      const guideText = guideDocument([
+//        guideItem('Navigate to https://sf.routedapp.net.', assets[0].sys.id),
+//        guideItem('Enter your Email address and Password and press enter or click Login.', assets[1].sys.id),
+//      ]);
+//
+//      try {
+//        const guideAsset = await environment.createEntry('userGuide', fields({
+//          title: 'Logging In',
+//          slug: guide,
+//          app: AppIDs[app],
+//          body: guideText
+//        }));
+//
+//        console.log(stringify(guideAsset));
+//      } catch (e) {
+//        console.error("ERROR", e);
+//      }
+//    }
   }
+
+  console.log(stringify(assetsByName));
 
 /*
   const environment = await getEnvironment();

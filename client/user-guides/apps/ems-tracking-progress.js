@@ -1,4 +1,4 @@
-const { loginEMS } = require('../../utils/snippets');
+const { loginEMS } = require('../utils/snippets');
 
 module.exports = {
   title: 'Tracking Progress',

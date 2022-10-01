@@ -9,14 +9,14 @@ module.exports = class Playbill {
     return new Playbill(...args).print();
   }
 
-  constructor({ name, app, title = name, script, context, browserOptions, options = {} }) {
+  constructor({ name, app, title = name, script, context, browserOptions, options = { outputDir: './build' } }) {
     this.name = name;
     this.app = app;
     this.title = title;
     this.script = script;
     this.context = context;
     this.browserOptions = browserOptions;
-    this.outputDir = join(options.outputDir ?? './build', app);
+    this.outputDir = options.outputDir;
   }
 
   async print() {
