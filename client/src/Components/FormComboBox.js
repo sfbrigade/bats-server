@@ -6,35 +6,69 @@ import { comboBox } from '../../node_modules/uswds/src/js/components';
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
 
+/**
+ * Normally, the USWDS ComboBox ONLY allows selection of a value from the options list. The
+ * text input is used only as a typeahead search filter.
+ *
+ * This component attempts to extend the behavior of the ComboBox such that it also allows
+ * a free-form value typed in the text input box to be an acceptable value. For example,
+ * if our CAD integration is behind and an incident number is not yet available in the dropdown,
+ * it can still be typed in manually into the box.
+ *
+ */
 function FormComboBox({ label, property, required, onChange, options, showRequiredHint, size, validationState, value }) {
   const ref = useRef();
   const [focused, setFocused] = useState(false);
-  const [customOption, setCustomOption] = useState(null);
+  // the inputValue state mirrors the contents of the input box created by USWDS ComboBox
+  const [inputValue, setInputValue] = useState(value);
 
   useEffect(() => {
     const { current } = ref;
     comboBox.on(current);
-    // manually add event handlers to the custom input added by USWDS
+    // get a reference to the select component so we can dispatch events through it
     const select = current.querySelector('select');
-    const input = current.querySelector('input[type="text"]');
-    input.addEventListener('input', (e) => setCustomOption(e.target.value));
-    input.addEventListener('focus', () => setFocused(true));
-    input.addEventListener('blur', (e) => {
-      setFocused(false);
-      select.value = e.target.value;
+    function dispatchEvent(value) {
+      select.value = value;
       const event = new CustomEvent('change', {
         bubbles: true,
         cancelable: true,
         detail: { value },
       });
       select.dispatchEvent(event);
+    }
+    // manually add event handlers to the custom input added by USWDS
+    const input = current.querySelector('input[type="text"]');
+    input.addEventListener('input', (e) => {
+      // just capture the typed in input value so that it can be added to the
+      // select options if it doesn't already match one of them
+      setInputValue(e.target.value);
     });
-    input.value = value;
+    input.addEventListener('change', (e) => {
+      if (e instanceof CustomEvent) {
+        // a custom change event on the input is done sometimes by USWDS ComboBox
+        // that causes the input value and select value to get out of sync-
+        // this puts it back into sync
+        setInputValue(e.target.value);
+        dispatchEvent(e.target.value);
+      }
+    });
+    input.addEventListener('focus', () => setFocused(true));
+    input.addEventListener('blur', (e) => {
+      // when we blur/exit the input, we dispatch the value through the
+      // select as the selected value
+      setFocused(false);
+      dispatchEvent(e.target.value);
+    });
     return () => {
       comboBox.off(current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const { current } = ref;
+    const input = current.querySelector('input[type="text"]');
+    input.value = value;
+  }, [value]);
 
   useEffect(() => {
     const { current } = ref;
@@ -47,23 +81,12 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     }
   }, [validationState]);
 
-  // first check if value exists as customOption or in options, if not, set as the custom option
-  if (value && value !== customOption) {
-    if (options.every((o) => value.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
-      setCustomOption(value);
-    } else if (customOption) {
-      setCustomOption(null);
-    }
-  }
   // combine the custom entered value in the input box with the options as needed
   let combinedOptions = options;
-  if (
-    customOption &&
-    options.every((o) => customOption.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)
-  ) {
+  if (inputValue && options.every((o) => inputValue.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
     combinedOptions = [
-      <option key={customOption} value={customOption}>
-        {customOption}
+      <option key={inputValue} value={inputValue}>
+        {inputValue}
       </option>,
     ].concat(options);
   }
