@@ -25,8 +25,6 @@ const AppPattern = /^(\w+)-/;
 (async () => {
   const scriptsPath = AppsPath;
 
-  await fs.rm(BuildPath, { recursive: true, force: true });
-
   for (const filename of (await fs.readdir(scriptsPath)).filter(isJS)) {
     const { name } = parse(filename);
     const app = name.match(AppPattern)[1];
@@ -35,6 +33,8 @@ const AppPattern = /^(\w+)-/;
 
     console.log(name);
 
+    // clear the current output path before generating new screenshots
+    await fs.rm(join(BuildPath, name), { recursive: true, force: true });
     await Playbill.print({
       ...PlaybillDefaults,
       name,

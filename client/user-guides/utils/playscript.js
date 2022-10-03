@@ -4,6 +4,8 @@ const { isArray } = Array;
 const isFunction = (value) => typeof value === 'function';
 const isString = (value) => typeof value === 'string';
 
+const BoundMethods = ['screenshot', 'scrollToTop', 'step'];
+
 module.exports = class Playscript {
   static perform(...args) {
     return new Playscript(...args).perform();
@@ -12,11 +14,11 @@ module.exports = class Playscript {
   constructor({ page, screenshots, context, script }) {
     this.page = page;
     this.script = script;
-    this.screenshooter  = new ScreenShooter({ page, ...screenshots });
+    this.screenshooter = new ScreenShooter({ page, ...screenshots });
     this.context = context;
+    this.steps = [];
 
-    this.screenshot = (options) => this.screenshooter.take(options);
-    this.scrollToTop = this.scrollToTop.bind(this);
+    BoundMethods.forEach((method) => (this[method] = this[method].bind(this)));
   }
 
   async perform() {
@@ -25,6 +27,8 @@ module.exports = class Playscript {
       // eslint-disable-next-line no-await-in-loop
       await this.read(line);
     }
+
+    return this.steps;
   }
 
   async read(line) {
@@ -71,14 +75,37 @@ module.exports = class Playscript {
   }
 
   async scrollToTop(selector) {
-    const headerHeight = (await this.page.locator('.header').evaluate((node) => node.offsetHeight));
-    const offsetTop = (await this.page.locator(selector).evaluate((node) => node.offsetTop));
+    const headerHeight = await this.page.locator('.header').evaluate((node) => node.offsetHeight);
+    const offsetTop = await this.page.locator(selector).evaluate((node) => node.offsetTop);
 
     // scroll the page to position the selected element below the header, with some margin.  we have to pass in the values via an argument
     // to the function, since it's evaluated in a different context outside of this closure.
-    await this.page.evaluate(({ offsetTop, headerHeight }) => {
-      document.documentElement.scrollTop = offsetTop - (headerHeight + 10);
-    }, { offsetTop, headerHeight });
+    await this.page.evaluate(
+      ({ offsetTop, headerHeight }) => {
+        document.documentElement.scrollTop = offsetTop - (headerHeight + 10);
+      },
+      { offsetTop, headerHeight }
+    );
+  }
+
+  screenshot(options, text) {
+    let stepText = text;
+
+    if (isString(options)) {
+      stepText = options;
+      // eslint-disable-next-line no-param-reassign
+      options = undefined;
+    }
+
+    if (stepText) {
+      this.step(stepText);
+    }
+
+    return this.screenshooter.take(options);
+  }
+
+  step(text) {
+    this.steps.push(text);
   }
 
   getFunctionArgs() {

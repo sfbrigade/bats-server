@@ -73,25 +73,19 @@ async function getGuideAssets()
 //    for (const guide of (await fs.readdir(join(BuildPath, app))).slice(0, 1)) {
 //    for (const guide of await fs.readdir(join(BuildPath, app))) {
       const guidePath = join(BuildPath, guide);
-//      const guidePath = join(BuildPath, app, guide);
       const screenshots = (await fs.readdir(guidePath)).filter(isPNG);
       const assets = [];
 
       for (const screenshot of screenshots) {
         const { name } = parse(screenshot);
-//        const title = `${app}-${name}`;
         let assetInfo = assetsByName[name];
-//        let assetInfo = await readAsset(guidePath, name);
 
         if (assetInfo) {
-console.log("upload", name);
+          // upload a new version of the image asset
           const upload = await environment.createUpload({
             file: createReadStream(join(guidePath, screenshot)),
           });
           const { contentType, fileName } = assetInfo.fields.file['en-US'];
-
-console.log(upload);
-console.log(assetInfo.fields.file['en-US']);
 
           assetInfo.fields.file['en-US'] = {
             contentType,
@@ -104,21 +98,17 @@ console.log(assetInfo.fields.file['en-US']);
               }
             }
           };
-console.log("AFTER", assetInfo.fields.file['en-US']);
 
           // we have to await the update.  otherwise, the SDK will think it timed out.
           assetInfo = await assetInfo.update();
-
-console.log("AFTER update", assetInfo);
         } else {
           // upload and create the image asset
           assetInfo = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), name));
-//          const asset = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), title));
         }
 
         // after the image is uploaded, it has to be processed to make the asset available
         assetInfo = await assetInfo.processForAllLocales();
-console.log(assetInfo);
+
         console.log(guide, screenshot);
 
         assetsByName[name] = assetInfo;

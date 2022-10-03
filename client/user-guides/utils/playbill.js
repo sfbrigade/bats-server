@@ -1,4 +1,3 @@
-const { join } = require('path');
 const { chromium: targetBrowser } = require('@playwright/test');
 
 const Playscript = require('./playscript');
@@ -29,7 +28,7 @@ module.exports = class Playbill {
       context.setDefaultTimeout(this.browserOptions.timeout);
     }
 
-    await Playscript.perform({
+    const steps = await Playscript.perform({
       page,
       context,
       screenshots: { outputDir: this.outputDir, name: this.name },
@@ -40,7 +39,8 @@ module.exports = class Playbill {
     await writeJSON([this.outputDir, this.name, 'metadata'], {
       title: this.title,
       name: this.name,
-      buildTime: new Date().toISOString()
+      buildTime: new Date().toISOString(),
+      steps,
     });
   }
 };
