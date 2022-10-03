@@ -10,9 +10,17 @@ const { join, parse } = require('path');
 
 const { BuildPath, AppIDs } = require('./constants');
 const { getEnvironment, fileAssetFields, fields, node, asset, text } = require('./contentful');
-const { readAsset, writeAsset, isPNG } = require('./files');
+const { writeAsset, isPNG, readJSON } = require('./files');
 
 const stringify = (data) => JSON.stringify(data, null, 2);
+
+function getApp(
+	name)
+{
+	const match = name.match(/^([^-]+)/);
+
+  return match ? match[1] : '';
+}
 
 function guideItem(
 	textString,
@@ -34,11 +42,10 @@ function guideDocument(
   ]);
 }
 
-async function getGuideAssets()
+async function getAllGuideAssets(environment)
 {
   const guidePattern = /^((ems|hospital)-[-\w]+)-(\d+)$/;
-  const environment = await getEnvironment();
-  const assets = (await environment.getAssets())?.items;
+  const assets = (await environment.getAssets())?.items || [];
   const assetsByTitle = assets.reduce((result, asset) => {
     const title = asset.fields.title['en-US'];
 
@@ -52,121 +59,111 @@ async function getGuideAssets()
   return assetsByTitle;
 }
 
+async function getUpdatedGuideAssets(
+  environment,
+  assetsByName,
+  guidePath)
+{
+  const screenshots = (await fs.readdir(guidePath)).filter(isPNG);
+  const assets = [];
+
+  for (const screenshot of screenshots) {
+    const { name } = parse(screenshot);
+    let assetInfo = assetsByName[name];
+
+    if (assetInfo) {
+      // upload a new version of the image asset
+      const upload = await environment.createUpload({
+        file: createReadStream(join(guidePath, screenshot)),
+      });
+      const { contentType, fileName } = assetInfo.fields.file['en-US'];
+
+      assetInfo.fields.file['en-US'] = {
+        contentType,
+        fileName,
+        uploadFrom: {
+          sys: {
+            type: 'Link',
+            linkType: 'Upload',
+            id: upload.sys.id
+          }
+        }
+      };
+
+      // we have to await the update.  otherwise, the SDK will think it timed out.
+      assetInfo = await assetInfo.update();
+    } else {
+      // upload and create the image asset
+      assetInfo = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), name));
+    }
+
+    // after the image is uploaded, it has to be processed to make the asset available
+    assetInfo = await assetInfo.processForAllLocales();
+
+    console.log(guidePath, screenshot);
+
+    assetsByName[name] = assetInfo;
+    await writeAsset(guidePath, assetInfo);
+    assets.push(assetInfo);
+  }
+
+  return assets;
+}
+
+async function createUserGuide(
+  environment,
+  guideID,
+  title,
+  assets,
+  steps)
+{
+  const app = getApp(guideID);
+  const body = guideDocument(steps.map((step, i) => guideItem(step, assets[i].sys.id)));
+  let guideAsset;
+
+  try {
+    guideAsset = await environment.createEntry('userGuide', fields({
+      title,
+      slug: guideID,
+      app: AppIDs[app],
+      body
+    }));
+
+    console.log(stringify(guideAsset));
+  } catch (e) {
+    console.error("ERROR", e);
+  }
+
+  return guideAsset;
+}
+
 (async () => {
   // set up the Contentful Management API and get the master environment in the Routed space
   const environment = await getEnvironment();
 
-//  const guideScripts = await environment.getEntries({ content_type: 'userGuideSteps', fields: { slug: 'sending-ringdown', app: 'EMS' } });
-//  const guideScripts = await environment.getEntries({ content_type: 'userGuideSteps' });
-
-//  console.log(stringify(guideScripts));
-
-  const assetsByName = await getGuideAssets();
-
-//  console.log(stringify(assetsByName));
-
-//return;
+  const assetsByName = await getAllGuideAssets(environment);
 
 //  for (const app of await fs.readdir(BuildPath)) {
-  for (const guide of (await fs.readdir(BuildPath)).slice(0, 1)) {
-//  for (const guide of await fs.readdir(BuildPath)) {
-//    for (const guide of (await fs.readdir(join(BuildPath, app))).slice(0, 1)) {
-//    for (const guide of await fs.readdir(join(BuildPath, app))) {
-      const guidePath = join(BuildPath, guide);
-      const screenshots = (await fs.readdir(guidePath)).filter(isPNG);
-      const assets = [];
+  for (const guideID of (await fs.readdir(BuildPath)).slice(5)) {
+    const guidePath = join(BuildPath, guideID);
+    // create or update all the assets for this guide
+    const assets = await getUpdatedGuideAssets(environment, assetsByName, guidePath);
+    const { title, steps = [] } = await readJSON([guidePath, 'metadata.json']);
+console.log(guideID, title, guidePath, steps.length);
 
-      for (const screenshot of screenshots) {
-        const { name } = parse(screenshot);
-        let assetInfo = assetsByName[name];
+    if (steps.length) {
+      const { items: [result] } = await environment.getEntries({ content_type: 'userGuide', 'fields.slug': guideID });
 
-        if (assetInfo) {
-          // upload a new version of the image asset
-          const upload = await environment.createUpload({
-            file: createReadStream(join(guidePath, screenshot)),
-          });
-          const { contentType, fileName } = assetInfo.fields.file['en-US'];
-
-          assetInfo.fields.file['en-US'] = {
-            contentType,
-            fileName,
-            uploadFrom: {
-              sys: {
-                type: "Link",
-                linkType: "Upload",
-                id: upload.sys.id
-              }
-            }
-          };
-
-          // we have to await the update.  otherwise, the SDK will think it timed out.
-          assetInfo = await assetInfo.update();
-        } else {
-          // upload and create the image asset
-          assetInfo = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), name));
-        }
-
-        // after the image is uploaded, it has to be processed to make the asset available
-        assetInfo = await assetInfo.processForAllLocales();
-
-        console.log(guide, screenshot);
-
-        assetsByName[name] = assetInfo;
-        await writeAsset(guidePath, assetInfo);
-
-        assets.push(assetInfo);
+      if (result) {
+        console.log(guideID, title, "already exists.");
+      } else {
+        await createUserGuide(environment, guideID, title, assets, steps);
       }
-
-//      console.log(stringify(assets));
-//
-//      const guideText = guideDocument([
-//        guideItem('Navigate to https://sf.routedapp.net.', assets[0].sys.id),
-//        guideItem('Enter your Email address and Password and press enter or click Login.', assets[1].sys.id),
-//      ]);
-//
-//      try {
-//        const guideAsset = await environment.createEntry('userGuide', fields({
-//          title: 'Logging In',
-//          slug: guide,
-//          app: AppIDs[app],
-//          body: guideText
-//        }));
-//
-//        console.log(stringify(guideAsset));
-//      } catch (e) {
-//        console.error("ERROR", e);
-//      }
-//    }
+    }
   }
-
-  console.log(stringify(assetsByName));
-
-/*
-  const environment = await getEnvironment();
-  const entry = await environment.getEntry('5LXPhz5CgYR7PbeyKQNY7f');
-
-  entry.fields.name['en-US'] = 'derp DERP';
-  await entry.update();
-
-  console.log(stringify(entry));
-*/
 })();
 
 
-//console.log(stringify(
-//  fields(
-//    {
-//      name: 'derp1',
-//      text: node('document', [
-//        node('paragraph', [
-//          text('booyah!!!')
-//        ])
-//      ])
-//    }
-//  )
-//));
-
-//return;
 
 //const client = contentful.createClient({
 //  // This is the access token for this space. Normally you get the token in the Contentful web app
