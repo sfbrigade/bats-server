@@ -1,163 +1,40 @@
 // eslint-disable no-restricted-syntax
 // eslint-disable no-await-in-loop
 
-// get the .env from the root of the project, above the current /client directory
-require('dotenv').config({ path: '../.env' });
-
 const fs = require('fs/promises');
-const { createReadStream } = require('fs');
-const { join, parse } = require('path');
+const { join } = require('path');
 
-const { BuildPath, AppIDs } = require('./constants');
-const { getEnvironment, fileAssetFields, fields, node, asset, text } = require('./contentful');
-const { writeAsset, isPNG, readJSON } = require('./files');
+const { BuildPath } = require('./constants');
+const { isPNG, readJSON } = require('./files');
+const GuideEntryManager = require('./guide-entry-manager');
 
 const stringify = (data) => JSON.stringify(data, null, 2);
 
-function getApp(
-	name)
-{
-	const match = name.match(/^([^-]+)/);
-
-  return match ? match[1] : '';
-}
-
-function guideItem(
-	textString,
-  assetID)
-{
-  return node('list-item', [
-    asset(assetID),
-    node('paragraph', [
-      text(textString)
-    ])
-  ]);
-}
-
-function guideDocument(
-	items)
-{
-  return node('document', [
-    node('ordered-list', items)
-  ]);
-}
-
-async function getAllGuideAssets(environment)
-{
-  const guidePattern = /^((ems|hospital)-[-\w]+)-(\d+)$/;
-  const assets = (await environment.getAssets())?.items || [];
-  const assetsByTitle = assets.reduce((result, asset) => {
-    const title = asset.fields.title['en-US'];
-
-    if (guidePattern.test(title)) {
-      result[title] = asset;
-    }
-
-    return result;
-  }, {});
-
-  return assetsByTitle;
-}
-
-async function getUpdatedGuideAssets(
-  environment,
-  assetsByName,
-  guidePath)
-{
-  const screenshots = (await fs.readdir(guidePath)).filter(isPNG);
-  const assets = [];
-
-  for (const screenshot of screenshots) {
-    const { name } = parse(screenshot);
-    let assetInfo = assetsByName[name];
-
-    if (assetInfo) {
-      // upload a new version of the image asset
-      const upload = await environment.createUpload({
-        file: createReadStream(join(guidePath, screenshot)),
-      });
-      const { contentType, fileName } = assetInfo.fields.file['en-US'];
-
-      assetInfo.fields.file['en-US'] = {
-        contentType,
-        fileName,
-        uploadFrom: {
-          sys: {
-            type: 'Link',
-            linkType: 'Upload',
-            id: upload.sys.id
-          }
-        }
-      };
-
-      // we have to await the update.  otherwise, the SDK will think it timed out.
-      assetInfo = await assetInfo.update();
-    } else {
-      // upload and create the image asset
-      assetInfo = await environment.createAssetFromFiles(fileAssetFields(join(guidePath, screenshot), name));
-    }
-
-    // after the image is uploaded, it has to be processed to make the asset available
-    assetInfo = await assetInfo.processForAllLocales();
-
-    console.log(guidePath, screenshot);
-
-    assetsByName[name] = assetInfo;
-    await writeAsset(guidePath, assetInfo);
-    assets.push(assetInfo);
-  }
-
-  return assets;
-}
-
-async function createUserGuide(
-  environment,
-  guideID,
-  title,
-  assets,
-  steps)
-{
-  const app = getApp(guideID);
-  const body = guideDocument(steps.map((step, i) => guideItem(step, assets[i].sys.id)));
-  let guideAsset;
-
-  try {
-    guideAsset = await environment.createEntry('userGuide', fields({
-      title,
-      slug: guideID,
-      app: AppIDs[app],
-      body
-    }));
-
-    console.log(stringify(guideAsset));
-  } catch (e) {
-    console.error("ERROR", e);
-  }
-
-  return guideAsset;
-}
-
 (async () => {
-  // set up the Contentful Management API and get the master environment in the Routed space
-  const environment = await getEnvironment();
-
-  const assetsByName = await getAllGuideAssets(environment);
+  const manager = await GuideEntryManager.create();
 
 //  for (const app of await fs.readdir(BuildPath)) {
-  for (const guideID of (await fs.readdir(BuildPath)).slice(5)) {
+  for (const guideID of (await fs.readdir(BuildPath)).slice(4)) {
     const guidePath = join(BuildPath, guideID);
+    // create a list of full paths to the PNGs in this guide directory
+    const screenshots = (await fs.readdir(guidePath))
+      .filter(isPNG)
+      .map((filename) => join(guidePath, filename));
+
+    console.log(`${guideID}: Creating or updating ${screenshots.length} screenshots.`);
+
     // create or update all the assets for this guide
-    const assets = await getUpdatedGuideAssets(environment, assetsByName, guidePath);
+    const assets = await manager.createOrUpdateAssets(guideID, screenshots);
     const { title, steps = [] } = await readJSON([guidePath, 'metadata.json']);
-console.log(guideID, title, guidePath, steps.length);
 
     if (steps.length) {
-      const { items: [result] } = await environment.getEntries({ content_type: 'userGuide', 'fields.slug': guideID });
+      const entry = await manager.getEntry(guideID);
 
-      if (result) {
-        console.log(guideID, title, "already exists.");
+      if (entry) {
+        console.log(`${guideID}: User guide entry already exists.`);
       } else {
-        await createUserGuide(environment, guideID, title, assets, steps);
+        console.log(`${guideID}: Creating user guide entry with ${steps.length} steps.`);
+        await manager.createEntry(guideID, title, assets, steps);
       }
     }
   }
