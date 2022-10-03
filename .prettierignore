@@ -1,2 +1,4 @@
 # Ignore artifacts:
 build
+
+client/user-guides
