@@ -1,6 +1,6 @@
 const { resolve, join } = require('path');
 
-const GuidesPath = resolve('./user-guides');
+const GuidesPath = resolve('.');
 
 module.exports = {
   GuidesPath,
