@@ -3,18 +3,14 @@ const { parse } = require('path');
 const { AppIDs } = require('./constants');
 const { getEnvironment, fileAssetFields, fields, node, asset, text } = require('./contentful');
 
-function getApp(
-	name)
-{
-	const match = name.match(/^([^-]+)/);
+function getApp(name) {
+  const match = name.match(/^([^-]+)/);
 
   return match ? match[1] : '';
 }
 
-function guideItem(
-	textString,
-  assetID)
-{
+function guideItem(textString, assetID) {
+  // prettier-ignore
   return node('list-item', [
     asset(assetID),
     node('paragraph', [
@@ -23,9 +19,8 @@ function guideItem(
   ]);
 }
 
-function guideDocument(
-	items)
-{
+function guideDocument(items) {
+  // prettier-ignore
   return node('document', [
     node('ordered-list', items)
   ]);
@@ -40,8 +35,8 @@ function setField(entry, field, value) {
 }
 
 function compareAssets(a, b) {
-	const titleA = getField(a, 'title');
-	const titleB = getField(b, 'title');
+  const titleA = getField(a, 'title');
+  const titleB = getField(b, 'title');
 
   if (titleA < titleB) {
     return -1;
@@ -66,7 +61,7 @@ module.exports = class GuideEntryManager {
   async getAssets(guideID) {
     const { items } = await this.environment.getAssets({ 'fields.title[match]': guideID });
 
-// TODO: do a natural sort on the numbers at the end of the filenames
+    // TODO: do a natural sort on the numbers at the end of the filenames
     items.sort(compareAssets);
 
     return items.reduce((result, asset) => ({ ...result, [getField(asset, 'title')]: asset }), {});
@@ -94,9 +89,9 @@ module.exports = class GuideEntryManager {
             sys: {
               type: 'Link',
               linkType: 'Upload',
-              id: upload.sys.id
-            }
-          }
+              id: upload.sys.id,
+            },
+          },
         });
 
         // we have to await the update.  otherwise, the SDK will think it timed out.
@@ -114,7 +109,9 @@ module.exports = class GuideEntryManager {
   }
 
   async getEntry(guideID) {
-    const { items: [entry] } = await this.environment.getEntries({ content_type: 'userGuide', 'fields.slug': guideID });
+    const {
+      items: [entry],
+    } = await this.environment.getEntries({ content_type: 'userGuide', 'fields.slug': guideID });
 
     return entry;
   }
@@ -126,16 +123,19 @@ module.exports = class GuideEntryManager {
     let guideAsset;
 
     try {
-      guideAsset = await this.environment.createEntry('userGuide', fields({
-        title,
-        slug: guideID,
-        app: AppIDs[app],
-        body
-      }));
+      guideAsset = await this.environment.createEntry(
+        'userGuide',
+        fields({
+          title,
+          slug: guideID,
+          app: AppIDs[app],
+          body,
+        })
+      );
     } catch (e) {
       console.error('ERROR on userGuide creation:', e);
     }
 
     return guideAsset;
   }
-}
+};

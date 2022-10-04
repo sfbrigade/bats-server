@@ -8,6 +8,6 @@ module.exports = {
   AppsPath: join(GuidesPath, 'guides'),
   AppIDs: {
     ems: 'EMS',
-    hospital: 'Hospital'
-  }
+    hospital: 'Hospital',
+  },
 };

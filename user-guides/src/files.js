@@ -5,10 +5,8 @@ const JSONExtension = '.json';
 
 const createIs = (pattern) => (filename) => pattern.test(filename);
 
-function getJoinedPath(
-	path)
-{
-	let fullPath = path;
+function getJoinedPath(path) {
+  let fullPath = path;
 
   if (Array.isArray(path)) {
     fullPath = join(...path);
@@ -17,9 +15,7 @@ function getJoinedPath(
   return fullPath;
 }
 
-async function readJSON(
-  path)
-{
+async function readJSON(path) {
   let fullPath = getJoinedPath(path);
 
   try {
@@ -29,32 +25,23 @@ async function readJSON(
   }
 }
 
-function writeJSON(
-	path,
-  data,
-  options = { spaces: 2 })
-{
-	let fullPath = getJoinedPath(path);
+function writeJSON(path, data, options = { spaces: 2 }) {
+  let fullPath = getJoinedPath(path);
 
   if (parse(fullPath).ext !== JSONExtension) {
     fullPath += JSONExtension;
   }
 
-	return writeJson(fullPath, data, options);
+  return writeJson(fullPath, data, options);
 }
 
-function writeAsset(
-  path,
-	assetInfo)
-{
+function writeAsset(path, assetInfo) {
   const { name } = parse(assetInfo.fields.file['en-US'].fileName);
 
-	return writeJSON([path, name], assetInfo);
+  return writeJSON([path, name], assetInfo);
 }
 
-async function readAsset(
-  path, name)
-{
+async function readAsset(path, name) {
   try {
     return await readJson(join(path, name + '.json'));
   } catch (e) {
@@ -68,5 +55,5 @@ module.exports = {
   readAsset,
   writeAsset,
   isJS: createIs(/^(.+)\.js$/),
-  isPNG: createIs(/^(.+)\.png$/)
+  isPNG: createIs(/^(.+)\.png$/),
 };

@@ -101,11 +101,8 @@ module.exports = class Playscript {
   }
 
   getFunctionArgs() {
-    return {
-      page: this.page,
-      screenshot: this.screenshot,
-      context: this.context,
-      scrollToTop: this.scrollToTop,
-    };
+    const entries = ['page', 'context', ...BoundMethods].map((name) => [name, this[name]]);
+
+    return Object.fromEntries(entries);
   }
 };

@@ -5,35 +5,23 @@ const { createReadStream } = require('fs');
 const path = require('path');
 const contentful = require('contentful-management');
 
-async function getEnvironment(
-  props = {})
-{
-  const {
-    accessToken = process.env.CONTENTFUL_PAT,
-    spaceID = process.env.CONTENTFUL_SPACE_ID,
-    environmentName = 'master'
-  } = props;
+async function getEnvironment(props = {}) {
+  const { accessToken = process.env.CONTENTFUL_PAT, spaceID = process.env.CONTENTFUL_SPACE_ID, environmentName = 'master' } = props;
   const client = await contentful.createClient({ accessToken });
   const space = await client.getSpace(spaceID);
 
   return space.getEnvironment(environmentName);
 }
 
-function fields(
-  data)
-{
-  const entries = Object.entries(data)
-    .map(([key, value]) => [key, { 'en-US': value }]);
+function fields(data) {
+  const entries = Object.entries(data).map(([key, value]) => [key, { 'en-US': value }]);
 
   return {
-    fields: Object.fromEntries(entries)
+    fields: Object.fromEntries(entries),
   };
 }
 
-function fileAssetFields(
-  filePath,
-  title)
-{
+function fileAssetFields(filePath, title) {
   const { base, name, ext } = path.parse(filePath);
 
   return fields({
@@ -41,46 +29,34 @@ function fileAssetFields(
     file: {
       contentType: `image/${ext.slice(1)}`,
       fileName: base,
-      file: createReadStream(filePath)
-    }
+      file: createReadStream(filePath),
+    },
   });
 }
 
-function node(
-  nodeType,
-  content,
-  props = { data: {} })
-{
+function node(nodeType, content, props = { data: {} }) {
   return {
     nodeType,
     ...props,
-    ...(content
-      ? { content }
-      : null),
+    ...(content ? { content } : null),
   };
 }
 
-function text(
-  value,
-  marks = [],
-  props = { data: {} })
-{
+function text(value, marks = [], props = { data: {} }) {
   return node('text', null, { value, marks, ...props });
 }
 
-function asset(
-	id)
-{
+function asset(id) {
   return node('embedded-asset-block', [], {
     data: {
       target: {
         sys: {
           id,
           linkType: 'Asset',
-          type: 'Link'
-        }
-      }
-    }
+          type: 'Link',
+        },
+      },
+    },
   });
 }
 

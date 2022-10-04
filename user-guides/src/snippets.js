@@ -20,16 +20,16 @@ async function cancelIfNecessary({ page }) {
   const cancelButton = await page.locator('button:has-text("Cancel delivery")');
   const returnButton = await page.locator('button:has-text("Return to service")');
   const startButton = await page.locator('button:has-text("Start new form")');
-  const cancelButtonExists = await cancelButton.count() === 1 && await cancelButton.isVisible();
+  const cancelButtonExists = (await cancelButton.count()) === 1 && (await cancelButton.isVisible());
 
   if (cancelButtonExists) {
-//  if (await cancelButton.isVisible()) {
+    //  if (await cancelButton.isVisible()) {
     await cancelButton.click();
     await page.locator('text=Yes, cancel delivery').click();
     await page.waitForTimeout(100);
   }
 
-  const returnButtonExists = await returnButton.count() > 0;
+  const returnButtonExists = (await returnButton.count()) === 1;
 
   if (returnButtonExists) {
     await returnButton.click();
@@ -40,6 +40,7 @@ async function cancelIfNecessary({ page }) {
   }
 }
 
+// prettier-ignore
 module.exports = {
   fillEMS,
   fillHospital,

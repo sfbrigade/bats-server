@@ -12,12 +12,9 @@ const GuideEntryManager = require('./guide-entry-manager');
   const manager = await GuideEntryManager.create();
 
   for (const guideID of await fs.readdir(BuildPath)) {
-//  for (const guideID of (await fs.readdir(BuildPath)).slice(4)) {
     const guidePath = join(BuildPath, guideID);
     // create a list of full paths to the PNGs in this guide directory
-    const screenshotPaths = (await fs.readdir(guidePath))
-      .filter(isPNG)
-      .map((filename) => join(guidePath, filename));
+    const screenshotPaths = (await fs.readdir(guidePath)).filter(isPNG).map((filename) => join(guidePath, filename));
 
     console.log(`${guideID}: Creating or updating ${screenshotPaths.length} screenshots.`);
 
