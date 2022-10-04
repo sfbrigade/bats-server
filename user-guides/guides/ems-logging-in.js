@@ -7,10 +7,14 @@ module.exports = {
     [['goto', '/auth/local/login']],
     ['#username', ['click']],
 
-    'screenshot',
+    ({ screenshot }) => screenshot(
+      'Navigate to https://sf.routedapp.net in your browser.'
+    ),
 
     ...fillEMS,
 
-    'screenshot',
+    ({ screenshot }) => screenshot(
+      'Enter your Email address and Password and press enter or click Login.'
+    ),
   ],
 };

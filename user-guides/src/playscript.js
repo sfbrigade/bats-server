@@ -63,14 +63,6 @@ module.exports = class Playscript {
       return line(this.getFunctionArgs());
     }
 
-    if (isString(line)) {
-      if (line === 'screenshot') {
-        console.log('screenshot()');
-
-        return this.screenshot();
-      }
-    }
-
     throw new Error(`Found unreadable line: ${line}`);
   }
 

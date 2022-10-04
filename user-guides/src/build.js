@@ -10,10 +10,12 @@ const { isJS } = require('./files');
 const PlaybillDefaults = {
   browserOptions: {
     timeout: 2000,
+//    headless: false,
+//    devtools: true,
   },
   context: {
     baseURL: 'http://localhost:3000',
-    viewport: { width: 500, height: 1000 },
+    viewport: { width: 550, height: 1000 },
 //    deviceScaleFactor: 2,
   },
   options: {

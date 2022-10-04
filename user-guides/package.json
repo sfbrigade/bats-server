@@ -9,6 +9,7 @@
     "fs-extra": "^10.1.0"
   },
   "scripts": {
-    "build": "node "
+    "build": "node src/build.js",
+    "upload": "node src/upload.js"
   }
 }
