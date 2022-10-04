@@ -5,7 +5,7 @@ const GuidesPath = resolve('.');
 module.exports = {
   GuidesPath,
   BuildPath: join(GuidesPath, 'build'),
-  AppsPath: join(GuidesPath, 'apps'),
+  AppsPath: join(GuidesPath, 'guides'),
   AppIDs: {
     ems: 'EMS',
     hospital: 'Hospital'

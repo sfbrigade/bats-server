@@ -1,4 +1,4 @@
-const { fillHospital } = require('../utils/snippets');
+const { fillHospital } = require('../src/snippets');
 
 module.exports = {
   title: 'Logging In',

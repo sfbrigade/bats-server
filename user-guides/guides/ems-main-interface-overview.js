@@ -1,4 +1,4 @@
-const { loginEMS } = require('../utils/snippets');
+const { loginEMS } = require('../src/snippets');
 
 module.exports = {
   title: 'Main Interface Overview',

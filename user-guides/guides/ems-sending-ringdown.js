@@ -1,4 +1,4 @@
-const { loginEMS } = require('../utils/snippets');
+const { loginEMS } = require('../src/snippets');
 
 module.exports = {
   title: 'Sending a Ringdown',
