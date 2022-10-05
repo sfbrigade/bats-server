@@ -27,7 +27,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     comboBox.on(current);
     // get a reference to the select component so we can dispatch events through it
     const select = current.querySelector('select');
-    function dispatchEvent(value) {
+    function dispatchSelectChangeEvent(value) {
       select.value = value;
       const event = new CustomEvent('change', {
         bubbles: true,
@@ -49,7 +49,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
         // that causes the input value and select value to get out of sync-
         // this puts it back into sync
         setInputValue(e.target.value);
-        dispatchEvent(e.target.value);
+        dispatchSelectChangeEvent(e.target.value);
       }
     });
     input.addEventListener('focus', () => setFocused(true));
@@ -57,7 +57,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
       // when we blur/exit the input, we dispatch the value through the
       // select as the selected value
       setFocused(false);
-      dispatchEvent(e.target.value);
+      dispatchSelectChangeEvent(e.target.value);
     });
     return () => {
       comboBox.off(current);
