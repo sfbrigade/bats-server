@@ -95,7 +95,7 @@ function RingdownForm({ className }) {
     setRingdowns([...ringdowns]);
   }
 
-  function onSubmit(event) {
+  function onSubmit() {
     if (ringdown.isValid) {
       if (step === 0) {
         next();
