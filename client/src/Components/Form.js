@@ -1,8 +1,6 @@
 import React, { useMemo, useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
 
-const ignoreEnterKey = (e) => e.preventDefault();
-
 const FormContext = createContext(undefined);
 
 const Form = ({ data, onChange, children, ...props }) => {
@@ -14,12 +12,19 @@ const Form = ({ data, onChange, children, ...props }) => {
     [data, onChange]
   );
 
+  function onSubmitInternal(event) {
+    event.preventDefault();
+    if (props.onSubmit) {
+      props.onSubmit(event);
+    }
+  }
+
   // we spread the extra props on the form so the caller can apply classes and other properties to
   // the form element
   return (
     <FormContext.Provider value={context}>
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      <form {...props}>{children}</form>
+      <form {...{ ...props, onSubmit: onSubmitInternal }}>{children}</form>
     </FormContext.Provider>
   );
 };
@@ -34,8 +39,7 @@ Form.propTypes = {
 
 Form.defaultProps = {
   onChange: null,
-  // by default, prevent pressing enter on an input from submitting the form
-  onSubmit: ignoreEnterKey,
+  onSubmit: null,
   children: null,
 };
 

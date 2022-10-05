@@ -96,7 +96,6 @@ function RingdownForm({ className }) {
   }
 
   function onSubmit(event) {
-    event.preventDefault();
     if (ringdown.isValid) {
       if (step === 0) {
         next();
