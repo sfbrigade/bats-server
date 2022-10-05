@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -22,7 +22,7 @@ function Redirect({ isAdminOnly }) {
     }
   }, [history, user, isAdminOnly]);
 
-  return <></>;
+  return null;
 }
 
 Redirect.propTypes = {
