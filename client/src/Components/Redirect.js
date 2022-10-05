@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Context from '../Context';
-import Spinner from './Spinner';
 
 function Redirect({ isAdminOnly }) {
   const { user } = useContext(Context);
@@ -23,11 +22,7 @@ function Redirect({ isAdminOnly }) {
     }
   }, [history, user, isAdminOnly]);
 
-  return (
-    <div className="padding-9">
-      <Spinner />
-    </div>
-  );
+  return null;
 }
 
 Redirect.propTypes = {
