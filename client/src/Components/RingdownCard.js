@@ -19,7 +19,7 @@ const AcknowledgedStatus = {
   [Status.REDIRECTED]: Status.REDIRECT_ACKNOWLEDGED,
 };
 
-function RingdownCard({ children, className, ringdown, onStatusChange }) {
+function RingdownCard({ children, className, ringdown, dismissable, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const { currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj } = ringdown;
@@ -30,7 +30,16 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
   }
 
   const canBeDismissed =
-    currentDeliveryStatus === Status.OFFLOADED || currentDeliveryStatus === Status.CANCELLED || currentDeliveryStatus === Status.REDIRECTED;
+    dismissable &&
+    (currentDeliveryStatus === Status.OFFLOADED ||
+      currentDeliveryStatus === Status.CANCELLED ||
+      currentDeliveryStatus === Status.REDIRECTED);
+  const drawerTitle =
+    currentDeliveryStatus === Status.OFFLOADED ? (
+      <RingdownBadge status={currentDeliveryStatus} />
+    ) : (
+      <Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />
+    );
 
   return (
     <div
@@ -52,7 +61,7 @@ function RingdownCard({ children, className, ringdown, onStatusChange }) {
       )}
       {!canBeDismissed && (
         <Drawer
-          title={<Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />}
+          title={drawerTitle}
           subtitle={<div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>}
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
@@ -80,12 +89,14 @@ RingdownCard.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   ringdown: PropTypes.instanceOf(Ringdown).isRequired,
+  dismissable: PropTypes.bool,
   onStatusChange: PropTypes.instanceOf(Function),
 };
 
 RingdownCard.defaultProps = {
   children: undefined,
   className: undefined,
+  dismissable: true,
   onStatusChange: undefined,
 };
 
