@@ -1,7 +1,9 @@
 const { createReadStream } = require('fs');
 const { parse } = require('path');
 const { AppIDs } = require('./constants');
-const { getEnvironment, fileAssetFields, fields, node, asset, text } = require('./contentful');
+const { getEnvironment, fileAssetFields, fields, node, asset, text, getField, setField } = require('./contentful');
+
+const { compare } = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 
 function getApp(name) {
   const match = name.match(/^([^-]+)/);
@@ -26,25 +28,8 @@ function guideDocument(items) {
   ]);
 }
 
-function getField(entry, field) {
-  return entry.fields[field]['en-US'];
-}
-
-function setField(entry, field, value) {
-  entry.fields[field]['en-US'] = value;
-}
-
 function compareAssets(a, b) {
-  const titleA = getField(a, 'title');
-  const titleB = getField(b, 'title');
-
-  if (titleA < titleB) {
-    return -1;
-  } else if (titleA > titleB) {
-    return 1;
-  } else {
-    return 0;
-  }
+  return compare(getField(a, 'title'), getField(b, 'title'));
 }
 
 module.exports = class GuideEntryManager {
@@ -61,9 +46,9 @@ module.exports = class GuideEntryManager {
   async getAssets(guideID) {
     const { items } = await this.environment.getAssets({ 'fields.title[match]': guideID });
 
-    // TODO: do a natural sort on the numbers at the end of the filenames
     items.sort(compareAssets);
 
+    // create an index of the assets by title
     return items.reduce((result, asset) => ({ ...result, [getField(asset, 'title')]: asset }), {});
   }
 

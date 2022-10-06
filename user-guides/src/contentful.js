@@ -13,6 +13,14 @@ async function getEnvironment(props = {}) {
   return space.getEnvironment(environmentName);
 }
 
+function getField(entry, field) {
+  return entry.fields[field]['en-US'];
+}
+
+function setField(entry, field, value) {
+  entry.fields[field]['en-US'] = value;
+}
+
 function fields(data) {
   const entries = Object.entries(data).map(([key, value]) => [key, { 'en-US': value }]);
 
@@ -62,6 +70,8 @@ function asset(id) {
 
 module.exports = {
   getEnvironment,
+  getField,
+  setField,
   fields,
   fileAssetFields,
   node,
