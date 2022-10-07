@@ -16,7 +16,7 @@ const GuideEntryManager = require('./guide-entry-manager');
     // create a list of full paths to the PNGs in this guide directory
     const screenshotPaths = (await fs.readdir(guidePath)).filter(isPNG).map((filename) => join(guidePath, filename));
 
-    console.log(`${guideID}: Creating or updating ${screenshotPaths.length} screenshots.`);
+    console.log(`${guideID}: Processing ${screenshotPaths.length} screenshots.`);
 
     // create or update all the assets for this guide
     const assets = await manager.createOrUpdateAssets(guideID, screenshotPaths);

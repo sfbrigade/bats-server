@@ -14,11 +14,11 @@ async function getEnvironment(props = {}) {
 }
 
 function getField(entry, field) {
-  return entry.fields[field]['en-US'];
+  return entry.fields[field]?.['en-US'];
 }
 
 function setField(entry, field, value) {
-  entry.fields[field]['en-US'] = value;
+  (entry.fields[field] || (entry.fields[field] = {}))['en-US'] = value;
 }
 
 function fields(data) {
@@ -29,11 +29,13 @@ function fields(data) {
   };
 }
 
-function fileAssetFields(filePath, title) {
+function fileAssetFields(filePath, otherFields) {
   const { base, name, ext } = path.parse(filePath);
+  const { title = name, description = '' } = otherFields;
 
   return fields({
-    title: title || name,
+    title,
+    description,
     file: {
       contentType: `image/${ext.slice(1)}`,
       fileName: base,

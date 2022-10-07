@@ -1,7 +1,8 @@
-const { createReadStream } = require('fs');
+const { createReadStream, readFileSync } = require('fs');
 const { parse } = require('path');
 const { AppIDs } = require('./constants');
 const { getEnvironment, fileAssetFields, fields, node, asset, text, getField, setField } = require('./contentful');
+const getFileHash = require('./get-file-hash');
 
 const { compare } = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 
@@ -58,15 +59,25 @@ module.exports = class GuideEntryManager {
     for (const imagePath of imagePaths) {
       const { name } = parse(imagePath);
       const asset = assets[name];
+      const localHash = getFileHash(imagePath);
       let newAsset;
 
       if (asset) {
+        const cmsHash = getField(asset, 'description');
+
+        if (cmsHash === localHash) {
+          // the local image is the same as what's on the server, so don't do any further processing
+          continue;
+        }
+
         // upload a new version of the image asset
         const upload = await this.environment.createUpload({
           file: createReadStream(imagePath),
         });
         const { contentType, fileName } = getField(asset, 'file');
 
+        // store the new hash in the description field of the asset and link the asset to the newly uploaded file
+        setField(asset, 'description', localHash);
         setField(asset, 'file', {
           contentType,
           fileName,
@@ -83,7 +94,7 @@ module.exports = class GuideEntryManager {
         newAsset = await asset.update();
       } else {
         // upload and create the image asset
-        newAsset = await this.environment.createAssetFromFiles(fileAssetFields(imagePath));
+        newAsset = await this.environment.createAssetFromFiles(fileAssetFields(imagePath, { description: localHash }));
       }
 
       // after the image is uploaded, it has to be processed to make the asset available
