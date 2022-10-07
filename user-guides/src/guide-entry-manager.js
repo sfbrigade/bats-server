@@ -1,4 +1,4 @@
-const { createReadStream, readFileSync } = require('fs');
+const { createReadStream } = require('fs');
 const { parse } = require('path');
 const { AppIDs } = require('./constants');
 const { getEnvironment, fileAssetFields, fields, node, asset, text, getField, setField } = require('./contentful');

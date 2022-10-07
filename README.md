@@ -4,7 +4,7 @@
 
 1. Download and install Docker for your platform
 
-2. Clone this repo, copy the example.env file to .env and fill in empty variables, if any.
+2. Clone this repo, copy the `example.env` file to `.env` and fill in empty variables, if any.
 
 3. Run:
 
@@ -64,6 +64,38 @@
    ```
    yarn test:server
    ```
+
+## Generating screenshots and user guides
+
+The `user-guides` sub-package uses [Playwright](https://playwright.dev/) to automatically generate screenshots for the Routed user guides.
+
+The `build` npm script in the `user-guides` package generates the screenshots for each guide from its script in `user-guides/guides`. Each script includes the instructions for putting the app UI into different states, and then takes screenshots at the appropriate time.
+
+The guide scripts expect to be able to connect to the app running on `localhost`, which must be launched with the `docker:start` script in the top-level package before generating any screenshots.
+
+The scripts use usernames and passwords specified in the `.env` file to login as different users:
+
+- `EMS_USER`
+- `EMS_PASS`
+- `HOSPITAL_USER`
+- `HOSPITAL_PASS`
+
+The `upload` script runs through the images in the `user-guides/build` directory and checks them against the image assets in Contentful. If the images have changed or don't exist, they're uploaded. The script also generates a rich text version of the user guide if it doesn't exist yet, which links the screenshot assets to a text description of each step.
+
+The upload process checks the `.env` file to get the space ID of the Routed site on Contentful. To enable the script to use the Contentful API to upload and download assets, a personal access token must be generated on Contentful and included in `.env`:
+
+- `CONTENTFUL_SPACE_ID`
+- `CONTENTFUL_PAT`
+
+### Playwright installation
+
+After the npm packages for `user-guides` have been installed, manually run:
+
+```
+npx playwright install chromium
+```
+
+This will install the Chromium binary for the version of Playwright specified in the `package.json` file.
 
 # License
 
