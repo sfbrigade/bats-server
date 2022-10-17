@@ -6,7 +6,8 @@
     "@playwright/test": "^1.26.1",
     "contentful-management": "^10.15.1",
     "dotenv": "^16.0.3",
-    "fs-extra": "^10.1.0"
+    "fs-extra": "^10.1.0",
+    "globby": "^13.1.2"
   },
   "scripts": {
     "build": "node src/build.js",

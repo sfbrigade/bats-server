@@ -1,11 +1,11 @@
 const { resolve, join } = require('path');
 
-const GuidesPath = resolve('.');
+const RootPath = resolve('.');
 
 module.exports = {
-  GuidesPath,
-  BuildPath: join(GuidesPath, 'build'),
-  AppsPath: join(GuidesPath, 'guides'),
+  RootPath,
+  BuildPath: join(RootPath, 'build'),
+  GuidesPath: join(RootPath, 'guides'),
   AppIDs: {
     ems: 'EMS',
     hospital: 'Hospital',

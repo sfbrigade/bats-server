@@ -3,9 +3,8 @@
 const fs = require('fs/promises');
 const { join, parse } = require('path');
 
-const { BuildPath, AppsPath } = require('./constants');
+const { BuildPath, GuidesPath } = require('./constants');
 const Playbill = require('./playbill');
-const { isJS } = require('./files');
 
 const PlaybillDefaults = {
   browserOptions: {
@@ -25,17 +24,21 @@ const PlaybillDefaults = {
 const AppPattern = /^(\w+)-/;
 
 (async () => {
-  const scriptsPath = AppsPath;
+  // globby is ESM only now, so we have to use import() in a CJS script
+  const { globbySync } = await import('globby');
 
-  for (const filename of (await fs.readdir(scriptsPath)).filter(isJS)) {
+  const [filesArg = '*.js'] = process.argv.slice(2);
+  const files = globbySync(filesArg, { cwd: GuidesPath });
+
+  for (const filename of files) {
     const { name } = parse(filename);
     const app = name.match(AppPattern)[1];
     // eslint-disable-next-line import/no-dynamic-require,global-require
-    const guide = require(join(scriptsPath, filename));
+    const guide = require(join(GuidesPath, filename));
 
     console.log(name);
 
-    // clear the current output path before generating new screenshots
+    // clear the current output directory before generating new screenshots
     await fs.rm(join(BuildPath, name), { recursive: true, force: true });
     await Playbill.print({
       ...PlaybillDefaults,
