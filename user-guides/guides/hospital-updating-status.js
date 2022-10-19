@@ -1,7 +1,7 @@
 const { loginHospital } = require('../src/snippets');
 
 module.exports = {
-  title: 'Main Interface Overview',
+  title: 'Updating Hospital Status',
   seeders: [
     'create-3-confirmed-ringdowns.js'
   ],
