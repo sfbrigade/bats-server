@@ -2,6 +2,9 @@ const { loginHospital } = require('../src/snippets');
 
 module.exports = {
   title: 'Main Interface Overview',
+  seeders: [
+    'create-3-confirmed-ringdowns.js'
+  ],
   script: [
     ...loginHospital,
     ['"Ringdown"', ['click']],

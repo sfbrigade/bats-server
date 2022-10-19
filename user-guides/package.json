@@ -10,6 +10,7 @@
     "globby": "^13.1.2"
   },
   "scripts": {
+    "setup": "node src/setup.js",
     "build": "node src/build.js",
     "upload": "node src/upload.js"
   }
