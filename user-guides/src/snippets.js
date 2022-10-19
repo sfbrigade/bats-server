@@ -56,5 +56,6 @@ module.exports = {
     [['goto', '/auth/local/login']],
     ...fillHospital,
     ['"Login"', ['click']],
+    ['"Hospital Info"', ['waitFor']],
   ],
 };
