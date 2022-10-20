@@ -8,7 +8,8 @@ module.exports = {
   script: [
     ...loginHospital,
     ['"Ringdown"', ['click']],
-    // click in reverse order so their index won't change, since clicking will change the class name
+    // click in reverse order so their index won't change, since clicking will change the class name, causing the
+    // number of matches to then change
     ['.fa-caret-up.btn >> nth=1', ['click']],
     ['.fa-caret-up.btn >> nth=0', ['click']],
 
@@ -21,7 +22,12 @@ module.exports = {
     ['"More info" >> nth=1', ['click']],
 
     ({ screenshot }) => screenshot(
-      'Click or tap on More info to expand a ringdown and see more details.'
+      'Click More info to expand a ringdown and see more details.'
+    ),
+
+    ({ screenshot }) => screenshot(
+      { selector: '.ringdown-card >> nth=0' },
+      'Canceled status'
     ),
   ]
 };

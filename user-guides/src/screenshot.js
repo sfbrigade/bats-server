@@ -9,10 +9,13 @@ module.exports = class ScreenShooter {
   }
 
   take(options = {}) {
+    const { selector, ...screenshotOptions } = options;
+    const target = selector ? this.page.locator(selector) : this.page;
+
     // eslint-disable-next-line no-plusplus
     this.count++;
 
-    return this.page.screenshot({ path: this.getOutputFilePath(), ...options });
+    return target.screenshot({ path: this.getOutputFilePath(), ...screenshotOptions });
   }
 
   getOutputDirPath() {

@@ -1,12 +1,12 @@
-//const { execSync } = require('child_process');
+const { execSync } = require('child_process');
 const { chromium: targetBrowser } = require('@playwright/test');
 
 const Playscript = require('./playscript');
 const { writeJSON } = require('./files');
 
-//const execOptions = {
-//  encoding: 'utf8',
-//};
+const execOptions = {
+  encoding: 'utf8',
+};
 
 module.exports = class Playbill {
   static print(...args) {
@@ -26,7 +26,7 @@ module.exports = class Playbill {
 
   async print() {
     // set up the database with a known state on which to run this guide
-    // execSync(`docker compose exec server bash -c "npm --prefix user-guides run setup -- ${this.seeders.join(' ')}"`, execOptions);
+    execSync(`docker compose exec server bash -l -c "npm --prefix user-guides run setup -- ${this.seeders.join(' ')}"`, execOptions);
 
     const browser = await targetBrowser.launch(this.browserOptions);
     const context = await browser.newContext(this.context);
