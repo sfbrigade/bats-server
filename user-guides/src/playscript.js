@@ -1,10 +1,15 @@
+// eslint-disable no-restricted-syntax
+// eslint-disable no-await-in-loop
+const { execSync } = require('child_process');
 const ScreenShooter = require('./screenshot');
 
 const { isArray } = Array;
 const isFunction = (value) => typeof value === 'function';
 const isString = (value) => typeof value === 'string';
+const dockerExecCommand = (command) => `docker compose exec server bash -l -c "${command}"`;
+const dockerSetupCommand = (seeders) => dockerExecCommand(`npm --prefix user-guides run setup -- ${[].concat(seeders).join(' ')}`);
 
-const BoundMethods = ['screenshot', 'scrollToTop', 'step'];
+const BoundMethods = ['screenshot', 'scrollToTop', 'exec', 'dockerExec', 'setup', 'step'];
 
 module.exports = class Playscript {
   static perform(...args) {
@@ -22,9 +27,7 @@ module.exports = class Playscript {
   }
 
   async perform() {
-    // eslint-disable-next-line no-restricted-syntax
     for (const line of this.script) {
-      // eslint-disable-next-line no-await-in-loop
       await this.read(line);
     }
 
@@ -94,6 +97,18 @@ module.exports = class Playscript {
     }
 
     return this.screenshooter.take(options);
+  }
+
+  exec(command, options = { encoding: 'utf8' }) {
+    return execSync(command, options);
+  }
+
+  dockerExec(command) {
+    return this.exec(dockerExecCommand(command));
+  }
+
+  setup(seeders = []) {
+    return this.exec(dockerSetupCommand(seeders));
   }
 
   step(text) {
