@@ -1,12 +1,12 @@
-const { execSync } = require('child_process');
+// const { execSync } = require('child_process');
 const { chromium: targetBrowser } = require('@playwright/test');
 
 const Playscript = require('./playscript');
 const { writeJSON } = require('./files');
 
-const execOptions = {
-  encoding: 'utf8',
-};
+// const execOptions = {
+//   encoding: 'utf8',
+// };
 
 module.exports = class Playbill {
   static print(...args) {
