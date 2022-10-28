@@ -1,4 +1,4 @@
-// get the .env from the root of the project, above the current /client directory
+// get the .env from the root of the project, above the current /user-guides directory
 require('dotenv').config({ path: '../.env' });
 
 const { createReadStream } = require('fs');
@@ -48,6 +48,7 @@ function node(nodeType, content, props = { data: {} }) {
   return {
     nodeType,
     ...props,
+    // Contentful doesn't expect to see a content key on nodes that don't have children
     ...(content ? { content } : null),
   };
 }
