@@ -11,3 +11,4 @@ services:
       - /opt/node/app/client/node_modules
       - /opt/node/app/server/node_modules
       - /opt/node/app/user-guides/node_modules
+      - /opt/node/app/e2e/node_modules
