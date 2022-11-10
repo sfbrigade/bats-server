@@ -22,42 +22,29 @@ function FormInput({
   value,
   validationState,
   error,
+  specificType 
 }) {
   const [focused, setFocused] = useState(false);
+  const [validationError, setError] = useState(false);
 
-  // original typedValue function
   function typedValue(stringValue) {
-    // if (type === 'number') {
-    //   const number = Number(stringValue);
-    //   if (stringValue === '' || number === Number.NaN) {
-    //     return null;
-    //   }
-    //   return number;
-    // }
-    return stringValue;
+    switch (specificType){
+      case 'integer':
+        // replaces all non-digit characters using regex
+        //for now also assuming no negative numbers so no -
+        return stringValue.replaceAll(/[^0-9]+/g, "");
+      default:
+        return stringValue;
+    }
   }
 
-  // function typedValue(stringValue) {
-  //   switch (type){
-  //     case 'integer':
-  //       // replaces all non-digit characters using regex
-  //       //for now also assuming no negative numbers so no -
-  //       return stringValue.replaceAll("[^\\d]", "");
-  //     case 'decimal':
-  //       // replaces all non-digit characters or periods using regex
-  //       //for now also assuming no negative numbers so no -
-  //       return stringValue.replaceAll("[^\\d.]", "");
-  //     default:
-  //       return stringValue;
-  //   }
-  // }
-
-  // keep string.. allow for certain keys and not others
-  // on blur -> then check value
-  // function handleBlur(){
-  //   setFocused(false); // do I have to bind this?
-  //   if (type )
-  // }
+  function handleBlur(){
+    if (type === 'number'){
+      const numericValue = Number(value);
+      setError(numericValue < min || numericValue > max);
+    }
+    setFocused(false);
+  }
 
   let input = (
     <>
@@ -65,15 +52,16 @@ function FormInput({
         id={property}
         disabled={disabled}
         value={value || ''}
-        onBlur={() => setFocused(false)}
+        onBlur={() =>  handleBlur()}
         onChange={(e) => onChange(property, typedValue(e.target.value))}
         onFocus={() => setFocused(true)}
         required={required}
         type={type}
         min={min}
         max={max}
+        step={specificType === 'decimal' ? 0.1 : 1}
         className={classNames('usa-input', {
-          'usa-input--error': validationState === ValidationState.ERROR || error?.errorsFor(property),
+          'usa-input--error': validationState === ValidationState.ERROR || error?.errorsFor(property) || validationError,
           'usa-input--medium': size === 'medium',
           'usa-input--small': size === 'small',
         })}

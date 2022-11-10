@@ -1,0 +1,11 @@
+@import '../theme/base';
+
+input.usa-input:valid + span:after{
+    content: "✖sdsd";
+    padding-left: 5px;
+}
+
+input.usa-input:invalid + span:after {
+    content: "✓dsd";
+    padding-left: 5px;
+}

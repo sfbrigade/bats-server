@@ -33,7 +33,8 @@ export default function FormField({ metadata, ...props }) {
           min={min}
           max={max}
           size={size}
-          type="number" // shouldn't this be type = {type}
+          type="number"
+          specificType={type}
           {...props}
         />
       );
