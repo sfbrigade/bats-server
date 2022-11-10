@@ -25,16 +25,39 @@ function FormInput({
 }) {
   const [focused, setFocused] = useState(false);
 
+  // original typedValue function
   function typedValue(stringValue) {
-    if (type === 'number') {
-      const number = Number(stringValue);
-      if (stringValue === '' || number === Number.NaN) {
-        return null;
-      }
-      return number;
-    }
+    // if (type === 'number') {
+    //   const number = Number(stringValue);
+    //   if (stringValue === '' || number === Number.NaN) {
+    //     return null;
+    //   }
+    //   return number;
+    // }
     return stringValue;
   }
+
+  // function typedValue(stringValue) {
+  //   switch (type){
+  //     case 'integer':
+  //       // replaces all non-digit characters using regex
+  //       //for now also assuming no negative numbers so no -
+  //       return stringValue.replaceAll("[^\\d]", "");
+  //     case 'decimal':
+  //       // replaces all non-digit characters or periods using regex
+  //       //for now also assuming no negative numbers so no -
+  //       return stringValue.replaceAll("[^\\d.]", "");
+  //     default:
+  //       return stringValue;
+  //   }
+  // }
+
+  // keep string.. allow for certain keys and not others
+  // on blur -> then check value
+  // function handleBlur(){
+  //   setFocused(false); // do I have to bind this?
+  //   if (type )
+  // }
 
   let input = (
     <>
