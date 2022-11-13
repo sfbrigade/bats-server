@@ -9,9 +9,7 @@ import './RingdownSection.scss';
 function RingdownSection({ title, ringdowns, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(true);
 
-  return ringdowns.length === 0 ? (
-    <></>
-  ) : (
+  return (
     <div className="ringdown-section">
       <div
         className="usa-accordion__heading ringdown-section__header"

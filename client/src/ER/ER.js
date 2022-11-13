@@ -59,6 +59,14 @@ export default function ER() {
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
+      if (hospitalUser?.hospital.id && window.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
+        data.ringdowns = data.ringdowns.map((r) => {
+          if (r.hospital.id !== hospitalUser.hospital.id) {
+            r.patient.chiefComplaintDescription = `TEST ONLY, NO ARRIVAL. ${r.patient.chiefComplaintDescription}`;
+          }
+          return r;
+        });
+      }
       data.ringdowns = data.ringdowns.map((r) => new Ringdown(r));
       const newRingdowns = data.ringdowns.sort((a, b) => a.etaDateTimeLocalObj.toMillis() - b.etaDateTimeLocalObj.toMillis());
       const newUnconfirmedRingdowns = data.ringdowns.filter(
@@ -71,7 +79,7 @@ export default function ER() {
         playSound();
       }
     }
-  }, [lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate, showRingdown, playSound]);
+  }, [hospitalUser, lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate, showRingdown, playSound]);
 
   useEffect(() => {
     if (hasUnconfirmedRingdowns) {

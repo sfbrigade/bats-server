@@ -46,7 +46,7 @@ async function getRingdownData(userId, cachedStatusUpdates) {
 
 async function getStatusUpdateData(hospitalId) {
   /// dispatch to all clients watching this hospital's ringdowns
-  const patientDeliveries = await models.PatientDelivery.findAll({
+  const options = {
     include: { all: true },
     where: {
       HospitalId: hospitalId,
@@ -59,7 +59,11 @@ async function getStatusUpdateData(hospitalId) {
         ],
       },
     },
-  });
+  };
+  if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
+    delete options.where.HospitalId;
+  }
+  const patientDeliveries = await models.PatientDelivery.findAll(options);
   const statusUpdate = await models.HospitalStatusUpdate.scope('latest').findOne({
     where: {
       HospitalId: hospitalId,
@@ -89,7 +93,9 @@ async function dispatchStatusUpdate(hospitalId) {
   // dispatch to all clients watching this hospital's ringdowns
   const data = await getStatusUpdateData(hospitalId);
   hospitalServer.clients.forEach((ws) => {
-    if (ws.info.hospitalId === hospitalId) {
+    if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
+      ws.send(data);
+    } else if (ws.info.hospitalId === hospitalId) {
       ws.send(data);
     }
   });
