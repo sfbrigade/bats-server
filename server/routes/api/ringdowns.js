@@ -202,6 +202,8 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
           },
           transaction,
         };
+        // when showing ringdowns from all hospitals for testing, also
+        // allow any hospital user to update its delivery status
         if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
           delete options.where.HospitalId;
         }

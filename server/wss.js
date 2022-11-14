@@ -60,6 +60,7 @@ async function getStatusUpdateData(hospitalId) {
       },
     },
   };
+  // when specified, return ringdowns across all hospitals for testing
   if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
     delete options.where.HospitalId;
   }
@@ -93,6 +94,8 @@ async function dispatchStatusUpdate(hospitalId) {
   // dispatch to all clients watching this hospital's ringdowns
   const data = await getStatusUpdateData(hospitalId);
   hospitalServer.clients.forEach((ws) => {
+    // when showing ringdowns across all hospitals for testing, send
+    // ringdown updates to all hospitals
     if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
       ws.send(data);
     } else if (ws.info.hospitalId === hospitalId) {

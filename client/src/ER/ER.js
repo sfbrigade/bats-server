@@ -59,6 +59,8 @@ export default function ER() {
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
+      // for pilot testing, optionally show ringdowns from all hospitals
+      // and mark as TEST ONLY, NO ARRIVAL when not for this hospital
       if (hospitalUser?.hospital.id && window.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
         data.ringdowns = data.ringdowns.map((r) => {
           if (r.hospital.id !== hospitalUser.hospital.id) {
