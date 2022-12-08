@@ -35,25 +35,9 @@ function writeJSON(path, data, options = { spaces: 2 }) {
   return writeJson(fullPath, data, options);
 }
 
-function writeAsset(path, assetInfo) {
-  const { name } = parse(assetInfo.fields.file['en-US'].fileName);
-
-  return writeJSON([path, name], assetInfo);
-}
-
-async function readAsset(path, name) {
-  try {
-    return await readJson(join(path, name + '.json'));
-  } catch (e) {
-    return null;
-  }
-}
-
 module.exports = {
   readJSON,
   writeJSON,
-  readAsset,
-  writeAsset,
   isJS: createIs(/^(.+)\.js$/),
   isPNG: createIs(/^(.+)\.png$/),
 };

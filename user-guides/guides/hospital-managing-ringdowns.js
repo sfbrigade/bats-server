@@ -8,8 +8,8 @@ module.exports = {
   script: [
     ...loginHospital,
     ['"Ringdown"', ['click']],
-    // click in reverse order so their index won't change, since clicking will change the class name, causing the
-    // number of matches to then change
+    // start with the sections collapsed.  click in reverse order so their index won't change, since clicking will change the class name,
+    // causing the number of matches to then change.
     ['.fa-caret-up.btn >> nth=1', ['click']],
     ['.fa-caret-up.btn >> nth=0', ['click']],
 
@@ -25,22 +25,26 @@ module.exports = {
       'Click More info to expand a ringdown and see more details.'
     ),
 
-    ({ dockerExec }) => dockerExec('cd server && sequelize db:seed --seed set-ringdown-offloaded.js --seeders-path ../user-guides/seeders/'),
-    ...loginHospital,
+    // change the state of the ringdown to offloaded
+    ({ dockerExec }) => dockerExec('node user-guides/seeders/set-ringdown-offloaded.js'),
+    [['reload']],
     ['"Ringdown"', ['click']],
+    ['header', ['click']],
 
     ({ screenshot }) => screenshot(
-      'After a patient has been offloaded, click Dismiss to remove the ringdown from the list. Note that the ringdown will be automatically removed from the list when transport marks their status as returned to service.\n'
+      'After a patient has been offloaded, click Dismiss to remove the ringdown from the list. Note that the ringdown will be automatically removed from the list when transport marks their status as returned to service.'
     ),
 
-    // reset the database and change the ringdown status to redirected
-    ({ setup }) => setup(['create-3-confirmed-ringdowns.js', 'set-ringdown-redirected.js']),
-    ...loginHospital,
+    // reset the database and add ringdowns with different statuses so we can screenshot them
+    ({ dockerExec }) => dockerExec('node user-guides/seeders/create-canceled-redirected-ringdowns.js'),
+    [['reload']],
     ['"Ringdown"', ['click']],
+    ['header', ['click']],
 
-    ({ screenshot }) => screenshot(
-      { selector: '.ringdown-card >> nth=2' },
-      'If transport decides to Cancel their delivery or Redirect to a new destination, click Dismiss to remove the ringdown from the list. These ringdowns will not be automatically removed.\n'
+    ({ screenshot }) => screenshot({ selector: '.ringdown-card >> nth=0' },
+      'If transport decides to cancel their delivery or redirect to a new destination, click Dismiss to remove the ringdown from the list. These ringdowns will not be automatically removed.'
     ),
+
+    ({ screenshot }) => screenshot({ selector: '.ringdown-card >> nth=1' }),
   ]
 };

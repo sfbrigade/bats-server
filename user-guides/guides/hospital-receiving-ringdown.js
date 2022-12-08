@@ -5,14 +5,14 @@ module.exports = {
   script: [
     ...loginHospital,
     ['"Hospital Info"', ['waitFor']],
-      // wait briefly for the icon next to the incoming count to render.  if we don't, it doesn't show up in the first screenshot.
+    // wait briefly for the icon next to the incoming count to render.  if we don't, it doesn't show up in the first screenshot.
     [['waitForTimeout', 500]],
 
     ({ screenshot }) => screenshot(
       'New incoming ringdowns will appear in an alert box at the bottom of the interface.'
     ),
 
-      // since there are multiple More info links, specify the first one
+    // since there are multiple More info links, specify the first one
     [':nth-match(:text("More info"), 1)', ['click']],
 
     ({ screenshot }) => screenshot(
