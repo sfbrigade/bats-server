@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "16.13.1"
+    "node": "18.10.0"
   },
   "scripts": {
     "docker:start": "docker compose up",
@@ -12,9 +12,10 @@
     "heroku-postbuild": "cd client && yarn build",
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
-    "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false",
+    "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false && yarn test:e2e",
     "test:client": "cd client && yarn test",
     "test:server": "cd server && yarn test",
+    "test:e2e": "cd e2e && yarn test",
     "lint": "yarn eslint .",
     "lint:changed": "yarn eslint $(git diff --name-only | xargs)",
     "format": "yarn prettier --write .",

@@ -3,11 +3,11 @@
 .counter {
   align-items: center;
   border: 1px solid color('base-lighter');
-  border-radius: 0.25rem;
+  border-radius: units(0.5);
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
-  padding: 0.25rem 0.75rem;
+  margin-bottom: units(2);
+  padding: units(1) units(2);
 }
 
 .counter__label {
@@ -22,20 +22,21 @@
 .counter__input {
   text-align: center;
   border: 0;
-  max-width: 3rem !important;
+  max-width: units(6) !important;
+  @include u-margin-top(0);
 }
 
 .counter__button {
   align-items: center;
-  border-radius: 0.75rem;
+  border-radius: 100%;
   display: flex;
   flex-shrink: 0;
-  font-size: 1.5rem;
-  height: 1.5rem;
+  font-size: units(3);
+  height: units(3);
   justify-content: center;
-  margin: 0 0.5rem !important;
+  margin: 0 units(1) !important;
   padding: 0;
-  width: 1.5rem;
+  width: units(3);
   visibility: hidden;
 }
 
