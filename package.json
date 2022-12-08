@@ -2,6 +2,10 @@
   "name": "routed",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "engines": {
     "node": "18.10.0"
   },
