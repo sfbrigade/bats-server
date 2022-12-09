@@ -18,7 +18,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: yarn install && e2e/node_modules/.bin/playwright install-deps && e2e/node_modules/.bin/playwright install chromium
+          command: yarn install && yarn workspace e2e install
       - run:
           command: yarn workspace server sequelize db:create && yarn workspace server sequelize db:create --env test
       - run:
