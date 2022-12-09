@@ -1,6 +1,6 @@
 const { Model } = require('sequelize');
 const metadata = require('../../shared/metadata/ambulance');
-const convertToSequelizeField = require('../../shared/convertToSequelizeField');
+const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
   class Ambulance extends Model {
@@ -16,11 +16,7 @@ module.exports = (sequelize) => {
     }
   }
 
-  Ambulance.init(metadata.getFieldHash(convertToSequelizeField), {
-    sequelize,
-    timestamps: true,
-    tableName: metadata.tableName,
-    modelName: metadata.modelName,
-  });
+  initModel(Ambulance, metadata, sequelize);
+
   return Ambulance;
 };

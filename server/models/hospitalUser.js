@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { Model } = require('sequelize');
 const metadata = require('../../shared/metadata/hospitalUser');
-const convertToSequelizeField = require('../../shared/convertToSequelizeField');
+const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
   class HospitalUser extends Model {
@@ -20,12 +20,7 @@ module.exports = (sequelize) => {
     }
   }
 
-  HospitalUser.init(metadata.getFieldHash(convertToSequelizeField), {
-    sequelize,
-    timestamps: true,
-    tableName: metadata.tableName,
-    modelName: metadata.modelName,
-  });
+  initModel(HospitalUser, metadata, sequelize);
 
   HospitalUser.addScope('active', {
     where: { isActive: true },
