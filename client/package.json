@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^5.8.0",
+    "@craco/craco": "^7.0.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -20,10 +20,10 @@
     "react-dom": "^16.14.0",
     "react-router": "^5.3.3",
     "react-router-dom": "^5.3.3",
-    "react-scripts": "3.4.4",
+    "react-scripts": "5.0.1",
     "react-use-websocket": "^2.9.1",
-    "sass": "^1.53.0",
-    "sass-loader": "^10.3.0",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
     "use-sound": "^4.0.1",
     "uswds": "^2.13.3"
   },
