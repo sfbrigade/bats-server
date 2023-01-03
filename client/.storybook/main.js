@@ -10,7 +10,8 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    "storybook-preset-craco"
+    "@storybook/preset-create-react-app"
+//    "storybook-preset-craco"
   ],
   "framework": "@storybook/react"
 }
