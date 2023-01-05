@@ -8,6 +8,6 @@
   },
   "scripts": {
     "test": "playwright test",
-    "install": "playwright install-deps && playwright install chromium"
+    "install-chromium": "playwright install-deps && playwright install chromium"
   }
 }
