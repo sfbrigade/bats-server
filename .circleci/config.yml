@@ -18,7 +18,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: yarn install && yarn workspace e2e install
+          command: yarn install && yarn workspace e2e install-chromium
       - run:
           command: yarn workspace server sequelize db:create && yarn workspace server sequelize db:create --env test
       - run:
