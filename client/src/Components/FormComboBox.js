@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {comboBox} from '../../../node_modules/uswds/src/js/components';
+import { comboBox } from '../../../node_modules/uswds/src/js/components';
 
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
