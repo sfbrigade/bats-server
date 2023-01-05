@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { Model } = require('sequelize');
 const metadata = require('../../shared/metadata/organization');
-const convertToSequelizeField = require('../../shared/convertToSequelizeField');
+const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
   class Organization extends Model {
@@ -20,11 +20,8 @@ module.exports = (sequelize) => {
       return _.pick(attributes, ['id', 'name', 'type', 'timeZoneIsoCode', 'isActive', 'hospitals']);
     }
   }
-  Organization.init(metadata.getFieldHash(convertToSequelizeField), {
-    sequelize,
-    timestamps: true,
-    tableName: metadata.tableName,
-    modelName: metadata.modelName,
-  });
+
+  initModel(Organization, metadata, sequelize);
+
   return Organization;
 };

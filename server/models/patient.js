@@ -1,6 +1,6 @@
 const { Model } = require('sequelize');
 const metadata = require('../../shared/metadata/patient');
-const convertToSequelizeField = require('../../shared/convertToSequelizeField');
+const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
   class Patient extends Model {
@@ -16,11 +16,8 @@ module.exports = (sequelize) => {
       Patient.belongsTo(models.User, { as: 'UpdatedBy' });
     }
   }
-  Patient.init(metadata.getFieldHash(convertToSequelizeField), {
-    sequelize,
-    timestamps: true,
-    tableName: metadata.tableName,
-    modelName: metadata.modelName,
-  });
+
+  initModel(Patient, metadata, sequelize);
+
   return Patient;
 };
