@@ -7,10 +7,10 @@ orbs:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/node:16.13.1
+      - image: cimg/node:18.10.0
         environment:
           DATABASE_URL: 'postgres://postgres@localhost/bats'
-      - image: circleci/postgres:12
+      - image: cimg/postgres:12.12
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust
     steps:
@@ -18,11 +18,13 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: cd client && yarn && cd ../server && yarn
+          command: cd client && yarn && cd ../server && yarn && cd ../e2e && yarn && node_modules/.bin/playwright install-deps && node_modules/.bin/playwright install chromium
       - run:
-          command: cd server && yarn run sequelize db:create --env test
+          command: cd server && yarn run sequelize db:create && yarn run sequelize db:create --env test
       - run:
-          command: cd server && yarn run sequelize db:migrate --env test
+          command: cd server && yarn run sequelize db:migrate && yarn run sequelize db:migrate --env test
+      - run:
+          command: cd server && yarn run sequelize db:seed:all
       - run:
           command: eval $(cat example.env | grep -v DATABASE_URL | sed 's/^/export /'); yarn run test
 

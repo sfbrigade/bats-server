@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { Model, Op } = require('sequelize');
 const { DeliveryStatus } = require('../../shared/constants');
 const metadata = require('../../shared/metadata/hospitalStatusUpdate');
-const convertToSequelizeField = require('../../shared/convertToSequelizeField');
+const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
   class HospitalStatusUpdate extends Model {
@@ -80,12 +80,9 @@ module.exports = (sequelize) => {
       return json;
     }
   }
-  HospitalStatusUpdate.init(metadata.getFieldHash(convertToSequelizeField), {
-    sequelize,
-    timestamps: true,
-    tableName: metadata.tableName,
-    modelName: metadata.modelName,
-  });
+
+  initModel(HospitalStatusUpdate, metadata, sequelize);
+
   HospitalStatusUpdate.addScope('latest', () => ({
     attributes: [sequelize.literal('DISTINCT ON("HospitalStatusUpdate".hospital_uuid) 1')].concat(
       Object.keys(HospitalStatusUpdate.rawAttributes)
@@ -95,5 +92,6 @@ module.exports = (sequelize) => {
       ['updateDateTimeLocal', 'DESC'],
     ],
   }));
+
   return HospitalStatusUpdate;
 };

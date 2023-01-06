@@ -1,2 +1,5 @@
 # Ignore artifacts:
 build
+
+user-guides/guides
+user-guides/build

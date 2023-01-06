@@ -1,4 +1,4 @@
-const { DataTypes } = require('../server/node_modules/sequelize');
+const { DataTypes } = require('sequelize');
 
 const SequelizeKeys = ['allowNull', 'autoIncrement', 'defaultValue', 'get', 'primaryKey', 'set', 'unique', 'validate'];
 

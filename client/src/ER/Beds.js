@@ -73,15 +73,17 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
                 onChange={(property, value) => setAdditionalNotes(value)}
               />
               {!isEditing ? (
-                <button className="usa-button usa-button--outline" type="button" onClick={() => setEditing(true)}>
+                <button className="usa-button usa-button--outline width-full" type="button" onClick={() => setEditing(true)}>
                   Update Hospital Info
                 </button>
               ) : (
-                <button className="usa-button" type="button" onClick={handleUpdate}>
+                <button className="usa-button width-full" type="button" onClick={handleUpdate}>
                   Confirm Updates
                 </button>
               )}
-              <div className="beds__updated">Updated {DateTime.fromISO(statusUpdate.updateDateTimeLocal).toFormat('M/d/yyyy @ H:mm')}</div>
+              <div className="beds__updated">
+                Last updated on {DateTime.fromISO(statusUpdate.updateDateTimeLocal).toLocaleString(DateTime.DATETIME_SHORT)}
+              </div>
             </fieldset>
           )}
         </form>

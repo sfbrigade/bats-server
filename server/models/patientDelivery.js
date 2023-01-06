@@ -2,7 +2,7 @@ const _ = require('lodash');
 const { Model } = require('sequelize');
 const { DeliveryStatus } = require('../../shared/constants');
 const metadata = require('../../shared/metadata/patientDelivery');
-const convertToSequelizeField = require('../../shared/convertToSequelizeField');
+const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
   class PatientDelivery extends Model {
@@ -169,11 +169,8 @@ module.exports = (sequelize) => {
       return json;
     }
   }
-  PatientDelivery.init(metadata.getFieldHash(convertToSequelizeField), {
-    sequelize,
-    timestamps: true,
-    tableName: metadata.tableName,
-    modelName: metadata.modelName,
-  });
+
+  initModel(PatientDelivery, metadata, sequelize);
+
   return PatientDelivery;
 };

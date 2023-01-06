@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const { Model } = require('sequelize');
 const metadata = require('../../shared/metadata/user');
-const convertToSequelizeField = require('../../shared/convertToSequelizeField');
+const initModel = require('../metadata/initModel');
 
 const SALT_ROUNDS = 10;
 
@@ -40,12 +40,7 @@ module.exports = (sequelize) => {
     }
   }
 
-  User.init(metadata.getFieldHash(convertToSequelizeField), {
-    sequelize,
-    timestamps: true,
-    tableName: metadata.tableName,
-    modelName: metadata.modelName,
-  });
+  initModel(User, metadata, sequelize);
 
   User.beforeSave(async (user) => {
     /// if a new password has been set, hash for storage
