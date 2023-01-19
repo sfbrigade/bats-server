@@ -42,10 +42,13 @@ class ModelMetadata {
   }
 
   getFields(convertField = identity, filter = all) {
+   
     return this.fields.filter(filter).map(convertField);
   }
 
   getFieldHash(convertField = keyValue, filter = all) {
+
+    console.log('Object.fromEntries(this.getFields(convertField, filter))', Object.fromEntries(this.getFields(convertField, filter)))
     return Object.fromEntries(this.getFields(convertField, filter));
   }
 

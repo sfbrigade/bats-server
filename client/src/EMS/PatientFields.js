@@ -13,7 +13,7 @@ import Context from '../Context';
 import patient from '../../../shared/metadata/patient';
 
 const Patient = patient.getFieldHash();
-
+console.log('Patient', Patient)
 function createOptions(ids) {
   return ids.map((id) => (
     <option key={id} value={id}>
@@ -44,6 +44,7 @@ function PatientFields({ ringdown, onChange }) {
   function handleUserInput(updatedField, inputValue) {
     onChange(updatedField, inputValue);
   }
+
 
   return (
     <div className="usa-accordion">

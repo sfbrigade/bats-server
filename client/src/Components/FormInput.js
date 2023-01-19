@@ -36,6 +36,26 @@ function FormInput({
     return stringValue;
   }
 
+  const handlePropertyNameString = () => {
+    let newString = property.replace(/([A-Z])/g, (val) => {
+      return ' ' + val;
+    });
+    newString = newString[0].toUpperCase() + newString.slice(1)
+    return newString;
+  }
+
+  const handleRange = () => {
+    if(!isNaN(min) && !isNaN(max)) {
+      return value && (value < min || value > max) ? (
+        <div className='usa-error-message'>
+        <i className="fas fa-exclamation-circle" /> {handlePropertyNameString()} must be within {min} and {max}
+      </div>
+      ) : null
+    } else {
+      return null
+    } 
+  }
+
   let input = (
     <>
       <input
@@ -57,6 +77,7 @@ function FormInput({
       />
       {unit && <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;{unit}</span>}
       {children}
+
     </>
   );
 
@@ -88,6 +109,7 @@ function FormInput({
             .join(' ')}
         </div>
       )}
+      {handleRange()}
       <ValidationMessage validationState={validationState} />
     </>
   );

@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import { ValidationState } from '../Models/PatientFieldData';
 import ValidationMessage from './ValidationMessage';
 
-function FormTextArea({ children, label, onChange, property, disabled, required, showRequiredHint, value, validationState }) {
+function FormTextArea({ children, label, onChange, property, disabled, required, showRequiredHint, value, validationState, metadata }) {
   const [focused, setFocused] = useState(false);
+
+  console.log('metadata', metadata)
 
   return (
     <>
