@@ -24,7 +24,7 @@ function FormInput({
   error,
 }) {
   const [focused, setFocused] = useState(false);
-  const [rangeError, setRangeError] = useState({hasError: false, string: ''})
+  const [rangeError, setRangeError] = useState({ hasError: false, string: '' });
   function typedValue(stringValue) {
     if (type === 'number') {
       const number = Number(stringValue);
@@ -37,32 +37,32 @@ function FormInput({
   }
 
   const handleRange = (value, max = null, min = null) => {
-    if ( isNaN(min) ) {
-      return value && value > max ? false : true
-    } else if ( !isNaN(min) && !isNaN(max) ) {
-      return value && (value < min || value > max) ? false : true
+    if (isNaN(min)) {
+      return value && value > max ? false : true;
+    } else if (!isNaN(min) && !isNaN(max)) {
+      return value && (value < min || value > max) ? false : true;
     } else {
-      return true
-    } 
-  }
+      return true;
+    }
+  };
 
   const handleOnChange = (e) => {
-    const { value } = e.target
-    if (type === 'number' && value === '-' ) {
-      return null
+    const { value } = e.target;
+    if (type === 'number' && value === '-') {
+      return null;
     } else {
-      const isInRange = handleRange(value, max)
-      onChange(property, typedValue(value))
-      setRangeError({string: '', hasError: !isInRange})
+      const isInRange = handleRange(value, max);
+      onChange(property, typedValue(value));
+      setRangeError({ string: '', hasError: !isInRange });
     }
-  }
+  };
 
   const handleOnBlur = () => {
-    setFocused(false)
-    const isInRange = handleRange(value, max, min)
-    const string = isInRange ? '' : `Valid Range: ${min} - ${max}`
-    setRangeError({hasError: !isInRange, string})
-  }
+    setFocused(false);
+    const isInRange = handleRange(value, max, min);
+    const string = isInRange ? '' : `Valid Range: ${min} - ${max}`;
+    setRangeError({ hasError: !isInRange, string });
+  };
 
   let input = (
     <>
@@ -85,7 +85,6 @@ function FormInput({
       />
       {unit && <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;{unit}</span>}
       {children}
-
     </>
   );
 

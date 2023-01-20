@@ -7,7 +7,7 @@ import ValidationMessage from './ValidationMessage';
 function FormTextArea({ children, label, onChange, property, disabled, required, showRequiredHint, value, validationState, metadata }) {
   const [focused, setFocused] = useState(false);
 
-  console.log('metadata', metadata)
+  console.log('metadata', metadata);
 
   return (
     <>

@@ -13,7 +13,7 @@ import Context from '../Context';
 import patient from '../../../shared/metadata/patient';
 
 const Patient = patient.getFieldHash();
-console.log('Patient', Patient)
+console.log('Patient', Patient);
 function createOptions(ids) {
   return ids.map((id) => (
     <option key={id} value={id}>
