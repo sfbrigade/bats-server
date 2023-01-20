@@ -4,14 +4,14 @@ import classNames from 'classnames';
 
 import { ValidationState } from '../Models/PatientFieldData';
 
-function ValidationMessage({ className, validationState }) {
+function ValidationMessage({ className, validationState, errorString }) {
   const errorHtml = (
     <div className={classNames('usa-error-message', className)}>
-      <i className="fas fa-exclamation-circle" /> This is a required field
+      <i className="fas fa-exclamation-circle" /> {errorString || `This is a required field`}
     </div>
   );
 
-  if (validationState === ValidationState.ERROR) {
+  if (errorString || validationState === ValidationState.ERROR) {
     return errorHtml;
   }
 

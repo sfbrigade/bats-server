@@ -24,7 +24,7 @@ function FormInput({
   error,
 }) {
   const [focused, setFocused] = useState(false);
-
+  const [rangeError, setRangeError] = useState({hasError: false, string: ''})
   function typedValue(stringValue) {
     if (type === 'number') {
       const number = Number(stringValue);
@@ -36,24 +36,32 @@ function FormInput({
     return stringValue;
   }
 
-  const handlePropertyNameString = () => {
-    let newString = property.replace(/([A-Z])/g, (val) => {
-      return ' ' + val;
-    });
-    newString = newString[0].toUpperCase() + newString.slice(1)
-    return newString;
+  const handleRange = (value, max = null, min = null) => {
+    if ( isNaN(min) ) {
+      return value && value > max ? false : true
+    } else if ( !isNaN(min) && !isNaN(max) ) {
+      return value && (value < min || value > max) ? false : true
+    } else {
+      return true
+    } 
   }
 
-  const handleRange = () => {
-    if(!isNaN(min) && !isNaN(max)) {
-      return value && (value < min || value > max) ? (
-        <div className='usa-error-message'>
-        <i className="fas fa-exclamation-circle" /> {handlePropertyNameString()} must be within {min} and {max}
-      </div>
-      ) : null
-    } else {
+  const handleOnChange = (e) => {
+    const { value } = e.target
+    if (type === 'number' && value === '-' ) {
       return null
-    } 
+    } else {
+      const isInRange = handleRange(value, max)
+      onChange(property, typedValue(value))
+      setRangeError({string: '', hasError: !isInRange})
+    }
+  }
+
+  const handleOnBlur = () => {
+    setFocused(false)
+    const isInRange = handleRange(value, max, min)
+    const string = isInRange ? '' : `Valid Range: ${min} - ${max}`
+    setRangeError({hasError: !isInRange, string})
   }
 
   let input = (
@@ -62,15 +70,15 @@ function FormInput({
         id={property}
         disabled={disabled}
         value={value || ''}
-        onBlur={() => setFocused(false)}
-        onChange={(e) => onChange(property, typedValue(e.target.value))}
+        onBlur={handleOnBlur}
+        onChange={handleOnChange}
         onFocus={() => setFocused(true)}
         required={required}
         type={type}
         min={min}
         max={max}
         className={classNames('usa-input', {
-          'usa-input--error': validationState === ValidationState.ERROR || error?.errorsFor(property),
+          'usa-input--error': validationState === ValidationState.ERROR || error?.errorsFor(property) || rangeError.hasError,
           'usa-input--medium': size === 'medium',
           'usa-input--small': size === 'small',
         })}
@@ -110,7 +118,7 @@ function FormInput({
         </div>
       )}
       {handleRange()}
-      <ValidationMessage validationState={validationState} />
+      <ValidationMessage validationState={validationState} errorString={rangeError.string} />
     </>
   );
 }

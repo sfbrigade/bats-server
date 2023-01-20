@@ -18,6 +18,7 @@ export default function FormField({ metadata, ...props }) {
     required,
     onChange,
     validationState: data.getValidationState(property),
+    
   };
 
   switch (type) {
