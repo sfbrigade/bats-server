@@ -48,6 +48,7 @@ function FormInput({
 
   const handleOnChange = (e) => {
     const { value } = e.target;
+
     if (type === 'number' && value === '-') {
       return null;
     } else {
@@ -64,12 +65,19 @@ function FormInput({
     setRangeError({ hasError: !isInRange, string });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === '-' && type === 'number') {
+      e.preventDefault();
+    }
+  };
+
   let input = (
     <>
       <input
         id={property}
         disabled={disabled}
         value={value || ''}
+        onKeyDown={handleKeyDown}
         onBlur={handleOnBlur}
         onChange={handleOnChange}
         onFocus={() => setFocused(true)}
