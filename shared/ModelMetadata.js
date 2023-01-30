@@ -46,7 +46,6 @@ class ModelMetadata {
   }
 
   getFieldHash(convertField = keyValue, filter = all) {
-    console.log('Object.fromEntries(this.getFields(convertField, filter))', Object.fromEntries(this.getFields(convertField, filter)));
     return Object.fromEntries(this.getFields(convertField, filter));
   }
 

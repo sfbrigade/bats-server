@@ -24,7 +24,6 @@ function FormInput({
   error,
 }) {
   const [focused, setFocused] = useState(false);
-  const [rangeError, setRangeError] = useState({ hasError: false, string: '' });
   function typedValue(stringValue) {
     if (type === 'number') {
       const number = Number(stringValue);
@@ -36,37 +35,17 @@ function FormInput({
     return stringValue;
   }
 
-  const handleRange = (value, max = null, min = null) => {
-    if (isNaN(min)) {
-      return value && value > max ? false : true;
-    } else if (!isNaN(min) && !isNaN(max)) {
-      return value && (value < min || value > max) ? false : true;
-    } else {
-      return true;
-    }
-  };
-
   const handleOnChange = (e) => {
     const { value } = e.target;
-
-    if (type === 'number' && value === '-') {
-      return null;
-    } else {
-      const isInRange = handleRange(value, max);
-      onChange(property, typedValue(value));
-      setRangeError({ string: '', hasError: !isInRange });
-    }
+    onChange(property, typedValue(value));
   };
 
   const handleOnBlur = () => {
     setFocused(false);
-    const isInRange = handleRange(value, max, min);
-    const string = isInRange ? '' : `Valid Range: ${min} - ${max}`;
-    setRangeError({ hasError: !isInRange, string });
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === '-' && type === 'number') {
+    if (e.key === '-' && type === 'number' && min >= 0) {
       e.preventDefault();
     }
   };
@@ -86,7 +65,10 @@ function FormInput({
         min={min}
         max={max}
         className={classNames('usa-input', {
-          'usa-input--error': validationState === ValidationState.ERROR || error?.errorsFor(property) || rangeError.hasError,
+          'usa-input--error':
+            validationState === ValidationState.REQUIRED_ERROR ||
+            validationState === ValidationState.RANGE_ERROR ||
+            error?.errorsFor(property),
           'usa-input--medium': size === 'medium',
           'usa-input--small': size === 'small',
         })}
@@ -108,7 +90,10 @@ function FormInput({
           className={classNames('usa-label', {
             'usa-label--required': showRequiredHint && required,
             'usa-label--focused': focused,
-            'usa-label--error': validationState === ValidationState.ERROR || error?.errorsFor(property),
+            'usa-label--error':
+              validationState === ValidationState.REQUIRED_ERROR ||
+              validationState === ValidationState.RANGE_ERROR ||
+              error?.errorsFor(property),
           })}
         >
           {label}
@@ -124,8 +109,12 @@ function FormInput({
             .join(' ')}
         </div>
       )}
-      {handleRange()}
-      <ValidationMessage validationState={validationState} errorString={rangeError.string} />
+      <ValidationMessage
+        validationState={validationState}
+        min={min}
+        max={max}
+        // errorMessage={rangeError.errorMessage}
+      />
     </>
   );
 }
@@ -162,7 +151,7 @@ FormInput.defaultProps = {
   max: null,
   unit: null,
   value: '',
-  validationState: ValidationState.NO_INPUT,
+  validationState: ValidationState.EMPTY_INPUT,
   error: undefined,
 };
 

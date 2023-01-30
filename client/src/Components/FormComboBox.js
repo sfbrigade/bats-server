@@ -74,7 +74,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     const { current } = ref;
     // manually add/remove validation classes to the custom input added by USWDS
     const input = current.querySelector('input[type="text"]');
-    if (validationState === ValidationState.ERROR) {
+    if (validationState === ValidationState.REQUIRED_ERROR) {
       input.classList.add('usa-input--error');
     } else {
       input.classList.remove('usa-input--error');
@@ -97,7 +97,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
         className={classNames('usa-label', {
           'usa-label--required': showRequiredHint && required,
           'usa-label--focused': focused,
-          'usa-label--error': validationState === ValidationState.ERROR,
+          'usa-label--error': validationState === ValidationState.REQUIRED_ERROR,
         })}
         htmlFor={property}
       >
@@ -142,7 +142,7 @@ FormComboBox.propTypes = {
 FormComboBox.defaultProps = {
   showRequiredHint: true,
   size: null,
-  validationState: ValidationState.NO_INPUT,
+  validationState: ValidationState.EMPTY_INPUT,
   value: '',
 };
 

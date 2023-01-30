@@ -45,7 +45,6 @@ function PatientFields({ ringdown, onChange }) {
     onChange(updatedField, inputValue);
   }
 
-
   return (
     <div className="usa-accordion">
       <Heading title="Incident info" />

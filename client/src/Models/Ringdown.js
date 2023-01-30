@@ -7,19 +7,69 @@ import * as metadata from '../../../shared/metadata';
 import convertToPropType from '../utils/convertToPropType';
 import DeliveryStatus from '../../../shared/constants/DeliveryStatus';
 
+// import ambulance from '../../../shared/metadata/ambulance';
+// import patient from '../../../shared/metadata/patient';
+
+const Patient = metadata.patient.getFieldHash();
+const Ambulance = metadata.ambulance.getFieldHash();
+const EmergencyMedicalServiceCall = metadata.emergencyMedicalServiceCall.getFieldHash();
+
 // define the fields that must all have valid input to make the ringdown valid.  the second array item is an optional function to determine
 // whether the field's current value is valid as input.  by default, the field is counted as having input if its value is truthy.   the
 // array order should be the same as the field order in PatientFields.
+
+const handleInputValidation = (name, value) => {
+  const { type, required = false, allowNull = true } = Patient[name] || Ambulance[name] || EmergencyMedicalServiceCall[name] || {};
+
+  let isValidType;
+  switch (type) {
+    case 'integer':
+      isValidType = typeof value === 'number' && value % 1 === 0;
+      break;
+    case 'boolean':
+      isValidType = typeof value === 'boolean';
+      break;
+    case 'enum':
+    case 'text':
+      isValidType = typeof value === 'string';
+      break;
+    case 'decimal':
+      isValidType = typeof value === 'number';
+      break;
+    default:
+      break;
+  }
+
+  return { value, isRequired: required, allowNull, isValidType };
+};
 const validatedFields = [
-  ['ambulanceIdentifier'],
-  ['dispatchCallNumber'],
-  ['emergencyServiceResponseType'],
-  ['age'],
-  ['sex'],
-  ['chiefComplaintDescription'],
-  ['stableIndicator', (value) => typeof value === 'boolean'],
-  ['all', () => ValidationState.NO_INPUT],
+  'ambulanceIdentifier',
+  'dispatchCallNumber',
+  'emergencyServiceResponseType',
+  'age',
+  'sex',
+  'chiefComplaintDescription',
+  'stableIndicator',
+  'systolicBloodPressure',
+  'diastolicBloodPressure',
+  'heartRateBpm',
+  'respiratoryRate',
+  'oxygenSaturation',
+  'supplementalOxygenAmount',
+  'temperature',
+  'glasgowComaScale',
+  'all',
 ];
+
+const handleRange = (value, max = null, min = null) => {
+  if (isNaN(min)) {
+    return value && value > max ? false : true;
+  } else if (typeof min === 'number' && typeof max === 'number') {
+    return value && (value < min || value > max) ? false : true;
+  } else {
+    return true;
+  }
+};
 
 // define the names of the objects that will be added to the Ringdown payload property, and the list of its fields for which getters/setters
 // will be added.  if the object name is an array, the second string is used as the object name.
@@ -144,11 +194,27 @@ class Ringdown {
   // Validators
 
   get isPatientValid() {
+    let hasErrors;
+    for (let key in this.validationData) {
+      if (
+        this.validationData[key].validationState === ValidationState.REQUIRED_ERROR ||
+        this.validationData[key].validationState === ValidationState.RANGE_ERROR
+      ) {
+        hasErrors = true;
+      }
+    }
+    const validateCoupledInputs = (input1, input2) => {
+      const hasInput1 = input1 || typeof input1 === 'number';
+      const hasInput2 = input2 || typeof input2 === 'number';
+      return hasInput1 || hasInput2 ? hasInput1 && hasInput2 : true;
+    };
     return (
       this.ambulanceIdentifier !== null &&
       this.ambulanceIdentifier !== '' &&
       this.dispatchCallNumber !== null &&
       this.dispatchCallNumber !== '' &&
+      validateCoupledInputs(this.systolicBloodPressure, this.diastolicBloodPressure) &&
+      validateCoupledInputs(this.lowOxygenResponseType, this.supplementalOxygenAmount) &&
       this.age !== null &&
       this.age !== '' &&
       this.sex !== null &&
@@ -157,7 +223,8 @@ class Ringdown {
       this.emergencyServiceResponseType !== '' &&
       this.chiefComplaintDescription !== null &&
       this.chiefComplaintDescription !== '' &&
-      this.stableIndicator !== null
+      this.stableIndicator !== null &&
+      !hasErrors
     );
   }
 
@@ -176,12 +243,15 @@ class Ringdown {
       this.validationData = validationData;
     } else {
       this.validationData = validatedFields.reduce((result, field, i) => {
-        const [name, validator] = field;
-        const fieldValue = this[name];
-        const value = typeof validator === 'function' ? validator(fieldValue) : fieldValue;
-        const state = value ? ValidationState.INPUT : ValidationState.NO_INPUT;
-
-        result[name] = new PatientFieldData(name, i, state);
+        const fieldValue = this[field];
+        const { value, isRequired, allowNull } = handleInputValidation(field, fieldValue);
+        let state;
+        if (isRequired || !allowNull) {
+          state = value ? ValidationState.REQUIRED_INPUT : ValidationState.EMPTY_REQUIRED_INPUT;
+        } else {
+          state = value ? ValidationState.INPUT : ValidationState.EMPTY_INPUT;
+        }
+        result[field] = new PatientFieldData(field, i, state);
 
         return result;
       }, {});
@@ -200,23 +270,46 @@ class Ringdown {
     const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
     const previousFields = sorted.slice(0, partition);
     previousFields
-      .filter((fieldData) => fieldData.validationState === ValidationState.NO_INPUT)
+      .filter((fieldData) => fieldData.validationState === ValidationState.EMPTY_REQUIRED_INPUT)
       .forEach((fieldData) => {
-        this.validationData[fieldData.name].validationState = ValidationState.ERROR;
+        this.validationData[fieldData.name].validationState = ValidationState.REQUIRED_ERROR;
       });
   }
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
     const isInputValueEmpty = isValueEmpty(inputValue);
+    const { range, required, allowNull } = Patient[fieldName] || Ambulance[fieldName] || EmergencyMedicalServiceCall[fieldName] || {};
+    const fieldRange = Patient[fieldName]?.range;
+    const isInRange = range && handleRange(inputValue, range.max, range.min);
 
-    if (currentState === ValidationState.ERROR && !isInputValueEmpty) {
-      this.validationData[fieldName].validationState = ValidationState.FIXED;
-    } else if (currentState === ValidationState.NO_INPUT) {
-      this.validationData[fieldName].validationState = ValidationState.INPUT;
-    } else if (currentState === ValidationState.INPUT && isInputValueEmpty) {
-      this.validationData[fieldName].validationState = ValidationState.ERROR;
-    } else if (currentState === ValidationState.FIXED && isInputValueEmpty) {
-      this.validationData[fieldName].validationState = ValidationState.ERROR;
+    switch (currentState) {
+      case ValidationState.REQUIRED_ERROR:
+      case ValidationState.EMPTY_REQUIRED_INPUT:
+      case ValidationState.EMPTY_INPUT:
+        if (!isInputValueEmpty) {
+          this.validationData[fieldName].validationState = required || !allowNull ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
+        } else {
+          this.validationData[fieldName].validationState =
+            required || !allowNull ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+        }
+        break;
+      case ValidationState.REQUIRED_INPUT:
+      case ValidationState.INPUT:
+        if (fieldRange && !isInRange) {
+          this.validationData[fieldName].validationState = ValidationState.RANGE_ERROR;
+        }
+        if (isInputValueEmpty) {
+          this.validationData[fieldName].validationState =
+            required || !allowNull ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+        }
+        break;
+      case ValidationState.RANGE_ERROR:
+        if (isInRange) {
+          this.validationData[fieldName].validationState = required || !allowNull ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
+        }
+        break;
+      default:
+        break;
     }
   }
 
