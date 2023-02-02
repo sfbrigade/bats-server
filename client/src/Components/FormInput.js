@@ -27,10 +27,9 @@ function FormInput({
   function typedValue(stringValue) {
     if (type === 'number') {
       const number = Number(stringValue);
-      if (stringValue === '' || number === Number.NaN) {
+      if (stringValue === '' || typeof number !== 'number') {
         return null;
       }
-      return number;
     }
     return stringValue;
   }
@@ -50,36 +49,52 @@ function FormInput({
     }
   };
 
+  let hasError = validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR;
+  hasError = focused ? hasError && value && value.length > 1 : hasError;
+
   let input = (
     <>
-      <input
-        id={property}
-        disabled={disabled}
-        value={value || ''}
-        onKeyDown={handleKeyDown}
-        onBlur={handleOnBlur}
-        onChange={handleOnChange}
-        onFocus={() => setFocused(true)}
-        required={required}
-        type={type}
-        min={min}
-        max={max}
-        className={classNames('usa-input', {
-          'usa-input--error':
-            validationState === ValidationState.REQUIRED_ERROR ||
-            validationState === ValidationState.RANGE_ERROR ||
-            error?.errorsFor(property),
-          'usa-input--medium': size === 'medium',
-          'usa-input--small': size === 'small',
-        })}
-      />
+      <div className="usa-input__wrapper">
+        <input
+          id={property}
+          disabled={disabled}
+          value={value || ''}
+          onKeyDown={handleKeyDown}
+          onBlur={handleOnBlur}
+          onChange={handleOnChange}
+          onFocus={() => setFocused(true)}
+          required={required}
+          type={type}
+          min={min}
+          max={max}
+          className={classNames('usa-input', {
+            'usa-input--error': hasError || error?.errorsFor(property),
+            'usa-input--medium': size === 'medium',
+            'usa-input--small': size === 'small',
+          })}
+        />
+        {error?.errorsFor(property) && (
+          <div className="usa-error-message usa-error-message--static">
+            <i className="fas fa-exclamation-circle" />{' '}
+            {error
+              .errorsFor(property)
+              .map((e) => e.message)
+              .join(' ')}
+          </div>
+        )}
+        {!focused && <ValidationMessage validationState={validationState} min={min} max={max} />}
+      </div>
       {unit && <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;{unit}</span>}
       {children}
     </>
   );
 
   if (isWrapped) {
-    input = <div className="grid-row flex-align-center">{input}</div>;
+    input = (
+      <section className="usa-input__group">
+        <div className="grid-row flex-align-start">{input}</div>
+      </section>
+    );
   }
 
   return (
@@ -90,31 +105,13 @@ function FormInput({
           className={classNames('usa-label', {
             'usa-label--required': showRequiredHint && required,
             'usa-label--focused': focused,
-            'usa-label--error':
-              validationState === ValidationState.REQUIRED_ERROR ||
-              validationState === ValidationState.RANGE_ERROR ||
-              error?.errorsFor(property),
+            'usa-label--error': hasError || error?.errorsFor(property),
           })}
         >
           {label}
         </label>
       )}
       {input}
-      {error?.errorsFor(property) && (
-        <div className="usa-error-message usa-error-message--static">
-          <i className="fas fa-exclamation-circle" />{' '}
-          {error
-            .errorsFor(property)
-            .map((e) => e.message)
-            .join(' ')}
-        </div>
-      )}
-      <ValidationMessage
-        validationState={validationState}
-        min={min}
-        max={max}
-        // errorMessage={rangeError.errorMessage}
-      />
     </>
   );
 }

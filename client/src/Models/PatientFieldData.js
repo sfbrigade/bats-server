@@ -14,14 +14,7 @@ const ValidationState = {
   EMPTY_REQUIRED_INPUT: 'EMPTY_REQUIRED_INPUT',
   REQUIRED_ERROR: 'REQUIRED_ERROR',
 };
-ValidationState.ALL_STATES = [
-  ValidationState.EMPTY_INPUT,
-  ValidationState.INPUT,
-  ValidationState.REQUIRED_ERROR,
-  ValidationState.RANGE_ERROR,
-  ValidationState.REQUIRED_INPUT,
-  ValidationState.EMPTY_REQUIRED_INPUT,
-];
+ValidationState.ALL_STATES = Object.values(ValidationState);
 Object.freeze(ValidationState);
 
 export { PatientFieldData, ValidationState };

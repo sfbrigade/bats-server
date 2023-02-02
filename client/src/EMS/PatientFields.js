@@ -146,8 +146,8 @@ function PatientFields({ ringdown, onChange }) {
               />
               <FormRadio
                 label={
-                  <div className="display-flex flex-row flex-align-center position-relative" style={{ top: '-.8rem' }}>
-                    <div className="display-inline-block margin-right-2">
+                  <div className="display-flex flex-row flex-align-start position-relative" style={{ top: '-.8rem' }}>
+                    <div className="display-inline-block margin-right-2 radio-field__text">
                       O<sub>2</sub>
                     </div>
                     <FormField
