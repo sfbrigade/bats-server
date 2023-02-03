@@ -2,10 +2,10 @@
   "name": "routed-e2e",
   "version": "0.1.0",
   "main": "index.js",
-  "devDependencies": {
+  "dependencies": {
     "@playwright/test": "^1.30.0"
   },
   "scripts": {
-    "test": "playwright test"
+    "test": "DEBUG=pw:webserver playwright test"
   }
 }
