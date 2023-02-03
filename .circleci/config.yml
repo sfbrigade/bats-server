@@ -18,7 +18,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: cd client && yarn && cd ../server && yarn && cd ../e2e && yarn && node_modules/.bin/playwright install-deps && node_modules/.bin/playwright install chromium
+          command: cd client && yarn && cd ../server && yarn && cd ../e2e && yarn && npx playwright@1.30.0 install --with-deps chromium
       - run:
           command: cd server && yarn run sequelize db:create && yarn run sequelize db:create --env test
       - run:
