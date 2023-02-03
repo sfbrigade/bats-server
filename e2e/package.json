@@ -1,6 +1,7 @@
 {
   "name": "routed-e2e",
   "version": "0.1.0",
+  "private": true,
   "main": "index.js",
   "dependencies": {
     "@playwright/test": "^1.30.0"
