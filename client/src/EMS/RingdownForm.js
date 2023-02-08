@@ -15,9 +15,9 @@ import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
 
-function RingdownForm({ className }) {
+function RingdownForm({ defaultPayload, className }) {
   const { ringdowns, setRingdowns } = useContext(Context);
-  const [ringdown, setRingdown] = useState(new Ringdown());
+  const [ringdown, setRingdown] = useState(new Ringdown(defaultPayload));
   const [step, setStep] = useState(0);
   const [showConfirmClear, setShowConfirmClear] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);

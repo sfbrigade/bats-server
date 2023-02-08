@@ -3,6 +3,7 @@ const Suffixes = {
   enum: 'enum',
 };
 const NonParamTypes = ['uuid', 'date'];
+const UUIDPattern = /[-a-f0-9]+/i;
 
 function createColName({ name, type }) {
   return name.toLowerCase() + (Suffixes[type] || '');
@@ -20,6 +21,40 @@ class FieldMetadata {
       },
       field
     );
+  }
+
+  valueFromString(string) {
+    let value;
+
+    switch (this.type) {
+      case 'uuid':
+        value = UUIDPattern.test(string) ? string : undefined;
+        break;
+
+      case 'integer':
+      case 'decimal':
+        value = Number(string);
+        break;
+
+      case 'boolean':
+        value = Boolean(string);
+        break;
+
+      case 'enum':
+        value = this.typeArgs.includes(string) ? string : undefined;
+        break;
+
+      case 'text':
+      case 'string':
+        value = string;
+        break;
+
+      default:
+        value = undefined;
+        break;
+    }
+
+    return value;
   }
 
   toString() {
