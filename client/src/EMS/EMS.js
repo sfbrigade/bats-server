@@ -13,8 +13,23 @@ export default function EMS() {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
+  const [selectedTab, setSelectedTab] = useState('ringdownForm');
+  const [scrollTopPositions, setScrollTopPositions] = useState({
+    ringdownForm: 0,
+    hospitalStatuses: 0,
+  });
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  const handleSelectTab = (tabKey) => {
+    const currentScrollY = window.scrollY;
+    setSelectedTab((current) => {
+      setScrollTopPositions({
+        ...scrollTopPositions,
+        [current]: currentScrollY,
+      });
+      return tabKey;
+    });
+    window.scrollTo(0, scrollTopPositions[tabKey]);
+  };
 
   useEffect(() => {
     if (lastMessage?.data) {
@@ -22,17 +37,22 @@ export default function EMS() {
       setRingdowns(data.ringdowns.map((r) => new Ringdown(r)));
       setStatusUpdates(data.statusUpdates.map((su) => new HospitalStatus(su)));
     }
+
+    return setScrollTopPositions({
+      ringdownForm: 0,
+      hospitalStatuses: 0,
+    });
   }, [lastMessage, setRingdowns, setStatusUpdates]);
 
   return (
     <div className="grid-container">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <RoutedHeader selectedTab={selectedTab} onSelect={setSelectedTab} />
-          <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 0 })} />
+          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
+          <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'ringdownForm' })} />
           <HospitalStatuses
-            onReturn={() => setSelectedTab(0)}
-            className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 1 })}
+            onReturn={() => handleSelectTab('rindownForm')}
+            className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'hospitalStatuses' })}
           />
         </div>
       </div>
