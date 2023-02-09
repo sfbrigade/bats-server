@@ -36,7 +36,7 @@ const handleInputValidation = (name, value) => {
       isValidType = typeof value === 'number';
       break;
     default:
-      break;
+      throw new Error(`Field type value (${type}) has no use case.`);
   }
 
   return { value, isRequired: required, isValidType };
@@ -307,7 +307,7 @@ class Ringdown {
         }
         break;
       default:
-        break;
+        throw new Error(`currentState value (${currentState}) has no current use case.`);
     }
   }
 

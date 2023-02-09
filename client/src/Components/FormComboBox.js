@@ -82,7 +82,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     } else {
       input.classList.remove('usa-input--error');
     }
-  }, [validationState, hasError]);
+  }, [hasError]);
 
   // combine the custom entered value in the input box with the options as needed
   let combinedOptions = options;
