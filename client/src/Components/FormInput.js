@@ -40,8 +40,9 @@ function FormInput({
     }
   };
 
-  let hasError = validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR;
-  hasError = focused ? hasError && value && value.length > 1 : hasError;
+  const hasError =
+    (validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR) &&
+    ((focused && value?.length > 1) || !focused);
 
   let input = (
     <>

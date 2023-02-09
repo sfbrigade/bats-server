@@ -69,8 +69,9 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     input.value = value;
   }, [value]);
 
-  let hasError = validationState === ValidationState.REQUIRED_ERROR;
-  hasError = focused ? hasError && value && value.length > 1 : hasError;
+  const hasError =
+    (validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR) &&
+    ((focused && value?.length > 1) || !focused);
 
   useEffect(() => {
     const { current } = ref;

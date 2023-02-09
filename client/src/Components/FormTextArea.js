@@ -7,8 +7,9 @@ import ValidationMessage from './ValidationMessage';
 function FormTextArea({ children, label, onChange, property, disabled, required, showRequiredHint, value, validationState }) {
   const [focused, setFocused] = useState(false);
 
-  let hasError = validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR;
-  hasError = focused ? hasError && value && value.length > 1 : hasError;
+  const hasError =
+    (validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR) &&
+    ((focused && value?.length > 1) || !focused);
 
   return (
     <>
