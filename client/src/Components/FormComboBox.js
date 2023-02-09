@@ -77,12 +77,12 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     const { current } = ref;
     // manually add/remove validation classes to the custom input added by USWDS
     const input = current.querySelector('input[type="text"]');
-    if (hasError && !focused) {
+    if (hasError) {
       input.classList.add('usa-input--error');
     } else {
       input.classList.remove('usa-input--error');
     }
-  }, [validationState, focused, hasError]);
+  }, [validationState, hasError]);
 
   // combine the custom entered value in the input box with the options as needed
   let combinedOptions = options;
