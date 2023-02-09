@@ -18,6 +18,7 @@ const fields = [
     type: 'string',
     unique: true,
     allowNull: false,
+    required: true,
     defaultValue: '',
   },
   {

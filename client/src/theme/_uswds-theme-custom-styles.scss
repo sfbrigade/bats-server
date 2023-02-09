@@ -271,6 +271,14 @@ textarea + .usa-radio > .usa-radio__label {
   font-size: 1.25rem;
 }
 
+.usa-hint--unit,
+.radio-field__text {
+  height: 2.5rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
 .usa-combo-box__input,
 .usa-input,
 .usa-select,
@@ -287,6 +295,18 @@ textarea + .usa-radio > .usa-radio__label {
 
   &.usa-input--error {
     @include error-shadow();
+  }
+}
+
+.usa-input__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  min-width: 3rem;
+  max-width: 7rem;
+  & .usa-error-message {
+    position: relative;
   }
 }
 

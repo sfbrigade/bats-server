@@ -7,12 +7,14 @@ class PatientFieldData {
 }
 
 const ValidationState = {
-  NO_INPUT: 'NO_INPUT',
+  EMPTY_INPUT: 'EMPTY_INPUT',
   INPUT: 'INPUT',
-  ERROR: 'ERROR',
-  FIXED: 'FIXED',
+  RANGE_ERROR: 'RANGE_ERROR',
+  REQUIRED_INPUT: 'REQUIRED_INPUT',
+  EMPTY_REQUIRED_INPUT: 'EMPTY_REQUIRED_INPUT',
+  REQUIRED_ERROR: 'REQUIRED_ERROR',
 };
-ValidationState.ALL_STATES = [ValidationState.NO_INPUT, ValidationState.INPUT, ValidationState.ERROR, ValidationState.FIXED];
+ValidationState.ALL_STATES = Object.values(ValidationState);
 Object.freeze(ValidationState);
 
 export { PatientFieldData, ValidationState };
