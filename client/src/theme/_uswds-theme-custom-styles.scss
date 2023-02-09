@@ -303,8 +303,8 @@ textarea + .usa-radio > .usa-radio__label {
   flex-direction: column;
   justify-content: center;
   position: relative;
-  min-width: 5ex;
-  max-width: 14ex;
+  min-width: 3rem;
+  max-width: 7rem;
   & .usa-error-message {
     position: relative;
   }

@@ -7,6 +7,9 @@ import ValidationMessage from './ValidationMessage';
 function FormTextArea({ children, label, onChange, property, disabled, required, showRequiredHint, value, validationState }) {
   const [focused, setFocused] = useState(false);
 
+  let hasError = validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR;
+  hasError = focused ? hasError && value && value.length > 1 : hasError;
+
   return (
     <>
       {label && (
@@ -15,7 +18,7 @@ function FormTextArea({ children, label, onChange, property, disabled, required,
           className={classNames('usa-label', {
             'usa-label--required': showRequiredHint && required,
             'usa-label--focused': focused,
-            'usa-label--error': validationState === ValidationState.REQUIRED_ERROR,
+            'usa-label--error': hasError,
           })}
         >
           {label}
@@ -31,11 +34,11 @@ function FormTextArea({ children, label, onChange, property, disabled, required,
         required={required}
         className={classNames('usa-textarea', {
           'usa-input--disabled': disabled,
-          'usa-input--error': validationState === ValidationState.REQUIRED_ERROR,
+          'usa-input--error': hasError,
         })}
       />
       {children}
-      <ValidationMessage className="" validationState={validationState} />
+      {!focused && <ValidationMessage className="" validationState={validationState} />}
     </>
   );
 }

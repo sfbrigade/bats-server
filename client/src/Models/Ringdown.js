@@ -61,11 +61,12 @@ const validatedFields = [
 
 const handleRange = (value, max = null, min = null) => {
   let valueToNumber = Number(value);
-  const isNumber = valueToNumber === 'number';
-  if (typeof min !== 'number') {
-    return isNumber && valueToNumber > max ? false : true;
-  } else if (typeof min === 'number' && typeof max === 'number') {
-    return typeof isNumber && (valueToNumber < min || valueToNumber > max) ? false : true;
+  const isNumber = typeof valueToNumber === 'number';
+  const hasRangeRequirements = typeof min === 'number' && typeof max === 'number';
+  const isWithinRange = valueToNumber >= min && valueToNumber <= max;
+
+  if (hasRangeRequirements) {
+    return isNumber && isWithinRange;
   } else {
     return true;
   }

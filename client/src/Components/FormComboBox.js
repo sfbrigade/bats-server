@@ -53,11 +53,10 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
       }
     });
     input.addEventListener('focus', () => setFocused(true));
-    input.addEventListener('blur', (e) => {
+    input.addEventListener('blur', () => {
       // when we blur/exit the input, we dispatch the value through the
       // select as the selected value
       setFocused(false);
-      dispatchSelectChangeEvent(e.target.value);
     });
     return () => {
       comboBox.off(current);
@@ -70,16 +69,19 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
     input.value = value;
   }, [value]);
 
+  let hasError = validationState === ValidationState.REQUIRED_ERROR;
+  hasError = focused ? hasError && value && value.length > 1 : hasError;
+
   useEffect(() => {
     const { current } = ref;
     // manually add/remove validation classes to the custom input added by USWDS
     const input = current.querySelector('input[type="text"]');
-    if (validationState === ValidationState.REQUIRED_ERROR) {
+    if (hasError && !focused) {
       input.classList.add('usa-input--error');
     } else {
       input.classList.remove('usa-input--error');
     }
-  }, [validationState]);
+  }, [validationState, focused, hasError]);
 
   // combine the custom entered value in the input box with the options as needed
   let combinedOptions = options;
@@ -97,7 +99,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
         className={classNames('usa-label', {
           'usa-label--required': showRequiredHint && required,
           'usa-label--focused': focused,
-          'usa-label--error': validationState === ValidationState.REQUIRED_ERROR,
+          'usa-label--error': hasError,
         })}
         htmlFor={property}
       >
@@ -122,7 +124,7 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
           {combinedOptions}
         </select>
       </div>
-      <ValidationMessage validationState={validationState} />
+      {!focused && <ValidationMessage validationState={validationState} />}
     </div>
   );
 }

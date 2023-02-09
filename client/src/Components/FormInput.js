@@ -24,19 +24,10 @@ function FormInput({
   error,
 }) {
   const [focused, setFocused] = useState(false);
-  function typedValue(stringValue) {
-    if (type === 'number') {
-      const number = Number(stringValue);
-      if (stringValue === '' || typeof number !== 'number') {
-        return null;
-      }
-    }
-    return stringValue;
-  }
 
   const handleOnChange = (e) => {
     const { value } = e.target;
-    onChange(property, typedValue(value));
+    onChange(property, value);
   };
 
   const handleOnBlur = () => {
@@ -61,6 +52,7 @@ function FormInput({
           value={value || ''}
           onKeyDown={handleKeyDown}
           onBlur={handleOnBlur}
+          valueAsNumber={type === 'number'}
           onChange={handleOnChange}
           onFocus={() => setFocused(true)}
           required={required}
