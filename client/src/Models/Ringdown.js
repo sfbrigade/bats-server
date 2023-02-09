@@ -18,7 +18,7 @@ const fieldHashes = {
 // array order should be the same as the field order in PatientFields.
 
 const handleInputValidation = (name, value) => {
-  const { type = null, required = false, allowNull = true } = fieldHashes[name];
+  const { type = null, required = false } = fieldHashes[name];
 
   let isValidType = false;
   switch (type) {
@@ -39,7 +39,7 @@ const handleInputValidation = (name, value) => {
       break;
   }
 
-  return { value, isRequired: required, allowNull, isValidType };
+  return { value, isRequired: required, isValidType };
 };
 const validatedFields = [
   'ambulanceIdentifier',
@@ -239,9 +239,9 @@ class Ringdown {
     } else {
       this.validationData = validatedFields.reduce((result, field, i) => {
         const fieldValue = this[field];
-        const { value, isRequired, allowNull } = handleInputValidation(field, fieldValue);
+        const { value, isRequired } = handleInputValidation(field, fieldValue);
         let state;
-        if (isRequired || !allowNull) {
+        if (isRequired) {
           state = value ? ValidationState.REQUIRED_INPUT : ValidationState.EMPTY_REQUIRED_INPUT;
         } else {
           state = value ? ValidationState.INPUT : ValidationState.EMPTY_INPUT;
@@ -273,7 +273,7 @@ class Ringdown {
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
     const isInputValueEmpty = isValueEmpty(inputValue);
-    const { range, required = false, allowNull = true } = fieldHashes[fieldName];
+    const { range, required = false } = fieldHashes[fieldName];
     const isInRange = range && handleRange(inputValue, range.max, range.min);
 
     switch (currentState) {
@@ -284,12 +284,10 @@ class Ringdown {
           if (range && !isInRange) {
             this.validationData[fieldName].validationState = ValidationState.RANGE_ERROR;
           } else {
-            this.validationData[fieldName].validationState =
-              required || !allowNull ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
+            this.validationData[fieldName].validationState = required ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
           }
         } else {
-          this.validationData[fieldName].validationState =
-            required || !allowNull ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+          this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
         }
         break;
       case ValidationState.REQUIRED_INPUT:
@@ -298,16 +296,14 @@ class Ringdown {
           this.validationData[fieldName].validationState = ValidationState.RANGE_ERROR;
         }
         if (isInputValueEmpty) {
-          this.validationData[fieldName].validationState =
-            required || !allowNull ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+          this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
         }
         break;
       case ValidationState.RANGE_ERROR:
         if (isInRange) {
-          this.validationData[fieldName].validationState = required || !allowNull ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
+          this.validationData[fieldName].validationState = required ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
         } else if (isInputValueEmpty) {
-          this.validationData[fieldName].validationState =
-            required || !allowNull ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+          this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
         }
         break;
       default:
