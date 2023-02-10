@@ -46,16 +46,6 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
       />
     );
 
-  // Below is a secondary option that may provide more clarity than the solution above if we reassign drawerTitle to be a let variable.
-  // switch(currentDeliveryStatus) {
-  //   case Status.OFFLOADED:
-  //     drawerTitle =  <RingdownBadge status={currentDeliveryStatus} />;
-  //   case Status.ARRIVED:
-  //     drawerTitle =  <Timestamp className="ringdown-card__status" label="Arrived At:" time={timestamps.ARRIVED} />
-  //   default:
-  //     drawerTitle =  <Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />
-  // }
-
   return (
     <div
       className={classNames('ringdown-card height-auto', className, {
