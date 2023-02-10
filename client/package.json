@@ -1,5 +1,5 @@
 {
-  "name": "routed-client",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -28,9 +28,9 @@
     "uswds": "^2.13.3"
   },
   "scripts": {
-    "start": "yarn; craco --openssl-legacy-provider start",
+    "start": "craco --openssl-legacy-provider start",
     "build": "craco --openssl-legacy-provider build && yarn sass --no-source-map && yarn postcss --no-map",
-    "sass": "sass --load-path=node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
+    "sass": "sass --load-path=../node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
     "postcss": "postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css",
     "test": "craco test",
     "eject": "craco eject"
