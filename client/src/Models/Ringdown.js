@@ -30,6 +30,7 @@ const handleInputValidation = (name, value) => {
       break;
     case 'enum':
     case 'text':
+    case 'string':
       isValidType = typeof value === 'string';
       break;
     case 'decimal':
