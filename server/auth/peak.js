@@ -24,15 +24,15 @@ const strategy = new OAuth2Strategy(
   async function verify(accessToken, refreshToken, profile, done) {
     let user = null;
     try {
-      if (profile?.user?.email) {
+      if (profile?.User?.email) {
         user = await models.User.findOne({
           where: {
-            email: profile.user.email,
+            email: profile.User.email,
           },
         });
-        if (!user && profile?.user?.currentAssignment?.vehicle?.createdByAgency) {
+        if (!user && profile?.Agency?.length > 0) {
           // look up corresponding org from agency data
-          const { stateId: state, stateUniqueId } = profile.user.currentAssignment.vehicle.createdByAgency;
+          const { stateId: state, stateUniqueId } = profile.Agency[0];
           const organization = await models.Organization.findOne({
             where: {
               type: 'EMS',
@@ -43,7 +43,7 @@ const strategy = new OAuth2Strategy(
           // create new user
           if (organization) {
             await models.sequelize.transaction(async (transaction) => {
-              const { firstName, lastName, email } = profile.user;
+              const { firstName, lastName, email } = profile.User;
               user = await models.User.create(
                 {
                   OrganizationId: organization.id,
@@ -80,6 +80,7 @@ strategy.userProfile = function userProfile(accessToken, done) {
     .get('/api/users/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        'X-API-Level': '3',
       },
     })
     .then((response) => {

@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "main": "index.js",
-  "devDependencies": {
-    "@playwright/test": "^1.27.1"
+  "dependencies": {
+    "@playwright/test": "^1.30.0"
   },
   "scripts": {
-    "test": "playwright test",
-    "install-chromium": "playwright install-deps && playwright install chromium"
+    "test": "DEBUG=pw:webserver playwright test",
+    "install-chromium": "playwright install --with-deps chromium"
   }
 }

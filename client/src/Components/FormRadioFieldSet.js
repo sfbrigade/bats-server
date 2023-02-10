@@ -23,7 +23,7 @@ function FormRadioFieldSet({ children, className, label, property, value, requir
   return (
     <fieldset
       className={classNames('usa-fieldset form-radio-field-set', className, {
-        'form-radio-field-set--error': validationState === ValidationState.ERROR,
+        'form-radio-field-set--error': validationState === ValidationState.REQUIRED_ERROR,
       })}
     >
       <div className="form-radio-field-set__background">
@@ -54,7 +54,7 @@ FormRadioFieldSet.defaultProps = {
   label: null,
   value: null,
   required: false,
-  validationState: ValidityState.NO_INPUT,
+  validationState: ValidationState.EMPTY_INPUT,
   className: '',
 };
 
