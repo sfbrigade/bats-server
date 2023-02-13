@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
-
 import Ringdown from '../Models/Ringdown';
-
 import Alert from '../Components/Alert';
 import RingdownCard from '../Components/RingdownCard';
 import RingdownBadge from '../Components/RingdownBadge';
