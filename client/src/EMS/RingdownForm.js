@@ -46,6 +46,23 @@ function RingdownForm({ defaultPayload, className }) {
         // eslint-disable-next-line no-console
         console.log(error);
       });
+
+    // when we're in development, log a URL that can be loaded to fill out the fields with the same values that we just submitted
+    if (process.env.NODE_ENV === 'development') {
+      const params = new URLSearchParams();
+      const { host, pathname } = window.location;
+
+      Object.keys(Ringdown.Fields).forEach((key) => {
+        const value = ringdown[key];
+
+        // collect all of the non-empty/non-false fields in a set of params
+        if (value !== null && value !== undefined && (typeof value !== 'boolean' || value)) {
+          params.set(key, value);
+        }
+      });
+
+      console.log(`${host + pathname}?${params}`);
+    }
   }
 
   function onChange(property, value) {

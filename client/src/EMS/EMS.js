@@ -16,25 +16,28 @@ export default function EMS() {
   const { setRingdowns, setStatusUpdates } = useContext(Context);
   const [selectedTab, setSelectedTab] = useState(0);
   const { search } = useLocation();
-  let defaultPayload;
+  let defaultPayload = undefined;
 
-  if (search) {
-    // we use this just for its payload, since fields are mapped to different payload subobjects, depending on which model they came from
-    const rd = new Ringdown();
+  // when we're in development, pull the default payload from the URL search params
+  if (process.env.NODE_ENV === 'development') {
+    if (search) {
+      // we use this just for its payload, since fields are mapped to different payload sub-objects, depending on which model they came from
+      const rd = new Ringdown();
 
-    new URLSearchParams(search).forEach((value, key) => {
-      const field = Ringdown.Fields[key];
+      new URLSearchParams(search).forEach((value, key) => {
+        const field = Ringdown.Fields[key];
 
-      if (field) {
-        const typedValue = field.valueFromString(value);
+        if (field) {
+          const parsedValue = field.parseValueFromString(value);
 
-        if (typedValue !== undefined) {
-          rd[key] = typedValue;
+          if (parsedValue !== undefined) {
+            rd[key] = parsedValue;
+          }
         }
-      }
-    });
+      });
 
-    defaultPayload = rd.payload;
+      defaultPayload = rd.payload;
+    }
   }
 
   useEffect(() => {
