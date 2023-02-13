@@ -1,4 +1,3 @@
-/* eslint-disable func-names */
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 import { isValueEmpty } from '../utils';
@@ -7,18 +6,40 @@ import * as metadata from '../../../shared/metadata';
 import convertToPropType from '../utils/convertToPropType';
 import DeliveryStatus from '../../../shared/constants/DeliveryStatus';
 
-const fieldHashes = {
-  ...metadata.patient.getFieldHash(),
-  ...metadata.ambulance.getFieldHash(),
-  ...metadata.emergencyMedicalServiceCall.getFieldHash(),
-};
-
 // define the fields that must all have valid input to make the ringdown valid.  the second array item is an optional function to determine
 // whether the field's current value is valid as input.  by default, the field is counted as having input if its value is truthy.   the
 // array order should be the same as the field order in PatientFields.
+const validatedFields = [
+  'ambulanceIdentifier',
+  'dispatchCallNumber',
+  'emergencyServiceResponseType',
+  'age',
+  'sex',
+  'chiefComplaintDescription',
+  'stableIndicator',
+  'systolicBloodPressure',
+  'diastolicBloodPressure',
+  'heartRateBpm',
+  'respiratoryRate',
+  'oxygenSaturation',
+  'supplementalOxygenAmount',
+  'temperature',
+  'glasgowComaScale',
+];
+
+// define the names of the objects that will be added to the Ringdown payload property, and the list of its fields for which getters/setters
+// will be added.  if the object name is an array, the second string is used as the object name.
+const payloadModels = [
+  ['ambulance', ['ambulanceIdentifier']],
+  [['emergencyMedicalServiceCall', 'emsCall'], ['dispatchCallNumber']],
+  // we want to expose the hospital id field under a different name, so we'll define it in the class below instead of here
+  ['hospital', []],
+  ['patient', metadata.patient.getObjectFields()],
+  ['patientDelivery', ['etaMinutes', 'currentDeliveryStatus']],
+];
 
 const handleInputValidation = (name, value) => {
-  const { type = null, required = false } = fieldHashes[name];
+  const { type = null, required = false } = Ringdown.Fields[name];
 
   let isValidType = false;
   switch (type) {
@@ -42,23 +63,6 @@ const handleInputValidation = (name, value) => {
 
   return { value, isRequired: required, isValidType };
 };
-const validatedFields = [
-  'ambulanceIdentifier',
-  'dispatchCallNumber',
-  'emergencyServiceResponseType',
-  'age',
-  'sex',
-  'chiefComplaintDescription',
-  'stableIndicator',
-  'systolicBloodPressure',
-  'diastolicBloodPressure',
-  'heartRateBpm',
-  'respiratoryRate',
-  'oxygenSaturation',
-  'supplementalOxygenAmount',
-  'temperature',
-  'glasgowComaScale',
-];
 
 const handleRange = (value, max = null, min = null) => {
   let valueToNumber = Number(value);
@@ -72,17 +76,6 @@ const handleRange = (value, max = null, min = null) => {
     return true;
   }
 };
-
-// define the names of the objects that will be added to the Ringdown payload property, and the list of its fields for which getters/setters
-// will be added.  if the object name is an array, the second string is used as the object name.
-const payloadModels = [
-  ['ambulance', ['ambulanceIdentifier']],
-  [['emergencyMedicalServiceCall', 'emsCall'], ['dispatchCallNumber']],
-  // we want to expose the hospital id field under a different name, so we'll define it in the class below instead of here
-  ['hospital', []],
-  ['patient', metadata.patient.getObjectFields()],
-  ['patientDelivery', ['etaMinutes', 'currentDeliveryStatus']],
-];
 
 // build a hash with an empty default object for each sub-object in the payload
 function createDefaultPayload() {
@@ -274,7 +267,7 @@ class Ringdown {
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
     const isInputValueEmpty = isValueEmpty(inputValue);
-    const { range, required = false } = fieldHashes[fieldName];
+    const { range, required = false } = Ringdown.Fields[fieldName];
     const isInRange = range && handleRange(inputValue, range.max, range.min);
 
     switch (currentState) {
