@@ -19,16 +19,16 @@ export default function EMS() {
     hospitalStatuses: 0,
   });
 
-  const handleSelectTab = (tabKey) => {
+  const handleSelectTab = (id) => {
     const currentScrollY = window.scrollY;
     setSelectedTab((current) => {
       setScrollTopPositions({
         ...scrollTopPositions,
         [current]: currentScrollY,
       });
-      return tabKey;
+      return id;
     });
-    window.scrollTo(0, scrollTopPositions[tabKey]);
+    window.scrollTo(0, scrollTopPositions[id]);
   };
 
   useEffect(() => {

@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import './TabBar.scss';
 
 function TabBar({ onSelect, selectedTab, tabs }) {
-  const children = tabs.map(({ label, Icon, key }) => {
-    const isSelected = key === selectedTab;
+  const children = tabs.map(({ label, Icon, id }) => {
+    const isSelected = id === selectedTab;
 
     return (
       <button
@@ -20,7 +20,7 @@ function TabBar({ onSelect, selectedTab, tabs }) {
           },
           'h4'
         )}
-        onClick={() => onSelect(key)}
+        onClick={() => onSelect(id)}
       >
         {Icon && <Icon className="tabbar__icon" variation={isSelected ? 'filled' : 'outlined'} />}
         {label}
