@@ -2,20 +2,25 @@
   "name": "routed",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "e2e",
+    "user-guides"
+  ],
   "engines": {
     "node": "18.10.0"
   },
   "scripts": {
     "docker:start": "docker compose up",
     "docker:bash": "docker compose exec server bash -l",
-    "heroku-prebuild": "cd client && yarn && cd ../server && yarn",
-    "heroku-postbuild": "cd client && yarn build",
+    "heroku-postbuild": "yarn workspace client build",
     "start:dev": "nf start -j Procfile.dev",
     "start:prod": "nf start",
     "test": "yarn prettier --check . && yarn lint && yarn test:server && yarn test:client --watchAll=false && yarn test:e2e",
-    "test:client": "cd client && yarn test",
-    "test:server": "cd server && yarn test",
-    "test:e2e": "cd e2e && yarn test",
+    "test:client": "yarn workspace client test",
+    "test:server": "yarn workspace server test",
+    "test:e2e": "yarn workspace e2e test",
     "lint": "yarn eslint .",
     "lint:changed": "yarn eslint $(git diff --name-only | xargs)",
     "format": "yarn prettier --write .",
@@ -31,23 +36,22 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-flowtype": "^4.6.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^1.6.1",
-    "prettier": "^2.7.1"
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.3"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "plugin:jsx-a11y/recommended",
-      "prettier",
-      "prettier/react"
+      "prettier"
     ],
     "plugins": [
       "jsx-a11y",
@@ -72,6 +76,8 @@
           "props": false
         }
       ],
+      "use-isnan": "off",
+      "import/no-anonymous-default-export": "off",
       "jsx-a11y/label-has-associated-control": [
         "error",
         {

@@ -11,6 +11,7 @@ import RingdownDetails from './RingdownDetails';
 import Timestamp from './Timestamp';
 
 import './RingdownCard.scss';
+import { DateTime } from 'luxon';
 
 const { Status } = Ringdown;
 const AcknowledgedStatus = {
@@ -22,7 +23,7 @@ const AcknowledgedStatus = {
 function RingdownCard({ children, className, ringdown, dismissable, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const { currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj } = ringdown;
+  const { currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj, timestamps } = ringdown;
 
   function handleDismiss() {
     setShowConfirmation(false);
@@ -38,7 +39,11 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
     currentDeliveryStatus === Status.OFFLOADED ? (
       <RingdownBadge status={currentDeliveryStatus} />
     ) : (
-      <Timestamp className="ringdown-card__status" label="ETA:" time={etaDateTimeLocalObj} />
+      <Timestamp
+        className="ringdown-card__status"
+        label={Status.ARRIVED ? 'Arrived At:' : 'ETA:'}
+        time={Status.ARRIVED ? DateTime.fromISO(timestamps.ARRIVED) : etaDateTimeLocalObj}
+      />
     );
 
   return (
