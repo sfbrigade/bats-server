@@ -1,9 +1,9 @@
 {
-  "name": "routed-client",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^5.8.0",
+    "@craco/craco": "^7.0.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -20,17 +20,17 @@
     "react-dom": "^16.14.0",
     "react-router": "^5.3.3",
     "react-router-dom": "^5.3.3",
-    "react-scripts": "3.4.4",
+    "react-scripts": "5.0.1",
     "react-use-websocket": "^2.9.1",
-    "sass": "^1.53.0",
-    "sass-loader": "^10.3.0",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
     "use-sound": "^4.0.1",
     "uswds": "^2.13.3"
   },
   "scripts": {
-    "start": "yarn; craco --openssl-legacy-provider start",
+    "start": "craco --openssl-legacy-provider start",
     "build": "craco --openssl-legacy-provider build && yarn sass --no-source-map && yarn postcss --no-map",
-    "sass": "sass --load-path=node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
+    "sass": "sass --load-path=../node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
     "postcss": "postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css",
     "test": "craco test",
     "eject": "craco eject"
@@ -45,6 +45,67 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "plugin:jsx-a11y/recommended",
+      "prettier"
+    ],
+    "plugins": [
+      "jsx-a11y",
+      "prettier"
+    ],
+    "rules": {
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allowAfterThis": true
+        }
+      ],
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "Sequelize|queryInterface"
+        }
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ],
+      "use-isnan": "off",
+      "import/no-anonymous-default-export": "off",
+      "jsx-a11y/label-has-associated-control": [
+        "error",
+        {
+          "assert": "either"
+        }
+      ],
+      "react/jsx-boolean-value": [
+        "error",
+        "never",
+        {
+          "always": [
+            "value"
+          ]
+        }
+      ],
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ]
+    },
+    "ignorePatterns": [
+      "build",
+      "node_modules"
     ]
   }
 }
