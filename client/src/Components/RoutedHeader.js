@@ -20,6 +20,6 @@ export default function RoutedHeader({ selectedTab, onSelect }) {
 }
 
 RoutedHeader.propTypes = {
-  selectedTab: PropTypes.number.isRequired,
+  selectedTab: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
 };

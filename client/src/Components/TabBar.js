@@ -33,7 +33,7 @@ function TabBar({ onSelect, selectedTab, tabs }) {
 
 TabBar.propTypes = {
   onSelect: PropTypes.func.isRequired,
-  selectedTab: PropTypes.number.isRequired,
+  selectedTab: PropTypes.string.isRequired,
   tabs: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string.isRequired, Icon: PropTypes.elementType })).isRequired,
 };
 

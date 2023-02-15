@@ -53,7 +53,7 @@ function FormInput({
           value={value || ''}
           onKeyDown={handleKeyDown}
           onBlur={handleOnBlur}
-          valueAsNumber={type === 'number'}
+          valueasnumber={(type === 'number').toString()}
           onChange={handleOnChange}
           onFocus={() => setFocused(true)}
           required={required}

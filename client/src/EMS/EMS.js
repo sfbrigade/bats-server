@@ -14,6 +14,7 @@ export default function EMS() {
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
   const [selectedTab, setSelectedTab] = useState('ringdownForm');
+
   const [scrollTopPositions, setScrollTopPositions] = useState({
     ringdownForm: 0,
     hospitalStatuses: 0,
@@ -28,8 +29,12 @@ export default function EMS() {
       });
       return id;
     });
-    window.scrollTo(0, scrollTopPositions[id]);
   };
+
+  useEffect(() => {
+    console.log('useEffect');
+    window.scrollTo(0, scrollTopPositions[selectedTab]);
+  }, [selectedTab, scrollTopPositions]);
 
   useEffect(() => {
     if (lastMessage?.data) {
