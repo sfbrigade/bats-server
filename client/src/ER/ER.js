@@ -20,7 +20,7 @@ export default function ER() {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
 
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState('ringdown');
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
   const [statusUpdate, setStatusUpdate] = useState();
@@ -96,8 +96,8 @@ export default function ER() {
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
           <RoutedHeader selectedTab={selectedTab} onSelect={setSelectedTab} />
-          {showRingdown && (!showTabs || selectedTab === 0) && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
-          {showInfo && (!showTabs || selectedTab === 1) && (
+          {showRingdown && (!showTabs || selectedTab === 'ringdown') && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
+          {showInfo && (!showTabs || selectedTab === 'hospitalInfo') && (
             <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
           )}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}

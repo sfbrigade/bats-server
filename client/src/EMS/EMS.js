@@ -13,11 +13,11 @@ export default function EMS() {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
-  const [selectedTab, setSelectedTab] = useState('ringdownForm');
+  const [selectedTab, setSelectedTab] = useState('ringdown');
 
   const [scrollTopPositions, setScrollTopPositions] = useState({
-    ringdownForm: 0,
-    hospitalStatuses: 0,
+    ringdown: 0,
+    hospitalInfo: 0,
   });
 
   const handleSelectTab = (id) => {
@@ -54,10 +54,10 @@ export default function EMS() {
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
           <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
-          <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'ringdownForm' })} />
+          <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'ringdown' })} />
           <HospitalStatuses
-            onReturn={() => handleSelectTab('rindownForm')}
-            className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'hospitalStatuses' })}
+            onReturn={() => handleSelectTab('ringdown')}
+            className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'hospitalInfo' })}
           />
         </div>
       </div>
