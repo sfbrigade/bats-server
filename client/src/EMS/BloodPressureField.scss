@@ -1,0 +1,26 @@
+@import '../theme/base';
+
+.bpfield {
+  display: flex;
+  gap: .6rem;
+  position: relative;
+}
+
+.bpfield__input {
+  .grid-row {
+    flex-wrap: nowrap;
+  }
+
+  .usa-input {
+    width: 13ex;
+  }
+
+  .usa-error-message {
+    top: 3rem;
+    max-width: 9rem;
+  }
+
+  div:first-of-type:not(:only-of-type) {
+    margin-bottom: 1rem;
+  }
+}
