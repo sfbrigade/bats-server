@@ -6,9 +6,8 @@ import * as metadata from '../../../shared/metadata';
 import convertToPropType from '../utils/convertToPropType';
 import DeliveryStatus from '../../../shared/constants/DeliveryStatus';
 
-// define the fields that must all have valid input to make the ringdown valid.  the second array item is an optional function to determine
-// whether the field's current value is valid as input.  by default, the field is counted as having input if its value is truthy.   the
-// array order should be the same as the field order in PatientFields.
+// define the fields that must all have valid input to make the ringdown valid.
+// the array order should be the same as the field order in PatientFields.
 const validatedFields = [
   'ambulanceIdentifier',
   'dispatchCallNumber',
@@ -64,7 +63,7 @@ const handleInputValidation = (name, value) => {
   return { value, isRequired: required, isValidType };
 };
 
-const handleRange = (value, max = null, min = null) => {
+const handleRange = (value, { max = null, min = null }) => {
   let valueToNumber = Number(value);
   const isNumber = typeof valueToNumber === 'number';
   const hasRangeRequirements = typeof min === 'number' && typeof max === 'number';
@@ -248,60 +247,36 @@ class Ringdown {
   }
 
   validatePatientFields(updatedField, inputValue) {
-    const updatedFieldHasValidations = updatedField in this.validationData;
+    // this gets called for all changed fields, but we only validate some of them
+    if (validatedFields.includes(updatedField)) {
+      const updatedFieldHasValidations = updatedField in this.validationData;
 
-    if (updatedFieldHasValidations) {
-      const currentState = this.validationData[updatedField].validationState;
-      this.setValidationStateForInput(updatedField, currentState, inputValue);
+      if (updatedFieldHasValidations) {
+        this.setValidationStateForInput(updatedField, inputValue);
+      }
+
+      const partition = updatedFieldHasValidations ? this.validationData[updatedField].order : null;
+      const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
+      const previousFields = sorted.slice(0, partition);
+      previousFields
+        .filter((fieldData) => fieldData.validationState === ValidationState.EMPTY_REQUIRED_INPUT)
+        .forEach((fieldData) => {
+          this.validationData[fieldData.name].validationState = ValidationState.REQUIRED_ERROR;
+        });
     }
-
-    const partition = updatedFieldHasValidations ? this.validationData[updatedField].order : null;
-    const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
-    const previousFields = sorted.slice(0, partition);
-    previousFields
-      .filter((fieldData) => fieldData.validationState === ValidationState.EMPTY_REQUIRED_INPUT)
-      .forEach((fieldData) => {
-        this.validationData[fieldData.name].validationState = ValidationState.REQUIRED_ERROR;
-      });
   }
 
-  setValidationStateForInput(fieldName, currentState, inputValue) {
-    const isInputValueEmpty = isValueEmpty(inputValue);
+  setValidationStateForInput(fieldName, inputValue) {
     const { range, required = false } = Ringdown.Fields[fieldName];
-    const isInRange = range && handleRange(inputValue, range.max, range.min);
 
-    switch (currentState) {
-      case ValidationState.REQUIRED_ERROR:
-      case ValidationState.EMPTY_REQUIRED_INPUT:
-      case ValidationState.EMPTY_INPUT:
-        if (!isInputValueEmpty) {
-          if (range && !isInRange) {
-            this.validationData[fieldName].validationState = ValidationState.RANGE_ERROR;
-          } else {
-            this.validationData[fieldName].validationState = required ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
-          }
-        } else {
-          this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
-        }
-        break;
-      case ValidationState.REQUIRED_INPUT:
-      case ValidationState.INPUT:
-        if (range && !isInRange) {
-          this.validationData[fieldName].validationState = ValidationState.RANGE_ERROR;
-        }
-        if (isInputValueEmpty) {
-          this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
-        }
-        break;
-      case ValidationState.RANGE_ERROR:
-        if (isInRange) {
-          this.validationData[fieldName].validationState = required ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
-        } else if (isInputValueEmpty) {
-          this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
-        }
-        break;
-      default:
-        throw new Error(`currentState value (${currentState}) has no current use case.`);
+    if (isValueEmpty(inputValue)) {
+        this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+    } else {
+      if (range && !handleRange(inputValue, range)) {
+        this.validationData[fieldName].validationState = ValidationState.RANGE_ERROR;
+      } else {
+        this.validationData[fieldName].validationState = required ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
+      }
     }
   }
 
