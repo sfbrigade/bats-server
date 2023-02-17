@@ -29,6 +29,7 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
     setShowConfirmation(false);
     onStatusChange(ringdown, AcknowledgedStatus[currentDeliveryStatus]);
   }
+  const hasArrived = currentDeliveryStatus === Status.ARRIVED;
 
   const canBeDismissed =
     dismissable &&
@@ -41,8 +42,8 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
     ) : (
       <Timestamp
         className="ringdown-card__status"
-        label={Status.ARRIVED ? 'Arrived At:' : 'ETA:'}
-        time={Status.ARRIVED ? DateTime.fromISO(timestamps.ARRIVED) : etaDateTimeLocalObj}
+        label={hasArrived ? 'Arrived At:' : 'ETA:'}
+        time={hasArrived ? DateTime.fromISO(timestamps.ARRIVED) : etaDateTimeLocalObj}
       />
     );
 
