@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
 
 import RoutedHeader from '../Components/RoutedHeader';
@@ -8,34 +8,17 @@ import Ringdown from '../Models/Ringdown';
 import HospitalStatus from '../Models/HospitalStatus';
 import HospitalStatuses from './HospitalStatuses';
 import RingdownForm from './RingdownForm';
+import { useTabPositions } from '../Components/SelectedTab';
 
 export default function EMS() {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
-  const [selectedTab, setSelectedTab] = useState('ringdown');
-
-  const [scrollTopPositions, setScrollTopPositions] = useState({
+  const {selectedTab, setScrollTopPositions, handleSelectTab} = useTabPositions('ringdown', {
     ringdown: 0,
     hospitalInfo: 0,
   });
-
-  const handleSelectTab = (id) => {
-    const currentScrollY = window.scrollY;
-    setSelectedTab((current) => {
-      setScrollTopPositions({
-        ...scrollTopPositions,
-        [current]: currentScrollY,
-      });
-      return id;
-    });
-  };
-
-  useEffect(() => {
-    console.log('useEffect');
-    window.scrollTo(0, scrollTopPositions[selectedTab]);
-  }, [selectedTab, scrollTopPositions]);
-
+  
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
