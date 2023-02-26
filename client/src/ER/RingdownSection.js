@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Ringdown from '../Models/Ringdown';
@@ -9,14 +9,16 @@ import './RingdownSection.scss';
 function RingdownSection({ title, ringdowns, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(true);
 
-  // useEffect(() => {
-  //   const cachedExpanded = JSON.parse(localStorage.getItem(`${title}-isExpanded`))
-  //   console.log('isExpanded',title,  isExpanded)
-  //   if(cachedExpanded !== null && cachedExpanded !== isExpanded) {
-  //     setExpanded(cachedExpanded)
-  //   }
-  //  localStorage.setItem(`${title}-isExpanded`, isExpanded)
-  // }, [setExpanded, title, isExpanded])
+  useLayoutEffect(() => {
+    const cachedExpanded = JSON.parse(localStorage.getItem(`${title}-isExpanded`));
+    if (cachedExpanded !== null) {
+      setExpanded(cachedExpanded);
+    }
+  }, [title, setExpanded]);
+
+  useEffect(() => {
+    return () => localStorage.setItem(`${title}-isExpanded`, isExpanded);
+  });
 
   return (
     <div className="ringdown-section">
