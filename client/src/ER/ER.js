@@ -14,13 +14,13 @@ import Beds from './Beds';
 import Ringdowns from './Ringdowns';
 
 import notification from '../assets/notification.mp3';
-import { useTabPositions } from '../Components/SelectedTab';
+import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function ER() {
   const { hospitalUser } = useContext(Context);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
-  const {selectedTab,handleSelectTab } = useTabPositions('ringdown', {
+  const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
     ringdown: 0,
     hospitalInfo: 0,
   });

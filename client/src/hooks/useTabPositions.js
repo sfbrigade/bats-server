@@ -16,5 +16,6 @@ export const useTabPositions = (defaultTab, defaultPositions) => {
   useEffect(() => {
     window.scrollTo(0, scrollTopPositions[selectedTab]);
   }, [selectedTab, scrollTopPositions]);
-return {selectedTab, setSelectedTab, scrollTopPositions, setScrollTopPositions, handleSelectTab}
-}
+
+  return { selectedTab, setSelectedTab, scrollTopPositions, setScrollTopPositions, handleSelectTab };
+};
