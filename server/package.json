@@ -1,5 +1,5 @@
 {
-  "name": "routed-server",
+  "name": "server",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -35,7 +35,7 @@
     "nodemon": "^2.0.18"
   },
   "scripts": {
-    "start:dev": "yarn; ./bin/init; nodemon -V --ignore ./test ./bin/www",
+    "start:dev": "./bin/init; nodemon -V --ignore ./test ./bin/www",
     "start:prod": "node ./bin/www",
     "test": "mocha --recursive test"
   }
