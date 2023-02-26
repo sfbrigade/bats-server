@@ -28,13 +28,13 @@ if (process.env.NODE_ENV === 'production') {
 // set up the static routes before the logger to reduce console noise
 app.use(express.static(client('build'), { index: false }));
 app.use(express.static(client('public'), { index: false }));
-app.use('/libraries/fontawesome-free', express.static(client('node_modules/@fortawesome/fontawesome-free')));
-app.use('/libraries/uswds/theme', express.static(client('node_modules/uswds/dist')));
+app.use('/libraries/fontawesome-free', express.static('../node_modules/@fortawesome/fontawesome-free'));
+app.use('/libraries/uswds/theme', express.static('../node_modules/uswds/dist'));
 
 if (process.env.NODE_ENV !== 'production') {
   // for theme css sourcemap debugging only
   app.use('/theme', express.static(client('src/theme')));
-  app.use('/node_modules/uswds/dist', express.static(client('node_modules/uswds/dist')));
+  app.use('/node_modules/uswds/dist', express.static('../node_modules/uswds/dist'));
 }
 
 if (process.env.NODE_ENV !== 'test') {
