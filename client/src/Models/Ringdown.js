@@ -19,7 +19,6 @@ const fieldHashes = {
 
 const handleInputValidation = (name, value) => {
   const { type = null, required = false } = fieldHashes[name];
-
   let isValidType = false;
   switch (type) {
     case 'integer':
@@ -57,6 +56,8 @@ const validatedFields = [
   'oxygenSaturation',
   'supplementalOxygenAmount',
   'temperature',
+  'fahrenheit',
+  'celsius',
   'glasgowComaScale',
 ];
 
@@ -262,6 +263,7 @@ class Ringdown {
       this.setValidationStateForInput(updatedField, currentState, inputValue);
     }
 
+
     const partition = updatedFieldHasValidations ? this.validationData[updatedField].order : null;
     const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
     const previousFields = sorted.slice(0, partition);
@@ -272,10 +274,29 @@ class Ringdown {
       });
   }
 
+  setConvertedField(conversionType, valueToConvert) {
+    console.log('valueToConvert', valueToConvert)
+    switch(conversionType) {
+      case 'celsius':
+        console.log('converting to celsius')
+        this[conversionType] = ((parseFloat(valueToConvert) - 32) / 1.8).toFixed(2);
+        break;
+      case 'fahrenheit':
+
+      console.log('converting to fahrenheit')
+        this[conversionType] = ((parseFloat(valueToConvert) * 1.8) + 32).toFixed(2);
+        break;
+    }
+  }
+
   setValidationStateForInput(fieldName, currentState, inputValue) {
     const isInputValueEmpty = isValueEmpty(inputValue);
-    const { range, required = false } = fieldHashes[fieldName];
+    const { range, required = false, conversion } = fieldHashes[fieldName];
     const isInRange = range && handleRange(inputValue, range.max, range.min);
+
+    if(conversion) {
+      this.setConvertedField(conversion, inputValue)
+    }
 
     switch (currentState) {
       case ValidationState.REQUIRED_ERROR:
