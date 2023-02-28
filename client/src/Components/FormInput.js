@@ -46,48 +46,31 @@ function FormInput({
 
   let input = (
     <>
-      <div className="usa-input__wrapper">
-        <input
-          id={property}
-          disabled={disabled}
-          value={value || ''}
-          onKeyDown={handleKeyDown}
-          onBlur={handleOnBlur}
-          valueasnumber={(type === 'number').toString()}
-          onChange={handleOnChange}
-          onFocus={() => setFocused(true)}
-          required={required}
-          type={type}
-          min={min}
-          max={max}
-          className={classNames('usa-input', {
-            'usa-input--error': hasError || error?.errorsFor(property),
-            'usa-input--medium': size === 'medium',
-            'usa-input--small': size === 'small',
-          })}
-        />
-        {error?.errorsFor(property) && (
-          <div className="usa-error-message usa-error-message--static">
-            <i className="fas fa-exclamation-circle" />{' '}
-            {error
-              .errorsFor(property)
-              .map((e) => e.message)
-              .join(' ')}
-          </div>
-        )}
-        {!focused && <ValidationMessage validationState={validationState} min={min} max={max} />}
-      </div>
+      <input
+        id={property}
+        disabled={disabled}
+        value={value || ''}
+        onKeyDown={handleKeyDown}
+        onBlur={handleOnBlur}
+        onChange={handleOnChange}
+        onFocus={() => setFocused(true)}
+        required={required}
+        type={type}
+        min={min}
+        max={max}
+        className={classNames('usa-input', {
+          'usa-input--error': hasError || error?.errorsFor(property),
+          'usa-input--medium': size === 'medium',
+          'usa-input--small': size === 'small',
+        })}
+      />
       {unit && <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;{unit}</span>}
       {children}
     </>
   );
 
   if (isWrapped) {
-    input = (
-      <section className="usa-input__group">
-        <div className="grid-row flex-align-start">{input}</div>
-      </section>
-    );
+    input = <div className="grid-row flex-align-center">{input}</div>;
   }
 
   return (
@@ -105,6 +88,16 @@ function FormInput({
         </label>
       )}
       {input}
+      {error?.errorsFor(property) && (
+        <div className="usa-error-message usa-error-message--static">
+          <i className="fas fa-exclamation-circle" />{' '}
+          {error
+            .errorsFor(property)
+            .map((e) => e.message)
+            .join(' ')}
+        </div>
+      )}
+      {!focused && <ValidationMessage validationState={validationState} label={label} min={min} max={max} />}
     </>
   );
 }

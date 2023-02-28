@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React, { useContext, useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
+import { useLocation } from 'react-router-dom';
 
 import RoutedHeader from '../Components/RoutedHeader';
 import Context from '../Context';
@@ -18,6 +19,30 @@ export default function EMS() {
     ringdown: 0,
     hospitalInfo: 0,
   });
+  const { search } = useLocation();
+  let defaultPayload = undefined;
+
+  // when we're in development, pull the default payload from the URL search params
+  if (process.env.NODE_ENV === 'development') {
+    if (search) {
+      // we use this just for its payload, since fields are mapped to different payload sub-objects, depending on which model they came from
+      const rd = new Ringdown();
+
+      new URLSearchParams(search).forEach((value, key) => {
+        const field = Ringdown.Fields[key];
+
+        if (field) {
+          const parsedValue = field.parseValueFromString(value);
+
+          if (parsedValue !== undefined) {
+            rd[key] = parsedValue;
+          }
+        }
+      });
+
+      defaultPayload = rd.payload;
+    }
+  }
 
   useEffect(() => {
     if (lastMessage?.data) {
@@ -37,7 +62,10 @@ export default function EMS() {
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
           <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
-          <RingdownForm className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'ringdown' })} />
+          <RingdownForm
+            defaultPayload={defaultPayload}
+            className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'ringdown' })}
+          />
           <HospitalStatuses
             onReturn={() => handleSelectTab('ringdown')}
             className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'hospitalInfo' })}
