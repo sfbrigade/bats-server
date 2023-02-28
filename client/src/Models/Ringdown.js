@@ -11,6 +11,7 @@ const fieldHashes = {
   ...metadata.patient.getFieldHash(),
   ...metadata.ambulance.getFieldHash(),
   ...metadata.emergencyMedicalServiceCall.getFieldHash(),
+  celsius: { name: 'celsius', type: 'decimal', unit: '°C', range: { min: 26.5, max: 65.5 }, originColumn: 'temperature' },
 };
 
 // define the fields that must all have valid input to make the ringdown valid.  the second array item is an optional function to determine
@@ -18,7 +19,8 @@ const fieldHashes = {
 // array order should be the same as the field order in PatientFields.
 
 const handleInputValidation = (name, value) => {
-  const { type = null, required = false } = fieldHashes[name];
+  const { type = null, required = false } = fieldHashes[name] || {};
+
   let isValidType = false;
   switch (type) {
     case 'integer':
@@ -56,7 +58,7 @@ const validatedFields = [
   'oxygenSaturation',
   'supplementalOxygenAmount',
   'temperature',
-  'fahrenheit',
+  // 'fahrenheit',
   'celsius',
   'glasgowComaScale',
 ];
@@ -81,7 +83,13 @@ const payloadModels = [
   [['emergencyMedicalServiceCall', 'emsCall'], ['dispatchCallNumber']],
   // we want to expose the hospital id field under a different name, so we'll define it in the class below instead of here
   ['hospital', []],
-  ['patient', metadata.patient.getObjectFields()],
+  [
+    'patient',
+    [
+      ...metadata.patient.getObjectFields(),
+      { name: 'celsius', type: 'decimal', unit: '°C', range: { min: 26.5, max: 65.5 }, originColumn: 'temperature', defaultValue: null },
+    ],
+  ],
   ['patientDelivery', ['etaMinutes', 'currentDeliveryStatus']],
 ];
 
@@ -263,7 +271,6 @@ class Ringdown {
       this.setValidationStateForInput(updatedField, currentState, inputValue);
     }
 
-
     const partition = updatedFieldHasValidations ? this.validationData[updatedField].order : null;
     const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
     const previousFields = sorted.slice(0, partition);
@@ -275,27 +282,25 @@ class Ringdown {
   }
 
   setConvertedField(conversionType, valueToConvert) {
-    console.log('valueToConvert', valueToConvert)
-    switch(conversionType) {
+    switch (conversionType) {
       case 'celsius':
-        console.log('converting to celsius')
         this[conversionType] = ((parseFloat(valueToConvert) - 32) / 1.8).toFixed(2);
         break;
-      case 'fahrenheit':
-
-      console.log('converting to fahrenheit')
-        this[conversionType] = ((parseFloat(valueToConvert) * 1.8) + 32).toFixed(2);
+      case 'temperature':
+        this[conversionType] = (parseFloat(valueToConvert) * 1.8 + 32).toFixed(2);
         break;
+      default:
+        throw new Error(`Conversion type value (${conversionType}) has no use case.`);
     }
   }
 
   setValidationStateForInput(fieldName, currentState, inputValue) {
     const isInputValueEmpty = isValueEmpty(inputValue);
-    const { range, required = false, conversion } = fieldHashes[fieldName];
+    const { range, required = false, conversion = null, originColumn } = fieldHashes[fieldName];
     const isInRange = range && handleRange(inputValue, range.max, range.min);
 
-    if(conversion) {
-      this.setConvertedField(conversion, inputValue)
+    if (conversion || originColumn) {
+      this.setConvertedField(conversion?.name || originColumn, inputValue);
     }
 
     switch (currentState) {

@@ -104,25 +104,17 @@ const fields = [
     type: 'decimal',
     label: 'Temperature',
     shortLabel: 'Temp.',
+    conversion: {
+      name: 'celsius',
+      type: 'decimal',
+      unit: '°C',
+      range: { min: 26.5, max: 65.5 },
+      originColumn: 'temperature',
+    },
     unit: '°F',
     range: { min: 80, max: 150 },
   },
-  {
-    name: 'fahrenheit',
-    type: 'decimal',
-    label: 'Fahrenheit',
-    conversion: 'celsius',
-    unit: '°F',
-    range: { min: 80, max: 150 },
-  },
-  {
-    name: 'celsius', 
-    type: 'decimal',
-    label: 'Celsius',
-    conversion: 'fahrenheit',
-    unit: '°C',
-    range: { min: 26.5, max: 65.5 },
-  },
+
   {
     name: 'treatmentNotes',
     type: 'text',

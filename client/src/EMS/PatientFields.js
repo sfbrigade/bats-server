@@ -164,14 +164,14 @@ function PatientFields({ ringdown, onChange }) {
               />
             </FormRadioFieldSet>
           </div>
-          <FormField metadata={Patient.temperature} />
+          {/* <FormField metadata={Patient.temperature} /> */}
           <FormField
-            metadata={Patient.fahrenheit}
+            metadata={Patient.temperature}
             label="Temperature"
           >
             <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;</span>
             <FormField
-              metadata={Patient.celsius}
+              metadata={Patient.temperature.conversion}
               isWrapped={false}
               label={false}
             />
