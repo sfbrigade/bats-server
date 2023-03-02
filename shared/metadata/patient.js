@@ -114,7 +114,15 @@ const fields = [
     unit: '°F',
     range: { min: 80, max: 150 },
   },
-
+  // {
+  //   name: 'celsius',
+  //   type: 'decimal',
+  //   label: 'Temperature',
+  //   shortLabel: 'Temp.',
+  //   unit: '°C',
+  //   range: { min: 26.5, max: 65.5 },
+  //   originColumn: 'temperature',
+  // },
   {
     name: 'treatmentNotes',
     type: 'text',
