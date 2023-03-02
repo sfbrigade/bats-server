@@ -37,33 +37,7 @@ const payloadModels = [
   ['patientDelivery', ['etaMinutes', 'currentDeliveryStatus']],
 ];
 
-const handleInputValidation = (name, value) => {
-  const { type = null, required = false } = Ringdown.Fields[name];
-
-  let isValidType = false;
-  switch (type) {
-    case 'integer':
-      isValidType = typeof value === 'number' && value % 1 === 0;
-      break;
-    case 'boolean':
-      isValidType = typeof value === 'boolean';
-      break;
-    case 'enum':
-    case 'text':
-    case 'string':
-      isValidType = typeof value === 'string';
-      break;
-    case 'decimal':
-      isValidType = typeof value === 'number';
-      break;
-    default:
-      throw new Error(`Field type value (${type}) has no use case.`);
-  }
-
-  return { value, isRequired: required, isValidType };
-};
-
-const handleRange = (value, { max = null, min = null }) => {
+const isRangeValid = (value, { max = null, min = null }) => {
   let valueToNumber = Number(value);
   const isNumber = typeof valueToNumber === 'number';
   const hasRangeRequirements = typeof min === 'number' && typeof max === 'number';
@@ -230,53 +204,41 @@ class Ringdown {
     if (validationData) {
       this.validationData = validationData;
     } else {
-      this.validationData = validatedFields.reduce((result, field, i) => {
-        const fieldValue = this[field];
-        const { value, isRequired } = handleInputValidation(field, fieldValue);
-        let state;
-        if (isRequired) {
-          state = value ? ValidationState.REQUIRED_INPUT : ValidationState.EMPTY_REQUIRED_INPUT;
-        } else {
-          state = value ? ValidationState.INPUT : ValidationState.EMPTY_INPUT;
-        }
-        result[field] = new PatientFieldData(field, i, state);
-
+      this.validationData = validatedFields.reduce((result, fieldName, fieldOlder) => {
+        const state = this.getValidationStateForInput(fieldName, this[fieldName]);
+        result[fieldName] = new PatientFieldData(fieldName, fieldOlder, state);
         return result;
       }, {});
     }
   }
 
-  validatePatientFields(updatedField, inputValue) {
+  validatePatientField(fieldName, inputValue) {
+    const field = this.validationData[fieldName];
+
     // this gets called for all changed fields, but we only validate some of them
-    if (validatedFields.includes(updatedField)) {
-      const updatedFieldHasValidations = updatedField in this.validationData;
+    if (field) {
+      field.validationState = this.getValidationStateForInput(fieldName, inputValue);
 
-      if (updatedFieldHasValidations) {
-        this.setValidationStateForInput(updatedField, inputValue);
-      }
-
-      const partition = updatedFieldHasValidations ? this.validationData[updatedField].order : null;
-      const sorted = Object.values(this.validationData).sort(this.ascendingByOrder);
-      const previousFields = sorted.slice(0, partition);
-      previousFields
-        .filter((fieldData) => fieldData.validationState === ValidationState.EMPTY_REQUIRED_INPUT)
-        .forEach((fieldData) => {
-          this.validationData[fieldData.name].validationState = ValidationState.REQUIRED_ERROR;
+      // show all the empty required fields above this one in an error state
+      Object.values(this.validationData)
+        .sort(this.ascendingByOrder)
+        .slice(0, field.order)
+        .filter(({ validationState }) => validationState === ValidationState.EMPTY_REQUIRED_INPUT)
+        .forEach(({ name }) => {
+          this.validationData[name].validationState = ValidationState.REQUIRED_ERROR;
         });
     }
   }
 
-  setValidationStateForInput(fieldName, inputValue) {
+  getValidationStateForInput(fieldName, inputValue) {
     const { range, required = false } = Ringdown.Fields[fieldName];
 
     if (isValueEmpty(inputValue)) {
-        this.validationData[fieldName].validationState = required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+      return required ? ValidationState.EMPTY_REQUIRED_INPUT : ValidationState.EMPTY_INPUT;
+    } else if (range && !isRangeValid(inputValue, range)) {
+      return ValidationState.RANGE_ERROR;
     } else {
-      if (range && !handleRange(inputValue, range)) {
-        this.validationData[fieldName].validationState = ValidationState.RANGE_ERROR;
-      } else {
-        this.validationData[fieldName].validationState = required ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
-      }
+      return required ? ValidationState.REQUIRED_INPUT : ValidationState.INPUT;
     }
   }
 

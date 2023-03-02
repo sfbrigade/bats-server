@@ -67,7 +67,7 @@ function RingdownForm({ defaultPayload, className }) {
 
   function onChange(property, value) {
     ringdown[property] = value;
-    ringdown.validatePatientFields(property, value);
+    ringdown.validatePatientField(property, value);
     setRingdown(new Ringdown(ringdown.payload, ringdown.validationData));
   }
 
