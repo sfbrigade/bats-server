@@ -7,8 +7,8 @@ import RingdownIcon from './Icons/Ringdown';
 import HospitalIcon from './Icons/Hospital';
 
 const tabs = [
-  { label: 'Ringdown', Icon: RingdownIcon },
-  { label: 'Hospital Info', Icon: HospitalIcon },
+  { label: 'Ringdown', Icon: RingdownIcon, id: 'ringdown' },
+  { label: 'Hospital Info', Icon: HospitalIcon, id: 'hospitalInfo' },
 ];
 
 export default function RoutedHeader({ selectedTab, onSelect }) {
@@ -20,6 +20,6 @@ export default function RoutedHeader({ selectedTab, onSelect }) {
 }
 
 RoutedHeader.propTypes = {
-  selectedTab: PropTypes.number.isRequired,
+  selectedTab: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
 };

@@ -6,6 +6,7 @@ import FormRadio from '../Components/FormRadio';
 import FormRadioFieldSet from '../Components/FormRadioFieldSet';
 import FormField from '../Components/FormField';
 import Heading from '../Components/Heading';
+import BloodPressureField from './BloodPressureField';
 
 import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
@@ -122,18 +123,10 @@ function PatientFields({ ringdown, onChange }) {
       <Heading title="Vitals" subtitle="optional" />
       <div className="usa-accordion__content">
         <fieldset className="usa-fieldset">
-          <FormField
-            metadata={Patient.systolicBloodPressure}
-            label="Blood Pressure"
-            unit="/"
-          >
-            <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;</span>
-            <FormField
-              metadata={Patient.diastolicBloodPressure}
-              unit="mmHG"
-              isWrapped={false}
-            />
-          </FormField>
+          <BloodPressureField
+            systolicMetadata={Patient.systolicBloodPressure}
+            diastolicMetadata={Patient.diastolicBloodPressure}
+          />
           <FormField metadata={Patient.heartRateBpm} />
           <FormField metadata={Patient.respiratoryRate} />
           <FormField metadata={Patient.oxygenSaturation} />
@@ -146,8 +139,8 @@ function PatientFields({ ringdown, onChange }) {
               />
               <FormRadio
                 label={
-                  <div className="display-flex flex-row flex-align-start position-relative" style={{ top: '-.8rem' }}>
-                    <div className="display-inline-block margin-right-2 radio-field__text">
+                  <div className="display-flex flex-row flex-align-center position-relative" style={{ top: '-.8rem' }}>
+                    <div className="display-inline-block margin-right-2">
                       O<sub>2</sub>
                     </div>
                     <FormField
