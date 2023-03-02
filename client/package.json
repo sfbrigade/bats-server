@@ -34,8 +34,8 @@
     "postcss": "postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css",
     "test": "craco test",
     "eject": "craco eject",
-    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006 -s public",
-    "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook -s public"
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
+    "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook"
   },
   "browserslist": {
     "production": [
@@ -48,7 +48,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.5.15",

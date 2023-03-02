@@ -3,10 +3,6 @@ const path = require('path');
 
 module.exports = {
   webpack: {
-//    plugins: {
-//      remove: ["ModuleScopePlugin"]
-//    }
-
     configure: (config) => {
       const plugin = config.resolve.plugins.find((plugin) => plugin instanceof ModuleScopePlugin);
       plugin.allowedFiles.add(path.resolve('../shared/convertToPropType'));
