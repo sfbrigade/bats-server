@@ -12,6 +12,7 @@ import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
 import Context from '../Context';
 import patient from '../../../shared/metadata/patient';
+import TemperatureField from './TemperatureField';
 
 const Patient = patient.getFieldHash();
 
@@ -158,7 +159,8 @@ function PatientFields({ ringdown, onChange }) {
             </FormRadioFieldSet>
           </div>
           {/* <FormField metadata={Patient.temperature} /> */}
-          <FormField
+          <TemperatureField temperatureMetadata={Patient.temperature} />
+          {/* <FormField
             metadata={Patient.temperature}
             label="Temperature"
           >
@@ -168,7 +170,7 @@ function PatientFields({ ringdown, onChange }) {
               isWrapped={false}
               label={false}
             />
-          </FormField>
+          </FormField> */}
         </fieldset>
       </div>
       <Heading title="Additional notes" subtitle="optional" />

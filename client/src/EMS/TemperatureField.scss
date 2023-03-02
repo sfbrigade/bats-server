@@ -1,0 +1,22 @@
+@import '../theme/base';
+
+.temperature-field {
+  display: flex;
+  gap: 0.6rem;
+  position: relative;
+}
+
+.temperature-field__input {
+  .grid-row {
+    flex-wrap: nowrap;
+  }
+
+  .usa-input {
+    width: 13ex;
+  }
+
+  .usa-error-message {
+    top: 3rem;
+    max-width: 9rem;
+  }
+}
