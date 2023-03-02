@@ -22,8 +22,8 @@ function Ringdowns({ ringdowns, onStatusChange }) {
   return (
     <>
       <div className="usa-accordion ringdowns">
-        <RingdownSection title="Waiting" ringdowns={waiting} onStatusChange={onStatusChange} />
-        <RingdownSection title="Incoming" ringdowns={enroute} onStatusChange={onStatusChange} />
+        <RingdownSection title="Waiting" id="waiting" ringdowns={waiting} onStatusChange={onStatusChange} />
+        <RingdownSection title="Incoming" id="enroute" ringdowns={enroute} onStatusChange={onStatusChange} />
       </div>
     </>
   );

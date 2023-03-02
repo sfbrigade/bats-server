@@ -10,6 +10,7 @@ function ContextProvider({ children }) {
   const [organization, setOrganization] = useState();
   const [hospital, setHospital] = useState();
   const [hospitalUser, setHospitalUser] = useState();
+  const [ringdownSections, setRingdownSections] = useState();
 
   const value = {
     user,
@@ -24,6 +25,8 @@ function ContextProvider({ children }) {
     setHospital,
     hospitalUser,
     setHospitalUser,
+    ringdownSections,
+    setRingdownSections,
   };
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
