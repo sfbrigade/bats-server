@@ -233,6 +233,13 @@ textarea + .usa-radio > .usa-radio__label {
   position: static;
 }
 
+// if an error message appears inside a radio button label, it will be positioned to the right of the label
+// instead of below, so shift the error so it aligns better
+.usa-radio__label .usa-error-message {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+
 .usa-fieldset {
   padding: 1.5rem;
 }
@@ -271,14 +278,6 @@ textarea + .usa-radio > .usa-radio__label {
   font-size: 1.25rem;
 }
 
-.usa-hint--unit,
-.radio-field__text {
-  height: 2.5rem;
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-}
-
 .usa-combo-box__input,
 .usa-input,
 .usa-select,
@@ -298,16 +297,10 @@ textarea + .usa-radio > .usa-radio__label {
   }
 }
 
-.usa-input__wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  min-width: 3rem;
-  max-width: 7rem;
-  & .usa-error-message {
-    position: relative;
-  }
+.usa-form .usa-input-small {
+  // this is the default max-width of .usa-input-small, but we want give an explicit widths to
+  // inputs so they don't get squished when other things are in the same container
+  width: 13ex;
 }
 
 .usa-label {

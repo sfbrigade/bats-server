@@ -317,78 +317,90 @@ class Ringdown {
   }
 }
 
-function attachFields(target, objectName, fields) {
-  const props = {};
+// complete the scaffolding of the Ringdown class in this IIFE
+(() => {
+  function attachFields(target, objectName, fields) {
+    const props = {};
 
-  fields.forEach((field) => {
-    props[field.name] = {
-      get() {
-        return this.payload[objectName][field.name] ?? field.defaultValue;
-      },
-      set(newValue) {
-        this.payload[objectName][field.name] = newValue;
-      },
-      configurable: true,
-      enumerable: true,
-    };
-  });
+    fields.forEach((field) => {
+      props[field.name] = {
+        get() {
+          return this.payload[objectName][field.name] ?? field.defaultValue;
+        },
+        set(newValue) {
+          this.payload[objectName][field.name] = newValue;
+        },
+        configurable: true,
+        enumerable: true,
+      };
+    });
 
-  Object.defineProperties(target, props);
-}
-
-function overrideSetter(target, key, setter) {
-  const descriptor = Object.getOwnPropertyDescriptor(target, key);
-
-  if (!descriptor || !descriptor.set) {
-    throw new Error(`setter for '${key}' does not exist on the target.`);
+    Object.defineProperties(target, props);
   }
 
-  Object.defineProperty(target, key, {
-    ...descriptor,
-    set: setter,
-  });
-}
+  function overrideSetter(target, key, setter) {
+    const descriptor = Object.getOwnPropertyDescriptor(target, key);
 
-// add the getters and setters to the Ringdown prototype for each field of each object in the payload
-payloadModels.forEach(([modelInfo, fieldNames]) => {
-  let metadataName = modelInfo;
-  let objectName = modelInfo;
+    if (!descriptor || !descriptor.set) {
+      throw new Error(`setter for '${key}' does not exist on the target.`);
+    }
 
-  if (modelInfo instanceof Array) {
-    // this model is being aliased under a different name on the Ringdown
-    [metadataName, objectName] = modelInfo;
+    Object.defineProperty(target, key, {
+      ...descriptor,
+      set: setter,
+    });
   }
 
-  // get the ModelMetadata fields, either filtering by the list of strings in payloadModels or the prefetched array
-  const fields =
-    typeof fieldNames[0] === 'string' ? metadata[metadataName].getFields(undefined, ({ name }) => fieldNames.includes(name)) : fieldNames;
+  const ringdownFields = {
+    // special case hospitalId, since it's not created via the payloadModels loop below
+    hospitalId: metadata.hospital.getFieldHash().id,
+  };
 
-  // add a getter/setter for each field
-  attachFields(Ringdown.prototype, objectName, fields);
+  // add the getters and setters to the Ringdown prototype for each field of each object in the payload
+  payloadModels.forEach(([modelInfo, fieldNames]) => {
+    let metadataName = modelInfo;
+    let objectName = modelInfo;
 
-  // add a getter to return this payload sub-object
-  Object.defineProperties(Ringdown.prototype, {
-    [objectName]: {
-      get() {
-        return this.payload[objectName];
+    if (modelInfo instanceof Array) {
+      // this model is being aliased under a different name on the Ringdown
+      [metadataName, objectName] = modelInfo;
+    }
+
+    // get the ModelMetadata fields, either filtering by the list of strings in payloadModels or the prefetched array
+    const fields =
+      typeof fieldNames[0] === 'string' ? metadata[metadataName].getFields(undefined, ({ name }) => fieldNames.includes(name)) : fieldNames;
+
+    // add a getter/setter for each field
+    attachFields(Ringdown.prototype, objectName, fields);
+
+    fields.forEach((field) => (ringdownFields[field.name] = field));
+
+    // add a getter to return this payload sub-object
+    Object.defineProperties(Ringdown.prototype, {
+      [objectName]: {
+        get() {
+          return this.payload[objectName];
+        },
+        configurable: true,
+        enumerable: true,
       },
-      configurable: true,
-      enumerable: true,
-    },
+    });
   });
-});
 
-// add custom setters for these payload fields, since their values affect other fields
-overrideSetter(Ringdown.prototype, 'lowOxygenResponseType', function (newValue) {
-  this.payload.patient.lowOxygenResponseType = newValue;
-  if (newValue !== 'SUPPLEMENTAL OXYGEN') {
-    this.supplementalOxygenAmount = null;
-  }
-});
-overrideSetter(Ringdown.prototype, 'combativeBehaviorIndicator', function (newValue) {
-  this.payload.patient.combativeBehaviorIndicator = newValue;
-  this.restraintIndicator = newValue && this.restraintIndicator;
-});
+  // we need to add custom setters for these payload fields, since setting their values affects other fields
+  overrideSetter(Ringdown.prototype, 'lowOxygenResponseType', function (newValue) {
+    this.payload.patient.lowOxygenResponseType = newValue;
+    if (newValue !== 'SUPPLEMENTAL OXYGEN') {
+      this.supplementalOxygenAmount = null;
+    }
+  });
+  overrideSetter(Ringdown.prototype, 'combativeBehaviorIndicator', function (newValue) {
+    this.payload.patient.combativeBehaviorIndicator = newValue;
+    this.restraintIndicator = newValue && this.restraintIndicator;
+  });
+
+  Ringdown.Fields = Object.freeze(ringdownFields);
+})();
 
 Ringdown.propTypes = {
   ambulanceIdentifier: PropTypes.string.isRequired,
