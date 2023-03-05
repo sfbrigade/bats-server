@@ -1,12 +1,12 @@
 @import '../theme/base';
 
-.temperature-field {
+.multi-field {
   display: flex;
   gap: 0.6rem;
   position: relative;
 }
 
-.temperature-field__input {
+.multi-field__input {
   .grid-row {
     flex-wrap: nowrap;
   }

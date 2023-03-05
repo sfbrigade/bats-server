@@ -5,7 +5,7 @@ import FormInput from '../Components/FormInput';
 import { ValidationState } from '../Models/PatientFieldData';
 import classNames from 'classnames';
 
-import './TemperatureField.scss';
+import FormMultiField from './FormMultiField';
 
 const TemperatureInput = ({ metadata, unit, onChange, value }) => {
   const { data } = useForm();
@@ -13,7 +13,7 @@ const TemperatureInput = ({ metadata, unit, onChange, value }) => {
   const { min, max } = range;
 
   return (
-    <div className="temperature-field__input">
+    <>
       <FormInput
         type="number"
         property={name}
@@ -24,7 +24,7 @@ const TemperatureInput = ({ metadata, unit, onChange, value }) => {
         max={max}
         onChange={onChange}
       />
-    </div>
+    </>
   );
 };
 
@@ -46,13 +46,16 @@ const TemperatureField = ({ temperatureMetadata }) => {
   };
   return (
     <>
-      <label htmlFor={temperatureMetadata.name} className={classNames('usa-label', { 'usa-label--error': hasError })}>
-        Temperature
-      </label>
-      <div className="temperature-field">
+      <FormMultiField
+        label={
+          <label htmlFor={temperatureMetadata.name} className={classNames('usa-label', { 'usa-label--error': hasError })}>
+            Temperature
+          </label>
+        }
+      >
         <TemperatureInput metadata={temperatureMetadata} onChange={handleOnChange} />
         <TemperatureInput metadata={celsiusMetadata} value={celsius} onChange={handleOnChange} />
-      </div>
+      </FormMultiField>
     </>
   );
 };
