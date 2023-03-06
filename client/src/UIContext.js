@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 const UIContext = createContext();
 
 function UIContextProvider({ children }) {
-  const [ringdownSections, setRingdownSections] = useState();
+  const [ringdownSections, setRingdownSections] = useState({
+    waiting: {
+      expanded: true,
+    },
+    enroute: {
+      expanded: true,
+    },
+  });
 
   const value = {
     ringdownSections,

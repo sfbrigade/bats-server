@@ -16,11 +16,9 @@ import Ringdowns from './Ringdowns';
 import notification from '../assets/notification.mp3';
 import { useTabPositions } from '../hooks/useTabPositions';
 import withUIContext from '../HOC/WithUIContext';
-import UIContext from '../UIContext';
 
 const ER = () => {
   const { hospitalUser } = useContext(Context);
-  const { setRingdownSections } = useContext(UIContext);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
@@ -97,17 +95,6 @@ const ER = () => {
       document.documentElement.classList.remove('no-scrolling');
     }
   }, [hasUnconfirmedRingdowns]);
-
-  useEffect(() => {
-    setRingdownSections({
-      waiting: {
-        expanded: true,
-      },
-      enroute: {
-        expanded: true,
-      },
-    });
-  }, [setRingdownSections]);
 
   return (
     <div className="grid-container minh-100vh">
