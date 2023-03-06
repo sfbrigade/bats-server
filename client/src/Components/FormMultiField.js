@@ -7,7 +7,11 @@ const FormMultiField = ({ label, children }) => {
       {label}
       <div className="multi-field">
         {children.map((child) => {
-          return <div className="multi-field__input">{child}</div>;
+          return (
+            <div key={child.props.metadata.name} className="multi-field__input">
+              {child}
+            </div>
+          );
         })}
       </div>
     </>
