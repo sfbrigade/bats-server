@@ -4,7 +4,7 @@ services:
     image: postgres:12
   server:
     build: .
-    command: bash -l -c "yarn start:prod"
+    command: bash -l -c "yarn && yarn start:prod"
     env_file:
       - .env
     ports:

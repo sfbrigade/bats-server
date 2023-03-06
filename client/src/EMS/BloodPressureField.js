@@ -5,8 +5,7 @@ import { ValidationState } from '../Models/PatientFieldData';
 import FormInput from '../Components/FormInput';
 import { useForm } from '../Components/Form';
 
-import './BloodPressureField.scss';
-import FormMultiField from './FormMultiField';
+import FormMultiField from '../Components/FormMultiField';
 
 function BPInput({ metadata, unit }) {
   const { data, onChange } = useForm();
@@ -19,18 +18,16 @@ function BPInput({ metadata, unit }) {
     // grouped with its input in a div because the fields are arranged horizontally
     // in a row.  since the errors are absolutely positioned, they'd both shift to
     // the left margin of the .bpfield without this extra div, causing an overlap.
-    <>
-      <FormInput
-        type="number"
-        property={name}
-        value={data[name]}
-        validationState={data.getValidationState(name)}
-        unit={unit || metadata.unit}
-        min={min}
-        max={max}
-        onChange={onChange}
-      />
-    </>
+    <FormInput
+      type="number"
+      property={name}
+      value={data[name]}
+      validationState={data.getValidationState(name)}
+      unit={unit || metadata.unit}
+      min={min}
+      max={max}
+      onChange={onChange}
+    />
   );
 }
 

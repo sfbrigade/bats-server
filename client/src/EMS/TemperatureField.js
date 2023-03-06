@@ -5,7 +5,7 @@ import FormInput from '../Components/FormInput';
 import { ValidationState } from '../Models/PatientFieldData';
 import classNames from 'classnames';
 
-import FormMultiField from './FormMultiField';
+import FormMultiField from '../Components/FormMultiField';
 
 const TemperatureInput = ({ metadata, unit, onChange, value }) => {
   const { data } = useForm();
@@ -13,18 +13,16 @@ const TemperatureInput = ({ metadata, unit, onChange, value }) => {
   const { min, max } = range;
 
   return (
-    <>
-      <FormInput
-        type="number"
-        property={name}
-        value={data[name] || value}
-        validationState={data.getValidationState(name)}
-        unit={unit || metadata?.unit}
-        min={min}
-        max={max}
-        onChange={onChange}
-      />
-    </>
+    <FormInput
+      type="number"
+      property={name}
+      value={data[name] || value}
+      validationState={data.getValidationState(name)}
+      unit={unit || metadata?.unit}
+      min={min}
+      max={max}
+      onChange={onChange}
+    />
   );
 };
 
