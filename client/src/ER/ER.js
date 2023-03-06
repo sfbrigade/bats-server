@@ -15,9 +15,12 @@ import Ringdowns from './Ringdowns';
 
 import notification from '../assets/notification.mp3';
 import { useTabPositions } from '../hooks/useTabPositions';
+import withUIContext from '../HOC/WithUIContext';
+import UIContext from '../UIContext';
 
-export default function ER() {
-  const { hospitalUser, setRingdownSections } = useContext(Context);
+const ER = () => {
+  const { hospitalUser } = useContext(Context);
+  const { setRingdownSections } = useContext(UIContext);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
@@ -120,4 +123,6 @@ export default function ER() {
       </div>
     </div>
   );
-}
+};
+
+export default withUIContext(ER);
