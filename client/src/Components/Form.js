@@ -43,7 +43,9 @@ Form.defaultProps = {
   children: null,
 };
 
-const useForm = () => {
+export default Form;
+
+export const useForm = () => {
   const context = useContext(FormContext);
 
   if (!context) {
@@ -52,7 +54,3 @@ const useForm = () => {
 
   return context;
 };
-
-export default Form;
-
-export { useForm };
