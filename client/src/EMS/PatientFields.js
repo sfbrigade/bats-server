@@ -158,19 +158,7 @@ function PatientFields({ ringdown, onChange }) {
               />
             </FormRadioFieldSet>
           </div>
-          {/* <FormField metadata={Patient.temperature} /> */}
           <TemperatureField temperatureMetadata={Patient.temperature} />
-          {/* <FormField
-            metadata={Patient.temperature}
-            label="Temperature"
-          >
-            <span className="usa-hint usa-hint--unit">&nbsp;&nbsp;</span>
-            <FormField
-              metadata={Patient.temperature.conversion}
-              isWrapped={false}
-              label={false}
-            />
-          </FormField> */}
         </fieldset>
       </div>
       <Heading title="Additional notes" subtitle="optional" />
