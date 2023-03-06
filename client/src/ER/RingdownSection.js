@@ -5,10 +5,10 @@ import Ringdown from '../Models/Ringdown';
 import RingdownCard from '../Components/RingdownCard';
 
 import './RingdownSection.scss';
-import UIContext from '../UIContext';
+import ERContext from './ERContext';
 
 function RingdownSection({ title, ringdowns, onStatusChange, id }) {
-  const { ringdownSections, setRingdownSections } = useContext(UIContext);
+  const { ringdownSections, setRingdownSections } = useContext(ERContext);
   const isExpanded = ringdownSections && ringdownSections[id].expanded;
 
   const handleExpanded = () => {

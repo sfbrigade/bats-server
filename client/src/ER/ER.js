@@ -15,7 +15,7 @@ import Ringdowns from './Ringdowns';
 
 import notification from '../assets/notification.mp3';
 import { useTabPositions } from '../hooks/useTabPositions';
-import withUIContext from '../HOC/WithUIContext';
+import { ERContextProvider } from './ERContext';
 
 const ER = () => {
   const { hospitalUser } = useContext(Context);
@@ -97,19 +97,23 @@ const ER = () => {
   }, [hasUnconfirmedRingdowns]);
 
   return (
-    <div className="grid-container minh-100vh">
-      <div className="grid-row">
-        <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
-          {showRingdown && (!showTabs || selectedTab === 'ringdown') && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
-          {showInfo && (!showTabs || selectedTab === 'hospitalInfo') && (
-            <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
-          )}
-          {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
+    <ERContextProvider>
+      <div className="grid-container minh-100vh">
+        <div className="grid-row">
+          <div className="tablet:grid-col-6 tablet:grid-offset-3">
+            <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
+            {showRingdown && (!showTabs || selectedTab === 'ringdown') && (
+              <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />
+            )}
+            {showInfo && (!showTabs || selectedTab === 'hospitalInfo') && (
+              <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
+            )}
+            {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
+          </div>
         </div>
       </div>
-    </div>
+    </ERContextProvider>
   );
 };
 
-export default withUIContext(ER);
+export default ER;

@@ -1,9 +1,9 @@
 import React, { createContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
-const UIContext = createContext();
+const ERContext = createContext();
 
-function UIContextProvider({ children }) {
+function ERContextProvider({ children }) {
   const [ringdownSections, setRingdownSections] = useState({
     waiting: {
       expanded: true,
@@ -17,12 +17,12 @@ function UIContextProvider({ children }) {
     ringdownSections,
     setRingdownSections,
   };
-  return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
+  return <ERContext.Provider value={value}>{children}</ERContext.Provider>;
 }
-UIContextProvider.propTypes = {
+ERContextProvider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
 };
 
-export { UIContextProvider };
+export { ERContextProvider };
 
-export default UIContext;
+export default ERContext;
