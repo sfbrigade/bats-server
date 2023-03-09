@@ -258,12 +258,7 @@ class Ringdown {
           return this.payload[objectName][field.name] ?? field.defaultValue;
         },
         set(newValue) {
-          // This ensures any fields that are empty aren't sent to the backend.
-          if (newValue === '') {
-            delete this.payload[objectName][field.name];
-          } else {
-            this.payload[objectName][field.name] = newValue;
-          }
+          this.payload[objectName][field.name] = newValue;
         },
         configurable: true,
         enumerable: true,

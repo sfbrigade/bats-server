@@ -117,6 +117,11 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
   try {
     let patientDelivery;
     let json;
+    for (let key in req.body.patient) {
+      if (req.body.patient[key] === '') {
+        req.body.patient[key] = null;
+      }
+    }
     await models.sequelize.transaction(async (transaction) => {
       const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
         where: {
