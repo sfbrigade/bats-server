@@ -165,7 +165,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(ambulance.UpdatedById, user.id);
     });
   });
-  // to expect an unrequired null value to
+
   describe('POST /', () => {
     const patientData = {
       age: 30,
