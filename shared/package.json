@@ -1,0 +1,11 @@
+{
+  "name": "shared",
+  "version": "0.1.0",
+  "private": true,
+  "files": [
+    "FieldMetadata.js",
+    "ModelMetadata.js",
+    "constants",
+    "metadata"
+  ]
+}
