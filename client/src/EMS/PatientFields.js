@@ -8,10 +8,10 @@ import FormField from '../Components/FormField';
 import Heading from '../Components/Heading';
 import BloodPressureField from './BloodPressureField';
 
+import { patient } from 'shared/metadata';
 import Ringdown from '../Models/Ringdown';
 import ApiService from '../ApiService';
 import Context from '../Context';
-import patient from '../../../shared/metadata/patient';
 import TemperatureField from './TemperatureField';
 
 const Patient = patient.getFieldHash();

@@ -32,7 +32,7 @@ function RingdownsTable() {
             <td>{ringdown.patientDelivery.currentDeliveryStatusDateTimeLocal}</td>
             <td>{ringdown.ambulance.ambulanceIdentifier}</td>
             <td>{ringdown.emsCall.dispatchCallNumber}</td>
-            <td>{ringdown.patient.cheifComplaintDescription}</td>
+            <td>{ringdown.patient.chiefComplaintDescription}</td>
             <td>
               <button type="button" className="bg-white border-0">
                 !

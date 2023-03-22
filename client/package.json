@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^7.0.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -24,16 +23,17 @@
     "react-use-websocket": "^2.9.1",
     "sass": "^1.57.1",
     "sass-loader": "^13.2.0",
+    "shared": "file:../shared",
     "use-sound": "^4.0.1",
     "uswds": "^2.13.3"
   },
   "scripts": {
-    "start": "craco --openssl-legacy-provider start",
-    "build": "craco --openssl-legacy-provider build && yarn sass --no-source-map && yarn postcss --no-map",
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build && yarn sass --no-source-map && yarn postcss --no-map",
     "sass": "sass --load-path=../node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
     "postcss": "postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css",
-    "test": "craco test",
-    "eject": "craco eject"
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [

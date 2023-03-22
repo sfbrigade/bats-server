@@ -4,9 +4,9 @@ import React, { useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { isValueEmpty } from '../utils';
+import { patient } from 'shared/metadata';
 import Ringdown from '../Models/Ringdown';
-import { patient } from '../../../shared/metadata';
+import { isValueEmpty } from '../utils';
 
 const PatientFields = patient.getFieldHash();
 

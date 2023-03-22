@@ -1,10 +1,9 @@
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
-import { isValueEmpty } from '../utils';
+import * as metadata from 'shared/metadata';
+import { DeliveryStatus } from 'shared/constants';
+import { isValueEmpty, convertToPropType } from '../utils';
 import { PatientFieldData, ValidationState } from './PatientFieldData';
-import * as metadata from '../../../shared/metadata';
-import convertToPropType from '../utils/convertToPropType';
-import DeliveryStatus from '../../../shared/constants/DeliveryStatus';
 
 // define the fields that must all have valid input to make the ringdown valid.
 // the array order should be the same as the field order in PatientFields.

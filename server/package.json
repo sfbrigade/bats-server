@@ -25,6 +25,7 @@
     "sequelize-auto": "^0.5.4",
     "sequelize-cli": "^6.4.1",
     "sequelize-fixtures": "^1.2.0",
+    "shared": "file:../shared",
     "supertest": "^4.0.2",
     "supertest-session": "^4.1.0",
     "utf-8-validate": "^5.0.9",
