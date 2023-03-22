@@ -2,11 +2,10 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
 
+const { DeliveryStatus } = require('shared/constants');
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
 const { dispatchRingdownUpdate } = require('../../wss');
-const { DeliveryStatus } = require('shared/constants');
-
 const { setPaginationHeaders } = require('../helpers');
 
 const router = express.Router();
