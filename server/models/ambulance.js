@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const metadata = require('../../shared/metadata/ambulance');
+const metadata = require('shared/metadata/ambulance');
 const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {

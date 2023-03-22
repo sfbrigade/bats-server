@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { Model, Op } = require('sequelize');
-const { DeliveryStatus } = require('../../shared/constants');
-const metadata = require('../../shared/metadata/hospitalStatusUpdate');
+const { DeliveryStatus } = require('shared/constants');
+const metadata = require('shared/metadata/hospitalStatusUpdate');
 const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
