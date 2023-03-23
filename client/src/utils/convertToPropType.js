@@ -1,4 +1,4 @@
-const PropTypes = require('prop-types');
+import PropTypes from 'prop-types';
 
 const PropTypeLookup = {
   text: 'string',
@@ -7,7 +7,7 @@ const PropTypeLookup = {
   boolean: 'bool',
 };
 
-module.exports = function convertToPropType(field) {
+export function convertToPropType(field) {
   const { name, type, isParam, typeArgs, required } = field;
   // if the field isn't something we want to convert to a propType, then return an empty array so
   // getFieldHash() won't include this field
@@ -29,4 +29,4 @@ module.exports = function convertToPropType(field) {
   }
 
   return result;
-};
+}

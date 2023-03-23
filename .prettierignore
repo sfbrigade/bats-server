@@ -1,6 +1,8 @@
 # Ignore artifacts:
 build
 
+client/vite.config.js
+
 user-guides/guides
 user-guides/build
 
