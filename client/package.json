@@ -106,6 +106,7 @@
     },
     "ignorePatterns": [
       "build",
+      "dist",
       "node_modules"
     ]
   }
