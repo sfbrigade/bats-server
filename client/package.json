@@ -36,12 +36,9 @@
   "scripts": {
     "start": "vite serve",
     "build": "vite build",
-    "old-start": "react-scripts --openssl-legacy-provider start",
-    "old-build": "react-scripts --openssl-legacy-provider build && yarn sass --no-source-map && yarn postcss --no-map",
     "sass": "sass --load-path=../node_modules/uswds/dist/scss --style=compressed src/theme/styles.scss build/libraries/uswds/theme/styles_pre.css",
     "postcss": "postcss --verbose build/libraries/uswds/theme/styles_pre.css --use autoprefixer -o build/libraries/uswds/theme/styles.css",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"No client tests\" && exit 1"
   },
   "browserslist": {
     "production": [
