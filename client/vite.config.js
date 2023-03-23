@@ -62,8 +62,8 @@ export default defineConfig({
   optimizeDeps: {
     include: [
       'uswds',
-      '../shared/metadata',
-      '../shared/constants'
+      'shared/constants',
+      'shared/metadata'
     ],
     esbuildOptions: {
       loader: {

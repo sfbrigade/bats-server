@@ -9,6 +9,7 @@
     "metadata"
   ],
   "exports": {
+    ".": "./index.js",
     "./constants": "./constants/index.js",
     "./metadata": "./metadata/index.js",
     "./metadata/*": "./metadata/*.js"
