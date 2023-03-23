@@ -1,7 +1,7 @@
 # Ignore artifacts:
-build
-
-client/vite.config.js
-
+client/build
 user-guides/guides
 user-guides/build
+
+# tell prettier to keep its hands off the bloody config file
+client/vite.config.js
