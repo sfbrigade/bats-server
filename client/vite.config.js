@@ -50,6 +50,7 @@ export default defineConfig({
     react(),
   ],
   build: {
+    outDir: 'build',
     rollupOptions: {
       plugins: [
         rollupPlugin([SourceJSPattern])
