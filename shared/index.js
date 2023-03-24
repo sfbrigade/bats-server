@@ -1,4 +1,4 @@
-exports = {
-  ...require('./constants'),
-  ...require('./metadata')
+module.exports = {
+  constants: require('./constants'),
+  metadata: require('./metadata'),
 };
