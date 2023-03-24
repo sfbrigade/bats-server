@@ -7,7 +7,7 @@
     "@playwright/test": "^1.30.0"
   },
   "scripts": {
-    "test": "yarn workspace client build && yarn workspace server start:prod && DEBUG=pw:webserver playwright test",
+    "test": "yarn workspace client build && DEBUG=pw:webserver playwright test",
     "install-chromium": "playwright install --with-deps chromium"
   }
 }
