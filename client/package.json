@@ -15,7 +15,7 @@
     "react-scripts": "5.0.1",
     "react-use-websocket": "^2.9.1",
     "sass": "^1.57.1",
-    "shared": "*",
+    "shared": "file:../shared",
     "use-sound": "^4.0.1",
     "uswds": "^2.13.3"
   },
