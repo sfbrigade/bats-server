@@ -1,15 +1,21 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
-
 const router = express.Router();
+const { generateToTPSecret } = require('../helpers');
+const notp = require('notp');
 
 router.get('/login', (req, res) => {
   res.render('auth/local/login');
 });
 
+router.get('/twoFactor', async (req, res) => {
+  generateToTPSecret(req);
+  res.render('auth/local/twoFactor');
+});
+
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user) => {
+  passport.authenticate('local', async (err, user) => {
     if (err) {
       if (req.accepts('html')) {
         res.render('auth/local/login', {
@@ -20,9 +26,9 @@ router.post('/login', (req, res, next) => {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
       }
     } else if (user) {
-      req.login(user, () => {
+      req.login(user, async () => {
         if (req.accepts('html')) {
-          res.redirect('/');
+          res.redirect('/auth/local/twoFactor');
         } else {
           res.status(HttpStatus.OK).end();
         }
@@ -38,9 +44,24 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
+router.post('/twoFactor', (req, res, next) => {
+  const key = req.session.totpKey;
+  const token = req.body.code;
+  const verified = notp.totp.verify(token, key, { window: 30 });
+  console.log(verified);
+  if (verified) {
+    req.session.twoFactor = true;
+    res.redirect('/');
+  } else {
+    res.render('auth/local/twoFactor', { incorrectCode: true });
+  }
+  (req, res, next);
+});
+
 router.get('/logout', (req, res) => {
   req.logout();
   if (req.accepts('html')) {
+    req.session.twoFactor = false;
     res.redirect('/');
   } else {
     res.status(HttpStatus.OK).end();
