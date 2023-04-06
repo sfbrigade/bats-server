@@ -139,12 +139,10 @@ function RingdownForm({ defaultPayload, className }) {
               </p>
             </div>
           </div>
-         
-
           <fieldset className="usa-fieldset border-top border-base-lighter">
-            {step === 0 && <PatientFields onChange={onChange} ringdown={ringdown} />}
             {step === 0 && (
               <>
+                <PatientFields onChange={onChange} ringdown={ringdown} />
                 <button disabled={!ringdown.isPatientValid} className="usa-button width-full" type="button" onClick={next}>
                   Select Hospital
                 </button>
@@ -153,9 +151,9 @@ function RingdownForm({ defaultPayload, className }) {
                 </button>
               </>
             )}
-            {step === 1 && <HospitalSelection onChange={onChange} ringdown={ringdown} />}
             {step === 1 && (
               <>
+                <HospitalSelection onChange={onChange} ringdown={ringdown} />
                 <button disabled={!ringdown.isValid} className="usa-button width-full" type="button" onClick={send}>
                   Send Ringdown
                 </button>
