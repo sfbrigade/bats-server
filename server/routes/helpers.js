@@ -1,5 +1,8 @@
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
+const models = require('../models');
+const EmailTransporter = require('../auth/emailTransporter');
+const notp = require('notp');
 
 function setPaginationHeaders(req, res, page, pages, total) {
   const baseURL = `${process.env.BASE_URL}${req.baseUrl}${req.path}?`;
@@ -59,7 +62,21 @@ function wrapper(handler) {
   };
 }
 
+function generateToTPSecret(req) {
+  const key = Math.floor(10000 + Math.random() * 90000);
+  const token = notp.totp.gen(key);
+  console.log(token);
+  req.session.totpKey = key;
+  const email = req.user.dataValues.email;
+  const emailTransporter = new EmailTransporter();
+  emailTransporter.sendMail(
+    email,
+    'Your Authentication Code from Routed',
+    `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
+  ); 
+}
 module.exports = {
   wrapper,
   setPaginationHeaders,
+  generateToTPSecret,
 };
