@@ -5,6 +5,8 @@ const isAuthenticated = (req, res, next) => {
     // ensure authenticated user is active
     if (!req.user.isActive) {
       res.status(HttpStatus.FORBIDDEN).end();
+    } else if (!req.session.twoFactor) {
+      res.status(HttpStatus.UNAUTHORIZED).end();
     } else {
       next();
     }
