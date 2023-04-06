@@ -15,7 +15,7 @@ router.get('/twoFactor', async (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local', async (err, user) => {
+  passport.authenticate('local', (err, user) => {
     if (err) {
       if (req.accepts('html')) {
         res.render('auth/local/login', {
@@ -26,7 +26,7 @@ router.post('/login', (req, res, next) => {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
       }
     } else if (user) {
-      req.login(user, async () => {
+      req.login(user, () => {
         if (req.accepts('html')) {
           res.redirect('/auth/local/twoFactor');
         } else {
@@ -48,7 +48,6 @@ router.post('/twoFactor', (req, res, next) => {
   const key = req.session.totpKey;
   const token = req.body.code;
   const verified = notp.totp.verify(token, key, { window: 30 });
-  console.log(verified);
   if (verified) {
     req.session.twoFactor = true;
     res.redirect('/');
