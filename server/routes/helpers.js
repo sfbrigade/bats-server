@@ -73,7 +73,7 @@ function generateToTPSecret(req) {
     email,
     'Your Authentication Code from Routed',
     `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
-  ); 
+  );
 }
 module.exports = {
   wrapper,

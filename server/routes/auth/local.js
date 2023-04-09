@@ -54,7 +54,7 @@ router.post('/twoFactor', (req, res, next) => {
   } else {
     res.render('auth/local/twoFactor', { incorrectCode: true });
   }
-  (req, res, next);
+  req, res, next;
 });
 
 router.get('/logout', (req, res) => {
