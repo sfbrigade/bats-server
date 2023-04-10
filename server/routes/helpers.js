@@ -1,6 +1,5 @@
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
-const models = require('../models');
 const EmailTransporter = require('../auth/emailTransporter');
 const notp = require('notp');
 
