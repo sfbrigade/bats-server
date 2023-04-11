@@ -4,14 +4,23 @@ const passport = require('passport');
 const router = express.Router();
 const { generateToTPSecret } = require('../helpers');
 const notp = require('notp');
+const { isAuthenticated } = require('../../auth/middleware');
 
 router.get('/login', (req, res) => {
-  res.render('auth/local/login');
+  if (req.session.twoFactor) {
+    res.redirect('/');
+  } else res.render('auth/local/login');
 });
 
 router.get('/twoFactor', async (req, res) => {
-  generateToTPSecret(req);
-  res.render('auth/local/twoFactor');
+  if (req.session.twoFactor) {
+    res.redirect('/');
+  } else if (req.user) {
+    generateToTPSecret(req);
+    res.render('auth/local/twoFactor');
+  } else {
+    res.redirect('/auth/local/login');
+  }
 });
 
 router.post('/login', (req, res, next) => {
