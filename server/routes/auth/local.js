@@ -54,13 +54,12 @@ router.post('/twoFactor', (req, res, next) => {
   } else {
     res.render('auth/local/twoFactor', { incorrectCode: true });
   }
-  req, res, next;
 });
 
 router.get('/logout', (req, res) => {
   req.logout();
+  req.session.twoFactor = false;
   if (req.accepts('html')) {
-    req.session.twoFactor = false;
     res.redirect('/');
   } else {
     res.status(HttpStatus.OK).end();
