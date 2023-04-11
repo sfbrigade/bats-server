@@ -1,13 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
+import EMS from './EMS';
 import ApiService from './ApiService';
 import Context from './Context';
-import EMS from './EMS';
 import ER from './ER';
 import Admin from './Admin';
 import Redirect from './Components/Redirect';
-import Spinner from './Components/Spinner';
+import Login from './Auth/Login';
 
 function App() {
   const { user, setUser, setOrganization, setHospital, setHospitalUser } = useContext(Context);
@@ -31,11 +30,7 @@ function App() {
 
   return (
     <>
-      {!user && (
-        <div className="padding-9">
-          <Spinner />
-        </div>
-      )}
+      {!user && <Login />}
       {user && (
         <Router>
           <Switch>

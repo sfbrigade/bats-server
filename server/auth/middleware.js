@@ -8,8 +8,6 @@ const isAuthenticated = (req, res, next) => {
     } else {
       next();
     }
-  } else if (req.accepts('html')) {
-    res.redirect('/auth/local/login');
   } else {
     res.status(HttpStatus.UNAUTHORIZED).end();
   }
@@ -18,8 +16,6 @@ const isAuthenticated = (req, res, next) => {
 const isSuperUser = (req, res, next) => {
   if (req.user?.isSuperUser) {
     next();
-  } else if (req.accepts('html')) {
-    res.redirect('/auth/local/login');
   } else if (req.user) {
     res.status(HttpStatus.FORBIDDEN).end();
   } else {
@@ -30,8 +26,6 @@ const isSuperUser = (req, res, next) => {
 const isAdminUser = (req, res, next) => {
   if (req.user?.isSuperUser || req.user?.isAdminUser) {
     next();
-  } else if (req.accepts('html')) {
-    res.redirect('/auth/local/login');
   } else if (req.user) {
     res.status(HttpStatus.FORBIDDEN).end();
   } else {

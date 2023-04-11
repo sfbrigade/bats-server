@@ -4,18 +4,12 @@ const passport = require('passport');
 
 const router = express.Router();
 
-router.get('/login', (req, res) => {
-  res.render('auth/local/login');
-});
-
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
+      // send error message to front end
       if (req.accepts('html')) {
-        res.render('auth/local/login', {
-          // TODO: pass error?
-          username: req.body.username,
-        });
+        res.redirect(`/login/?user=${req.body.username}&error=failed`);
       } else {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
       }
@@ -28,10 +22,7 @@ router.post('/login', (req, res, next) => {
         }
       });
     } else if (req.accepts('html')) {
-      res.render('auth/local/login', {
-        unauthorized: true,
-        username: req.body.username,
-      });
+      res.redirect(`/login/?user=${req.body.username}&error=unauthorized`);
     } else {
       res.status(HttpStatus.UNAUTHORIZED).end();
     }
