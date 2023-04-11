@@ -4,7 +4,6 @@ const passport = require('passport');
 const router = express.Router();
 const { generateToTPSecret } = require('../helpers');
 const notp = require('notp');
-const { isAuthenticated } = require('../../auth/middleware');
 
 router.get('/login', (req, res) => {
   if (req.session.twoFactor) {
@@ -53,7 +52,7 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/twoFactor', (req, res, next) => {
+router.post('/twoFactor', (req, res) => {
   const key = req.session.totpKey;
   const token = req.body.code;
   const verified = notp.totp.verify(token, key, { window: 30 });
