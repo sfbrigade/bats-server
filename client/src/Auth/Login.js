@@ -3,7 +3,6 @@ import React from 'react';
 export default function Login() {
   let url = new URL(window.location.href);
   let user = url.searchParams.get('user');
-  console.log(user);
   let error = url.searchParams.get('error');
 
   return (
@@ -32,7 +31,7 @@ export default function Login() {
               <label htmlFor="username" className="usa-label usa-label--required">
                 Email
               </label>
-              <input type="email" id="username" name="username" placeholder="name@email.com" className="usa-input" />
+              <input type="email" id="username" defaultValue={user} name="username" placeholder="name@email.com" className="usa-input" />
             </div>
             <div className="usa-form-group margin-y-4">
               <label htmlFor="password" className="usa-label usa-label--required">
