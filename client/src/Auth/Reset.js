@@ -1,13 +1,6 @@
 import React from 'react';
-import Error from './Error';
-import Form from './Form';
-import { Link } from 'react-router-dom';
 
-export default function Login() {
-  const url = new URL(window.location.href);
-  const error = url.searchParams.get('error');
-  const user = url.searchParams.get('user');
-
+export default function Reset() {
   return (
     <div className="grid-container">
       <div className="grid-row">
@@ -17,15 +10,9 @@ export default function Login() {
               <img src="/img/logomark-300.png" className="logo" alt="Routed logo" />
             </h1>
             <h4 className="text-base-light">
-              Start by entering your
-              <br />
-              email and password below.
+              Enter your email and we will send you a<br />
+              link to code to reset your password.
             </h4>
-            {error && <Error />}
-            <Form user={user} />
-            <Link to="/reset">
-              <button className="usa-button width-full margin-top-2">Reset Password</button>
-            </Link>
           </div>
         </div>
       </div>

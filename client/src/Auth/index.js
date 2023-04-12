@@ -1,3 +1,4 @@
 import Login from './Login';
+import Reset from './Reset';
 
-export default Login;
+module.exports(Login, Reset);

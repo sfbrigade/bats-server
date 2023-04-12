@@ -7,6 +7,7 @@ import ER from './ER';
 import Admin from './Admin';
 import Redirect from './Components/Redirect';
 import Login from './Auth/Login';
+import Reset from './Auth/Reset';
 
 function App() {
   const { user, setUser, setOrganization, setHospital, setHospitalUser } = useContext(Context);
@@ -30,7 +31,18 @@ function App() {
 
   return (
     <>
-      {!user && <Login />}
+      {!user && (
+        <Router>
+          <Switch>
+            <Route path="/reset">
+              <Reset />
+            </Route>
+            <Route path="/">
+              <Login />
+            </Route>
+          </Switch>
+        </Router>
+      )}
       {user && (
         <Router>
           <Switch>
