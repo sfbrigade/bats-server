@@ -65,12 +65,15 @@ export default function Form(props) {
         </label>
         <input
           type="email"
-          onChange={(e) => setEmail(e.target.value)}
           id="username"
           value={email}
           name="username"
           placeholder="name@email.com"
           className="usa-input"
+          onChange={(e) => {
+            setEmail(e.target.value);
+            handleValidationEvent(e);
+          }}
           onBlur={(e) => handleValidationEvent(e)}
           onFocus={(e) => handleValidationEvent(e)}
         />
@@ -81,10 +84,13 @@ export default function Form(props) {
         </label>
         <input
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
           id="password"
           name="password"
           className="usa-input"
+          onChange={(e) => {
+            setPassword(e.target.value);
+            handleValidationEvent(e);
+          }}
           onBlur={(e) => handleValidationEvent(e)}
           onFocus={(e) => handleValidationEvent(e)}
         />
