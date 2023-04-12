@@ -8,6 +8,8 @@ import Admin from './Admin';
 import Redirect from './Components/Redirect';
 import Login from './Auth/Login';
 import Reset from './Auth/Reset';
+import ConfirmCode from './Auth/ConfirmCode';
+import NewPassword from './Auth/NewPassword';
 
 function App() {
   const { user, setUser, setOrganization, setHospital, setHospitalUser } = useContext(Context);
@@ -34,6 +36,12 @@ function App() {
       {!user && (
         <Router>
           <Switch>
+            <Route path="/reset/newPassword">
+              <NewPassword />
+            </Route>
+            <Route path="/reset/confirmCode">
+              <ConfirmCode />
+            </Route>
             <Route path="/reset">
               <Reset />
             </Route>

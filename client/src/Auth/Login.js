@@ -1,6 +1,6 @@
 import React from 'react';
-import Error from './Error';
-import Form from './Form';
+import Error from './Components/Error';
+import Form from './Components/Form';
 import { Link } from 'react-router-dom';
 
 export default function Login() {
@@ -21,7 +21,7 @@ export default function Login() {
               <br />
               email and password below.
             </h4>
-            {error && <Error />}
+            {error && <Error input="email and/or password." />}
             <Form username={user} />
             <Link to="/reset">
               <button className="usa-button width-full margin-top-3"> Reset Password</button>

@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
 import { Link } from 'react-router-dom';
-import Error from './Components/Error';
 
 export default function Reset() {
-  const [email, setEmail] = useState('');
-  const url = new URL(window.location.href);
-  const error = url.searchParams.get('error');
+  const [code, setCode] = useState('');
   function isNotValid() {
-    if (email !== '') {
+    if (code !== '') {
       return false;
     }
     return true;
@@ -26,14 +23,14 @@ export default function Reset() {
               </h1>
             </Link>
             <h4 className="text-base-light">
-              Enter your email and we will send you a<br />
-              code to reset your password.
+              Enter the code that you
+              <br />
+              received in you Email
             </h4>
-            {error && <Error input="email" />}
-            <form method="post" action="/auth/local/reset" id="reset" className="usa-form">
-              <RequiredInput label="Email" name="email" value={email} handleValidationEvent={handleValidationEvent} onChange={setEmail} />
+            <form method="post" action="/auth/local/confirm" id="confirm" className="usa-form">
+              <RequiredInput label="Code" name="code" value={code} handleValidationEvent={handleValidationEvent} onChange={setCode} />
               <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
-                Send Code
+                Confirm
               </button>
             </form>
           </div>
