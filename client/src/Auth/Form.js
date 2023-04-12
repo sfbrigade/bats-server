@@ -6,8 +6,8 @@ export default function Form(props) {
   const inputErrorClass = 'usa-input--error';
   const labelErrorClass = 'usa-label--error';
 
-  const [email, setEmail] = useState(props.user);
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function isNotValid() {
     if (email !== undefined && password !== undefined) {
@@ -28,7 +28,6 @@ export default function Form(props) {
     const label = input.previousElementSibling;
     if (input.value !== '') {
       // if previously in error, remove that state
-
       if (input.classList.contains(inputErrorClass)) {
         label.classList.remove(labelErrorClass);
         input.classList.remove(inputErrorClass);
@@ -66,16 +65,14 @@ export default function Form(props) {
         <input
           type="email"
           id="username"
-          value={email}
+          defaultValue={props.user}
           name="username"
           placeholder="name@email.com"
           className="usa-input"
-          onChange={(e) => {
-            setEmail(e.target.value);
-            handleValidationEvent(e);
-          }}
+          onChange={(e) => setEmail(e.target.value)}
           onBlur={(e) => handleValidationEvent(e)}
           onFocus={(e) => handleValidationEvent(e)}
+          onInput={(e) => handleValidationEvent(e)}
         />
       </div>
       <div className="usa-form-group margin-y-4 text-left">
@@ -84,15 +81,14 @@ export default function Form(props) {
         </label>
         <input
           type="password"
+          value={password}
           id="password"
           name="password"
           className="usa-input"
-          onChange={(e) => {
-            setPassword(e.target.value);
-            handleValidationEvent(e);
-          }}
+          onChange={(e) => setPassword(e.target.value)}
           onBlur={(e) => handleValidationEvent(e)}
           onFocus={(e) => handleValidationEvent(e)}
+          onInput={(e) => handleValidationEvent(e)}
         />
       </div>
       <button type="submit" className="usa-button width-full" disabled={isNotValid()}>

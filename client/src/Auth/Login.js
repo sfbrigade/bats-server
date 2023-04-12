@@ -4,8 +4,8 @@ import Form from './Form';
 
 export default function Login() {
   const url = new URL(window.location.href);
-  const user = url.searchParams.get('user');
   const error = url.searchParams.get('error');
+  const user = url.searchParams.get('user');
 
   return (
     <div className="grid-container">
