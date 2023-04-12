@@ -13,6 +13,24 @@ export default function Reset() {
               Enter your email and we will send you a<br />
               link to code to reset your password.
             </h4>
+            <form method="post" action="/auth/reset" id="reset" className="usa-form" onSubmit={() => onSubmit}>
+              <div className="usa-form-group margin-y-4 text-left">
+                <label htmlFor="username" className="usa-label">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="username"
+                  name="username"
+                  placeholder="name@email.com"
+                  className="usa-input"
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={(e) => handleValidationEvent(e)}
+                  onFocus={(e) => handleValidationEvent(e)}
+                  onInput={(e) => handleValidationEvent(e)}
+                />
+              </div>
+            </form>
           </div>
         </div>
       </div>
