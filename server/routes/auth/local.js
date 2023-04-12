@@ -38,4 +38,9 @@ router.get('/logout', (req, res) => {
   }
 });
 
+router.post('/reset', (req, res) => {
+  console.log(req.body.email);
+  res.redirect('/');
+});
+
 module.exports = router;

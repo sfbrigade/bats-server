@@ -10,7 +10,7 @@ export default function Reset() {
     }
     return true;
   }
-  console.log(isNotValid());
+
   return (
     <div className="grid-container">
       <div className="grid-row">
@@ -23,7 +23,7 @@ export default function Reset() {
               Enter your email and we will send you a<br />
               link to code to reset your password.
             </h4>
-            <form method="post" action="/auth/reset" id="reset" className="usa-form">
+            <form method="post" action="/auth/local/reset" id="reset" className="usa-form">
               <RequiredInput label="Email" name="email" value={email} handleValidationEvent={handleValidationEvent} onChange={setEmail} />
               <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
                 Send Code
