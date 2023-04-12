@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import RequiredInput from './RequiredInput';
+import { handleValidationEvent } from './helperFunctions';
 
 export default function Reset() {
+  const [email, setEmail] = useState('');
+  function isNotValid() {
+    if (email !== '') {
+      return false;
+    }
+    return true;
+  }
+  console.log(isNotValid());
   return (
     <div className="grid-container">
       <div className="grid-row">
@@ -13,23 +23,11 @@ export default function Reset() {
               Enter your email and we will send you a<br />
               link to code to reset your password.
             </h4>
-            <form method="post" action="/auth/reset" id="reset" className="usa-form" onSubmit={() => onSubmit}>
-              <div className="usa-form-group margin-y-4 text-left">
-                <label htmlFor="username" className="usa-label">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="username"
-                  name="username"
-                  placeholder="name@email.com"
-                  className="usa-input"
-                  onChange={(e) => setEmail(e.target.value)}
-                  onBlur={(e) => handleValidationEvent(e)}
-                  onFocus={(e) => handleValidationEvent(e)}
-                  onInput={(e) => handleValidationEvent(e)}
-                />
-              </div>
+            <form method="post" action="/auth/reset" id="reset" className="usa-form">
+              <RequiredInput label="Email" name="email" value={email} handleValidationEvent={handleValidationEvent} onChange={setEmail} />
+              <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
+                Send Code
+              </button>
             </form>
           </div>
         </div>

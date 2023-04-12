@@ -22,11 +22,10 @@ export default function Login() {
               email and password below.
             </h4>
             {error && <Error />}
-            <Form user={user} />
+            <Form username={user} />
             <Link to="/reset">
-              <button className="usa-button width-full margin-top-2">Reset Password</button>
+              <button className="usa-button width-full margin-top-3"> Reset Password</button>
             </Link>
-           
           </div>
         </div>
       </div>
