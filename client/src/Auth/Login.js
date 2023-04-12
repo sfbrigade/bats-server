@@ -21,7 +21,7 @@ export default function Login() {
               email and password below.
             </h4>
             {error && <Error />}
-            <Form user={user} />
+            <Form username={user} />
           </div>
         </div>
       </div>
