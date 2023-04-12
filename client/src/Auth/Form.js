@@ -7,7 +7,7 @@ export default function Form(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   function isNotValid() {
-    if (email !== undefined && password !== undefined) {
+    if (email.trim() !== '' && password.trim() !== '') {
       return false;
     }
     return true;
