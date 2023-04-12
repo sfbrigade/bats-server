@@ -6,8 +6,6 @@ export default function Login() {
   const url = new URL(window.location.href);
   const user = url.searchParams.get('user');
   const error = url.searchParams.get('error');
-  console.log('user', user);
-  console.log('error', error);
 
   return (
     <div className="grid-container">
@@ -27,7 +25,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <script src="/scripts/login.js"></script>
     </div>
   );
 }
