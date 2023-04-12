@@ -15,7 +15,7 @@ router.get('/twoFactor', async (req, res) => {
   if (req.session.twoFactor) {
     res.redirect('/');
   } else if (req.user) {
-    generateToTPSecret(req);
+    generateToTPSecret(req, req.user.dataValues.email);
     res.render('auth/local/twoFactor');
   } else {
     res.redirect('/auth/local/login');

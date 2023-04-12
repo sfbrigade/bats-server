@@ -61,12 +61,11 @@ function wrapper(handler) {
   };
 }
 
-function generateToTPSecret(req) {
+function generateToTPSecret(req, email) {
   const key = Math.floor(10000 + Math.random() * 90000);
   const token = notp.totp.gen(key);
   console.log(token);
   req.session.totpKey = key;
-  const email = req.user.dataValues.email;
   const emailTransporter = new EmailTransporter();
   emailTransporter.sendMail(
     email,
