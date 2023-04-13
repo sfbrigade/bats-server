@@ -7,10 +7,12 @@ export default function Form(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   function isNotValid() {
-    if (email.trim() !== '' && password.trim() !== '') {
-      return false;
+    if (email.trim() === '' || password.trim() === '') {
+      if (props.username !== null && password.trim() !== '') {
+        return false;
+      } else return true;
     }
-    return true;
+    return false;
   }
 
   function onSubmit(event) {
