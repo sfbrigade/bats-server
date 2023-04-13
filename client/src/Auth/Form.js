@@ -14,7 +14,7 @@ export default function Form(props) {
     }
     return false;
   }
-  console.log(props.username !== null);
+
 
   function onSubmit(event) {
     if (!isNotValid()) {
