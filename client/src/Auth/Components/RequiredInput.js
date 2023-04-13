@@ -10,6 +10,7 @@ function RequiredInput(props) {
   const onChange = props.onChange;
   const defaultValue = props.defaultValue;
   const label = props.label;
+  const type = props.type;
 
   return (
     <div className="usa-form-group margin-y-4 text-left">
@@ -18,7 +19,7 @@ function RequiredInput(props) {
       </label>
       {defaultValue !== undefined ? (
         <input
-          type={name}
+          type={type}
           defaultValue={defaultValue}
           id={name}
           name={name}
@@ -30,7 +31,7 @@ function RequiredInput(props) {
         />
       ) : (
         <input
-          type={name}
+          type={type}
           value={value}
           id={name}
           name={name}
@@ -52,5 +53,6 @@ RequiredInput.propTypes = {
   handleValidationEvent: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
+  type: PropTypes.string,
 };
 export default RequiredInput;

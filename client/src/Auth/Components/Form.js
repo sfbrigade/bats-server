@@ -24,7 +24,7 @@ export default function Form(props) {
   return (
     <form method="post" action="/auth/local/login" id="login" className="usa-form" onSubmit={() => onSubmit}>
       <RequiredInput
-        type="Email"
+        type="email"
         name="username"
         label="Username"
         defaultValue={props.username}
@@ -32,7 +32,7 @@ export default function Form(props) {
         onChange={setEmail}
       />
       <RequiredInput
-        type="Password"
+        type="password"
         name="password"
         label="Password"
         value={password}
