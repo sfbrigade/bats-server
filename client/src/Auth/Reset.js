@@ -29,7 +29,7 @@ export default function Reset() {
               Enter your email and we will send you a<br />
               code to reset your password.
             </h4>
-            {error && <Error input="email" />}
+            {error && <Error input="Invalid email" />}
             <form method="post" action="/auth/local/reset" id="reset" className="usa-form">
               <RequiredInput label="Email" name="email" value={email} handleValidationEvent={handleValidationEvent} onChange={setEmail} />
               <button type="submit" className="usa-button width-full" disabled={isNotValid()}>

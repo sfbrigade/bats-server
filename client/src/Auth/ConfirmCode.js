@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
 import { Link } from 'react-router-dom';
+import Error from './Components/Error';
 
-export default function Reset() {
+export default function ConfirmCode() {
   const [code, setCode] = useState('');
+  const url = new URL(window.location.href);
+  const error = url.searchParams.get('error');
+
   function isNotValid() {
     if (code !== '') {
       return false;
@@ -27,6 +31,7 @@ export default function Reset() {
               <br />
               received in you Email
             </h4>
+            {error && <Error input="Incorrect code" />}
             <form method="post" action="/auth/local/confirm" id="confirm" className="usa-form">
               <RequiredInput label="Code" name="code" value={code} handleValidationEvent={handleValidationEvent} onChange={setCode} />
               <button type="submit" className="usa-button width-full" disabled={isNotValid()}>

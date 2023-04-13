@@ -7,6 +7,8 @@ export default function Login() {
   const url = new URL(window.location.href);
   const error = url.searchParams.get('error');
   const user = url.searchParams.get('user');
+  const auth = url.searchParams.get('auth');
+  const reset = url.searchParams.get('reset');
 
   return (
     <div className="grid-container">
@@ -21,7 +23,9 @@ export default function Login() {
               <br />
               email and password below.
             </h4>
-            {error && <Error input="email and/or password." />}
+            {reset && <Error input="Your password has been reset. You may now log in." />}
+            {auth && <Error input="Invalid attempt. You are not authorized." />}
+            {error && <Error input="Invalid email and/or password." />}
             <Form username={user} />
             <Link to="/reset">
               <button className="usa-button width-full margin-top-3"> Reset Password</button>

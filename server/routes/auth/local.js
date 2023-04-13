@@ -42,17 +42,25 @@ router.get('/logout', (req, res) => {
 });
 
 router.post('/reset', async (req, res) => {
-  let user = null;
-  user = await models.User.findOne({
+  let user = await models.User.findOne({
     where: {
       email: req.body.email,
     },
   });
   if (user) {
-    generateToTPSecret(req, user.dataValues.email);
-    res.redirect('/reset/confirmCode');
+    if (req.accepts('html')) {
+      req.session.email = req.body.email;
+      generateToTPSecret(req, user.dataValues.email);
+      res.redirect('/reset/confirmCode');
+    } else {
+      res.status(HttpStatus.OK).end();
+    }
   } else {
-    res.redirect('/reset?error=incorrectEmail');
+    if (req.accepts('html')) {
+      res.redirect('/reset?error=incorrectEmail');
+    } else {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
   }
 });
 
@@ -61,9 +69,46 @@ router.post('/confirm', (req, res) => {
   const token = req.body.code;
   const verified = notp.totp.verify(token, key, { window: 30 });
   if (verified) {
-    req.session.resetPassword = true;
-    res.redirect('/reset/newPassword');
+    if (req.accepts('html')) {
+      req.session.resetPassword = true;
+      res.redirect('/reset/newPassword');
+    } else {
+      res.status(HttpStatus.OK).end();
+    }
+  } else {
+    if (req.accepts('html')) {
+      res.redirect('/reset/confirmCode?error=incorrectCode');
+    } else {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
   }
 });
 
+router.post('/newPassword', async (req, res) => {
+  const newPassword = req.body.password[0];
+  const email = req.session.email;
+  if (!req.session.resetPassword) {
+    if (req.accepts('html')) {
+      req.session.email = null;
+      res.redirect('/?auth=unauthorized');
+    } else {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
+  } else {
+    let user = await models.User.findOne({
+      where: {
+        email: email,
+      },
+    });
+    try {
+      await user.update({ password: newPassword });
+      await user.save();
+      res.redirect('/?reset=success')
+      req.session.email = null;
+      req.session.resetPassword = false;
+    } catch (err) {
+      res.redirect('/reset/newPassword?error=invalidPassword');
+    }
+  }
+});
 module.exports = router;
