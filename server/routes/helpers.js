@@ -1,7 +1,7 @@
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
 const EmailTransporter = require('../auth/emailTransporter');
-const notp = require('notp');
+const OTPAuth = require('otpauth');
 
 function setPaginationHeaders(req, res, page, pages, total) {
   const baseURL = `${process.env.BASE_URL}${req.baseUrl}${req.path}?`;
@@ -62,10 +62,20 @@ function wrapper(handler) {
 }
 
 function generateToTPSecret(req, email) {
-  const key = Math.floor(10000 + Math.random() * 90000);
-  const token = notp.totp.gen(key);
+  const secret = new OTPAuth.Secret();
+  // new TOTP object using the secret key
+  const totp = new OTPAuth.TOTP({
+    secret: secret.base32,
+    issuer: 'Routed',
+    period: -1,
+    digits: 6,
+  });
+  // save the secret key to the session
+  req.session.totpTimeStamp = Date.now();
+  req.session.totpKey = secret.base32;
+  // generate secret token
+  const token = totp.generate();
   console.log(token);
-  req.session.totpKey = key;
   const emailTransporter = new EmailTransporter();
   emailTransporter.sendMail(
     email,
