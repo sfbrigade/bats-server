@@ -3,7 +3,7 @@ const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 const router = express.Router();
 const { generateToTPSecret } = require('../helpers');
-const OTPAuth = require('otpauth');
+const models = require('../../models');
 
 router.get('/login', (req, res) => {
   if (req.session.twoFactor) {
@@ -52,18 +52,16 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/twoFactor', (req, res) => {
+router.post('/twoFactor', async (req, res) => {
   const token = req.body.code;
-  const secret = req.session.totpKey;
-  const secondsLeft = Math.floor(900 - (Date.now() - req.session.totpTimeStamp) / 1000);
-  const totp = new OTPAuth.TOTP({
-    secret,
-    issuer: 'Routed',
-    period: secondsLeft,
-    digits: 6,
+  const email = req.user.dataValues.email;
+  const user = await models.User.findOne({
+    where: { email: email },
   });
-  const verified = totp.validate({ token });
-  if (verified != null) {
+  const totptoken = user.dataValues.ssoData.totptoken;
+  const totptimestamp = user.dataValues.ssoData.totptimestamp;
+  const verified = token == totptoken && Date.now() < totptimestamp;
+  if (verified) {
     req.session.twoFactor = true;
     res.redirect('/');
   } else {

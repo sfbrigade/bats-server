@@ -2,6 +2,7 @@ const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
 const EmailTransporter = require('../auth/emailTransporter');
 const OTPAuth = require('otpauth');
+const models = require('../models');
 
 function setPaginationHeaders(req, res, page, pages, total) {
   const baseURL = `${process.env.BASE_URL}${req.baseUrl}${req.path}?`;
@@ -61,7 +62,7 @@ function wrapper(handler) {
   };
 }
 
-function generateToTPSecret(req, email) {
+async function generateToTPSecret(req, email) {
   const secret = new OTPAuth.Secret();
   // new TOTP object using the secret key
   const totp = new OTPAuth.TOTP({
@@ -71,11 +72,15 @@ function generateToTPSecret(req, email) {
     digits: 6,
   });
   // save the secret key to the session
-  req.session.totpTimeStamp = Date.now();
-  req.session.totpKey = secret.base32;
   // generate secret token
   const token = totp.generate();
   console.log(token);
+  // Save token and expiration timestamp in DB (Expires in 15 minutes from inital Log In)
+  const user = await models.User.findOne({
+    where: { email: email },
+  });
+  await user.update({ ssoData: { totptimestamp: Date.now() + 900000, totptoken: token } });
+  await user.save();
   const emailTransporter = new EmailTransporter();
   emailTransporter.sendMail(
     email,
