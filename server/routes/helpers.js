@@ -80,15 +80,16 @@ async function generateToTPSecret(req, email) {
   });
   await user.update({ ssoData: { totptimestamp: Date.now() + 900000, totptoken: token } });
   await user.save();
+  sendEmail(email, 'Your Authentication Code from Routed', `This is your Authentication Code: ${token} . It will expire in 15 minutes.`);
+}
+
+function sendEmail(email, subject, body) {
   const emailTransporter = new EmailTransporter();
-  emailTransporter.sendMail(
-    email,
-    'Your Authentication Code from Routed',
-    `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
-  );
+  emailTransporter.sendMail(email, subject, body);
 }
 module.exports = {
   wrapper,
   setPaginationHeaders,
   generateToTPSecret,
+  sendEmail,
 };
