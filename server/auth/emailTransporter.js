@@ -3,11 +3,13 @@ const nodemailer = require('nodemailer');
 // create reusable transporter class using the default SMTP transport with functions
 class EmailTransporter {
   constructor() {
+    // set up transporter to send through Mailcatcher
     this.transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
       auth: {
-        user: process.env.NODEMAIL_EMAIL,
-        pass: process.env.NODEMAIL_APP_PASSWORD,
+        user: 'user ',
+        pass: 'pass',
       },
     });
   }

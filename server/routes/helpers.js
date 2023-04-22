@@ -74,7 +74,6 @@ async function generateToTPSecret(req, email) {
   // save the secret key to the session
   // generate secret token
   const token = totp.generate();
-  console.log(token);
   // Save token and expiration timestamp in DB (Expires in 15 minutes from inital Log In)
   const user = await models.User.findOne({
     where: { email: email },
