@@ -6,15 +6,21 @@ const { generateToTPSecret } = require('../helpers');
 const models = require('../../models');
 
 router.get('/login', (req, res) => {
+  // If user is already logged in and two Factor authenticated then redirect to home page
   if (req.session.twoFactor) {
     res.redirect('/');
-  } else res.render('auth/local/login');
+  } else {
+    // Check if user is already logged in through passport, if so, log them out
+    if (req.user) req.logout();
+    res.render('auth/local/login');
+  }
 });
 
 router.get('/twoFactor', async (req, res) => {
   if (req.session.twoFactor) {
     res.redirect('/');
   } else if (req.user) {
+    console.log('user: ', req.user.dataValues.email);
     generateToTPSecret(req, req.user.dataValues.email);
     res.render('auth/local/twoFactor');
   } else {
