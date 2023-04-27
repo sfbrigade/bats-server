@@ -56,6 +56,7 @@ module.exports = {
             subjectid                      varchar(100),
             hashedpassword                 varchar(100),
             ssodata                        json,
+            twofactorauth                  boolean         DEFAULT FALSE NOT NULL,
             operationaluserindicator       boolean         NOT NULL,
             administrativeuserindicator    boolean         NOT NULL,
             superuserindicator             boolean         NOT NULL,
@@ -182,7 +183,8 @@ module.exports = {
             recordcreatetimestamp    timestamp       NOT NULL,
             recordcreateuser_uuid    uuid            NOT NULL,
             recordupdatetimestamp    timestamp       NOT NULL,
-            recordupdateuser_uuid    uuid            NOT NULL
+            recordupdateuser_uuid    uuid            NOT NULL,
+            twoFactorEnabled         boolean         DEFAULT FALSE NOT NULL
         )
         ;
         CREATE TYPE organizationtype AS ENUM ('EMS', 'HEALTHCARE', 'C4SF');
