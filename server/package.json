@@ -18,7 +18,6 @@
     "luxon": "^1.28.0",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.1",
-    
     "otpauth": "^9.1.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
@@ -35,12 +34,12 @@
     "ws": "^7.5.8"
   },
   "devDependencies": {
-    "mocha": "^8.4.0",
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.18"
   },
   "scripts": {
     "start:dev": "./bin/init; nodemon -V --ignore ./test ./bin/www",
     "start:prod": "node ./bin/www",
-    "test": "mocha --recursive test"
+    "test": "mocha --recurs ive test"
   }
 }
