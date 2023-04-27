@@ -15,7 +15,6 @@ module.exports = new OpenIDConnectStrategy(
     passReqToCallback: true,
   },
   function verify(issuer, profile, context, idToken, cb) {
-    console.log('verifying');
     const info = {
       issuer,
       profile,
@@ -23,6 +22,5 @@ module.exports = new OpenIDConnectStrategy(
       idToken,
     };
     return cb(null, profile, info);
-   
   }
 );

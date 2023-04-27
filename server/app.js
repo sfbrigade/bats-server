@@ -11,7 +11,6 @@ const app = express();
 const client = (...args) => path.join(__dirname, '../client', ...args);
 require('dotenv').config();
 
-
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
