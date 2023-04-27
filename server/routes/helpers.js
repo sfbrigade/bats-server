@@ -78,7 +78,7 @@ async function generateToTPSecret(req, email) {
   const user = await models.User.findOne({
     where: { email: email },
   });
-  await user.update({ ssoData: { totptimestamp: Date.now() + 900000, totptoken: token } });
+  await user.update({ twofactorData: { totptimestamp: Date.now() + 900000, totptoken: token } });
   await user.save();
   sendEmail(email, 'Your Authentication Code from Routed', `This is your Authentication Code: ${token} . It will expire in 15 minutes.`);
 }

@@ -64,8 +64,8 @@ router.post('/twoFactor', async (req, res) => {
   const user = await models.User.findOne({
     where: { email: email },
   });
-  const totptoken = user.dataValues.ssoData.totptoken;
-  const totptimestamp = user.dataValues.ssoData.totptimestamp;
+  const totptoken = user.dataValues.twofactorData.totptoken;
+  const totptimestamp = user.dataValues.twofactorData.totptimestamp;
   const verified = token == totptoken && Date.now() < totptimestamp;
   if (verified) {
     req.session.twoFactor = true;

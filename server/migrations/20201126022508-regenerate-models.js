@@ -55,7 +55,7 @@ module.exports = {
             lastname                       varchar(50)     NOT NULL,
             subjectid                      varchar(100),
             hashedpassword                 varchar(100),
-            ssodata                        json,
+            twofactordata                        json,
             twofactorauth                  boolean         DEFAULT FALSE NOT NULL,
             operationaluserindicator       boolean         NOT NULL,
             administrativeuserindicator    boolean         NOT NULL,
@@ -68,7 +68,7 @@ module.exports = {
         )
         ;
         alter table batsuser alter column email type citext;
-        alter table batsuser alter column ssodata type jsonb;
+        alter table batsuser alter column twofactordata type jsonb;
         
         -- 
         -- TABLE: emergencymedicalservicecall 
