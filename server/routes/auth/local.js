@@ -4,7 +4,7 @@ const passport = require('passport');
 
 const router = express.Router();
 
-router.get('/login', (req, res) => {
+router.get('/login', async (req, res) => {
   res.render('auth/local/login');
 });
 

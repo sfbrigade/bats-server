@@ -1,6 +1,7 @@
 const HttpStatus = require('http-status-codes');
 
 const isAuthenticated = (req, res, next) => {
+  console.log('req.params', req.params);
   if (req.user) {
     // ensure authenticated user is active
     if (!req.user.isActive) {
@@ -9,7 +10,7 @@ const isAuthenticated = (req, res, next) => {
       next();
     }
   } else if (req.accepts('html')) {
-    res.redirect('/auth/local/login');
+    res.redirect('login');
   } else {
     res.status(HttpStatus.UNAUTHORIZED).end();
   }

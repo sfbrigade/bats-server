@@ -9,6 +9,8 @@ const { isAuthenticated } = require('./auth/middleware');
 
 const app = express();
 const client = (...args) => path.join(__dirname, '../client', ...args);
+require('dotenv').config();
+
 
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
@@ -52,6 +54,7 @@ app.use(app.sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// app.use(auth(config));
 app.use('/', require('./routes'));
 
 app.get('/*', isAuthenticated, (req, res) => {

@@ -14,7 +14,8 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-passport.use(require('./local'));
+passport.use('local', require('./local'));
 passport.use('peak', require('./peak'));
+passport.use('openidconnect', require('./openId'));
 
 module.exports = passport;
