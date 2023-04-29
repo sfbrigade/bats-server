@@ -37,6 +37,12 @@ const fields = [
     defaultValue: 'PST',
   },
   {
+    name: 'isMfaEnabled',
+    type: 'boolean',
+    allowNull: false, 
+    defaultValue: false,
+  },
+  {
     name: 'isActive',
     colName: 'activeindicator',
     type: 'boolean',
