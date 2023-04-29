@@ -18,6 +18,7 @@ describe('models.Organization', () => {
     assert(org.id);
     assert.deepStrictEqual(org.name, 'Kaiser Permanente');
     assert.deepStrictEqual(org.type, 'HEALTHCARE');
+    assert.equal(org.isMfaEnabled, false)
     assert(org.createdAt);
     assert(org.updatedAt);
 
