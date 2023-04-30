@@ -2,8 +2,8 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 const router = express.Router();
-const { generateToTPSecret } = require('../helpers');
-const models = require('../../models');
+const { generateToTPSecret, verifyTwoFactor } = require('../helpers');
+const { createTransport } = require('../../auth/emailTransporter');
 
 router.get('/login', (req, res) => {
   // If user is already logged in and two Factor authenticated then redirect to home page
@@ -20,8 +20,8 @@ router.get('/twoFactor', async (req, res) => {
   if (req.session.twoFactor) {
     res.redirect('/');
   } else if (req.user) {
-    console.log('user: ', req.user.dataValues.email);
-    generateToTPSecret(req, req.user.dataValues.email);
+    const transporter = createTransport();
+    await generateToTPSecret(req.user.dataValues.email, transporter);
     res.render('auth/local/twoFactor');
   } else {
     res.redirect('/auth/local/login');
@@ -59,19 +59,18 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/twoFactor', async (req, res) => {
-  const token = req.body.code;
-  const email = req.user.dataValues.email;
-  const user = await models.User.findOne({
-    where: { email: email },
-  });
-  const totptoken = user.dataValues.twoFactorData.totptoken;
-  const totptimestamp = user.dataValues.twoFactorData.totptimestamp;
-  const verified = token == totptoken && Date.now() < totptimestamp;
-  if (verified) {
-    req.session.twoFactor = true;
-    res.redirect('/');
+  // Redirect if Session is interrupted
+  if (req.user) {
+    const verified = await verifyTwoFactor(req);
+    // If the code is verified, set the session to twoFactor and redirect to home page
+    if (verified) {
+      req.session.twoFactor = true;
+      res.redirect('/');
+    } else {
+      res.render('auth/local/twoFactor', { incorrectCode: true });
+    }
   } else {
-    res.render('auth/local/twoFactor', { incorrectCode: true });
+    res.redirect('/auth/local/login');
   }
 });
 
