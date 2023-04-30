@@ -12,8 +12,3 @@ services:
       - /opt/node/app/server/node_modules
       - /opt/node/app/user-guides/node_modules
       - /opt/node/app/e2e/node_modules
-   mail:
-    image: dockage/mailcatcher:0.8.2
-    ports:
-      - 1025:1025
-      - 1080:1080
