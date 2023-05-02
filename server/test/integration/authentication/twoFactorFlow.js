@@ -109,7 +109,6 @@ describe('Email Functionality', async () => {
     const response = await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
     // Expect to be redirected to the home page
     expect(response.status).to.equal(HttpStatus.MOVED_TEMPORARILY);
-    expect(response.header.location).to.equal('/'); 
-
+    expect(response.header.location).to.equal('/');
   });
 });
