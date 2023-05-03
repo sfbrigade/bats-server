@@ -55,8 +55,7 @@ module.exports = {
             lastname                       varchar(50)     NOT NULL,
             subjectid                      varchar(100),
             hashedpassword                 varchar(100),
-            twofactordata                        json,
-            twofactorauth                  boolean         DEFAULT FALSE NOT NULL,
+            ssodata                        json,
             operationaluserindicator       boolean         NOT NULL,
             administrativeuserindicator    boolean         NOT NULL,
             superuserindicator             boolean         NOT NULL,
@@ -68,7 +67,7 @@ module.exports = {
         )
         ;
         alter table batsuser alter column email type citext;
-        alter table batsuser alter column twofactordata type jsonb;
+        alter table batsuser alter column ssodata type jsonb;
         
         -- 
         -- TABLE: emergencymedicalservicecall 
@@ -183,8 +182,7 @@ module.exports = {
             recordcreatetimestamp    timestamp       NOT NULL,
             recordcreateuser_uuid    uuid            NOT NULL,
             recordupdatetimestamp    timestamp       NOT NULL,
-            recordupdateuser_uuid    uuid            NOT NULL,
-            twoFactorEnabled         boolean         DEFAULT FALSE NOT NULL
+            recordupdateuser_uuid    uuid            NOT NULL
         )
         ;
         CREATE TYPE organizationtype AS ENUM ('EMS', 'HEALTHCARE', 'C4SF');

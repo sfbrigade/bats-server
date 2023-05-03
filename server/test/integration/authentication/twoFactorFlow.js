@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 const { expect } = require('chai');
 const mockery = require('mockery');
 const nodemailermock = require('nodemailer-mock');
