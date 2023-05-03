@@ -18,7 +18,7 @@ test.describe('home', () => {
     await password.press('Enter');
     await expect(page.getByText('Invalid email and/or password.')).toBeVisible();
   });
- /*
+  /*
   test('redirects to EMS interface after EMS user login', async ({ page }) => {
     await page.goto('/');
     await page.getByLabel('Email').fill(process.env.EMS_USER);
@@ -35,7 +35,7 @@ test.describe('home', () => {
     await password.fill(process.env.HOSPITAL_PASS);
     await password.press('Enter');
     await expect(page).toHaveURL('/er');
-  }); */ 
+  }); */
 
   test('shows the Routed logo and two factor authentication form', async ({ page }) => {
     await page.goto('/');
