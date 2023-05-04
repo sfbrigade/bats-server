@@ -36,7 +36,6 @@ module.exports = (sequelize) => {
         'isSuperUser',
         'organization',
         'activeHospitals',
-        'twoFactorAuth',
       ]);
     }
   }

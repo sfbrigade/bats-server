@@ -43,6 +43,6 @@
   "scripts": {
     "start:dev": "./bin/init; nodemon -V --ignore ./test ./bin/www",
     "start:prod": "node ./bin/www",
-    "test": "mocha --recurs ive test"
+    "test": "mocha --recursive test"
   }
 }
