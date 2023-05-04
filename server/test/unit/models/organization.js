@@ -32,7 +32,6 @@ describe('models.Organization', () => {
 
     org.isMfaEnabled = true;
     assert.equal(org.isMfaEnabled, true);
-
   });
 
   it('creates a new Organization record with multi-factor authentication', async () => {
