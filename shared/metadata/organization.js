@@ -39,7 +39,7 @@ const fields = [
   {
     name: 'isMfaEnabled',
     type: 'boolean',
-    allowNull: false, 
+    allowNull: false,
     defaultValue: false,
   },
   {
