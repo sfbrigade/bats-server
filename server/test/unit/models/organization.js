@@ -29,5 +29,24 @@ describe('models.Organization', () => {
     const updatedBy = await org.getUpdatedBy();
     assert(updatedBy);
     assert.deepStrictEqual(updatedBy.name, 'Super User');
+
+    org.isMfaEnabled = true;
+    assert.equal(org.isMfaEnabled, true);
+
+  });
+
+  it('creates a new Organization record with multi-factor authentication', async () => {
+    const org2 = await models.Organization.create({
+      name: 'Kaiser Permanente',
+      type: 'HEALTHCARE',
+      CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+      UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+      isMfaEnabled: true,
+    });
+    assert(org2);
+    assert(org2.id);
+    assert.deepStrictEqual(org2.name, 'Kaiser Permanente');
+    assert.deepStrictEqual(org2.type, 'HEALTHCARE');
+    assert.equal(org2.isMfaEnabled, true);
   });
 });
