@@ -11,7 +11,7 @@ module.exports = {
      */
     await queryInterface.addColumn(
       'organization', 
-      'isMfaEnabled',
+      'ismfaenabled',
       {
         type: Sequelize.DataTypes.BOOLEAN,
         defaultValue: false,
@@ -27,6 +27,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.removeColumn('isMfaEnabled')
+    await queryInterface.removeColumn('ismfaenabled')
   }
 };
