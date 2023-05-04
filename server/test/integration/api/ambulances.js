@@ -1,21 +1,36 @@
+/* eslint-env mocha */
+
 const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
+const nodemailermock = require('nodemailer-mock');
 
 describe('/api/ambulances', () => {
   let testSession;
 
   beforeEach(async () => {
     await helper.loadFixtures(['organizations', 'users', 'ambulances']);
-
     testSession = session(app);
     await testSession
       .post('/auth/local/login')
       .set('Accept', 'application/json')
       .send({ username: 'sutter.operational@example.com', password: 'abcd1234' });
+
+    // Call the two-factor authentication endpoint
+    await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+    const sentMail = nodemailermock.mock.sentMail();
+    // Extract authentication code from the sent email
+    const regex = /Authentication Code: (\d{6})/;
+    const match = regex.exec(sentMail[0].text);
+    const authCode = match[1];
+    // Submit the authentication code
+    await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
+  });
+  after(async () => {
+    nodemailermock.mock.reset();
   });
 
   describe('GET /identifiers', () => {

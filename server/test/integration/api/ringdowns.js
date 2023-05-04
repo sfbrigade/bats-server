@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
@@ -6,6 +8,7 @@ const helper = require('../../helper');
 const app = require('../../../app');
 const models = require('../../../models');
 const { DeliveryStatus } = require('../../../../shared/constants');
+const nodemailermock = require('nodemailer-mock');
 
 describe('/api/ringdowns', () => {
   let testSession;
@@ -26,6 +29,10 @@ describe('/api/ringdowns', () => {
     testSession = session(app);
   });
 
+  afterEach(async () => {
+    nodemailermock.mock.reset();
+  });
+
   describe('GET /', () => {
     it('returns a list of all ringdowns', async () => {
       await testSession
@@ -33,6 +40,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'super.user@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.length, 5);
@@ -44,6 +61,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       const response = await testSession
         .get('/api/ringdowns')
@@ -60,6 +87,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'amr.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       const response = await testSession.get('/api/ringdowns/mine').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.length, 1);
@@ -101,6 +138,16 @@ describe('/api/ringdowns', () => {
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
+
       const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
@@ -135,6 +182,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       const response = await testSession
         .post('/api/ringdowns')
@@ -200,6 +257,16 @@ describe('/api/ringdowns', () => {
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
+
       const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
@@ -234,6 +301,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       const response = await testSession
         .post('/api/ringdowns')
@@ -272,6 +349,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       let now = new Date();
       await testSession
@@ -380,6 +467,16 @@ describe('/api/ringdowns', () => {
         .send({ username: 'king.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
+
       const now = new Date();
       await testSession
         .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
@@ -433,6 +530,16 @@ describe('/api/ringdowns', () => {
         .send({ username: 'sffd.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
+
       const response = await testSession
         .patch('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247')
         .set('Accept', 'application/json')
@@ -480,6 +587,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'sffd.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       const response = await testSession
         .get('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247')
@@ -540,6 +657,16 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'second.sffd.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      // Call the two-factor authentication endpoint
+      await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+      const sentMail = nodemailermock.mock.sentMail();
+      // Extract authentication code from the sent email
+      const regex = /Authentication Code: (\d{6})/;
+      const match = regex.exec(sentMail[0].text);
+      const authCode = match[1];
+      // Submit the authentication code
+      await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 
       await testSession.get('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247').set('Accept', 'application/json').expect(HttpStatus.OK);
     });
