@@ -4,14 +4,14 @@ const passport = require('passport');
 const router = express.Router();
 
 router.get('/login', (req, res, next) =>
-  passport.authenticate('openidconnect', { scope: 'openid profile' }, (err, profile) => {
+  passport.authenticate('openidconnect', { scope: 'openid profile email' }, (err, profile) => {
     console.log('err', err);
     console.log('profile', profile);
   })(req, res, next)
 );
 
 router.get('/redirect', (req, res, next) => {
-  console.log('req.query', req.query);
+  // console.log('req.query', req.query);
   var reqParams = req.query;
   if (reqParams.error) {
     var err = new Error(reqParams.error);
@@ -29,7 +29,9 @@ router.get('/redirect', (req, res, next) => {
       },
       (err, profile, info) => {
         console.log('err', err);
-        console.log('profile', profile);
+        console.log('res.data', res.data);
+        console.log('res.body', res.body);
+        console.log('res.user_name', res.user_name);
         console.log('info', info);
       }
     )(req, res, next);
