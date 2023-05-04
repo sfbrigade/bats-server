@@ -29,4 +29,4 @@ const fields = [
   
 ];
 
-module.exports = new ModelMetadata({ modelName: 'FederatedUser', tableName: 'federateduser', fields });
+module.exports = new ModelMetadata({ modelName: 'FederatedUser', tableName: 'federatedusers', fields });

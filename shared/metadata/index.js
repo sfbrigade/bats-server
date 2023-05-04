@@ -9,6 +9,7 @@ const patient = require('./patient');
 const patientDeliveryUpdate = require('./patientDeliveryUpdate');
 const patientDelivery = require('./patientDelivery');
 const user = require('./user');
+const federatedUser = require('./federatedUser');
 
 module.exports = {
   ambulance,
@@ -22,4 +23,5 @@ module.exports = {
   patientDelivery,
   patientDeliveryUpdate,
   user,
+  federatedUser
 };
