@@ -26,6 +26,15 @@ html.no-scrolling {
   overflow: hidden;
 }
 
+a {
+  &:focus,
+  &:visited,
+  &:active {
+    background-color: transparent;
+    color: $theme-color-primary;
+    border: none;
+  }
+}
 .logo {
   width: 150px;
   height: 35px;
