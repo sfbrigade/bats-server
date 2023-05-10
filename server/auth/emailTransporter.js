@@ -8,8 +8,8 @@ function createTransport() {
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
     auth: {
-      user: 'user ',
-      pass: 'pass',
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
     },
   };
   // mock Transporter in testing env
@@ -19,7 +19,7 @@ function createTransport() {
 // send mail with defined transport object
 function sendMail(transporter, recipient, subject, content) {
   const mailOptions = {
-    from: process.env.NODEMAIL_EMAIL,
+    from: process.env.SMTP_REPLY_TO,
     to: recipient,
     subject: subject,
     text: content,
