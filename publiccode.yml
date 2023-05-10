@@ -1,0 +1,43 @@
+publiccodeYmlVersion: "0.2"
+
+name: Routed
+url: https://github.com/sfbrigade/bats-server.git
+releaseDate: 2023-04-07
+platforms:
+  - web
+categories:
+  - ems
+  - hospital
+  - patient-care
+  - ambulance
+developmentStatus: development
+softwareType: standalone/web
+logo: client/public/img/logomark-300.png
+
+description:
+  en:
+    genericName: Routed
+
+    shortDescription: >
+      Routed is an app to help ambulances direct non-critical patients to hospital emergency rooms with the most availability.
+
+    longDescription: >
+      Our team was formed in February 2020 when Niels Tangherlini, EMS Operations Chief with the SFFD, reached out to Code for SF to help solve a problem he’d encountered for many years: how to help ambulances direct non-critical patients to EDs with the most availability.
+
+      Since then, we’ve worked closely with the SFFD, as well as nurses, administrators, and IT departments from local hospitals to develop a working prototype of the platform.
+
+      Today, we’re preparing to beta test the tool in the city of San Francisco.
+
+    features:
+      - Real-time communication
+
+legal:
+  license: AGPL-3.0-only
+
+maintenance:
+  type: community
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - en
