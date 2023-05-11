@@ -40,7 +40,8 @@ module.exports = (sequelize) => {
         'activeHospitals',
       ]);
     }
-    generateToTPSecret = async function () {
+
+    async generateToTPSecret() {
       const secret = new OTPAuth.Secret();
       // new TOTP object using the secret key
       const totp = new OTPAuth.TOTP({
@@ -66,15 +67,15 @@ module.exports = (sequelize) => {
         'Your Authentication Code from Routed',
         `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
       );
-    };
+    }
 
-    verifyTwoFactor = function (req) {
+    verifyTwoFactor(req) {
       const token = req.body.code;
       const totptoken = this.dataValues.twoFactorData.totptoken;
       const totptimestamp = this.dataValues.twoFactorData.totptimestamp;
       const verified = token === totptoken && Date.now() < totptimestamp;
       return verified;
-    };
+    }
   }
 
   initModel(User, metadata, sequelize);
