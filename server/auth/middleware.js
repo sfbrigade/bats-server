@@ -19,6 +19,9 @@ const isAuthenticated = (req, res, next) => {
 
 const isSuperUser = (req, res, next) => {
   if (req.user?.isSuperUser) {
+    if (!req.session.twoFactor) {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
     next();
   } else if (req.accepts('html')) {
     res.redirect('/auth/local/login');
@@ -31,6 +34,9 @@ const isSuperUser = (req, res, next) => {
 
 const isAdminUser = (req, res, next) => {
   if (req.user?.isSuperUser || req.user?.isAdminUser) {
+    if (!req.session.twoFactor) {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
     next();
   } else if (req.accepts('html')) {
     res.redirect('/auth/local/login');

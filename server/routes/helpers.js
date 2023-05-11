@@ -1,8 +1,5 @@
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
-const { sendMail } = require('../auth/emailTransporter');
-const OTPAuth = require('otpauth');
-const models = require('../models');
 
 function setPaginationHeaders(req, res, page, pages, total) {
   const baseURL = `${process.env.BASE_URL}${req.baseUrl}${req.path}?`;
@@ -62,49 +59,7 @@ function wrapper(handler) {
   };
 }
 
-async function generateToTPSecret(email, transporter) {
-  const secret = new OTPAuth.Secret();
-  // new TOTP object using the secret key
-  const totp = new OTPAuth.TOTP({
-    secret: secret.base32,
-    issuer: 'Routed',
-    period: -1,
-    digits: 6,
-  });
-  // save the secret key to the session
-  // generate secret token
-  const token = totp.generate();
-  // Save token and expiration timestamp in DB (Expires in 15 minutes from inital Log In)
-  const user = await models.User.findOne({
-    where: { email: email },
-  });
-  // save totp secret and expiration timestamp in DB
-  await user.update({ twoFactorData: { totptimestamp: Date.now() + 900000, totptoken: token } });
-  await user.save();
-  // send email with token
-  sendMail(
-    transporter,
-    email,
-    'Your Authentication Code from Routed',
-    `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
-  );
-}
-async function verifyTwoFactor(req) {
-  const token = req.body.code;
-  const email = req.user.dataValues.email;
-  const user = await models.User.findOne({
-    where: { email: email },
-  });
-
-  const totptoken = user.dataValues.twoFactorData.totptoken;
-  const totptimestamp = user.dataValues.twoFactorData.totptimestamp;
-  const verified = token === totptoken && Date.now() < totptimestamp;
-
-  return verified;
-}
 module.exports = {
   wrapper,
   setPaginationHeaders,
-  generateToTPSecret,
-  verifyTwoFactor,
 };

@@ -6,9 +6,9 @@ const nodemailermock = require('nodemailer-mock');
 const session = require('supertest-session');
 const app = require('../../../app');
 const HttpStatus = require('http-status-codes');
-const { createTransport } = require('../../../auth/emailTransporter');
-const { generateToTPSecret } = require('../../../routes/helpers');
 const helper = require('../../helper');
+const model = require('../../../models');
+const { createTransport } = require('../../../mailer/emailTransporter');
 
 describe('Two Factor Page', async () => {
   let testSession = null;
@@ -77,7 +77,8 @@ describe('Email Functionality', async () => {
     // Create a mock transport
     const transport = createTransport();
     // Generate a secret and send it to the mock transport
-    generateToTPSecret('sutter.operational@example.com', transport);
+    const user = await model.User.findOne({ where: { email: 'sutter.operational@example.com' } });
+    user.generateToTPSecret('test123@gmail.com', transport);
     // Get the sent message from the mock transport
     const sentMail = nodemailermock.mock.sentMail();
     // Expect one message to be sent
@@ -89,7 +90,6 @@ describe('Email Functionality', async () => {
     // Expect the message to have the correct text with 6 digit Authentication Code
     expect(sentMail[0].text).to.contain('This is your Authentication Code:');
   });
-
   it('E2E - should correctly authenticate with ToTP secret', async () => {
     testSession = session(app);
     // reset the mock back to the defaults after each test

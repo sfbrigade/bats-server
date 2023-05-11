@@ -2,8 +2,7 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 const router = express.Router();
-const { generateToTPSecret, verifyTwoFactor } = require('../helpers');
-const { createTransport } = require('../../auth/emailTransporter');
+const { createTransport } = require('../../mailer/emailTransporter');
 
 router.get('/login', (req, res) => {
   // If user is already logged in and two Factor authenticated then redirect to home page
@@ -21,7 +20,7 @@ router.get('/twoFactor', async (req, res) => {
     res.redirect('/');
   } else if (req.user) {
     const transporter = createTransport();
-    await generateToTPSecret(req.user.dataValues.email, transporter);
+    await req.user.generateToTPSecret(req.user.dataValues.email, transporter);
     res.render('auth/local/twoFactor');
   } else {
     res.redirect('/auth/local/login');
@@ -61,7 +60,7 @@ router.post('/login', (req, res, next) => {
 router.post('/twoFactor', async (req, res) => {
   // Redirect if Session is interrupted
   if (req.user) {
-    const verified = await verifyTwoFactor(req);
+    const verified = await req.user.verifyTwoFactor(req);
     // If the code is verified, set the session to twoFactor and redirect to home page
     if (verified) {
       req.session.twoFactor = true;
