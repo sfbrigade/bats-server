@@ -1,0 +1,28 @@
+<div class="grid-container">
+  <div class="grid-row">
+    <div class="grid-col-10 grid-offset-1 tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
+      <div class="text-center margin-top-6 margin-bottom-8">
+        <a href="/auth/local/login">
+          <h1 class="hospital-dest-title"><img src="/img/logomark-300.png" class="logo" alt="Routed logo" /></h1>
+        </a>
+      </div>
+      <% if (locals.incorrectCode) { %>
+      <div class="usa-alert usa-alert--error usa-alert--slim usa-alert--no-icon margin-bottom-3">
+        <div class="usa-alert__body">
+          <p class="usa-alert__text">Invalid Authoritzation Code.</p>
+        </div>
+      </div>
+      <% } %>
+      <div class="text-center margin-top-6">
+        <h3>Please enter the Authoritzation Code that was sent to your E-mail</h3>
+      </div>
+      <form method="post" action="/auth/local/twoFactor" id="twoFactor" class="usa-form">
+        <div class="usa-form-group margin-y-4">
+          <label for="code" class="usa-label usa-label--required">Code</label>
+          <input type="text" id="code" name="code" class="usa-input" />
+        </div>
+        <button type="submit" class="usa-button width-full">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

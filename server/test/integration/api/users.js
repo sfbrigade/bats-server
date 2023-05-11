@@ -1,9 +1,12 @@
+/* eslint-env mocha */
+
 const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
+const nodemailermock = require('nodemailer-mock');
 
 describe('/api/users', () => {
   let testSession;
@@ -11,6 +14,9 @@ describe('/api/users', () => {
   beforeEach(async () => {
     await helper.loadFixtures(['organizations', 'users', 'hospitals', 'hospitalUsers']);
     testSession = session(app);
+  });
+  afterEach(async () => {
+    nodemailermock.mock.reset();
   });
 
   describe('GET /', () => {
@@ -21,6 +27,8 @@ describe('/api/users', () => {
         .set('Accept', 'application/json')
         .send({ username: 'super.user@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      await helper.twoFactorAuthSession(testSession);
 
       /// request user list
       const response = await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.OK);
@@ -35,6 +43,8 @@ describe('/api/users', () => {
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
+      await helper.twoFactorAuthSession(testSession);
+
       /// request user list
       await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.FORBIDDEN);
     });
@@ -47,6 +57,9 @@ describe('/api/users', () => {
         .set('Accept', 'application/json')
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
+
+      await helper.twoFactorAuthSession(testSession);
+
       const response = await testSession.get('/api/users/me').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body, {
         id: '449b1f54-7583-417c-8c25-8da7dde65f6d',

@@ -5,6 +5,7 @@ const fixtures = require('sequelize-fixtures');
 const path = require('path');
 
 const models = require('../models');
+const nodemailermock = require('nodemailer-mock');
 
 const loadFixtures = async (files) => {
   const filePaths = files.map((f) => path.resolve(__dirname, `fixtures/${f}.json`));
@@ -30,6 +31,18 @@ const resetDatabase = async () => {
   `);
 };
 
+const twoFactorAuthSession = async (testSession) => {
+  // Call the two-factor authentication endpoint
+  await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+  const sentMail = nodemailermock.mock.sentMail();
+  // Extract authentication code from the sent email
+  const regex = /Authentication Code: (\d{6})/;
+  const match = regex.exec(sentMail[0].text);
+  const authCode = match[1];
+  // Submit the authentication code
+  await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
+};
+
 beforeEach(async () => {
   await resetDatabase();
 });
@@ -42,4 +55,5 @@ after(async () => {
 
 module.exports = {
   loadFixtures,
+  twoFactorAuthSession,
 };
