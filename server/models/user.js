@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { Model } = require('sequelize');
 const metadata = require('shared/metadata/user');
 const initModel = require('../metadata/initModel');
-const { sendMail } = require('../mailer/emailTransporter');
+const { sendMail, createTransport } = require('../mailer/emailTransporter');
 const OTPAuth = require('otpauth');
 
 const SALT_ROUNDS = 10;
@@ -40,6 +40,41 @@ module.exports = (sequelize) => {
         'activeHospitals',
       ]);
     }
+    generateToTPSecret = async function () {
+      const secret = new OTPAuth.Secret();
+      // new TOTP object using the secret key
+      const totp = new OTPAuth.TOTP({
+        secret: secret.base32,
+        issuer: 'Routed',
+        period: -1,
+        digits: 6,
+      });
+      console.log('TOTP Secret: ', secret.base32);
+      // save the secret key to the session
+      // generate secret token
+      const token = totp.generate();
+      // Save token and expiration timestamp in DB (Expires in 15 minutes from inital Log In)
+      // save totp secret and expiration timestamp in DB
+
+      await this.update({ twoFactorData: { totptimestamp: Date.now() + 900000, totptoken: token } });
+      await this.save();
+
+      // send email with token
+      sendMail(
+        createTransport(),
+        this.email,
+        'Your Authentication Code from Routed',
+        `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
+      );
+    };
+
+    verifyTwoFactor = function (req) {
+      const token = req.body.code;
+      const totptoken = this.dataValues.twoFactorData.totptoken;
+      const totptimestamp = this.dataValues.twoFactorData.totptimestamp;
+      const verified = token === totptoken && Date.now() < totptimestamp;
+      return verified;
+    };
   }
 
   initModel(User, metadata, sequelize);
@@ -50,42 +85,6 @@ module.exports = (sequelize) => {
       user.hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
     }
   });
-
-  User.prototype.generateToTPSecret = async function (email, transporter) {
-    const secret = new OTPAuth.Secret();
-    // new TOTP object using the secret key
-    const totp = new OTPAuth.TOTP({
-      secret: secret.base32,
-      issuer: 'Routed',
-      period: -1,
-      digits: 6,
-    });
-    console.log('TOTP Secret: ', secret.base32);
-    // save the secret key to the session
-    // generate secret token
-    const token = totp.generate();
-    // Save token and expiration timestamp in DB (Expires in 15 minutes from inital Log In)
-    // save totp secret and expiration timestamp in DB
-
-    await this.update({ twoFactorData: { totptimestamp: Date.now() + 900000, totptoken: token } });
-    await this.save();
-
-    // send email with token
-    sendMail(
-      transporter,
-      email,
-      'Your Authentication Code from Routed',
-      `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
-    );
-  };
-
-  User.prototype.verifyTwoFactor = function (req) {
-    const token = req.body.code;
-    const totptoken = this.dataValues.twoFactorData.totptoken;
-    const totptimestamp = this.dataValues.twoFactorData.totptimestamp;
-    const verified = token === totptoken && Date.now() < totptimestamp;
-    return verified;
-  };
 
   return User;
 };

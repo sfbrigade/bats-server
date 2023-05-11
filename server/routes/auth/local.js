@@ -2,7 +2,6 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 const router = express.Router();
-const { createTransport } = require('../../mailer/emailTransporter');
 
 router.get('/login', (req, res) => {
   // If user is already logged in and two Factor authenticated then redirect to home page
@@ -19,8 +18,7 @@ router.get('/twoFactor', async (req, res) => {
   if (req.session.twoFactor) {
     res.redirect('/');
   } else if (req.user) {
-    const transporter = createTransport();
-    await req.user.generateToTPSecret(req.user.dataValues.email, transporter);
+    await req.user.generateToTPSecret();
     res.render('auth/local/twoFactor');
   } else {
     res.redirect('/auth/local/login');
