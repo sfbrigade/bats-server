@@ -18,7 +18,7 @@ describe('models.Organization', () => {
     assert(org.id);
     assert.deepStrictEqual(org.name, 'Kaiser Permanente');
     assert.deepStrictEqual(org.type, 'HEALTHCARE');
-    assert.equal(org.isMfaEnabled, false);
+    assert.deepStrictEqual(org.isMfaEnabled, false);
     assert(org.createdAt);
     assert(org.updatedAt);
 
@@ -31,7 +31,7 @@ describe('models.Organization', () => {
     assert.deepStrictEqual(updatedBy.name, 'Super User');
 
     org.isMfaEnabled = true;
-    assert.equal(org.isMfaEnabled, true);
+    assert.deepStrictEqual(org.isMfaEnabled, true);
   });
 
   it('creates a new Organization record with multi-factor authentication', async () => {
@@ -46,6 +46,6 @@ describe('models.Organization', () => {
     assert(org2.id);
     assert.deepStrictEqual(org2.name, 'Kaiser Permanente');
     assert.deepStrictEqual(org2.type, 'HEALTHCARE');
-    assert.equal(org2.isMfaEnabled, true);
+    assert.deepStrictEqual(org2.isMfaEnabled, true);
   });
 });
