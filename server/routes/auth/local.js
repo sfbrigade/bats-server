@@ -2,6 +2,7 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 const router = express.Router();
+const models = require('../../models');
 
 router.get('/login', (req, res) => {
   // If user is already logged in and two Factor authenticated then redirect to home page
@@ -10,7 +11,7 @@ router.get('/login', (req, res) => {
   } else {
     // Check if user is already logged in through passport, if so, log them out
     if (req.user) req.logout();
-    res.render('auth/local/login');
+    res.redirect('/login');
   }
 });
 
@@ -29,10 +30,7 @@ router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
       if (req.accepts('html')) {
-        res.render('auth/local/login', {
-          // TODO: pass error?
-          username: req.body.username,
-        });
+        res.redirect(`/login/?user=${req.body.username}&error=failed`);
       } else {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
       }
@@ -45,10 +43,7 @@ router.post('/login', (req, res, next) => {
         }
       });
     } else if (req.accepts('html')) {
-      res.render('auth/local/login', {
-        unauthorized: true,
-        username: req.body.username,
-      });
+      res.redirect(`/login/?user=${req.body.username}&error=unauthorized`);
     } else {
       res.status(HttpStatus.UNAUTHORIZED).end();
     }
@@ -78,6 +73,80 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
   } else {
     res.status(HttpStatus.OK).end();
+  }
+});
+
+router.post('/reset', async (req, res) => {
+  let user = await models.User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  });
+  if (user) {
+    if (req.accepts('html')) {
+      await user.generateToTPSecret();
+      req.session.email = user.email;
+      res.redirect('/reset/confirmCode');
+    } else {
+      res.status(HttpStatus.OK).end();
+    }
+  } else {
+    if (req.accepts('html')) {
+      res.redirect('/reset?error=incorrectEmail');
+    } else {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
+  }
+});
+
+router.post('/confirm', async (req, res) => {
+  let user = await models.User.findOne({
+    where: {
+      email: req.session.email,
+    },
+  });
+  const verified = user.verifyTwoFactor(req);
+  if (verified) {
+    if (req.accepts('html')) {
+      req.session.resetPassword = true;
+      res.redirect('/reset/newPassword');
+    } else {
+      res.status(HttpStatus.OK).end();
+    }
+  } else {
+    if (req.accepts('html')) {
+      res.redirect('/reset/confirmCode?error=incorrectCode');
+    } else {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
+  }
+});
+
+router.post('/newPassword', async (req, res) => {
+  const newPassword = req.body.password[0];
+  const email = req.session.email;
+  if (!req.session.resetPassword) {
+    if (req.accepts('html')) {
+      req.session.email = null;
+      res.redirect('/?auth=unauthorized');
+    } else {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    }
+  } else {
+    let user = await models.User.findOne({
+      where: {
+        email: email,
+      },
+    });
+    try {
+      await user.update({ password: newPassword });
+      await user.save();
+      res.redirect('/?reset=success');
+      req.session.email = null;
+      req.session.resetPassword = false;
+    } catch (err) {
+      res.redirect('/reset/newPassword?error=invalidPassword');
+    }
   }
 });
 
