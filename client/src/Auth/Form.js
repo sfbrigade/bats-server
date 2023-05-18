@@ -15,7 +15,6 @@ export default function Form(props) {
     return false;
   }
 
-
   function onSubmit(event) {
     if (!isNotValid()) {
       updateErrorState(email);
