@@ -54,7 +54,7 @@ app.use(passport.session());
 
 app.use('/', require('./routes'));
 
-app.get('/*', isAuthenticated, (req, res) => {
+app.get('/*', (req, res) => {
   let data = fs.readFileSync(client('build', 'index.html')).toString('utf8');
   data = data.replace(/window\.env\.([^ =]+)[^,;<]+/g, (match, p1) => `window.env.${p1} = '${process.env[p1] ?? ''}'`);
   res.send(data);
