@@ -13,4 +13,8 @@ router.get('/', middleware.isSuperUser, async (req, res) => {
   res.json(orgs.map((org) => org.toJSON()));
 });
 
+router.patch(
+  ':id',
+);
+
 module.exports = router;
