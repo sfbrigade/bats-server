@@ -10,8 +10,9 @@ router.get('/login', (req, res) => {
     res.redirect('/');
   } else {
     // Check if user is already logged in through passport, if so, log them out
-    if (req.user) req.logout();
-    res.redirect('/login');
+    if (req.user) {
+      req.logout();
+    }
   }
 });
 
@@ -54,6 +55,7 @@ router.post('/twoFactor', async (req, res) => {
   // Redirect if Session is interrupted
   if (req.user) {
     const verified = await req.user.verifyTwoFactor(req);
+
     // If the code is verified, set the session to twoFactor and redirect to home page
     if (verified) {
       req.session.twoFactor = true;

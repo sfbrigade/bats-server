@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { Model } = require('sequelize');
 const metadata = require('shared/metadata/user');
 const initModel = require('../metadata/initModel');
-const { sendMail, createTransport } = require('../mailer/emailTransporter');
+const { sendMail } = require('../mailer/emailTransporter');
 const OTPAuth = require('otpauth');
 
 const SALT_ROUNDS = 10;
@@ -61,12 +61,9 @@ module.exports = (sequelize) => {
       await this.save();
 
       // send email with token
-      sendMail(
-        createTransport(),
-        this.email,
-        'Your Authentication Code from Routed',
-        `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
-      );
+      sendMail('no-reply@routed.org', this.email, 'Your Authentication Code from Routed', 'twoFactor', {
+        verificationCode: token,
+      });
     }
 
     verifyTwoFactor(req) {

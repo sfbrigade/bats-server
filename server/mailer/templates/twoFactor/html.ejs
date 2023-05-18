@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Two-Factor Authentication Code from Routed</title>
+    <style>
+      /* USWDS styles */
+      .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 1rem;
+        max-width: 75rem;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      .grid-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -1rem;
+        margin-left: -1rem;
+      }
+
+      .grid-col-10 {
+        flex-basis: 100%;
+        max-width: 100%;
+      }
+
+      .grid-offset-1 {
+        margin-left: 8.33333%;
+      }
+
+      .tablet\:grid-col-6 {
+        flex-basis: 50%;
+        max-width: 50%;
+      }
+
+      .tablet\:grid-offset-3 {
+        margin-left: 25%;
+      }
+
+      .desktop\:grid-col-4 {
+        flex-basis: 33.33333%;
+        max-width: 33.33333%;
+      }
+
+      .desktop\:grid-offset-4 {
+        margin-left: 33.33333%;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .margin-top-6 {
+        margin-top: 3rem;
+      }
+
+      .margin-bottom-8 {
+        margin-bottom: 4rem;
+      }
+
+      .hospital-dest-title {
+        margin-bottom: 2rem;
+      }
+
+      .logo {
+        max-width: 100%;
+      }
+
+      .code {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .footer {
+        color: gray;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="grid-col-10 grid-offset-1 tablet:grid-col-6 tablet:grid-offset-3 desktop:grid-col-4 desktop:grid-offset-4">
+          <div class="text-center margin-top-6 margin-bottom-8">
+            <h1 class="hospital-dest-title">
+              <img src="../../../../client/public/img/logomark-300.png" />
+            </h1>
+            <div>
+              <p>Your two-factor authentication code is:</p>
+              <p class="code"><%= verificationCode %></p>
+              <p>Please use this code to complete the login process. It will expire in 15 minutes.</p>
+              <p class="footer">This is an automated email. Please do not reply.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

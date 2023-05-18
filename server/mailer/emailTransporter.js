@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const nodemailermock = require('nodemailer-mock');
+const templateEmail = require('email-templates');
 
 // create reusable transporter class using the default SMTP transport with functions
 function createTransport() {
@@ -16,21 +17,36 @@ function createTransport() {
   const transporter = process.env.NODE_ENV === 'test' ? nodemailermock.createTransport(options) : nodemailer.createTransport(options);
   return transporter;
 }
-// send mail with defined transport object
-function sendMail(transporter, recipient, subject, content) {
-  const mailOptions = {
-    from: process.env.SMTP_REPLY_TO,
-    to: recipient,
-    subject: subject,
-    text: content,
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
+
+// Wrapper over transporter that allows for the use of templates
+function templateTransporter() {
+  const templateTransporter = new templateEmail({
+    send: true,
+    transport: createTransport(),
+    views: {
+      root: __dirname + '/templates',
+      options: {
+        extension: 'ejs', // <---- HERE
+      },
+    },
   });
+  return templateTransporter;
+}
+
+// send mail with defined transport object
+function sendMail(from, to, subject, template, variables) {
+  const templateEmailer = templateTransporter();
+  templateEmailer
+    .send({
+      template: template,
+      message: {
+        subject: subject,
+        from: from,
+        to: to,
+      },
+      locals: variables,
+    })
+    .catch(console.error);
 }
 
 module.exports = { createTransport, sendMail };
