@@ -5,7 +5,7 @@ const path = require('path');
 const cookieSession = require('cookie-session');
 const logger = require('morgan');
 const passport = require('./auth/passport');
-const { isAuthenticated } = require('./auth/middleware');
+// const { isAuthenticated } = require('./auth/middleware');
 
 const app = express();
 const client = (...args) => path.join(__dirname, '../client', ...args);

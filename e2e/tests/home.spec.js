@@ -5,14 +5,14 @@ test.describe('home', () => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Routed/);
     await expect(page.getByAltText('Routed logo')).toBeVisible();
-    await expect(page.getByLabel('Email')).toBeVisible();
+    await expect(page.getByLabel('Username')).toBeVisible();
     await expect(page.getByLabel('Password')).toBeVisible();
     await expect(page.getByText('Login')).toBeVisible();
   });
 
   test('shows error message after invalid credentials submitted', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill('invalid@email.com');
+    await page.getByLabel('Username').fill('invalid@email.com');
     const password = page.getByLabel('Password');
     await password.fill('wrong');
     await password.press('Enter');
@@ -21,7 +21,7 @@ test.describe('home', () => {
 
   test('redirects to EMS interface after EMS user login', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill(process.env.EMS_USER);
+    await page.getByLabel('Username').fill(process.env.EMS_USER);
     const password = page.getByLabel('Password');
     await password.fill(process.env.EMS_PASS);
     await password.press('Enter');
@@ -30,7 +30,7 @@ test.describe('home', () => {
 
   test('redirects to ER interface after Hospital user login', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill(process.env.HOSPITAL_USER);
+    await page.getByLabel('Username').fill(process.env.HOSPITAL_USER);
     const password = page.getByLabel('Password');
     await password.fill(process.env.HOSPITAL_PASS);
     await password.press('Enter');
