@@ -18,10 +18,11 @@ router.patch(
   ':id',
   middleware.isAdminUser,
   wrapper( async (req, res) => {
+    let organization;
     await models.sequelize.transaction(async (transaction) => {
       organization = await models.Organization.findByPk(req.params.id);
       if (organization) {
-        organization.update({'ismfaenabled': !organization.ismfaenabled}, {transaction})
+        organization.update(req.body, {transaction})
       }
     });
     if (organization) {
