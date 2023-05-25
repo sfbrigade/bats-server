@@ -22,7 +22,7 @@ describe('/api/organization', () => {
         .set('Accept', 'application/json')
         .send({ username: 'super.user@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
-      /// patch an organizations
+      /// patch an organization
       const response = await testSession.patch('/api/organizations/25ffdd7c-b4cf-4ebb-9750-1e628370e13b').set('Accept', 'application/json').send({isMfaEnabled:true}).expect(HttpStatus.OK);
       assert(response.body.isMfaEnabled, true);
     });
