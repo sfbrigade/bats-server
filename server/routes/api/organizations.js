@@ -16,12 +16,12 @@ router.get('/', middleware.isSuperUser, async (req, res) => {
 });
 
 router.patch(
-  ':id',
+  '/:id',
   middleware.isAdminUser,
   wrapper( async (req, res) => {
     let organization;
     await models.sequelize.transaction(async (transaction) => {
-      organization = await models.Organization.findByPk(req.params.id);
+      organization = await models.Organization.findByPk(req.params.id, {transaction});
       if (organization) {
         organization.update(req.body, {transaction})
       }
