@@ -1,16 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ContextProvider } from './Context';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+const root = ReactDOM.createRoot(rootElement);
+
+root.render(
   <React.StrictMode>
-    <ContextProvider>
-      <App />
-    </ContextProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  <ContextProvider>
+    <App />
+  </ContextProvider>
+</React.StrictMode>,
 );
 
 // If you want your app to work offline and load faster, you can change
