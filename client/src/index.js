@@ -9,10 +9,10 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-  <ContextProvider>
-    <App />
-  </ContextProvider>
-</React.StrictMode>,
+    <ContextProvider>
+      <App />
+    </ContextProvider>
+  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change
