@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import PropTypes from 'prop-types';
 
 import FormInput from '../../Components/FormInput';
@@ -9,7 +9,7 @@ import ApiService from '../../ApiService';
 import Context from '../../Context';
 
 function UserInfo({ userId }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { organization, hospital } = useContext(Context);
   const [user, setUser] = useState();
   const [error, setError] = useState();
@@ -21,7 +21,7 @@ function UserInfo({ userId }) {
         .then((response) => {
           const { data } = response;
           if (data.organization?.id !== organization?.id) {
-            history.push('/admin/users');
+            navigate('/admin/users');
           }
           if (hospital) {
             const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital?.id);
@@ -30,13 +30,13 @@ function UserInfo({ userId }) {
               data.isInfoUser = hospitalUser.isInfoUser;
               data.isRingdownUser = hospitalUser.isRingdownUser;
             } else {
-              history.push('/admin/users');
+              navigate('/admin/users');
             }
           }
           setUser(response.data);
         })
         .catch(() => {
-          history.push('/admin/users');
+          navigate('/admin/users');
         });
     } else {
       const data = {
@@ -54,7 +54,7 @@ function UserInfo({ userId }) {
       }
       setUser(data);
     }
-  }, [userId, organization, hospital, history]);
+  }, [userId, organization, hospital]);
 
   function onChange(property, value) {
     const newUser = { ...user };
@@ -79,7 +79,7 @@ function UserInfo({ userId }) {
       } else {
         await ApiService.users.create(data);
       }
-      history.push('/admin/users', { flash: { info: 'Saved!' } });
+      navigate('/admin/users', { flash: { info: 'Saved!' } });
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);
