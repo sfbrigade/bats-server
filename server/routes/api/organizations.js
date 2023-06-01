@@ -23,7 +23,7 @@ router.patch(
     await models.sequelize.transaction(async (transaction) => {
       organization = await models.Organization.findByPk(req.params.id, {transaction});
       if (organization) {
-        organization.update(req.body, {transaction})
+        await organization.update(req.body, {transaction})
       }
     });
     if (organization) {
