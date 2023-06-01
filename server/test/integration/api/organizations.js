@@ -22,12 +22,16 @@ describe('/api/organizations', () => {
 
   describe('PATCH/', () => {
     it('turns on mfa for an organization', async () => {
-      const orgId = "25ffdd7c-b4cf-4ebb-9750-1e628370e13b";
+      const orgId = '25ffdd7c-b4cf-4ebb-9750-1e628370e13b';
 
       const orgBefore = await models.Organization.findByPk(orgId);
-      assert.deepStrictEqual(orgBefore.isMfaEnabled, false); 
+      assert.deepStrictEqual(orgBefore.isMfaEnabled, false);
 
-      const response = await testSession.patch(`/api/organizations/${orgId}`).set('Accept', 'application/json').send({isMfaEnabled:true}).expect(HttpStatus.OK);
+      const response = await testSession
+        .patch(`/api/organizations/${orgId}`)
+        .set('Accept', 'application/json')
+        .send({ isMfaEnabled: true })
+        .expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.isMfaEnabled, true);
 
       const orgAfter = await models.Organization.findByPk(orgId);
@@ -35,12 +39,16 @@ describe('/api/organizations', () => {
     });
 
     it('turns off mfa for an organization', async () => {
-      const orgId = "aac13870-f6f3-11ea-adc1-0242ac120002";
+      const orgId = 'aac13870-f6f3-11ea-adc1-0242ac120002';
 
       const orgBefore = await models.Organization.findByPk(orgId);
-      assert.deepStrictEqual(orgBefore.isMfaEnabled, true); 
+      assert.deepStrictEqual(orgBefore.isMfaEnabled, true);
 
-      const response = await testSession.patch(`/api/organizations/${orgId}`).set('Accept', 'application/json').send({isMfaEnabled:false}).expect(HttpStatus.OK);
+      const response = await testSession
+        .patch(`/api/organizations/${orgId}`)
+        .set('Accept', 'application/json')
+        .send({ isMfaEnabled: false })
+        .expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.isMfaEnabled, false);
 
       const orgAfter = await models.Organization.findByPk(orgId);

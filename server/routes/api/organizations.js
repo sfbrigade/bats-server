@@ -17,12 +17,12 @@ router.get('/', middleware.isSuperUser, async (req, res) => {
 router.patch(
   '/:id',
   middleware.isAdminUser,
-  wrapper( async (req, res) => {
+  wrapper(async (req, res) => {
     let organization;
     await models.sequelize.transaction(async (transaction) => {
-      organization = await models.Organization.findByPk(req.params.id, {transaction});
+      organization = await models.Organization.findByPk(req.params.id, { transaction });
       if (organization) {
-        await organization.update(req.body, {transaction})
+        await organization.update(req.body, { transaction });
       }
     });
     if (organization) {
@@ -30,8 +30,7 @@ router.patch(
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }
-  }
-  )
+  })
 );
 
 module.exports = router;
