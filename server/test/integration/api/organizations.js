@@ -10,7 +10,7 @@ const helper = require('../../helper');
 const app = require('../../../app');
 
 
-describe('/api/organization', () => {
+describe('/api/organizations', () => {
   let testSession;
 
   beforeEach(async () => {
