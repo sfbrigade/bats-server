@@ -3,12 +3,8 @@ const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 const organizations = require('../../fixtures/organizations.json');
 const models = require('../../../models');
-
-
-
 const helper = require('../../helper');
 const app = require('../../../app');
-
 
 describe('/api/organizations', () => {
   let testSession;
@@ -53,7 +49,5 @@ describe('/api/organizations', () => {
       const orgAfter = await models.Organization.findByPk(orgId);
       assert.deepStrictEqual(orgAfter.isMfaEnabled, false);
     });
-
-
   });
 });
