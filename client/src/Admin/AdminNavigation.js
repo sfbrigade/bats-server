@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, NavLink, useResolvedPath } from 'react-router-dom';
+import { Link, NavLink, useLocation, useResolvedPath } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -7,21 +7,21 @@ import Context from '../Context';
 import './AdminNavigation.scss';
 
 function AdminNavigation() {
-  // const { location } = useNavigate();
+  const location = useLocation();
   const url = useResolvedPath("").pathname;
   const { user, organization, setOrganization, hospital, setHospital } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
   const [hospitals, setHospitals] = useState([]);
-  // const [showFlash, setShowFlash] = useState(false);
+  const [showFlash, setShowFlash] = useState(false);
 
-  // useEffect(() => {
-  //   if (location.state?.flash) {
-  //     setShowFlash(true);
-  //     setTimeout(() => setShowFlash(false), 2000);
-  //   } else {
-  //     setShowFlash(false);
-  //   }
-  // }, [location]);
+  useEffect(() => {
+    if (location.state?.flash) {
+      setShowFlash(true);
+      setTimeout(() => setShowFlash(false), 2000);
+    } else {
+      setShowFlash(false);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (user?.isSuperUser) {
@@ -128,13 +128,13 @@ function AdminNavigation() {
             Ringdowns
           </NavLink>
         </div>
-        {/* {showFlash && location.state?.flash?.info && (
+        {showFlash && location.state?.flash?.info && (
           <div className="admin-navigation__alert usa-alert usa-alert--success usa-alert--slim usa-alert--no-icon">
             <div className="usa-alert__body">
               <p className="usa-alert__text">{location.state.flash.info}</p>
             </div>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
