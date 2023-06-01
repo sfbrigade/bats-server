@@ -2,7 +2,6 @@ const express = require('express');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
-const organization = require('../../models/organization');
 const { wrapper } = require('../helpers');
 
 const router = express.Router();
