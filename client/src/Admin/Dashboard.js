@@ -4,7 +4,6 @@ import React from 'react';
 import UsersTable from './Users/UsersTable';
 
 export default function Dashboard() {
-  console.log('DASHBOARD')
   return (
     <main>
       <div>
