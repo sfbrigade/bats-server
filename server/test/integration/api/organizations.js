@@ -27,11 +27,9 @@ describe('/api/organizations', () => {
       const orgBefore = await models.Organization.findByPk(orgId);
       assert.deepStrictEqual(orgBefore.isMfaEnabled, false); 
 
-      /// patch an organization
       const response = await testSession.patch(`/api/organizations/${orgId}`).set('Accept', 'application/json').send({isMfaEnabled:true}).expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.isMfaEnabled, true);
 
-      // check the model directly as well. Also seems like we confifyure to test dbb from the helpers require
       const orgAfter = await models.Organization.findByPk(orgId);
       assert.deepStrictEqual(orgAfter.isMfaEnabled, true);
     });
@@ -42,7 +40,6 @@ describe('/api/organizations', () => {
       const orgBefore = await models.Organization.findByPk(orgId);
       assert.deepStrictEqual(orgBefore.isMfaEnabled, true); 
 
-     // patch an organization
       const response = await testSession.patch(`/api/organizations/${orgId}`).set('Accept', 'application/json').send({isMfaEnabled:false}).expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.isMfaEnabled, false);
 
