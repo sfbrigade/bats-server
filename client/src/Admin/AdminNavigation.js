@@ -124,9 +124,9 @@ function AdminNavigation() {
           <NavLink to={`${url}/users`} className={`admin-navigation__link ${(navData) => (navData.isActive ? "admin-navigation__link--active" : "")}`}>
             Users
           </NavLink>
-          <NavLink to={`${url}/ringdowns`} className={`admin-navigation__link ${(navData) => (navData.isActive ? "admin-navigation__link--active" : "")}`}>
+          {/* <NavLink to={`${url}/ringdowns`} className={`admin-navigation__link ${(navData) => (navData.isActive ? "admin-navigation__link--active" : "")}`}>
             Ringdowns
-          </NavLink>
+          </NavLink> */}
         </div>
         {showFlash && location.state?.flash?.info && (
           <div className="admin-navigation__alert usa-alert usa-alert--success usa-alert--slim usa-alert--no-icon">
