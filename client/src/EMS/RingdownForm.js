@@ -21,6 +21,11 @@ function RingdownForm({ defaultPayload, className }) {
   const [step, setStep] = useState(0);
   const [showConfirmClear, setShowConfirmClear] = useState(false);
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
+  // const [isC4SF, setIsC4SF] = useState(false);
+  
+  const { user } = useContext(Context);
+
+
 
   function next() {
     setStep(1);
@@ -125,6 +130,7 @@ function RingdownForm({ defaultPayload, className }) {
   // prettier-ignore
   return (
     <>
+      {user.organization?.type === 'C4SF' && "C4SF user: Ringdown submission disabled"}
       {ringdowns && ringdowns.length === 0 && (
         <Form
           data={ringdown}
@@ -154,7 +160,7 @@ function RingdownForm({ defaultPayload, className }) {
             {step === 1 && (
               <>
                 <HospitalSelection onChange={onChange} ringdown={ringdown} />
-                <button disabled={!ringdown.isValid} className="usa-button width-full" type="button" onClick={send}>
+                <button disabled={!ringdown.isValid && user.organization?.type !== 'C4SF'} className="usa-button width-full" type="button" onClick={send}>
                   Send Ringdown
                 </button>
                 <button className="usa-button usa-button--outline width-full margin-top-4" type="button" onClick={edit}>

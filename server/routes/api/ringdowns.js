@@ -100,6 +100,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
 });
 
 router.post('/', middleware.isAuthenticated, async (req, res) => {
+  let isAuthorized = true;
   try {
     // ensure auth user is part of an EMS organization
     const org = await req.user.getOrganization();
@@ -111,72 +112,76 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       throw new Error();
     }
   } catch (error) {
+    isAuthorized = false;
     res.status(HttpStatus.FORBIDDEN).end();
   }
-  try {
-    let patientDelivery;
-    let json;
-    for (let key in req.body.patient) {
-      if (req.body.patient[key] === '') {
-        req.body.patient[key] = null;
+  if(isAuthorized) {
+    try {
+      let patientDelivery;
+      let json;
+      for (let key in req.body.patient) {
+        if (req.body.patient[key] === '') {
+          req.body.patient[key] = null;
+        }
       }
-    }
-    await models.sequelize.transaction(async (transaction) => {
-      const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
-        where: {
-          dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
-        },
-        defaults: {
-          startDateTimeLocal: new Date(),
-          CreatedById: req.user.id,
-          UpdatedById: req.user.id,
-        },
-        transaction,
+      await models.sequelize.transaction(async (transaction) => {
+        const [emsCall] = await models.EmergencyMedicalServiceCall.findOrCreate({
+          where: {
+            dispatchCallNumber: req.body.emsCall.dispatchCallNumber,
+          },
+          defaults: {
+            startDateTimeLocal: new Date(),
+            CreatedById: req.user.id,
+            UpdatedById: req.user.id,
+          },
+          transaction,
+        });
+        const patient = await models.Patient.create(
+          {
+            ..._.pick(req.body.patient, models.Patient.Params),
+            EmergencyMedicalServiceCallId: emsCall.id,
+            CreatedById: req.user.id,
+            UpdatedById: req.user.id,
+          },
+          { transaction }
+        );
+        patient.EmergencyMedicalServiceCall = emsCall;
+        const [ambulance] = await models.Ambulance.findOrCreate({
+          where: {
+            OrganizationId: req.user.OrganizationId,
+            ambulanceIdentifier: req.body.ambulance.ambulanceIdentifier,
+          },
+          defaults: {
+            CreatedById: req.user.id,
+            UpdatedById: req.user.id,
+          },
+          transaction,
+        });
+        const hospital = await models.Hospital.findByPk(req.body.hospital.id, { transaction });
+        patientDelivery = await models.PatientDelivery.createRingdown(
+          ambulance.id,
+          patient.id,
+          hospital.id,
+          req.user.id,
+          req.body.patientDelivery.dateTimeLocal || new Date(),
+          req.body.patientDelivery.etaMinutes,
+          { transaction }
+        );
+        patientDelivery.Ambulance = ambulance;
+        patientDelivery.Patient = patient;
+        patientDelivery.Hospital = hospital;
+        json = await patientDelivery.toRingdownJSON({ transaction });
       });
-      const patient = await models.Patient.create(
-        {
-          ..._.pick(req.body.patient, models.Patient.Params),
-          EmergencyMedicalServiceCallId: emsCall.id,
-          CreatedById: req.user.id,
-          UpdatedById: req.user.id,
-        },
-        { transaction }
-      );
-      patient.EmergencyMedicalServiceCall = emsCall;
-      const [ambulance] = await models.Ambulance.findOrCreate({
-        where: {
-          OrganizationId: req.user.OrganizationId,
-          ambulanceIdentifier: req.body.ambulance.ambulanceIdentifier,
-        },
-        defaults: {
-          CreatedById: req.user.id,
-          UpdatedById: req.user.id,
-        },
-        transaction,
-      });
-      const hospital = await models.Hospital.findByPk(req.body.hospital.id, { transaction });
-      patientDelivery = await models.PatientDelivery.createRingdown(
-        ambulance.id,
-        patient.id,
-        hospital.id,
-        req.user.id,
-        req.body.patientDelivery.dateTimeLocal || new Date(),
-        req.body.patientDelivery.etaMinutes,
-        { transaction }
-      );
-      patientDelivery.Ambulance = ambulance;
-      patientDelivery.Patient = patient;
-      patientDelivery.Hospital = hospital;
-      json = await patientDelivery.toRingdownJSON({ transaction });
-    });
-    if (json) {
-      res.status(HttpStatus.CREATED).json(json);
+      if (json) {
+        res.status(HttpStatus.CREATED).json(json);
+      }
+      if (patientDelivery) {
+        await dispatchRingdownUpdate(patientDelivery.id);
+      }
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     }
-    if (patientDelivery) {
-      await dispatchRingdownUpdate(patientDelivery.id);
-    }
-  } catch (error) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
+
   }
 });
 
