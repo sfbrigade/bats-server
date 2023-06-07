@@ -5,6 +5,7 @@ import AdminNavigation from './AdminNavigation';
 import Dashboard from './Dashboard';
 import Ringdowns from './Ringdowns/Ringdowns';
 import Users from './Users/Users';
+import Hospitals from './Hospitals';
 
 export default function Admin() {
   const { path } = useRouteMatch();
@@ -22,6 +23,9 @@ export default function Admin() {
           </Route>
           <Route path={`${path}/ringdowns`}>
             <Ringdowns />
+          </Route>
+          <Route path={`${path}/hospitals`}>
+            <Hospitals />
           </Route>
           <Route exact path={path}>
             <Redirect to={`${path}/dashboard`} />

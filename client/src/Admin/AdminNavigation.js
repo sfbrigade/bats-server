@@ -124,6 +124,9 @@ function AdminNavigation() {
           <NavLink to={`${url}/users`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Users
           </NavLink>
+          <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+            Hospitals
+          </NavLink>
           {/* <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Ringdowns
           </NavLink> */}
