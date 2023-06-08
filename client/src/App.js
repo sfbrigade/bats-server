@@ -8,7 +8,7 @@ import Admin from './Admin';
 import Redirect from './Components/Redirect';
 import Login from './Auth/Login';
 import Reset from './Auth/Reset';
-import ConfirmCode from './Auth/ConfirmCode';
+import EmailSent from './Auth/EmailSent';
 import NewPassword from './Auth/NewPassword';
 
 function App() {
@@ -39,8 +39,8 @@ function App() {
             <Route path="/reset/newPassword">
               <NewPassword />
             </Route>
-            <Route path="/reset/confirmCode">
-              <ConfirmCode />
+            <Route path="/reset/emailSent">
+              <EmailSent />
             </Route>
             <Route path="/reset">
               <Reset />

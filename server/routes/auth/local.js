@@ -20,7 +20,7 @@ router.get('/twoFactor', async (req, res) => {
   if (req.session.twoFactor) {
     res.redirect('/');
   } else if (req.user) {
-    await req.user.generateToTPSecret();
+    await req.user.generateToTPSecret('twoFactor');
     res.render('auth/local/twoFactor');
   } else {
     res.redirect('/auth/local/login');
@@ -86,9 +86,8 @@ router.post('/reset', async (req, res) => {
   });
   if (user) {
     if (req.accepts('html')) {
-      await user.generateToTPSecret();
-      req.session.email = user.email;
-      res.redirect('/reset/confirmCode');
+      await user.generateToTPSecret('resetPassword');
+      res.redirect('/reset/emailSent');
     } else {
       res.status(HttpStatus.OK).end();
     }
@@ -101,53 +100,37 @@ router.post('/reset', async (req, res) => {
   }
 });
 
-router.post('/confirm', async (req, res) => {
-  let user = await models.User.findOne({
-    where: {
-      email: req.session.email,
-    },
-  });
-  const verified = user.verifyTwoFactor(req);
-  if (verified) {
-    if (req.accepts('html')) {
-      req.session.resetPassword = true;
-      res.redirect('/reset/newPassword');
-    } else {
-      res.status(HttpStatus.OK).end();
-    }
-  } else {
-    if (req.accepts('html')) {
-      res.redirect('/reset/confirmCode?error=incorrectCode');
-    } else {
-      res.status(HttpStatus.UNAUTHORIZED).end();
-    }
-  }
-});
-
 router.post('/newPassword', async (req, res) => {
   const newPassword = req.body.password[0];
-  const email = req.session.email;
-  if (!req.session.resetPassword) {
+  const email = req.body.email;
+  const code = req.body.code;
+  let user = await models.User.findOne({
+    where: {
+      email: email,
+    },
+  });
+  if (user == null) {
     if (req.accepts('html')) {
-      req.session.email = null;
-      res.redirect('/?auth=unauthorized');
+      res.redirect(`/reset/newPassword?error=invalidEmail&email=${email}&code=${code}`);
     } else {
       res.status(HttpStatus.UNAUTHORIZED).end();
     }
   } else {
-    let user = await models.User.findOne({
-      where: {
-        email: email,
-      },
-    });
-    try {
-      await user.update({ password: newPassword });
-      await user.save();
-      res.redirect('/?reset=success');
-      req.session.email = null;
-      req.session.resetPassword = false;
-    } catch (err) {
-      res.redirect('/reset/newPassword?error=invalidPassword');
+    const verified = user.verifyTwoFactor(req);
+    if (verified) {
+      try {
+        await user.update({ password: newPassword });
+        await user.save();
+        res.redirect('/?reset=success');
+      } catch (err) {
+        res.redirect(`/reset/newPassword?error=invalidPassword&email=${email}&code=${code}`);
+      }
+    } else {
+      if (req.accepts('html')) {
+        res.redirect(`/reset/newPassword?error=incorrectCode&email=${email}&code=${code}`);
+      } else {
+        res.status(HttpStatus.UNAUTHORIZED).end();
+      }
     }
   }
 });

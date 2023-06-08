@@ -41,7 +41,7 @@ module.exports = (sequelize) => {
       ]);
     }
 
-    async generateToTPSecret() {
+    async generateToTPSecret(method = 'twoFactor') {
       const secret = new OTPAuth.Secret();
       // new TOTP object using the secret key
       const totp = new OTPAuth.TOTP({
@@ -61,9 +61,15 @@ module.exports = (sequelize) => {
       await this.save();
 
       // send email with token
-      sendMail('no-reply@routed.org', this.email, 'Your Authentication Code from Routed', 'twoFactor', {
-        verificationCode: token,
-      });
+      if (method == 'twoFactor') {
+        sendMail('no-reply@routed.org', this.email, 'Your Authentication Code from Routed', 'twoFactor', {
+          verificationCode: token,
+        });
+      } else if (method == 'resetPassword') {
+        sendMail('no-reply@routed.org', this.email, 'Password Reset from Routed', 'passwordReset', {
+          passwordResetLink: `${process.env.BASE_URL}/reset/newPassword/?email=${this.email}&code=${token}`,
+        });
+      }
     }
 
     verifyTwoFactor(req) {

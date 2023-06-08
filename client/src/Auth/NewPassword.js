@@ -29,7 +29,9 @@ export default function NewPassword() {
               Enter and confirm a new password for your account. Your new password must contain atleast 8 characters, including upper and
               lowercase letters, a number, and a symbol.
             </h4>
-            {error && <Error input="Invalid password. Your password did not meet the requirements." />}
+            {error === 'invalidPassword' && <Error input="Invalid password. Your password did not meet the requirements." />}
+            {error === 'invalidCode' && <Error input="Invalid code. Your link is expired." />}
+            {error === 'invalidEmail' && <Error input="Invalid email. This user does not exist in our database." />}
             <form method="post" action="/auth/local/newPassword" id="confirm" className="usa-form">
               <RequiredInput
                 label="Password"
@@ -45,13 +47,14 @@ export default function NewPassword() {
                 handleValidationEvent={handleValidationEvent}
                 onChange={setConfirm}
               />
-
+              <input type="hidden" name="email" value={url.searchParams.get('email')} />
+              <input type="hidden" name="code" value={url.searchParams.get('code')} />
               <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
                 Reset Password
               </button>
               {isNotValid() ? (
                 <span class="usa-error-message">
-                  <i class="fas fa-exclamation-circle"></i> Passwords must match
+                  <i class="fas fa-exclamation-circle"></i> These passwords do not meet the requirements.
                 </span>
               ) : null}
             </form>
