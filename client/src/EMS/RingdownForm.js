@@ -160,7 +160,7 @@ function RingdownForm({ defaultPayload, className }) {
             {step === 1 && (
               <>
                 <HospitalSelection onChange={onChange} ringdown={ringdown} />
-                <button disabled={!ringdown.isValid && user.organization?.type !== 'C4SF'} className="usa-button width-full" type="button" onClick={send}>
+                <button disabled={!ringdown.isValid || user.organization?.type === 'C4SF'} className="usa-button width-full" type="button" onClick={send}>
                   Send Ringdown
                 </button>
                 <button className="usa-button usa-button--outline width-full margin-top-4" type="button" onClick={edit}>
