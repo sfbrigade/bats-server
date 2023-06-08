@@ -63,7 +63,7 @@ const fields = [
     type: 'string',
   },
   {
-    name: 'ssoData',
+    name: 'twoFactorData',
     type: 'jsonb',
   },
   {

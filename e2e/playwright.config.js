@@ -1,10 +1,11 @@
 const { devices } = require('@playwright/test');
+//dotenv file is needed to run tests
+require('dotenv').config({ path: '../.env' });
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
 
 /**
  * @see https://playwright.dev/docs/test-configuration

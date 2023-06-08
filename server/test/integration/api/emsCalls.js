@@ -1,9 +1,12 @@
+/* eslint-env mocha */
+
 const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
+const nodemailermock = require('nodemailer-mock');
 
 describe('/api/emscalls', () => {
   let testSession;
@@ -24,6 +27,10 @@ describe('/api/emscalls', () => {
       .post('/auth/local/login')
       .set('Accept', 'application/json')
       .send({ username: 'sutter.operational@example.com', password: 'abcd1234' });
+    await helper.twoFactorAuthSession(testSession);
+  });
+  afterEach(async () => {
+    nodemailermock.mock.reset();
   });
 
   describe('GET /dispatch-call-numbers', () => {

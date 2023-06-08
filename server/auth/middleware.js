@@ -5,6 +5,8 @@ const isAuthenticated = (req, res, next) => {
     // ensure authenticated user is active
     if (!req.user.isActive) {
       res.status(HttpStatus.FORBIDDEN).end();
+    } else if (!req.session.twoFactor) {
+      res.status(HttpStatus.UNAUTHORIZED).end();
     } else {
       next();
     }
@@ -17,7 +19,9 @@ const isAuthenticated = (req, res, next) => {
 
 const isSuperUser = (req, res, next) => {
   if (req.user?.isSuperUser) {
-    next();
+    if (!req.session.twoFactor) {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    } else next();
   } else if (req.accepts('html')) {
     res.redirect('/auth/local/login');
   } else if (req.user) {
@@ -29,7 +33,9 @@ const isSuperUser = (req, res, next) => {
 
 const isAdminUser = (req, res, next) => {
   if (req.user?.isSuperUser || req.user?.isAdminUser) {
-    next();
+    if (!req.session.twoFactor) {
+      res.status(HttpStatus.UNAUTHORIZED).end();
+    } else next();
   } else if (req.accepts('html')) {
     res.redirect('/auth/local/login');
   } else if (req.user) {
