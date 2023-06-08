@@ -179,7 +179,6 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
   } catch (error) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
-
 });
 
 router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res) => {

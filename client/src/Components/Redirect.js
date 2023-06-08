@@ -13,8 +13,8 @@ function Redirect({ isAdminOnly }) {
       if (!isAdminOnly && user.isOperationalUser) {
         if (user.organization.type === 'HEALTHCARE') {
           history.push('/er');
-        } else if (user.organization.type === 'C4SF') {
-          history.push('/admin');
+          // } else if (user.organization.type === 'C4SF') {
+          //   history.push('/admin');
         } else {
           history.push('/ems');
         }
