@@ -15,15 +15,16 @@ router.get('/', middleware.isSuperUser, async (req, res) => {
 });
 
 router.get('/:id', middleware.isAdminUser, async (req, res) => {
-  const organization = await models.Organization.findByPk(req.params.id, {
-    include: [models.Hospital],
-  });
-
-  if (organization) {
-    res.json(organization.toJSON());
-  } else {
-    res.status(HttpStatus.NOT_FOUND).end();
-  }
+  const organization = await models.Organization.findByPk(req.params.id,
+    {
+      include: [models.Hospital],
+    });
+    
+ if (organization) {
+      res.json(organization.toJSON());
+    } else {
+      res.status(HttpStatus.NOT_FOUND).end();
+    }
 });
 
 router.patch(
