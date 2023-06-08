@@ -11,7 +11,6 @@ function AdminNavigation() {
   const { url } = useRouteMatch();
   const { user, organization, setOrganization, hospital, setHospital } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
-  const [hospitals, setHospitals] = useState([]);
   const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
@@ -35,20 +34,10 @@ function AdminNavigation() {
     if (newOrganization) {
       setOrganization(newOrganization);
       if (newOrganization.type === 'HEALTHCARE') {
-        setHospitals(newOrganization.hospitals);
         setHospital(newOrganization.hospitals[0]);
       } else {
-        setHospitals([]);
         setHospital();
       }
-    }
-  }
-
-  function onChangeHospital(event) {
-    const hospitalId = event.target.value;
-    const newHospital = hospitals.find((h) => h.id === hospitalId);
-    if (newHospital) {
-      setHospital(newHospital);
     }
   }
 
@@ -77,19 +66,6 @@ function AdminNavigation() {
                       </option>
                     ))}
                   </select>
-                  {organization?.type === 'HEALTHCARE' && (
-                    <>
-                      &nbsp;&gt;&nbsp;
-                      {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-                      <select value={hospital?.id} onChange={onChangeHospital} className="usa-select">
-                        {hospitals?.map((h) => (
-                          <option key={h.id} value={h.id}>
-                            {h.name}
-                          </option>
-                        ))}
-                      </select>
-                    </>
-                  )}
                 </div>
               </h2>
             )}
@@ -124,9 +100,11 @@ function AdminNavigation() {
           <NavLink to={`${url}/users`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Users
           </NavLink>
+          {organization.type === "HEALTHCARE" && 
           <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Hospitals
           </NavLink>
+          }
           <NavLink to={`${url}/settings`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Settings
           </NavLink>
