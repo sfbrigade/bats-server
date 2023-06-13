@@ -3,6 +3,7 @@ import { Link, NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
+import HospitalIcon from '../Components/Icons/Hospital'
 
 import './AdminNavigation.scss';
 
@@ -102,7 +103,7 @@ function AdminNavigation() {
           </NavLink>
           {organization.type === "HEALTHCARE" && 
           <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            Hospitals
+            <HospitalIcon variation='outlined' className="admin-navigation__link-icon"/> <span>Hospitals</span> 
           </NavLink>
           }
           <NavLink to={`${url}/settings`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
