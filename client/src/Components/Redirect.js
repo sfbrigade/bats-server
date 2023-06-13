@@ -20,7 +20,7 @@ function Redirect({ isAdminOnly }) {
         navigate('/admin');
       }
     }
-  }, [user, isAdminOnly]);
+  }, [user, isAdminOnly]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
 }

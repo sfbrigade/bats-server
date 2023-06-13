@@ -54,7 +54,7 @@ function UserInfo({ userId }) {
       }
       setUser(data);
     }
-  }, [userId, organization, hospital]);
+  }, [userId, organization, hospital]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function onChange(property, value) {
     const newUser = { ...user };
