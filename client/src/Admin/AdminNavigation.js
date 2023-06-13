@@ -113,7 +113,7 @@ function AdminNavigation() {
           </NavLink>
           }
           <NavLink to={`${url}/settings`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            Settings
+            <SettingsIcon/> <span>Settings</span>
           </NavLink>
           {/* <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Ringdowns
