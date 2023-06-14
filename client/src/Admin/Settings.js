@@ -4,12 +4,9 @@ import Context from '../Context';
 import ApiService from '../ApiService';
 
 function Settings() {
-
-  // In the future, the initial value here will be determined by the result of an api request
-  const [isMfaEnabled, setIsMfaEnabled] = useState(false);
   const {organization } = useContext(Context);
-  console.log('organiz', organization)
-
+  const [isMfaEnabled, setIsMfaEnabled] = useState(organization.isMfaEnabled);
+  
   const handleMfaToggle = () => {
     ApiService.organizations.update(organization.id, {isMfaEnabled: !isMfaEnabled}).then(response => {
       setIsMfaEnabled(response.data.isMfaEnabled);
