@@ -85,8 +85,8 @@ export default {
     get(id) {
       return instance.get(`/api/organizations/${id}`);
     },
-    patch(id, data) {
-      return instance.patch(`api/organizations/${id}`, data)
+    update(id, data) {
+      return instance.patch(`/api/organizations/${id}`, data)
     }
   },
 };

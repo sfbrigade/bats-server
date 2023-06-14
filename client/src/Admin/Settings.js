@@ -11,13 +11,8 @@ function Settings() {
   console.log('organiz', organization)
 
   const handleMfaToggle = () => {
-    // send the api request
-    // we also need the organization id
-        // Todo: fix the patch below. organization requests have worked in the hospital tab
-    ApiService.organizations.patch(organization.id, {isMfaEnabled: !isMfaEnabled}).then(response => {
-      console.log(response.data);
-      setIsMfaEnabled((curState) => !curState)
-
+    ApiService.organizations.update(organization.id, {isMfaEnabled: !isMfaEnabled}).then(response => {
+      setIsMfaEnabled(response.data.isMfaEnabled);
     })
   }
 
