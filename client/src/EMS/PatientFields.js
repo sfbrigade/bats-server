@@ -28,7 +28,6 @@ function createOptions(ids) {
 function PatientFields({ ringdown, onChange }) {
   const [ambulanceIds, setAmbulanceIds] = useState([]);
   const [dispatchCallNumbers, setDispatchCallNumbers] = useState([]);
-  // const [isC4SF, setIsC4SF] = useState(false);
   const { user } = useContext(Context);
 
   useEffect(() => {
