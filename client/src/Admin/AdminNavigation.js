@@ -5,6 +5,8 @@ import ApiService from '../ApiService';
 import Context from '../Context';
 import HospitalIcon from '../Components/Icons/Hospital';
 import { ReactComponent as SettingsIcon } from '../assets/img/icon-settings.svg';
+import { ReactComponent as UserIcon } from '../assets/img/icon-users.svg';
+import { ReactComponent as DashboardIcon } from '../assets/img/icon-dashboard.svg';
 
 import './AdminNavigation.scss';
 
@@ -97,10 +99,10 @@ function AdminNavigation() {
         </div>
         <div className="display-flex flex-row flex-justify-center">
           <NavLink to={`${url}/dashboard`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            Dashboard
+            <DashboardIcon className="admin-navigation__link-icon"/> Dashboard
           </NavLink>
           <NavLink to={`${url}/users`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            Users
+           <UserIcon className="admin-navigation__link-icon"/> Users
           </NavLink>
           {organization.type === "HEALTHCARE" && 
           <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
