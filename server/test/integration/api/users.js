@@ -63,6 +63,7 @@ describe('/api/users', () => {
           type: 'HEALTHCARE',
           timeZoneIsoCode: 'PST',
           isActive: true,
+          isMfaEnabled: false,
         },
         activeHospitals: [
           {
