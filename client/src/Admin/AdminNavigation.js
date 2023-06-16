@@ -13,7 +13,7 @@ import './AdminNavigation.scss';
 function AdminNavigation() {
   const { location } = useHistory();
   const { url } = useRouteMatch();
-  const { user, organization, setOrganization, hospital, setHospital } = useContext(Context);
+  const { user, organization, setOrganization, setHospital } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
   const [showFlash, setShowFlash] = useState(false);
 
@@ -76,7 +76,6 @@ function AdminNavigation() {
             {!user?.isSuperUser && (
               <h2 className="admin-navigation__name">
                 {organization?.name}
-                {hospital && <>&nbsp;&gt;&nbsp;&nbsp;{hospital.name}</>}
               </h2>
             )}
             Welcome,{' '}
