@@ -112,6 +112,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
     }
   } catch (error) {
     res.status(HttpStatus.FORBIDDEN).end();
+    return;
   }
   try {
     let patientDelivery;
