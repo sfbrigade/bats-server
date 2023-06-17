@@ -3,9 +3,33 @@ import React, {useState, useContext} from 'react';
 import Context from '../Context';
 import ApiService from '../ApiService';
 
+import './Settings.scss';
+
+function SettingsEdit({setShowEdit}) {
+
+  return (
+    <>
+    <div className="modalOverlay" ></div>
+    <div className='modal'>
+      <div className="modalHeader">
+        Edit Settings
+      </div>
+      <div className="modalContent">
+        Mfa toggle 
+      </div>
+      <div className="modalActions">
+        <button className='actionBtn leftBtn'  onClick={() => setShowEdit(false)}>Cancel</button>
+        <button className='actionBtn rightBtn' onClick={() => setShowEdit(false)}>Save</button>
+      </div> 
+    </div>
+    </>
+  ) 
+}
+
 function Settings() {
   const {organization } = useContext(Context);
   const [isMfaEnabled, setIsMfaEnabled] = useState(organization.isMfaEnabled);
+  const [showEdit, setShowEdit] = useState(false);
   
   const handleMfaToggle = () => {
     ApiService.organizations.update(organization.id, {isMfaEnabled: !isMfaEnabled}).then(response => {
@@ -21,6 +45,8 @@ function Settings() {
           </div>
           Mfa Toggle 
           <input checked={isMfaEnabled} onChange={handleMfaToggle} type='checkbox'></input>
+          <button onClick={() => setShowEdit(true)}>Edit</button>
+          {showEdit && <SettingsEdit setShowEdit={setShowEdit}/>}
         </main>
     </>
   );
