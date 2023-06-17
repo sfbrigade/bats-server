@@ -84,6 +84,6 @@ export default {
     },
     get(id) {
       return instance.get(`/api/organizations/${id}`);
-    }
+    },
   },
 };

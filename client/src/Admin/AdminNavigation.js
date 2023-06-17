@@ -73,11 +73,7 @@ function AdminNavigation() {
                 </div>
               </h2>
             )}
-            {!user?.isSuperUser && (
-              <h2 className="admin-navigation__name">
-                {organization?.name}
-              </h2>
-            )}
+            {!user?.isSuperUser && <h2 className="admin-navigation__name">{organization?.name}</h2>}
             Welcome,{' '}
             <Link to={`${url}/users/${user?.id}`} onClick={reset}>
               {user?.firstName} {user?.lastName}
@@ -98,18 +94,18 @@ function AdminNavigation() {
         </div>
         <div className="display-flex flex-row flex-justify-center">
           <NavLink to={`${url}/dashboard`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            <DashboardIcon className="admin-navigation__link-icon"/> Dashboard
+            <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
           </NavLink>
           <NavLink to={`${url}/users`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-           <UserIcon className="admin-navigation__link-icon"/> Users
+            <UserIcon className="admin-navigation__link-icon" /> Users
           </NavLink>
-          {organization.type === "HEALTHCARE" && 
-          <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            <HospitalIcon variation='outlined' className="admin-navigation__link-icon"/> <span>Hospitals</span> 
-          </NavLink>
-          }
+          {organization.type === 'HEALTHCARE' && (
+            <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+              <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
+            </NavLink>
+          )}
           <NavLink to={`${url}/settings`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            <SettingsIcon className="admin-navigation__link-icon"/> <span>Settings</span>
+            <SettingsIcon className="admin-navigation__link-icon" /> <span>Settings</span>
           </NavLink>
           {/* <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Ringdowns
