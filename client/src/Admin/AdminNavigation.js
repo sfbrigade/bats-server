@@ -107,14 +107,6 @@ function AdminNavigation() {
           <NavLink to={`${url}/settings`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             <SettingsIcon className="admin-navigation__link-icon" /> <span>Settings</span>
           </NavLink>
-          {organization.type === "HEALTHCARE" && 
-          <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            <HospitalIcon variation='outlined' className="admin-navigation__link-icon"/> <span>Hospitals</span> 
-          </NavLink>
-          }
-          <NavLink to={`${url}/settings`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-            <SettingsIcon className="admin-navigation__link-icon"/> <span>Settings</span>
-          </NavLink>
           {/* <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
             Ringdowns
           </NavLink> */}
