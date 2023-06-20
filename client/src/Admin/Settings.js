@@ -3,6 +3,7 @@ import React, {useState, useContext} from 'react';
 import Context from '../Context';
 import ApiService from '../ApiService';
 
+import FormCheckbox from '../Components/FormCheckbox';
 import './Settings.scss';
 
 function SettingsEdit({setShowEdit}) {
@@ -42,10 +43,10 @@ function Settings() {
         <main>
           <div className="display-flex flex-align-center flex-justify">
             <h1>Settings</h1>
+            <button className="usa-button margin-y-3" onClick={() => setShowEdit(true)}>Edit Settings</button>
           </div>
-          Mfa Toggle 
+          <FormCheckbox label="Multifactor authentication" disabled currentValue={isMfaEnabled}/> 
           <input checked={isMfaEnabled} onChange={handleMfaToggle} type='checkbox'></input>
-          <button onClick={() => setShowEdit(true)}>Edit</button>
           {showEdit && <SettingsEdit setShowEdit={setShowEdit}/>}
         </main>
     </>
