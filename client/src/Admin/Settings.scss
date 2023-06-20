@@ -9,23 +9,7 @@
 }
 
 .modal {
-    z-index: var(--modalIndex);
     position: fixed;
-    top: 50%;
-    left: 50%;
-    border: solid;
-    border-radius: 5px;
-    background: white;
-    padding: 10px;
-}
-
-.modal {
-    z-index: 2;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    border: solid;
-    border-radius: 5px;
-    background: white;
-    padding: 10px;
+    top: 40%;
+    left: 25%;
 }

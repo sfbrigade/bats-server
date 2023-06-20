@@ -6,25 +6,53 @@ import ApiService from '../ApiService';
 import FormCheckbox from '../Components/FormCheckbox';
 import './Settings.scss';
 
-function SettingsEdit({setShowEdit}) {
+function SettingsEdit({
+  setShowEdit
+}) {
 
   return (
-    <>
-    <div className="modalOverlay" ></div>
-    <div className='modal'>
-      <div className="modalHeader">
-        Edit Settings
+    <div className="usa-modal-overlay"
+    // onClick={() => setShowEdit(false)}
+    >
+    <div
+      className="usa-modal modal"
+      aria-labelledby="modal-1-heading"
+      aria-describedby="modal-1-description"
+    >
+      <div className="usa-modal__content">
+        <div className="usa-modal__main">
+          <h2 className="usa-modal__heading" id="modal-1-heading">
+            Edit Organization Settings
+          </h2>
+          <div className="usa-prose">
+            <p id="modal-1-description">
+              mfa settings
+            </p>
+          </div>
+          <div className="usa-modal__footer">
+            <ul className="usa-button-group">
+              <li className="usa-button-group__item">
+                <button type="button" className="usa-button" data-close-modal>
+                  Save
+                </button>
+              </li>
+              <li className="usa-button-group__item">
+                <button
+                  type="button"
+                  className="usa-button usa-button--unstyled padding-105 text-center"
+                  data-close-modal
+                  onClick={() => setShowEdit(false)}
+                >
+                  Close
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div className="modalContent">
-        Mfa toggle 
-      </div>
-      <div className="modalActions">
-        <button className='actionBtn leftBtn'  onClick={() => setShowEdit(false)}>Cancel</button>
-        <button className='actionBtn rightBtn' onClick={() => setShowEdit(false)}>Save</button>
-      </div> 
     </div>
-    </>
-  ) 
+  </div>
+  )
 }
 
 function Settings() {
