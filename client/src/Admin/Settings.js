@@ -1,15 +1,23 @@
 import React, {useState, useContext} from 'react';
 
 import Context from '../Context';
-import ApiService from '../ApiService';
+// import ApiService from '../ApiService';
 
 import FormCheckbox from '../Components/FormCheckbox';
 import './Settings.scss';
 
 function SettingsEdit({
-  setShowEdit
+  setShowEdit, contextOrganization,
+  //  setContextOrganization
 }) {
 
+  const [organizationInEdit, setOrganizationInEdit] = useState(contextOrganization);
+  function onChange(property, value) {
+    const newOrg = { ...organizationInEdit };
+    newOrg[property] = value;
+    setOrganizationInEdit(newOrg);
+  }
+  
   return (
     <div className="usa-modal-overlay"
     // onClick={() => setShowEdit(false)}
@@ -25,9 +33,7 @@ function SettingsEdit({
             Edit Organization Settings
           </h2>
           <div className="usa-prose">
-            <p id="modal-1-description">
-              mfa settings
-            </p>
+          <FormCheckbox label="Multifactor Authentication" currentValue={organizationInEdit.isMfaEnabled} property='isMfaEnabled' onChange={onChange}/>  
           </div>
           <div className="usa-modal__footer">
             <ul className="usa-button-group">
@@ -56,15 +62,14 @@ function SettingsEdit({
 }
 
 function Settings() {
-  const {organization } = useContext(Context);
-  const [isMfaEnabled, setIsMfaEnabled] = useState(organization.isMfaEnabled);
+  const {organization, setOrganization } = useContext(Context);
   const [showEdit, setShowEdit] = useState(false);
   
-  const handleMfaToggle = () => {
-    ApiService.organizations.update(organization.id, {isMfaEnabled: !isMfaEnabled}).then(response => {
-      setIsMfaEnabled(response.data.isMfaEnabled);
-    })
-  }
+  // const handleMfaToggle = () => {
+  //   ApiService.organizations.update(organization.id, {isMfaEnabled: !isMfaEnabled}).then(response => {
+  //     setIsMfaEnabled(response.data.isMfaEnabled);
+  //   })
+  // }
 
   return (
     <>
@@ -73,9 +78,8 @@ function Settings() {
             <h1>Settings</h1>
             <button className="usa-button margin-y-3" onClick={() => setShowEdit(true)}>Edit Settings</button>
           </div>
-          <FormCheckbox label="Multifactor authentication" disabled currentValue={isMfaEnabled}/> 
-          <input checked={isMfaEnabled} onChange={handleMfaToggle} type='checkbox'></input>
-          {showEdit && <SettingsEdit setShowEdit={setShowEdit}/>}
+          <FormCheckbox label="Multifactor Authentication" disabled currentValue={organization.isMfaEnabled}/> 
+          {showEdit && <SettingsEdit setShowEdit={setShowEdit} contextOrganization={organization} setContextOrganization={setOrganization}/>}
         </main>
     </>
   );
