@@ -1,15 +1,15 @@
 .modalOverlay {
-    background-color: rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
 }
 
 .modal {
-    position: fixed;
-    top: 40%;
-    left: 25%;
+  position: fixed;
+  top: 40%;
+  left: 25%;
 }
