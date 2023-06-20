@@ -1,23 +1,29 @@
 import React, {useState, useContext} from 'react';
 
 import Context from '../Context';
-// import ApiService from '../ApiService';
+import ApiService from '../ApiService';
 
 import FormCheckbox from '../Components/FormCheckbox';
 import './Settings.scss';
 
 function SettingsEdit({
   setShowEdit, contextOrganization,
-  //  setContextOrganization
+   setContextOrganization
 }) {
-
   const [organizationInEdit, setOrganizationInEdit] = useState(contextOrganization);
+
   function onChange(property, value) {
     const newOrg = { ...organizationInEdit };
     newOrg[property] = value;
     setOrganizationInEdit(newOrg);
   }
-  
+  function onSubmit() {
+   ApiService.organizations.update(contextOrganization.id, organizationInEdit).then(response => {
+      setContextOrganization(response.data);
+      setShowEdit(false);
+    }) 
+  }
+
   return (
     <div className="usa-modal-overlay"
     // onClick={() => setShowEdit(false)}
@@ -38,7 +44,7 @@ function SettingsEdit({
           <div className="usa-modal__footer">
             <ul className="usa-button-group">
               <li className="usa-button-group__item">
-                <button type="button" className="usa-button" data-close-modal>
+                <button type="button" className="usa-button" onClick={onSubmit} >
                   Save
                 </button>
               </li>
@@ -46,7 +52,6 @@ function SettingsEdit({
                 <button
                   type="button"
                   className="usa-button usa-button--unstyled padding-105 text-center"
-                  data-close-modal
                   onClick={() => setShowEdit(false)}
                 >
                   Close
@@ -65,12 +70,6 @@ function Settings() {
   const {organization, setOrganization } = useContext(Context);
   const [showEdit, setShowEdit] = useState(false);
   
-  // const handleMfaToggle = () => {
-  //   ApiService.organizations.update(organization.id, {isMfaEnabled: !isMfaEnabled}).then(response => {
-  //     setIsMfaEnabled(response.data.isMfaEnabled);
-  //   })
-  // }
-
   return (
     <>
         <main>
