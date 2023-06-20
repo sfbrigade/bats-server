@@ -2,8 +2,9 @@ import React, {useState, useContext} from 'react';
 
 import Context from '../Context';
 import ApiService from '../ApiService';
-
+import FormError from '../Models/FormError';
 import FormCheckbox from '../Components/FormCheckbox';
+
 import './Settings.scss';
 
 function SettingsEdit({
@@ -11,6 +12,7 @@ function SettingsEdit({
    setContextOrganization
 }) {
   const [organizationInEdit, setOrganizationInEdit] = useState(contextOrganization);
+  const [error, setError] = useState();
 
   function onChange(property, value) {
     const newOrg = { ...organizationInEdit };
@@ -21,7 +23,9 @@ function SettingsEdit({
    ApiService.organizations.update(contextOrganization.id, organizationInEdit).then(response => {
       setContextOrganization(response.data);
       setShowEdit(false);
-    }) 
+    }).catch(err => {
+      setError(new FormError(err));
+    })
   }
 
   return (
@@ -39,6 +43,13 @@ function SettingsEdit({
             Edit Organization Settings
           </h2>
           <div className="usa-prose">
+          {error && (
+                <div className="usa-alert usa-alert--slim usa-alert--error">
+                  <div className="usa-alert__body">
+                    <p className="usa-alert__text">{error.message}</p>
+                  </div>
+                </div>
+              )}
           <FormCheckbox label="Multifactor Authentication" currentValue={organizationInEdit.isMfaEnabled} property='isMfaEnabled' onChange={onChange}/>  
           </div>
           <div className="usa-modal__footer">
