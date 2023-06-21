@@ -18,7 +18,7 @@ function SettingsEdit({ setShowEdit, contextOrganization, setContextOrganization
   }
   function onSubmit() {
     ApiService.organizations
-      .update(contextOrganization.id, organizationInEdit)
+      .update(contextOrganization, organizationInEdit)
       .then((response) => {
         setContextOrganization(response.data);
         setShowEdit(false);
@@ -29,9 +29,7 @@ function SettingsEdit({ setShowEdit, contextOrganization, setContextOrganization
   }
 
   return (
-    <div
-      className="usa-modal-overlay"
-    >
+    <div className="usa-modal-overlay">
       <div className="usa-modal modal" aria-labelledby="modal-1-heading" aria-describedby="modal-1-description">
         <div className="usa-modal__content">
           <div className="usa-modal__main">
