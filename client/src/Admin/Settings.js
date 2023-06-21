@@ -31,7 +31,6 @@ function SettingsEdit({ setShowEdit, contextOrganization, setContextOrganization
   return (
     <div
       className="usa-modal-overlay"
-      // onClick={() => setShowEdit(false)}
     >
       <div className="usa-modal modal" aria-labelledby="modal-1-heading" aria-describedby="modal-1-description">
         <div className="usa-modal__content">
