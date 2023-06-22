@@ -16,7 +16,7 @@ function Settings() {
   useEffect(() => {
     setOrganizationInEdit(organization);
     setError();
-  }, [showEdit]);
+  }, [showEdit, organization]);
 
   function onChange(property, value) {
     const newOrg = { ...organizationInEdit };
