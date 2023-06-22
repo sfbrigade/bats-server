@@ -62,4 +62,9 @@ test.describe('home', () => {
     await page.getByText('Submit').click();
     await expect(page.getByText('Invalid Authoritzation Code.')).toBeVisible();
   });
+
+  test('Try Opening Mail Catcher', async ({ page }) => {
+    await page.goto('http://localhost:1080/');
+    await expect(page.getByText('MailCatcher')).toBeVisible();
+  });
 });
