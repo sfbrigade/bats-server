@@ -60,7 +60,7 @@ function Settings() {
           property="isMfaEnabled"
         />
         {showEdit && (
-          <ul className="usa-button-group margin-y-3 display-flex">
+          <ul className="usa-button-group margin-y-3 flex-center">
             <li className="usa-button-group__item">
               <button type="button" className="usa-button" onClick={onSubmit}>
                 Save
