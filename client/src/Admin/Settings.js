@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 
 import Context from '../Context';
 import ApiService from '../ApiService';
-// import FormError from '../Models/FormError';
+import FormError from '../Models/FormError';
 import FormCheckbox from '../Components/FormCheckbox';
 
 import './Settings.scss';
@@ -32,13 +32,7 @@ import './Settings.scss';
 //               Edit Organization Settings
 //             </h2>
 //             <div className="usa-prose">
-//               {error && (
-//                 <div className="usa-alert usa-alert--slim usa-alert--error">
-//                   <div className="usa-alert__body">
-//                     <p className="usa-alert__text">{error.message}</p>
-//                   </div>
-//                 </div>
-//               )}
+
 //               <FormCheckbox
 //                 label="Multifactor Authentication"
 //                 currentValue={organizationInEdit.isMfaEnabled}
@@ -83,11 +77,12 @@ import './Settings.scss';
 function Settings() {
   const { organization, setOrganization } = useContext(Context);
   const [organizationInEdit, setOrganizationInEdit] = useState(organization);
-
+  const [error, setError] = useState();
   const [showEdit, setShowEdit] = useState(false);
 
   useEffect(() => {
     setOrganizationInEdit(organization);
+    setError();
   }, [showEdit]);
 
   function onChange(property, value) {
@@ -96,13 +91,15 @@ function Settings() {
     setOrganizationInEdit(newOrg);
   }
   function onSubmit() {
-    ApiService.organizations.update(organization.id, organizationInEdit).then((response) => {
-      setOrganization(response.data);
-      setShowEdit(false);
-    });
-    // .catch((err) => {
-    //   setError(new FormError(err));
-    // });
+    ApiService.organizations
+      .update(organization.id, organizationInEdit)
+      .then((response) => {
+        setOrganization(response.data);
+        setShowEdit(false);
+      })
+      .catch((err) => {
+        setError(new FormError(err));
+      });
   }
 
   return (
@@ -114,6 +111,13 @@ function Settings() {
             Edit Settings
           </button>
         </div>
+        {showEdit && error && (
+          <div className="usa-alert usa-alert--slim usa-alert--error">
+            <div className="usa-alert__body">
+              <p className="usa-alert__text">{error.message}</p>
+            </div>
+          </div>
+        )}
         <FormCheckbox
           label="Multifactor Authentication"
           disabled={!showEdit}
