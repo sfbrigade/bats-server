@@ -11,7 +11,6 @@ import './Settings.scss';
 //   const [organizationInEdit, setOrganizationInEdit] = useState(contextOrganization);
 //   const [error, setError] = useState();
 
-
 //   function onSubmit() {
 //     ApiService.organizations
 //       .update(contextOrganization, organizationInEdit)
@@ -87,25 +86,23 @@ function Settings() {
 
   const [showEdit, setShowEdit] = useState(false);
 
-  useEffect(()=> {
-    setOrganizationInEdit(organization)
-  }, [showEdit])
+  useEffect(() => {
+    setOrganizationInEdit(organization);
+  }, [showEdit]);
 
   function onChange(property, value) {
-  const newOrg = { ...organizationInEdit };
-  newOrg[property] = value;
-  setOrganizationInEdit(newOrg);
+    const newOrg = { ...organizationInEdit };
+    newOrg[property] = value;
+    setOrganizationInEdit(newOrg);
   }
   function onSubmit() {
-    ApiService.organizations
-      .update(organization, organizationInEdit)
-      .then((response) => {
-        setOrganization(response.data);
-        setShowEdit(false);
-      })
-      // .catch((err) => {
-      //   setError(new FormError(err));
-      // });
+    ApiService.organizations.update(organization.id, organizationInEdit).then((response) => {
+      setOrganization(response.data);
+      setShowEdit(false);
+    });
+    // .catch((err) => {
+    //   setError(new FormError(err));
+    // });
   }
 
   return (
@@ -122,22 +119,22 @@ function Settings() {
           disabled={!showEdit}
           currentValue={showEdit ? organizationInEdit.isMfaEnabled : organization.isMfaEnabled}
           onChange={onChange}
-          property='isMfaEnabled'
+          property="isMfaEnabled"
         />
-        {showEdit &&
-        <ul className="usa-button-group margin-y-3 display-flex">
-          <li className="usa-button-group__item">
-            <button type="button" className="usa-button" onClick={onSubmit}>
-              Save
-            </button>
-          </li>
-          <li className="usa-button-group__item">
-            <button type="button" className="usa-button usa-button--unstyled padding-105 text-center" onClick={() => setShowEdit(false)}>
-              Close
-            </button>
-          </li>
-        </ul>
-}
+        {showEdit && (
+          <ul className="usa-button-group margin-y-3 display-flex">
+            <li className="usa-button-group__item">
+              <button type="button" className="usa-button" onClick={onSubmit}>
+                Save
+              </button>
+            </li>
+            <li className="usa-button-group__item">
+              <button type="button" className="usa-button usa-button--unstyled padding-105 text-center" onClick={() => setShowEdit(false)}>
+                Close
+              </button>
+            </li>
+          </ul>
+        )}
       </main>
     </>
   );
