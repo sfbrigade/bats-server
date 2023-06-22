@@ -7,7 +7,6 @@ import FormCheckbox from '../Components/FormCheckbox';
 
 import './Settings.scss';
 
-
 function Settings() {
   const { organization, setOrganization } = useContext(Context);
   const [organizationInEdit, setOrganizationInEdit] = useState(organization);
