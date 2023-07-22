@@ -1,4 +1,4 @@
-const { test, expect, chromium } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 
 test.describe('2FA', () => {
   test.describe.configure({ mode: 'serial' });
