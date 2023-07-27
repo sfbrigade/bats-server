@@ -13,7 +13,10 @@ jobs:
       - image: cimg/postgres:12.12
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust
-      - image: dockage/mailcatcher:0.8.2
+    services:
+      - dockage/mailcatcher:0.8.2
+    ports:
+      - 1080:1080  # Expose MailCatcher on port 1080
     steps:
       - checkout
       - node/install-packages:
@@ -27,7 +30,12 @@ jobs:
       - run:
           command: yarn workspace server sequelize db:seed:all
       - run:
-          command: eval $(cat example.env | grep -v DATABASE_URL | sed 's/^/export /'); yarn run test
+          name: Start MailCatcher
+          background: true
+          command: mailcatcher --ip=127.0.0.1
+
+      - run:
+          command: eval $(cat example.env | grep -v DATABASE_URL | sed 's/^/export /') && MAIL_HOST=localhost MAIL_PORT=1080 yarn run test
 
 workflows:
   test:
