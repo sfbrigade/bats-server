@@ -8,7 +8,7 @@
     "dotenv": "^16.0.3"
   },
   "scripts": {
-    "test": "DEBUG=pw:webserver playwright test",
+    "test": "cd ../client && yarn build && DEBUG=pw:webserver playwright test",
     "install-chromium": "playwright install --with-deps chromium"
   },
   "devDependencies": {
