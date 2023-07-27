@@ -50,7 +50,6 @@ module.exports = (sequelize) => {
         period: -1,
         digits: 6,
       });
-      console.log('TOTP Secret: ', secret.base32);
       // save the secret key to the session
       // generate secret token
       const token = totp.generate();

@@ -47,6 +47,10 @@ beforeEach(async () => {
   await resetDatabase();
 });
 
+afterEach(() => {
+  nodemailermock.mock.reset();
+});
+
 // eslint-disable-next-line no-undef
 after(async () => {
   /// close all db connections
