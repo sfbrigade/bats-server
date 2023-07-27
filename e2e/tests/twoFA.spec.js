@@ -45,6 +45,8 @@ test.describe('2FA', () => {
     const msgResponse = await fetch(`http://localhost:1080/messages/${lastMessageIdx}.plain`);
 
     const emailText = await msgResponse.text();
+
+    console.log(emailText);
     // Use a regular expression to find "Code: " + six-digit number
     const regex = /Code: (\d{6}) \./;
     const foundCode = emailText.match(regex);

@@ -28,11 +28,6 @@ jobs:
       - run:
           command: yarn workspace server sequelize db:seed:all
       - run:
-          name: Start MailCatcher
-          background: true
-          command: mailcatcher --ip=127.0.0.1
-
-      - run:
           command: eval $(cat example.env | grep -v -e 'DATABASE_URL' -e 'SMTP_HOST' | sed 's/^/export /'); yarn run test
 
 workflows:
