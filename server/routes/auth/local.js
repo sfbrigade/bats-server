@@ -40,11 +40,11 @@ router.post('/login', (req, res, next) => {
       req.login(user, async () => {
         if (req.accepts('html')) {
           const org = await user.getOrganization();
-          if (org.toJSON().isMfaEnabled) {
+          if (org.isMfaEnabled) {
             res.redirect('/auth/local/twoFactor');
           } else {
             req.session.twoFactor = true;
-            res.redirect('/')
+            res.redirect('/');
           }
         } else {
           res.status(HttpStatus.OK).end();
