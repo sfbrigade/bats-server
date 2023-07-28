@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, NavLink, useHistory, useRouteMatch } from 'react-router-dom';
+import { Link, NavLink, useLocation, useResolvedPath } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -7,8 +7,8 @@ import Context from '../Context';
 import './AdminNavigation.scss';
 
 function AdminNavigation() {
-  const { location } = useHistory();
-  const { url } = useRouteMatch();
+  const location = useLocation();
+  const url = useResolvedPath('').pathname;
   const { user, organization, setOrganization, hospital, setHospital } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
   const [hospitals, setHospitals] = useState([]);
@@ -118,13 +118,21 @@ function AdminNavigation() {
           </div>
         </div>
         <div className="display-flex flex-row flex-justify-center">
-          <NavLink to={`${url}/dashboard`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          <NavLink
+            to={`${url}/dashboard`}
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+          >
             Dashboard
           </NavLink>
-          <NavLink to={`${url}/users`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          <NavLink
+            to={`${url}/users`}
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+          >
             Users
           </NavLink>
-          {/* <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          {/* <NavLink to={`${url}/ringdowns`}
+            className={({isActive}) => `admin-navigation__link ${(isActive ? 'admin-navigation__link--active' : '')}`}
+          >
             Ringdowns
           </NavLink> */}
         </div>
