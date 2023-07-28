@@ -33,6 +33,8 @@
 
    op.ems@c4sf.me/abcd1234 (an operational EMS user)
 
+   If you are running the docker images as instructed above, MailCatcher should be running an SMTP server that will receive 2FA emails with the requested codes. Go to http://localhost:1080/ to see your local inbox, and check [MailCatcher's documentation](https://mailcatcher.me/) if you run into problems.
+
    If you wish to inspect the db, you can run:
 
    ```
