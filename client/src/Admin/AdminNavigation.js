@@ -120,17 +120,19 @@ function AdminNavigation() {
         <div className="display-flex flex-row flex-justify-center">
           <NavLink
             to={`${url}/dashboard`}
-            className={`admin-navigation__link ${(navData) => (navData.isActive ? 'admin-navigation__link--active' : '')}`}
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
           >
             Dashboard
           </NavLink>
           <NavLink
             to={`${url}/users`}
-            className={`admin-navigation__link ${(navData) => (navData.isActive ? 'admin-navigation__link--active' : '')}`}
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
           >
             Users
           </NavLink>
-          {/* <NavLink to={`${url}/ringdowns`} className={`admin-navigation__link ${(navData) => (navData.isActive ? "admin-navigation__link--active" : "")}`}>
+          {/* <NavLink to={`${url}/ringdowns`}
+            className={({isActive}) => `admin-navigation__link ${(isActive ? 'admin-navigation__link--active' : '')}`}
+          >
             Ringdowns
           </NavLink> */}
         </div>
