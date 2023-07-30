@@ -102,7 +102,7 @@ const config = {
   webServer: {
     command: 'cd ../server && yarn start:prod',
     port: 3000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
 };
 
