@@ -20,7 +20,7 @@ test.describe('home', () => {
   });
 
   test('Try Opening Mail Catcher', async ({ page }) => {
-    await page.goto('http://localhost:1080/');
+    await page.goto(`http://${process.env.SMTP_HOST}:1080/`);
     await expect(page.getByText('MailCatcher')).toBeVisible();
   });
 });
