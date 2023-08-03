@@ -61,12 +61,12 @@ module.exports = (sequelize) => {
       await this.save();
       console.log('Method: ', method);
       // send email with token
-      if (method == 'twoFactor') {
+      if (method === 'twoFactor') {
         console.log('Sending Email');
         sendMail('no-reply@routed.org', this.email, 'Your Authentication Code from Routed', 'twoFactor', {
           verificationCode: token,
         });
-      } else if (method == 'resetPassword') {
+      } else if (method === 'resetPassword') {
         sendMail('no-reply@routed.org', this.email, 'Password Reset from Routed', 'passwordReset', {
           passwordResetLink: `${process.env.BASE_URL}/reset/newPassword/?email=${this.email}&code=${token}`,
         });

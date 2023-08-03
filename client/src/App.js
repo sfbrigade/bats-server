@@ -36,20 +36,12 @@ function App() {
     <>
       {!user && (
         <Router>
-          <Switch>
-            <Route path="/reset/newPassword">
-              <NewPassword />
-            </Route>
-            <Route path="/reset/emailSent">
-              <EmailSent />
-            </Route>
-            <Route path="/reset">
-              <Reset />
-            </Route>
-            <Route path="/">
-              <Login />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/reset/newPassword" element={<NewPassword />} />
+            <Route path="/reset/emailSent" element={<EmailSent />} />
+            <Route path="/reset" element={<Reset />} />
+            <Route path="/" element={<Login />} />
+          </Routes>
         </Router>
       )}
       {user && (
