@@ -1,26 +1,28 @@
 import { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Context from '../Context';
 
 function Redirect({ isAdminOnly }) {
   const { user } = useContext(Context);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
       if (!isAdminOnly && user.isOperationalUser) {
         if (user.organization.type === 'HEALTHCARE') {
-          history.push('/er');
+          navigate('/er');
+        } else if (user.organization.type === 'C4SF') {
+          navigate('/admin');
         } else {
-          history.push('/ems');
+          navigate('/ems');
         }
       } else if (user.isAdminUser) {
-        history.push('/admin');
+        navigate('/admin');
       }
     }
-  }, [history, user, isAdminOnly]);
+  }, [user, isAdminOnly]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
 }

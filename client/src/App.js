@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import EMS from './EMS';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import ApiService from './ApiService';
 import Context from './Context';
+import EMS from './EMS';
 import ER from './ER';
 import Admin from './Admin';
 import Redirect from './Components/Redirect';
@@ -53,20 +54,12 @@ function App() {
       )}
       {user && (
         <Router>
-          <Switch>
-            <Route path="/ems">
-              <EMS />
-            </Route>
-            <Route path="/er">
-              <ER />
-            </Route>
-            <Route path="/admin">
-              <Admin />
-            </Route>
-            <Route exact path="/">
-              <Redirect />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/ems/*" element={<EMS />} />
+            <Route path="/er/*" element={<ER />} />
+            <Route path="/admin/*" element={<Admin />} />
+            <Route path="/" element={<Redirect />} />
+          </Routes>
         </Router>
       )}
     </>

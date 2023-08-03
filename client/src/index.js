@@ -4,10 +4,7 @@ import App from './App';
 import { ContextProvider } from './Context';
 import * as serviceWorker from './serviceWorker';
 
-const rootElement = document.getElementById('root');
-const root = ReactDOM.createRoot(rootElement);
-
-root.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ContextProvider>
       <App />
