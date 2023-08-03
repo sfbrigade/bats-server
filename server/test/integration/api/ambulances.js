@@ -19,7 +19,6 @@ describe('/api/ambulances', () => {
       .set('Accept', 'application/json')
       .send({ username: 'sutter.operational@example.com', password: 'abcd1234' });
     await helper.twoFactorAuthSession(testSession);
-    
   });
   afterEach(async () => {
     nodemailermock.mock.reset();
