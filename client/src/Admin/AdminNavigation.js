@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, NavLink, useHistory, useRouteMatch } from 'react-router-dom';
+import { Link, NavLink, useLocation, useResolvedPath } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -11,8 +11,8 @@ import { ReactComponent as DashboardIcon } from '../assets/img/icon-dashboard.sv
 import './AdminNavigation.scss';
 
 function AdminNavigation() {
-  const { location } = useHistory();
-  const { url } = useRouteMatch();
+  const location = useLocation();
+  const url = useResolvedPath('').pathname;
   const { user, organization, setOrganization, setHospital } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
   const [showFlash, setShowFlash] = useState(false);
@@ -93,21 +93,35 @@ function AdminNavigation() {
           </div>
         </div>
         <div className="display-flex flex-row flex-justify-center">
-          <NavLink to={`${url}/dashboard`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          <NavLink
+            to={`${url}/dashboard`}
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+          >
             <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
           </NavLink>
-          <NavLink to={`${url}/users`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          <NavLink
+            to={`${url}/users`} 
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+          >
             <UserIcon className="admin-navigation__link-icon" /> Users
           </NavLink>
           {organization.type === 'HEALTHCARE' && (
-            <NavLink to={`${url}/hospitals`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
-              <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
+            <NavLink
+              to={`${url}/hospitals`}
+              className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+              >
+                  <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
             </NavLink>
           )}
-          <NavLink to={`${url}/settings`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          <NavLink
+            to={`${url}/settings`}
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+          >
             <SettingsIcon className="admin-navigation__link-icon" /> <span>Settings</span>
           </NavLink>
-          {/* <NavLink to={`${url}/ringdowns`} className="admin-navigation__link" activeClassName="admin-navigation__link--active">
+          {/* <NavLink to={`${url}/ringdowns`}
+            className={({isActive}) => `admin-navigation__link ${(isActive ? 'admin-navigation__link--active' : '')}`}
+          >
             Ringdowns
           </NavLink> */}
         </div>
