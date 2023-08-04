@@ -16,6 +16,7 @@ function createTransport() {
   const transporter = process.env.NODE_ENV === 'test' ? nodemailermock.createTransport(options) : nodemailer.createTransport(options);
   return transporter;
 }
+
 // send mail with defined transport object
 function sendMail(transporter, recipient, subject, content) {
   const mailOptions = {
@@ -24,11 +25,9 @@ function sendMail(transporter, recipient, subject, content) {
     subject: subject,
     text: content,
   };
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailOptions, (error) => {
     if (error) {
       console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
     }
   });
 }

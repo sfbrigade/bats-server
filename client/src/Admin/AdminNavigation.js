@@ -3,15 +3,18 @@ import { Link, NavLink, useLocation, useResolvedPath } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
+import HospitalIcon from '../Components/Icons/Hospital';
+import { ReactComponent as SettingsIcon } from '../assets/img/icon-settings.svg';
+import { ReactComponent as UserIcon } from '../assets/img/icon-users.svg';
+import { ReactComponent as DashboardIcon } from '../assets/img/icon-dashboard.svg';
 
 import './AdminNavigation.scss';
 
 function AdminNavigation() {
   const location = useLocation();
   const url = useResolvedPath('').pathname;
-  const { user, organization, setOrganization, hospital, setHospital } = useContext(Context);
+  const { user, organization, setOrganization, setHospital } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
-  const [hospitals, setHospitals] = useState([]);
   const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
@@ -35,20 +38,10 @@ function AdminNavigation() {
     if (newOrganization) {
       setOrganization(newOrganization);
       if (newOrganization.type === 'HEALTHCARE') {
-        setHospitals(newOrganization.hospitals);
         setHospital(newOrganization.hospitals[0]);
       } else {
-        setHospitals([]);
         setHospital();
       }
-    }
-  }
-
-  function onChangeHospital(event) {
-    const hospitalId = event.target.value;
-    const newHospital = hospitals.find((h) => h.id === hospitalId);
-    if (newHospital) {
-      setHospital(newHospital);
     }
   }
 
@@ -77,28 +70,10 @@ function AdminNavigation() {
                       </option>
                     ))}
                   </select>
-                  {organization?.type === 'HEALTHCARE' && (
-                    <>
-                      &nbsp;&gt;&nbsp;
-                      {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-                      <select value={hospital?.id} onChange={onChangeHospital} className="usa-select">
-                        {hospitals?.map((h) => (
-                          <option key={h.id} value={h.id}>
-                            {h.name}
-                          </option>
-                        ))}
-                      </select>
-                    </>
-                  )}
                 </div>
               </h2>
             )}
-            {!user?.isSuperUser && (
-              <h2 className="admin-navigation__name">
-                {organization?.name}
-                {hospital && <>&nbsp;&gt;&nbsp;&nbsp;{hospital.name}</>}
-              </h2>
-            )}
+            {!user?.isSuperUser && <h2 className="admin-navigation__name">{organization?.name}</h2>}
             Welcome,{' '}
             <Link to={`${url}/users/${user?.id}`} onClick={reset}>
               {user?.firstName} {user?.lastName}
@@ -122,13 +97,27 @@ function AdminNavigation() {
             to={`${url}/dashboard`}
             className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
           >
-            Dashboard
+            <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
           </NavLink>
           <NavLink
             to={`${url}/users`}
             className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
           >
-            Users
+            <UserIcon className="admin-navigation__link-icon" /> Users
+          </NavLink>
+          {organization.type === 'HEALTHCARE' && (
+            <NavLink
+              to={`${url}/hospitals`}
+              className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+            >
+              <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
+            </NavLink>
+          )}
+          <NavLink
+            to={`${url}/settings`}
+            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+          >
+            <SettingsIcon className="admin-navigation__link-icon" /> <span>Settings</span>
           </NavLink>
           {/* <NavLink to={`${url}/ringdowns`}
             className={({isActive}) => `admin-navigation__link ${(isActive ? 'admin-navigation__link--active' : '')}`}

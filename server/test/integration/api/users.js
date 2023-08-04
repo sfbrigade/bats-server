@@ -6,7 +6,6 @@ const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
-const nodemailermock = require('nodemailer-mock');
 
 describe('/api/users', () => {
   let testSession;
@@ -14,9 +13,6 @@ describe('/api/users', () => {
   beforeEach(async () => {
     await helper.loadFixtures(['organizations', 'users', 'hospitals', 'hospitalUsers']);
     testSession = session(app);
-  });
-  afterEach(async () => {
-    nodemailermock.mock.reset();
   });
 
   describe('GET /', () => {
@@ -76,6 +72,7 @@ describe('/api/users', () => {
           type: 'HEALTHCARE',
           timeZoneIsoCode: 'PST',
           isActive: true,
+          isMfaEnabled: false,
         },
         activeHospitals: [
           {

@@ -5,6 +5,7 @@
   "workspaces": [
     "client",
     "server",
+    "shared",
     "e2e",
     "user-guides"
   ],

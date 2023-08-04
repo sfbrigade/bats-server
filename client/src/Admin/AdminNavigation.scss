@@ -33,6 +33,13 @@
   }
 }
 
+.admin-navigation__link-icon {
+  position: relative;
+  top: 4px;
+  height: 24px;
+  width: 24px;
+}
+
 .admin-navigation__link--active,
 .admin-navigation__link--active:focus {
   border-bottom: 0.25rem solid color('primary');
