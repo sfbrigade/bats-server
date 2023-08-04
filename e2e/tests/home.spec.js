@@ -39,9 +39,9 @@ test.describe('home', () => {
 
   test('shows the Routed logo and two factor authentication form', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill(process.env.HOSPITAL_USER);
+    await page.getByLabel('Email').fill('cpmc.vanness.er@c4sf.me');
     const password = page.getByLabel('Password');
-    await password.fill(process.env.HOSPITAL_PASS);
+    await password.fill('abcd1234');
     await password.press('Enter');
     await expect(page).toHaveURL('/auth/local/twoFactor');
     await expect(page).toHaveTitle(/Routed/);
@@ -53,9 +53,9 @@ test.describe('home', () => {
 
   test('Shows Error after Incorrect Two Factor Authentication', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill(process.env.HOSPITAL_USER);
+    await page.getByLabel('Email').fill('cpmc.vanness.er@c4sf.me');
     const password = page.getByLabel('Password');
-    await password.fill(process.env.HOSPITAL_PASS);
+    await password.fill('abcd1234');
     await password.press('Enter');
     await expect(page).toHaveURL('/auth/local/twoFactor');
     await page.getByLabel('Code').fill('123456');
