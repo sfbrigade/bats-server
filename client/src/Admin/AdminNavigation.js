@@ -100,7 +100,7 @@ function AdminNavigation() {
             <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
           </NavLink>
           <NavLink
-            to={`${url}/users`} 
+            to={`${url}/users`}
             className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
           >
             <UserIcon className="admin-navigation__link-icon" /> Users
@@ -109,8 +109,8 @@ function AdminNavigation() {
             <NavLink
               to={`${url}/hospitals`}
               className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
-              >
-                  <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
+            >
+              <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
             </NavLink>
           )}
           <NavLink
