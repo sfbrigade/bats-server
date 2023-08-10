@@ -6,7 +6,6 @@ const session = require('supertest-session');
 
 const helper = require('../../helper');
 const app = require('../../../app');
-const nodemailermock = require('nodemailer-mock');
 
 describe('/api/ambulances', () => {
   let testSession;
@@ -19,9 +18,6 @@ describe('/api/ambulances', () => {
       .set('Accept', 'application/json')
       .send({ username: 'sutter.operational@example.com', password: 'abcd1234' });
     await helper.twoFactorAuthSession(testSession);
-  });
-  afterEach(async () => {
-    nodemailermock.mock.reset();
   });
 
   describe('GET /identifiers', () => {

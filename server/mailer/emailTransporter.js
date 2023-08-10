@@ -34,14 +34,14 @@ function templateTransporter() {
 }
 
 // send mail with defined transport object
-function sendMail(from, to, subject, template, variables) {
+function sendMail(to, subject, template, variables) {
   const templateEmailer = templateTransporter();
   templateEmailer
     .send({
       template: template,
       message: {
         subject: subject,
-        from: from,
+        from: process.env.SMTP_REPLY_TO,
         to: to,
       },
       locals: variables,

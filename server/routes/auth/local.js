@@ -36,9 +36,15 @@ router.post('/login', (req, res, next) => {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
       }
     } else if (user) {
-      req.login(user, () => {
+      req.login(user, async () => {
         if (req.accepts('html')) {
-          res.redirect('/auth/local/twoFactor');
+          const org = await user.getOrganization();
+          if (org.isMfaEnabled) {
+            res.redirect('/auth/local/twoFactor');
+          } else {
+            req.session.twoFactor = true;
+            res.redirect('/');
+          }
         } else {
           res.status(HttpStatus.OK).end();
         }

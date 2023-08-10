@@ -50,7 +50,6 @@ module.exports = (sequelize) => {
         period: -1,
         digits: 6,
       });
-      console.log('TOTP Secret: ', secret.base32);
       // save the secret key to the session
       // generate secret token
       const token = totp.generate();
@@ -63,11 +62,11 @@ module.exports = (sequelize) => {
       // send email with token
       if (method === 'twoFactor') {
         console.log('Sending Email');
-        sendMail('no-reply@routed.org', this.email, 'Your Authentication Code from Routed', 'twoFactor', {
+        sendMail(this.email, 'Your Authentication Code from Routed', 'twoFactor', {
           verificationCode: token,
         });
       } else if (method === 'resetPassword') {
-        sendMail('no-reply@routed.org', this.email, 'Password Reset from Routed', 'passwordReset', {
+        sendMail(this.email, 'Password Reset from Routed', 'passwordReset', {
           passwordResetLink: `${process.env.BASE_URL}/reset/newPassword/?email=${this.email}&code=${token}`,
         });
       }
