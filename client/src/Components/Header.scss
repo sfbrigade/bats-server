@@ -22,6 +22,14 @@
   @include u-padding-x(0);
   @include u-padding-y(1);
   position: absolute;
+
+  & a,
+  a:visited,
+  a:hover,
+  a:active {
+    color: $theme-color-primary;
+    text-decoration: none;
+  }
 }
 
 .header__name {
