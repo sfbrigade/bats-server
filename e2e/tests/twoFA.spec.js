@@ -1,5 +1,9 @@
 const { test, expect } = require('@playwright/test');
 
+const env = process.env.NODE_ENV || 'development';
+
+const SMTP_HOST = env === 'development' ? 'localhost' : process.env.SMTP_HOST;
+
 test.describe('2FA', () => {
   test.describe.configure({ mode: 'serial' });
   test('shows the Routed logo and two factor authentication form', async ({ page }) => {
@@ -35,18 +39,17 @@ test.describe('2FA', () => {
     const password = appPage.getByLabel('Password');
     await password.fill(process.env.EMS_PASS);
     await password.press('Enter');
-
-    const allMsgsResponse = await fetch(`http://${process.env.SMTP_HOST}:1080/messages`);
+    console.log(process.env.NODE_ENV)
+    const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
 
     const messages = await allMsgsResponse.json();
 
     const lastMessageIdx = messages.length;
 
-    const msgResponse = await fetch(`http://${process.env.SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
+    const msgResponse = await fetch(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
 
     const emailText = await msgResponse.text();
 
-    console.log(emailText);
     // Use a regular expression to find "Code: " + six-digit number
     const regex = /Code: (\d{6}) \./;
     const foundCode = emailText.match(regex);
@@ -74,13 +77,13 @@ test.describe('2FA', () => {
     await password.fill(process.env.HOSPITAL_PASS);
     await password.press('Enter');
 
-    const allMsgsResponse = await fetch(`http://${process.env.SMTP_HOST}:1080/messages`);
+    const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
 
     const messages = await allMsgsResponse.json();
 
     const lastMessageIdx = messages.length;
 
-    const msgResponse = await fetch(`http://${process.env.SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
+    const msgResponse = await fetch(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
 
     const emailText = await msgResponse.text();
     // Use a regular expression to find "Code: " + six-digit number
@@ -99,6 +102,7 @@ test.describe('2FA', () => {
     await expect(appPage).toHaveURL('/er');
 
     // Gracefully close up everything
+    await fetch(`http://${SMTP_HOST}:1080/messages`, {method: "DELETE"});
     await context.close();
   });
 });
