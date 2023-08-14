@@ -28,12 +28,12 @@ test.describe('home', () => {
     await expect(page.getByText('MailCatcher')).toBeVisible();
   });
 
-  test.skip('Try fetching messages from MailCatcher', async({ request }) => {
-      const allMessagesRequest = await request.get("http://${SMTP_HOST}:1080/messages");
-      expect(allMessagesRequest.ok()).toBeTruthy();
-      const allMessages = await allMessagesRequest.json();
-      console.log(allMessages);
-      const deleteRequest = await request.delete("http://${SMTP_HOST}:1080/messages");
-      expect(deleteRequest.ok()).toBeTruthy();
-  })
+  test('Try fetching messages from MailCatcher', async ({ request }) => {
+    const allMessagesRequest = await request.get(`http://${SMTP_HOST}:1080/messages`);
+    expect(allMessagesRequest.ok()).toBeTruthy();
+    const allMessages = await allMessagesRequest.json();
+    console.log(allMessages);
+    const deleteRequest = await request.delete(`http://${SMTP_HOST}:1080/messages`);
+    expect(deleteRequest.ok()).toBeTruthy();
+  });
 });

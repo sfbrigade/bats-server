@@ -39,7 +39,7 @@ test.describe('2FA', () => {
     const password = appPage.getByLabel('Password');
     await password.fill(process.env.EMS_PASS);
     await password.press('Enter');
-    console.log(process.env.NODE_ENV)
+    console.log(process.env.NODE_ENV);
     const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
 
     const messages = await allMsgsResponse.json();
@@ -102,7 +102,7 @@ test.describe('2FA', () => {
     await expect(appPage).toHaveURL('/er');
 
     // Gracefully close up everything
-    await fetch(`http://${SMTP_HOST}:1080/messages`, {method: "DELETE"});
+    await fetch(`http://${SMTP_HOST}:1080/messages`, { method: 'DELETE' });
     await context.close();
   });
 });
