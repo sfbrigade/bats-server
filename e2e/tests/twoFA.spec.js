@@ -4,6 +4,10 @@ const env = process.env.NODE_ENV || 'development';
 
 const SMTP_HOST = env === 'development' ? 'localhost' : process.env.SMTP_HOST;
 
+test.beforeEach(async () => {
+  await fetch(`http://${SMTP_HOST}:1080/messages`, { method: 'DELETE' });
+})
+
 test.describe('2FA', () => {
   test.describe.configure({ mode: 'serial' });
   test('shows the Routed logo and two factor authentication form', async ({ page }) => {
@@ -39,7 +43,9 @@ test.describe('2FA', () => {
     const password = appPage.getByLabel('Password');
     await password.fill(process.env.EMS_PASS);
     await password.press('Enter');
-    console.log(process.env.NODE_ENV);
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
 
     const messages = await allMsgsResponse.json();
@@ -56,13 +62,14 @@ test.describe('2FA', () => {
 
     expect(foundCode).not.toBeNull();
 
-    const authCode = foundCode[1];
+    const authCode = foundCode[1];;
+    console.log(foundCode[1]);
     const code = appPage.getByLabel('Code');
     await code.fill(authCode);
     await code.press('Enter');
 
     const pageBody = appPage.locator('body');
-    await expect(pageBody).not.toHaveText('Invalid Author');
+    await expect(pageBody).not.toHaveText(/Invalid Authorization/);
     await expect(appPage).toHaveURL('/ems');
 
     // Gracefully close up everything
@@ -77,6 +84,8 @@ test.describe('2FA', () => {
     await password.fill(process.env.HOSPITAL_PASS);
     await password.press('Enter');
 
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
 
     const messages = await allMsgsResponse.json();
@@ -98,11 +107,10 @@ test.describe('2FA', () => {
     await code.press('Enter');
 
     const pageBody = appPage.locator('body');
-    await expect(pageBody).not.toHaveText('Invalid Author');
+    await expect(pageBody).not.toHaveText(/Invalid Authorization/);
     await expect(appPage).toHaveURL('/er');
 
     // Gracefully close up everything
-    await fetch(`http://${SMTP_HOST}:1080/messages`, { method: 'DELETE' });
     await context.close();
   });
 });
