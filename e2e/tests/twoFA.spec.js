@@ -6,7 +6,7 @@ const SMTP_HOST = env === 'development' ? 'localhost' : process.env.SMTP_HOST;
 
 test.beforeEach(async () => {
   await fetch(`http://${SMTP_HOST}:1080/messages`, { method: 'DELETE' });
-})
+});
 
 test.describe('2FA', () => {
   test.describe.configure({ mode: 'serial' });
@@ -44,7 +44,7 @@ test.describe('2FA', () => {
     await password.fill(process.env.EMS_PASS);
     await password.press('Enter');
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
 
@@ -62,7 +62,7 @@ test.describe('2FA', () => {
 
     expect(foundCode).not.toBeNull();
 
-    const authCode = foundCode[1];;
+    const authCode = foundCode[1];
     console.log(foundCode[1]);
     const code = appPage.getByLabel('Code');
     await code.fill(authCode);
@@ -84,7 +84,7 @@ test.describe('2FA', () => {
     await password.fill(process.env.HOSPITAL_PASS);
     await password.press('Enter');
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
 
