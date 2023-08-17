@@ -10,11 +10,12 @@ import './RingdownSection.scss';
 function RingdownSection({ title, ringdowns, onStatusChange }) {
   const { ringdownSection, setRingdownSection } = useContext(Context);
 
-  const isMinimized = ringdownSection[title] || false;
+  const isExpanded = !!ringdownSection[title];
+
   const handleExpand = () => {
     setRingdownSection({
       ...ringdownSection,
-      [title]: !isMinimized,
+      [title]: !isExpanded,
     });
   };
 
@@ -34,10 +35,10 @@ function RingdownSection({ title, ringdowns, onStatusChange }) {
           <div className="ringdown-section__badge">{ringdowns.length}</div>
         </div>
         <div className="ringdown-section__caret">
-          {!isMinimized ? <i className="fas fa-caret-up btn" /> : <i className="fas fa-caret-down btn" />}
+          {isExpanded ? <i className="fas fa-caret-up btn" /> : <i className="fas fa-caret-down btn" />}
         </div>
       </div>
-      {!isMinimized &&
+      {isExpanded &&
         ringdowns.map((r) => <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} onStatusChange={onStatusChange} />)}
     </div>
   );
