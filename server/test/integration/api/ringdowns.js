@@ -35,7 +35,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'super.user@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
 
       const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.length, 5);
@@ -48,7 +48,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
       const response = await testSession
         .get('/api/ringdowns')
         .query({ hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680' })
@@ -65,7 +65,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'amr.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
       const response = await testSession.get('/api/ringdowns/mine').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body.length, 1);
       assert.deepStrictEqual(response.body[0].id, '4889b0c8-ce48-474a-ac5b-c5aca708451c');
@@ -106,7 +106,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
       const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
@@ -141,7 +141,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
       const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
@@ -205,7 +205,7 @@ describe('/api/ringdowns', () => {
         .set('Accept', 'application/json')
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
       const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
@@ -241,7 +241,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'norcal.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
       const response = await testSession
         .post('/api/ringdowns')
         .set('Accept', 'application/json')
@@ -280,7 +280,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
       let now = new Date();
       await testSession
         .patch('/api/ringdowns/d4fd2478-ecd6-4571-9fb3-842bfc64b511/deliveryStatus')
@@ -388,7 +388,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'king.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
 
       const now = new Date();
       await testSession
@@ -443,7 +443,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'sffd.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
 
       const response = await testSession
         .patch('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247')
@@ -493,7 +493,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'sffd.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
 
       const response = await testSession
         .get('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247')
@@ -555,7 +555,7 @@ describe('/api/ringdowns', () => {
         .send({ username: 'second.sffd.paramedic@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      await helper.twoFactorAuthSession(testSession);
+      // await helper.twoFactorAuthSession(testSession);
 
       await testSession.get('/api/ringdowns/8b95ea8a-0171-483a-be74-ec17bbc12247').set('Accept', 'application/json').expect(HttpStatus.OK);
     });
