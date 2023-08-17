@@ -1,11 +1,9 @@
 const { test, expect } = require('@playwright/test');
 
-const env = process.env.NODE_ENV || 'development';
+const SMTP_HOST = process.env.SMTP_HOST;
 
-const SMTP_HOST = env === 'development' ? 'localhost' : process.env.SMTP_HOST;
-
-test.beforeEach(async () => {
-  await fetch(`http://${SMTP_HOST}:1080/messages`, { method: 'DELETE' });
+test.beforeEach(async ({ request }) => {
+  await request.delete(`http://${SMTP_HOST}:1080/messages`);
 });
 
 test.describe('2FA', () => {
@@ -35,7 +33,7 @@ test.describe('2FA', () => {
     await page.getByText('Submit').click();
     await expect(page.getByText('Invalid Authorization Code.')).toBeVisible();
   });
-  test('logs in as EMS user with 2FA', async ({ context }) => {
+  test('logs in as EMS user with 2FA', async ({ context, request }) => {
     const appPage = await context.newPage();
 
     await appPage.goto('/');
@@ -44,15 +42,17 @@ test.describe('2FA', () => {
     await password.fill(process.env.EMS_PASS);
     await password.press('Enter');
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
-    const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
+    const allMsgsResponse = await request.get(`http://${SMTP_HOST}:1080/messages`);
 
     const messages = await allMsgsResponse.json();
 
     const lastMessageIdx = messages.length;
 
-    const msgResponse = await fetch(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
+    await expect(lastMessageIdx).toBeGreaterThan(0);
+
+    const msgResponse = await request.get(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
 
     const emailText = await msgResponse.text();
 
@@ -63,7 +63,7 @@ test.describe('2FA', () => {
     expect(foundCode).not.toBeNull();
 
     const authCode = foundCode[1];
-    console.log(foundCode[1]);
+
     const code = appPage.getByLabel('Code');
     await code.fill(authCode);
     await code.press('Enter');
@@ -75,7 +75,7 @@ test.describe('2FA', () => {
     // Gracefully close up everything
     await context.close();
   });
-  test('logs in as Hospital user with 2FA', async ({ context }) => {
+  test('logs in as Hospital user with 2FA', async ({ context, request }) => {
     const appPage = await context.newPage();
 
     await appPage.goto('/');
@@ -84,15 +84,17 @@ test.describe('2FA', () => {
     await password.fill(process.env.HOSPITAL_PASS);
     await password.press('Enter');
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
-    const allMsgsResponse = await fetch(`http://${SMTP_HOST}:1080/messages`);
+    const allMsgsResponse = await request.get(`http://${SMTP_HOST}:1080/messages`);
 
     const messages = await allMsgsResponse.json();
 
     const lastMessageIdx = messages.length;
 
-    const msgResponse = await fetch(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
+    await expect(lastMessageIdx).toBeGreaterThan(0);
+
+    const msgResponse = await request.get(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
 
     const emailText = await msgResponse.text();
     // Use a regular expression to find "Code: " + six-digit number

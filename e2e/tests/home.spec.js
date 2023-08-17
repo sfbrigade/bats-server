@@ -1,8 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-const env = process.env.NODE_ENV || 'development';
-
-const SMTP_HOST = env === 'development' ? 'localhost' : process.env.SMTP_HOST;
+const SMTP_HOST = process.env.SMTP_HOST;
 
 test.describe('home', () => {
   test('shows the Routed logo and sign in form', async ({ page }) => {
@@ -26,14 +24,5 @@ test.describe('home', () => {
   test('Try Opening Mail Catcher', async ({ page }) => {
     await page.goto(`http://${SMTP_HOST}:1080/`);
     await expect(page.getByText('MailCatcher')).toBeVisible();
-  });
-
-  test('Try fetching messages from MailCatcher', async ({ request }) => {
-    const allMessagesRequest = await request.get(`http://${SMTP_HOST}:1080/messages`);
-    expect(allMessagesRequest.ok()).toBeTruthy();
-    const allMessages = await allMessagesRequest.json();
-    console.log(allMessages);
-    const deleteRequest = await request.delete(`http://${SMTP_HOST}:1080/messages`);
-    expect(deleteRequest.ok()).toBeTruthy();
   });
 });
