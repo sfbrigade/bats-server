@@ -1,12 +1,12 @@
 /* eslint-env mocha */
 
 const { expect } = require('chai');
-const mockery = require('mockery');
 const nodemailermock = require('nodemailer-mock');
-const session = require('supertest-session');
-const app = require('../../../app');
 const HttpStatus = require('http-status-codes');
+const session = require('supertest-session');
+
 const helper = require('../../helper');
+const app = require('../../../app');
 const model = require('../../../models');
 const { createTransport } = require('../../../mailer/emailTransporter');
 
@@ -52,33 +52,18 @@ describe('Two Factor Page', async () => {
 
 describe('Email Functionality', async () => {
   let testSession = null;
-  before(async () => {
-    // Enable mockery to mock objects
-    mockery.enable({
-      warnOnUnregistered: false,
-    });
-    mockery.registerMock('nodemailer', nodemailermock);
-  });
+
   beforeEach(async () => {
     // load fixtures
     await helper.loadFixtures(['organizations', 'users', 'ambulances']);
   });
-  afterEach(async () => {
-    // Reset the mock back to the defaults after each test
-    nodemailermock.mock.reset();
-  });
 
-  after(async () => {
-    // Remove our mocked nodemailer and disable mockery
-    mockery.deregisterAll();
-    mockery.disable();
-  });
   it('should send out intended email with ANY provided Email Transporter', async () => {
     // Create a mock transport
     const transport = createTransport();
     // Generate a secret and send it to the mock transport
     const user = await model.User.findOne({ where: { email: 'sutter.operational@example.com' } });
-    user.generateToTPSecret('test123@gmail.com', transport);
+    await user.generateToTPSecret('test123@gmail.com', transport);
     // Get the sent message from the mock transport
     const sentMail = nodemailermock.mock.sentMail();
     // Expect one message to be sent
@@ -90,10 +75,9 @@ describe('Email Functionality', async () => {
     // Expect the message to have the correct text with 6 digit Authentication Code
     expect(sentMail[0].text).to.contain('This is your Authentication Code:');
   });
+
   it('E2E - should correctly authenticate with ToTP secret', async () => {
     testSession = session(app);
-    // reset the mock back to the defaults after each test
-    nodemailermock.mock.reset();
     // After Inital Log In, the user should be redirected to the twoFactor auth page
     await testSession
       .post('/auth/local/login')

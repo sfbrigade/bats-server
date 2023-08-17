@@ -8,7 +8,6 @@ const helper = require('../../helper');
 const app = require('../../../app');
 const models = require('../../../models');
 const { DeliveryStatus } = require('../../../../shared/constants');
-const nodemailermock = require('nodemailer-mock');
 
 describe('/api/ringdowns', () => {
   let testSession;
@@ -27,10 +26,6 @@ describe('/api/ringdowns', () => {
     ]);
 
     testSession = session(app);
-  });
-
-  afterEach(async () => {
-    nodemailermock.mock.reset();
   });
 
   describe('GET /', () => {
