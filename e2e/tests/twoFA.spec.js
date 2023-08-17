@@ -10,9 +10,9 @@ test.describe('2FA', () => {
   test.describe.configure({ mode: 'serial' });
   test('shows the Routed logo and two factor authentication form', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill(process.env.HOSPITAL_USER);
+    await page.getByLabel('Email').fill('mission.bernal.er@c4sf.me');
     const password = page.getByLabel('Password');
-    await password.fill(process.env.HOSPITAL_PASS);
+    await password.fill('abcd1234');
     await password.press('Enter');
     await expect(page).toHaveURL('/auth/local/twoFactor');
     await expect(page).toHaveTitle(/Routed/);
@@ -24,9 +24,9 @@ test.describe('2FA', () => {
 
   test('Shows Error after Incorrect Two Factor Authentication', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill(process.env.HOSPITAL_USER);
+    await page.getByLabel('Email').fill('mission.bernal.er@c4sf.me');
     const password = page.getByLabel('Password');
-    await password.fill(process.env.HOSPITAL_PASS);
+    await password.fill('abcd1234');
     await password.press('Enter');
     await expect(page).toHaveURL('/auth/local/twoFactor');
     await page.getByLabel('Code').fill('123456');
@@ -37,9 +37,9 @@ test.describe('2FA', () => {
     const appPage = await context.newPage();
 
     await appPage.goto('/');
-    await appPage.getByLabel('Email').fill(process.env.EMS_USER);
+    await appPage.getByLabel('Email').fill('amr.user@c4sf.me');
     const password = appPage.getByLabel('Password');
-    await password.fill(process.env.EMS_PASS);
+    await password.fill('abcd1234');
     await password.press('Enter');
 
     await new Promise((resolve) => setTimeout(resolve, 200));
@@ -79,9 +79,9 @@ test.describe('2FA', () => {
     const appPage = await context.newPage();
 
     await appPage.goto('/');
-    await appPage.getByLabel('Email').fill(process.env.HOSPITAL_USER);
+    await appPage.getByLabel('Email').fill('mission.bernal.er@c4sf.me');
     const password = appPage.getByLabel('Password');
-    await password.fill(process.env.HOSPITAL_PASS);
+    await password.fill('abcd1234');
     await password.press('Enter');
 
     await new Promise((resolve) => setTimeout(resolve, 200));
