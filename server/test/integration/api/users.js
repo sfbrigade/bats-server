@@ -24,7 +24,7 @@ describe('/api/users', () => {
         .send({ username: 'super.user@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      // await helper.twoFactorAuthSession(testSession);
+      await helper.twoFactorAuthSession(testSession);
 
       /// request user list
       const response = await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.OK);
@@ -39,8 +39,6 @@ describe('/api/users', () => {
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
 
-      // await helper.twoFactorAuthSession(testSession);
-
       /// request user list
       await testSession.get('/api/users').set('Accept', 'application/json').expect(HttpStatus.FORBIDDEN);
     });
@@ -53,8 +51,6 @@ describe('/api/users', () => {
         .set('Accept', 'application/json')
         .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
         .expect(HttpStatus.OK);
-
-      // await helper.twoFactorAuthSession(testSession);
 
       const response = await testSession.get('/api/users/me').set('Accept', 'application/json').expect(HttpStatus.OK);
       assert.deepStrictEqual(response.body, {

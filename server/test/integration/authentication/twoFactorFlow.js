@@ -20,7 +20,7 @@ describe('Two Factor Page', async () => {
   it(' should reach the twoFactor auth page after initial log in ', async () => {
     testSession = session(app);
 
-    // After Inital Log In, the user should be redirected to the twoFactor auth page
+    // After Inital Log In, the user should be redirected to the twoFactor auth page if the company has mFa enabled
     await testSession
       .post('/auth/local/login')
       .set('Accept', 'application/json')
@@ -88,7 +88,7 @@ describe('Email Functionality', async () => {
 
     const sentMail = nodemailermock.mock.sentMail();
     // Extract authentication code from the sent email
-    const regex = /Authentication Code: (\d{6})/;
+    const regex = /Your two-factor authentication code is: (\d{6})/;
     const match = regex.exec(sentMail[0].text);
     const authCode = match[1];
     // Submit the authentication code
