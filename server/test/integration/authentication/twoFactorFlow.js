@@ -24,7 +24,7 @@ describe('Two Factor Page', async () => {
     await testSession
       .post('/auth/local/login')
       .set('Accept', 'application/json')
-      .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
+      .send({ username: 'super.user@example.com', password: 'abcd1234' })
       .expect(HttpStatus.OK);
     // Call the two-factor authentication endpoint
     const response = await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
@@ -81,7 +81,7 @@ describe('Email Functionality', async () => {
     await testSession
       .post('/auth/local/login')
       .set('Accept', 'application/json')
-      .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
+      .send({ username: 'super.user@example.com', password: 'abcd1234' })
       .expect(HttpStatus.OK);
     // Go to Two Factor Auth Page
     await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
