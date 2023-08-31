@@ -1,11 +1,14 @@
 const { test, expect } = require('@playwright/test');
-test.describe('Initializing ringdowns', () => {
-  test('redirects to EMS interface after EMS user login', async ({ browser }) => {
-    const emsContext = await browser.newContext();
-    const erContext = await browser.newContext();
 
-    const emsPage = await emsContext.newPage();
-    const erPage = await erContext.newPage();
+let emsContext, erContext;
+let erPage, emsPage;
+test.describe('Initializing ringdowns', () => {
+  test.beforeEach(async ({ browser }) => {
+    emsContext = await browser.newContext();
+    erContext = await browser.newContext();
+
+    emsPage = await emsContext.newPage();
+    erPage = await erContext.newPage();
 
     await emsPage.goto('/');
     await emsPage.getByLabel('Email').fill(process.env.EMS_USER);
@@ -20,5 +23,26 @@ test.describe('Initializing ringdowns', () => {
     await erPassword.fill(process.env.HOSPITAL_PASS);
     await erPassword.press('Enter');
     await expect(erPage).toHaveURL('/er');
+  });
+
+  test('Submits a ringdown', async ({ browser }) => {
+    // TODO: move this into beforeEach once this works
+
+    const unitDropdown = emsPage.locator('id=ambulanceIdentifier-label');
+    // this isn't working yet (WIP)
+
+    await unitDropdown.getByLabel(/Toggle the dropdown/).click();
+
+    await expect(unitDropdown.getByText('SFFD-2')).toBeVisible();
+
+    await emsPage.getByLabel('Unit #').selectOption('SFFD-2');
+  });
+
+  test.afterEach(async ({ browser }) => {
+    erPage.close();
+    emsPage.close();
+    erContext.close();
+    emsContext.close();
+    browser.close();
   });
 });
