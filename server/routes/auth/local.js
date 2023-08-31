@@ -37,12 +37,14 @@ router.post('/login', (req, res, next) => {
       }
     } else if (user) {
       req.login(user, async () => {
+        const org = await user.getOrganization();
+        if (!org.isMfaEnabled) {
+          req.session.twoFactor = true;
+        }
         if (req.accepts('html')) {
-          const org = await user.getOrganization();
           if (org.isMfaEnabled) {
             res.redirect('/auth/local/twoFactor');
           } else {
-            req.session.twoFactor = true;
             res.redirect('/');
           }
         } else {

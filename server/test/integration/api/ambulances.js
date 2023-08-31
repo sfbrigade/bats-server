@@ -16,8 +16,8 @@ describe('/api/ambulances', () => {
     await testSession
       .post('/auth/local/login')
       .set('Accept', 'application/json')
-      .send({ username: 'sutter.operational@example.com', password: 'abcd1234' });
-    // await helper.twoFactorAuthSession(testSession);
+      .send({ username: 'sutter.operational@example.com', password: 'abcd1234' })
+      .expect(HttpStatus.OK);
   });
 
   describe('GET /identifiers', () => {
