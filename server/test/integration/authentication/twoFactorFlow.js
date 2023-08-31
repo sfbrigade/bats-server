@@ -47,6 +47,7 @@ describe('Two Factor Page', async () => {
     expect(response.status).to.equal(HttpStatus.MOVED_TEMPORARILY);
     // Expect redirect to login page
     expect(response.header.location).to.equal('/auth/local/login');
+
   });
 });
 
@@ -71,7 +72,7 @@ describe('Email Functionality', async () => {
     // Expect the message to have the correct subject
     expect(sentMail[0].subject).to.equal('Your Authentication Code from Routed');
     // Expect the message to have the correct text with 6 digit Authentication Code
-    expect(sentMail[0].text).to.contain('This is your Authentication Code:');
+    expect(sentMail[0].text).to.contain('Your two-factor authentication code is:');
   });
 
   it('E2E - should correctly authenticate with ToTP secret', async () => {
@@ -84,6 +85,7 @@ describe('Email Functionality', async () => {
       .expect(HttpStatus.OK);
     // Go to Two Factor Auth Page
     await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
+
     const sentMail = nodemailermock.mock.sentMail();
     // Extract authentication code from the sent email
     const regex = /Authentication Code: (\d{6})/;
