@@ -36,7 +36,7 @@ function templateTransporter() {
 // send mail with defined transport object
 function sendMail(to, subject, template, variables) {
   const templateEmailer = templateTransporter();
-  templateEmailer
+  return templateEmailer
     .send({
       template: template,
       message: {

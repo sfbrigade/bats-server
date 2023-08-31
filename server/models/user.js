@@ -62,11 +62,11 @@ module.exports = (sequelize) => {
       // send email with token
       if (method === 'twoFactor') {
         console.log('Sending Email');
-        sendMail(this.email, 'Your Authentication Code from Routed', 'twoFactor', {
+        await sendMail(this.email, 'Your Authentication Code from Routed', 'twoFactor', {
           verificationCode: token,
         });
       } else if (method === 'resetPassword') {
-        sendMail(this.email, 'Password Reset from Routed', 'passwordReset', {
+        await sendMail(this.email, 'Password Reset from Routed', 'passwordReset', {
           passwordResetLink: `${process.env.BASE_URL}/reset/newPassword/?email=${this.email}&code=${token}`,
         });
       }

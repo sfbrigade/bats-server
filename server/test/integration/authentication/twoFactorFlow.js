@@ -59,11 +59,9 @@ describe('Email Functionality', async () => {
   });
 
   it('should send out intended email with ANY provided Email Transporter', async () => {
-    // Create a mock transport
-    const transport = createTransport();
     // Generate a secret and send it to the mock transport
     const user = await model.User.findOne({ where: { email: 'sutter.operational@example.com' } });
-    await user.generateToTPSecret('test123@gmail.com', transport);
+    await user.generateToTPSecret('twoFactor');
     // Get the sent message from the mock transport
     const sentMail = nodemailermock.mock.sentMail();
     // Expect one message to be sent
