@@ -9,13 +9,16 @@
 3. Run:
 
    ```
-   docker compose up
+   docker compose up -d
    ```
 
    Wait a while for container images to download/build, then when everything is up
    and running, you can view the site in your browser:
 
    http://localhost:3000/
+
+   Bring the service down with `docker compose down`.
+   
 
 4. To log in to the running server container:
 
