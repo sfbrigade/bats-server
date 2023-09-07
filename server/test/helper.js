@@ -32,20 +32,13 @@ const resetDatabase = async () => {
 };
 
 const twoFactorAuthSession = async (testSession) => {
-  console.log('Starting two factor authentication');
   // Call the two-factor authentication endpoint
   await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
-  console.log('Sent two factor authentication request');
   const sentMail = nodemailermock.mock.sentMail();
   // Extract authentication code from the sent email
   const regex = /authentication code is: (\d{6})/;
   const match = regex.exec(sentMail[0].text);
-  console.log('Extracted authentication code from email');
-  console.log('mail', sentMail[0].text);
-  console.log('match', match);
   const authCode = match[1];
-  console.log(`Authentication code: ${authCode}`);
-
   // Submit the authentication code
   await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
 };

@@ -58,10 +58,8 @@ module.exports = (sequelize) => {
 
       await this.update({ twoFactorData: { totptimestamp: Date.now() + 900000, totptoken: token } });
       await this.save();
-      console.log('Method: ', method);
       // send email with token
       if (method === 'twoFactor') {
-        console.log('Sending Email');
         await sendMail(this.email, 'Your Authentication Code from Routed', 'twoFactor', {
           verificationCode: token,
         });
