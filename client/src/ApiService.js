@@ -9,10 +9,10 @@ const instance = axios.create({
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log('Interceptor triggered');
-    console.log('Error status:', error.response.status);
-    if (error.response.status === 401) {
-      console.log('Redirecting to login');
+    // console.log('Interceptor triggered', error?.response);
+    // console.log('Error status:', error.response.status);
+    if (error?.response?.status === 401) {
+      // console.log('Redirecting to login');
       window.location = '/auth/local/login';
     }
     return Promise.reject(error);

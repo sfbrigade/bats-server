@@ -13,6 +13,7 @@ router.get('/login', (req, res) => {
     if (req.user) {
       req.logout();
     }
+    res.render('auth/local/login');
   }
 });
 
