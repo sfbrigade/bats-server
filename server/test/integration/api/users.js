@@ -22,8 +22,7 @@ describe('/api/users', () => {
         .post('/auth/local/login')
         .set('Accept', 'application/json')
         .send({ username: 'super.user@example.com', password: 'abcd1234' })
-        .expect(HttpStatus.OK);
-
+        .expect(HttpStatus.ACCEPTED);
       await helper.twoFactorAuthSession(testSession);
 
       /// request user list

@@ -11,6 +11,7 @@ import Login from './Auth/Login';
 import Reset from './Auth/Reset';
 import EmailSent from './Auth/EmailSent';
 import NewPassword from './Auth/NewPassword';
+import TwoFactor from './Auth/TwoFactor';
 
 function App() {
   const { user, setUser, setOrganization, setHospital, setHospitalUser } = useContext(Context);
@@ -40,6 +41,7 @@ function App() {
             <Route path="/reset/newPassword" element={<NewPassword />} />
             <Route path="/reset/emailSent" element={<EmailSent />} />
             <Route path="/reset" element={<Reset />} />
+            <Route path="/twoFactor" element={<TwoFactor />} />
             <Route path="/" element={<Login />} />
           </Routes>
         </Router>

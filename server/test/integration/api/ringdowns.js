@@ -34,7 +34,7 @@ describe('/api/ringdowns', () => {
         .post('/auth/local/login')
         .set('Accept', 'application/json')
         .send({ username: 'super.user@example.com', password: 'abcd1234' })
-        .expect(HttpStatus.OK);
+        .expect(HttpStatus.ACCEPTED);
       await helper.twoFactorAuthSession(testSession);
 
       const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);

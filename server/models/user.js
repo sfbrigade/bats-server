@@ -70,8 +70,7 @@ module.exports = (sequelize) => {
       }
     }
 
-    verifyTwoFactor(req) {
-      const token = req.body.code;
+    verifyTwoFactor(token) {
       const totptoken = this.dataValues.twoFactorData.totptoken;
       const totptimestamp = this.dataValues.twoFactorData.totptimestamp;
       const verified = token === totptoken && Date.now() < totptimestamp;

@@ -13,7 +13,7 @@ instance.interceptors.response.use(
     // console.log('Error status:', error.response.status);
     if (error?.response?.status === 401) {
       // console.log('Redirecting to login');
-      window.location = '/auth/local/login';
+      window.location = '/';
     }
     return Promise.reject(error);
   }
