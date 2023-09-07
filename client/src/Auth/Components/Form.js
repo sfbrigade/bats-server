@@ -1,11 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import { updateErrorState, handleValidationEvent } from './helperFunctions';
 import RequiredInput from './RequiredInput';
+import ApiService from '../../ApiService';
 
 export default function Form(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // const navigate = useNavigate()
+
   function isNotValid() {
     if (email.trim() === '' || password.trim() === '') {
       if (props.username !== null && password.trim() !== '') {
@@ -16,15 +20,23 @@ export default function Form(props) {
   }
 
   function onSubmit(event) {
+    event.preventDefault();
+    console.log('handleSubmit')
     if (!isNotValid()) {
       updateErrorState(email);
       updateErrorState(password);
-      event.preventDefault();
     }
+    ApiService.auth.login({username: email, password}).then((response) => {
+      // if (response.ok){
+      //   navigate('/')
+      // }
+      console.log(response)
+     })
   }
 
+
   return (
-    <form method="post" action="/auth/local/login" id="login" className="usa-form" onSubmit={() => onSubmit}>
+    <form id="login" className="usa-form" onSubmit={() => onSubmit}>
       <RequiredInput
         type="email"
         name="username"

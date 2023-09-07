@@ -11,9 +11,9 @@ const isAuthenticated = (req, res, next) => {
       next();
     }
   } else if (req.accepts('html')) {
-    res.redirect('/');
+    // res.redirect('/');
   } else {
-    res.status(HttpStatus.UNAUTHORIZED).end();
+    // res.status(HttpStatus.UNAUTHORIZED).end();
   }
 };
 
