@@ -1,1 +1,1 @@
-exports.DeliveryStatus = require('./DeliveryStatus');
+module.exports.DeliveryStatus = require('./DeliveryStatus');

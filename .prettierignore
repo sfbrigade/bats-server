@@ -1,7 +1,10 @@
 # Ignore artifacts:
-build
-
+client/build
+client/dist
 user-guides/guides
 user-guides/build
 
 publiccode.yml
+# tell prettier to keep its hands off the bloody config files
+client/vite.config.js
+e2e/playwright.config.js
