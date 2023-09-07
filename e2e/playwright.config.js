@@ -100,9 +100,9 @@ const config = {
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'cd ../client && yarn build && cd ../server && yarn start:prod',
+    command: 'cd ../server && yarn start:prod',
     port: 3000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
 };
 

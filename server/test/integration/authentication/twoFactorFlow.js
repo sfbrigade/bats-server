@@ -28,7 +28,7 @@ describe('Two Factor Page', async () => {
     // Call the two-factor authentication endpoint
     const response = await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
     // Check that the response has the correct content
-    expect(response.text).to.contain('Please enter the Authoritzation Code that was sent to your E-mail');
+    expect(response.text).to.contain('Please enter the Authorization Code that was sent to your E-mail');
     expect(response.text).to.contain('Submit');
   });
 
