@@ -18,14 +18,14 @@ router.get('/login', (req, res) => {
 
 router.get('/twoFactor', async (req, res) => {
   if (req.session.twoFactor) {
-    console.log('mFa not enabled skipping twoFactor')
+    console.log('mFa not enabled skipping twoFactor');
     res.redirect('/');
   } else if (req.user) {
-    console.log('we have user but need authentication because company has mFa enabled')
+    console.log('we have user but need authentication because company has mFa enabled');
     await req.user.generateToTPSecret('twoFactor');
     res.render('auth/local/twoFactor');
   } else {
-    console.log('we have no user')
+    console.log('we have no user');
     // currently does not exist becuase moved to the front end
     res.redirect('/auth/local/login');
   }
@@ -44,18 +44,18 @@ router.post('/login', (req, res, next) => {
         // console.log('logging in')
         const org = await user.getOrganization();
         if (!org.isMfaEnabled) {
-          console.log('not mfa so skipping two factor')
+          console.log('not mfa so skipping two factor');
           req.session.twoFactor = true;
         }
         if (req.accepts('html')) {
           if (org.isMfaEnabled) {
             res.redirect('/auth/local/twoFactor');
           } else {
-            console.log('successffully logged in, redirecting to home')
+            console.log('successffully logged in, redirecting to home');
             res.redirect('/');
           }
         } else {
-          console.log('response not coming from form return status ok')
+          console.log('response not coming from form return status ok');
           res.status(HttpStatus.OK).end();
         }
       });

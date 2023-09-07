@@ -8,7 +8,6 @@ const session = require('supertest-session');
 const helper = require('../../helper');
 const app = require('../../../app');
 const model = require('../../../models');
-const { createTransport } = require('../../../mailer/emailTransporter');
 
 describe('Two Factor Page', async () => {
   let testSession = null;
@@ -47,7 +46,6 @@ describe('Two Factor Page', async () => {
     expect(response.status).to.equal(HttpStatus.MOVED_TEMPORARILY);
     // Expect redirect to login page
     expect(response.header.location).to.equal('/auth/local/login');
-
   });
 });
 
