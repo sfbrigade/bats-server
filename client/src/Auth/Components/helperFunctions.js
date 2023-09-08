@@ -5,6 +5,7 @@ function updateErrorState(input) {
   const labelErrorClass = 'usa-label--error';
   if (input.value !== '') {
     // if previously in error, remove that state
+    // console.log(input)
     if (input.classList.contains(inputErrorClass)) {
       label.classList.remove(labelErrorClass);
       input.classList.remove(inputErrorClass);

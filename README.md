@@ -33,6 +33,8 @@
 
    op.ems@c4sf.me/abcd1234 (an operational EMS user)
 
+   cpmc.davies.er@c4sf.me/abcd1234 (an operational Healthcare user belonging to mFa enabled org)
+
    If you wish to inspect the db, you can run:
 
    ```

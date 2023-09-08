@@ -13,9 +13,11 @@ router.post('/login', (req, res, next) => {
         const org = await user.getOrganization();
         if (org.isMfaEnabled) {
           await req.user.generateToTPSecret('twoFactor');
+          res.json(user.toJSON());
           res.status(HttpStatus.ACCEPTED).end();
         } else {
           req.session.twoFactor = true;
+          res.json(user.toJSON());
           res.status(HttpStatus.OK).end();
         }
       });

@@ -1,14 +1,16 @@
 import React from 'react';
-import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { updateErrorState, handleValidationEvent } from './helperFunctions';
+import { useContext, useState } from 'react';
+import {  handleValidationEvent } from './helperFunctions';
+import { useNavigate } from 'react-router-dom'
 import RequiredInput from './RequiredInput';
 import ApiService from '../../ApiService';
+import Context from '../../Context';
 
 export default function Form(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const navigate = useNavigate()
+  const {setUser} = useContext(Context)
+  const navigate = useNavigate()
 
   function isNotValid() {
     if (email.trim() === '' || password.trim() === '') {
@@ -21,22 +23,28 @@ export default function Form(props) {
 
   function onSubmit(event) {
     event.preventDefault();
-    console.log('handleSubmit')
     if (!isNotValid()) {
-      updateErrorState(email);
-      updateErrorState(password);
+      // updateErrorState(email);
+      // updateErrorState(password);
     }
-    ApiService.auth.login({username: email, password}).then((response) => {
-      // if (response.ok){
-      //   navigate('/')
-      // }
-      console.log(response)
+    ApiService.auth.login({username: email, password})
+    .then((res) => {
+      if (res.status === 200){
+        // if status returned 200 should set the userObject in Context
+        setUser(res.data)
+        // const userData = res.data;
+      }else if (res.status === 202){
+        console.log('requries mFa redirecting to mFa')
+        // if status returne 202 accepted, should not set redirect to mfa
+        console.log(res.data)
+        navigate('/twoFactor', {state:{user:res.data}})
+      }
      })
   }
 
 
   return (
-    <form id="login" className="usa-form" onSubmit={() => onSubmit}>
+    <form id="login" className="usa-form" onSubmit={onSubmit}>
       <RequiredInput
         type="email"
         name="username"

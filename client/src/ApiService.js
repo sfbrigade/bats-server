@@ -93,5 +93,8 @@ export default {
     login(params){
       return instance.post('/auth/local/login', params)
     },
+    twoFactor(params){
+      return instance.post('/auth/local/twoFactor',params)
+    }
   },
 };
