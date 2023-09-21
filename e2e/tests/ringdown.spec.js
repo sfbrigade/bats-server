@@ -23,19 +23,31 @@ test.describe('Initializing ringdowns', () => {
     await erPassword.fill(process.env.HOSPITAL_PASS);
     await erPassword.press('Enter');
     await expect(erPage).toHaveURL('/er');
+
   });
 
   test('Submits a ringdown', async ({ browser }) => {
     // TODO: move this into beforeEach once this works
 
-    const unitDropdown = emsPage.locator('id=ambulanceIdentifier-label');
-    // this isn't working yet (WIP)
+    const unitComboBox = emsPage.locator('#ambulanceIdentifier');
 
-    await unitDropdown.getByLabel(/Toggle the dropdown/).click();
+    await unitComboBox.click();
 
-    await expect(unitDropdown.getByText('SFFD-2')).toBeVisible();
+    const ambulanceIdentifierList = emsPage.locator('#ambulanceIdentifier--list');
 
-    await emsPage.getByLabel('Unit #').selectOption('SFFD-2');
+    await ambulanceIdentifierList.getByText('SFFD-2').click();
+
+    const incidentComboBox = emsPage.locator('#dispatchCallNumber');
+
+    await incidentComboBox.fill("2");
+
+    await incidentComboBox.press('Enter');
+
+    await expect(emsPage.locator('[name=dispatchCallNumber]')).toHaveValue('2');
+
+    await emsPage.getByText('Code 2').click();
+
+    await expect(emsPage.locator('[value="CODE 2"]')).toBeChecked();
   });
 
   test.afterEach(async ({ browser }) => {
