@@ -10,7 +10,7 @@ instance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.status === 401) {
-      window.location = '/';
+      window.location = '/login';
     }
     return Promise.reject(error);
   }
@@ -90,11 +90,11 @@ export default {
     },
   },
   auth: {
-    login(params){
-      return instance.post('/auth/local/login', params)
+    login(params) {
+      return instance.post('/auth/local/login', params);
     },
-    twoFactor(params){
-      return instance.post('/auth/local/twoFactor',params)
-    }
+    twoFactor(params) {
+      return instance.post('/auth/local/twoFactor', params);
+    },
   },
 };

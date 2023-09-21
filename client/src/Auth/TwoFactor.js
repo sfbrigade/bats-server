@@ -1,32 +1,33 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
 import ApiService from '../ApiService';
 import Context from '../Context';
 
 export default function TwoFactor() {
-  const [code, setCode] = useState('')
-  const navigate = useNavigate()
-  const location = useLocation()
-  const {setUser} = useContext(Context)
+  const [code, setCode] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { setUser } = useContext(Context);
 
-const onSubmit = (event) => {
-  event.preventDefault();
-  console.log('submit here with some validation logic')
-  ApiService.auth.twoFactor({code})
-  .then((res) => {
-    if (res.status === 200){
-      // if response is Ok then setUser to returned userObject
-      console.log(location.state.user)
-      setUser(location.state.user)
-      navigate('/')
-    }
-  }).catch((err) => {
-    console.err(err)
-    })
- }
-
+  const onSubmit = (event) => {
+    event.preventDefault();
+    console.log('submit here with some validation logic');
+    ApiService.auth
+      .twoFactor({ code })
+      .then((res) => {
+        if (res.status === 200) {
+          // if response is Ok then setUser to returned userObject
+          console.log(location.state.user);
+          setUser(location.state.user);
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        console.err(err);
+      });
+  };
 
   return (
     <div className="grid-container">
@@ -42,15 +43,17 @@ const onSubmit = (event) => {
             <div className="usa-form-group margin-y-4">
               {/* <input type="text" id="code" name="code" className="usa-input" /> */}
               <RequiredInput
-                  type="code"
-                  name="code"
-                  label="Code"
-                  value={code}
-                  handleValidationEvent={handleValidationEvent}
-                  onChange={setCode}
+                type="code"
+                name="code"
+                label="Code"
+                value={code}
+                handleValidationEvent={handleValidationEvent}
+                onChange={setCode}
               />
             </div>
-            <button type="submit" className="usa-button width-full">Submit</button>
+            <button type="submit" className="usa-button width-full">
+              Submit
+            </button>
           </form>
         </div>
       </div>
