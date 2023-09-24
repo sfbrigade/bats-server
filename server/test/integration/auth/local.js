@@ -35,13 +35,13 @@ describe('/auth/local', async () => {
       expect(sentMail[0].text).to.contain('Your two-factor authentication code is:');
     });
 
-    it('should return unauthorized for invalid credentials', async () => {
+    it('should return unprocessible entityh for invalid credentials', async () => {
       // Attempt an invalid Log In
       await testSession
         .post('/auth/local/login')
         .set('Accept', 'application/json')
         .send({ username: 'incorrect.user@example.com', password: 'barfoo' })
-        .expect(HttpStatus.UNAUTHORIZED);
+        .expect(HttpStatus.UNPROCESSABLE_ENTITY);
     });
   });
 

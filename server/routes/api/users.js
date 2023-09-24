@@ -107,7 +107,7 @@ router.post(
 );
 
 router.get('/me', middleware.isAuthenticated, async (req, res) => {
-  res.json(await req.user.toLoginPayloadJSON());
+  res.json(await req.user.getLoginPayloadJSON());
 });
 
 router.get('/active', middleware.isAuthenticated, setParams, async (req, res) => {
