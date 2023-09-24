@@ -1,33 +1,34 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import RequiredInput from './Components/RequiredInput';
-import { handleValidationEvent } from './Components/helperFunctions';
+import { useNavigate } from 'react-router-dom';
+
 import ApiService from '../ApiService';
 import Context from '../Context';
 
+import Error from './Components/Error';
+import RequiredInput from './Components/RequiredInput';
+import { handleValidationEvent } from './Components/helperFunctions';
+
 export default function TwoFactor() {
   const [code, setCode] = useState('');
+  const [invalid, setInvalid] = useState();
+  const [error, setError] = useState();
   const navigate = useNavigate();
-  const location = useLocation();
   const { setUser } = useContext(Context);
 
-  const onSubmit = (event) => {
+  async function onSubmit(event) {
     event.preventDefault();
-    console.log('submit here with some validation logic');
-    ApiService.auth
-      .twoFactor({ code })
-      .then((res) => {
-        if (res.status === 200) {
-          // if response is Ok then setUser to returned userObject
-          console.log(location.state.user);
-          setUser(location.state.user);
-          navigate('/');
-        }
-      })
-      .catch((err) => {
-        console.err(err);
-      });
-  };
+    try {
+      const res = await ApiService.auth.twoFactor({ code });
+      setUser(res.data);
+      navigate('/');
+    } catch (err) {
+      if (err.response?.status === 422) {
+        setInvalid(true);
+      } else {
+        setError(true);
+      }
+    }
+  }
 
   return (
     <div className="grid-container">
@@ -39,9 +40,10 @@ export default function TwoFactor() {
             </h1>
             <h4 className="text-base-light">Please enter the Authorization Code that was sent to your email address.</h4>
           </div>
+          {invalid && <Error input="Invalid code." />}
+          {error && <Error input="An unexpected error has occurred. Please try again." />}
           <form onSubmit={onSubmit} id="twoFactor" className="usa-form">
             <div className="usa-form-group margin-y-4">
-              {/* <input type="text" id="code" name="code" className="usa-input" /> */}
               <RequiredInput
                 type="code"
                 name="code"

@@ -21,6 +21,20 @@ module.exports = (sequelize) => {
       });
     }
 
+    async getLoginPayloadJSON(options = {}) {
+      const { transaction } = options;
+      if (!this.Organization) {
+        this.Organization = await this.getOrganization({ transaction });
+      }
+      if (!this.ActiveHospitalUsers) {
+        this.ActiveHospitalUsers = await this.getActiveHospitalUsers({
+          include: [sequelize.models.Hospital],
+          transaction,
+        });
+      }
+      return this.toJSON();
+    }
+
     toJSON() {
       const attributes = { ...this.get() };
       attributes.organization = this.Organization?.toJSON() || { id: this.OrganizationId };

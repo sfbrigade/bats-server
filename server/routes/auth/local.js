@@ -1,8 +1,10 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
-const router = express.Router();
+
 const models = require('../../models');
+
+const router = express.Router();
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
@@ -13,29 +15,28 @@ router.post('/login', (req, res, next) => {
         const org = await user.getOrganization();
         if (org.isMfaEnabled) {
           await req.user.generateToTPSecret('twoFactor');
-          res.json(user.toJSON());
           res.status(HttpStatus.ACCEPTED).end();
         } else {
           req.session.twoFactor = true;
-          res.json(user.toJSON());
-          res.status(HttpStatus.OK).end();
+          user.Organization = org;
+          res.json(await user.getLoginPayloadJSON());
         }
       });
     } else {
-      res.status(HttpStatus.UNAUTHORIZED).end();
+      res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
     }
   })(req, res, next);
 });
 
-router.post('/twoFactor', (req, res) => {
+router.post('/twoFactor', async (req, res) => {
   if (req.user) {
     const verified = req.user.verifyTwoFactor(req.body.code);
     // If the code is verified, set the session to twoFactor
     if (verified) {
       req.session.twoFactor = true;
-      res.status(HttpStatus.OK).end();
+      res.json(await req.user.getLoginPayloadJSON());
     } else {
-      res.status(HttpStatus.UNAUTHORIZED).end();
+      res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
     }
   } else {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();

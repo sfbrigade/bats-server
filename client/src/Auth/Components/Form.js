@@ -23,10 +23,6 @@ export default function Form(props) {
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (!isNotValid()) {
-      // updateErrorState(email);
-      // updateErrorState(password);
-    }
     try {
       const res = await ApiService.auth.login({ username: email, password });
       if (res.status === 200) {
