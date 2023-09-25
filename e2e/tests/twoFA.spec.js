@@ -55,7 +55,7 @@ test.describe('2FA', () => {
     const emailText = await msgResponse.text();
 
     // Use a regular expression to find "Code: " + six-digit number
-    const regex = /code is: (\d{6}) /;
+    const regex = /code is: (\d{6})/;
     const foundCode = emailText.match(regex);
     expect(foundCode).not.toBeNull();
 
@@ -91,7 +91,7 @@ test.describe('2FA', () => {
     const msgResponse = await request.get(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
     const emailText = await msgResponse.text();
     // Use a regular expression to find "Code: " + six-digit number
-    const regex = /code is: (\d{6}) /;
+    const regex = /code is: (\d{6})/;
     const foundCode = emailText.match(regex);
     expect(foundCode).not.toBeNull();
 
