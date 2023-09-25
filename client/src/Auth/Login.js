@@ -70,13 +70,7 @@ export default function Login() {
             {invalid && <Error input="Invalid email and/or password." />}
             {error && <Error input="An unexpected error has occurred. Please try again." />}
             <form id="login" className="usa-form" onSubmit={onSubmit}>
-              <RequiredInput
-                type="email"
-                name="username"
-                label="Username"
-                handleValidationEvent={handleValidationEvent}
-                onChange={setEmail}
-              />
+              <RequiredInput type="email" name="username" label="Email" handleValidationEvent={handleValidationEvent} onChange={setEmail} />
               <RequiredInput
                 type="password"
                 name="password"

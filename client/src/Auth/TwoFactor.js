@@ -40,7 +40,7 @@ export default function TwoFactor() {
             </h1>
             <h4 className="text-base-light">Please enter the Authorization Code that was sent to your email address.</h4>
           </div>
-          {invalid && <Error input="Invalid code." />}
+          {invalid && <Error input="Invalid Authorization Code." />}
           {error && <Error input="An unexpected error has occurred. Please try again." />}
           <form onSubmit={onSubmit} id="twoFactor" className="usa-form">
             <div className="usa-form-group margin-y-4">
