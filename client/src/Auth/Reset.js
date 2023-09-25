@@ -25,7 +25,7 @@ export default function Reset() {
     setError();
     setInvalid();
     try {
-      await ApiService.auth.reset({ email });
+      await ApiService.auth.forgot({ email });
       setSuccess(true);
     } catch (err) {
       if (err.response?.status === 404) {

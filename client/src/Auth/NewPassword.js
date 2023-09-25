@@ -1,20 +1,53 @@
 import React, { useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+
+import ApiService from '../ApiService';
+
+import Alert from './Components/Alert';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
-import { Link } from 'react-router-dom';
-import Alert from './Components/Alert';
 
 export default function NewPassword() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
-  const url = new URL(window.location.href);
-  const error = url.searchParams.get('error');
+
+  const [invalid, setInvalid] = useState();
+  const [invalidLink, setInvalidLink] = useState();
+  const [error, setError] = useState();
+
   function isNotValid() {
     if (password !== '' && confirm !== '' && password === confirm) {
       return false;
     }
     return true;
   }
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    setInvalid();
+    setInvalidLink();
+    setError();
+    try {
+      await ApiService.auth.reset({
+        email: searchParams.get('email'),
+        code: searchParams.get('code'),
+        password,
+      });
+      navigate('/login', { state: { flash: { success: 'Your password has been reset and you may log in using your new password.' } } });
+    } catch (err) {
+      if (err.response?.status === 422) {
+        setInvalid(true);
+      } else if (err.response?.status === 403) {
+        setInvalidLink(true);
+      } else {
+        setError(true);
+      }
+    }
+  }
+
   return (
     <div className="grid-container">
       <div className="grid-row">
@@ -26,14 +59,15 @@ export default function NewPassword() {
               </h1>
             </Link>
             <h4 className="text-base-light">
-              Enter and confirm a new password for your account. Your new password must contain atleast 8 characters, including upper and
+              Enter and confirm a new password for your account. Your new password must contain at least 8 characters, including upper and
               lowercase letters, a number, and a symbol.
             </h4>
-            {error === 'invalidPassword' && <Alert input="Invalid password. Your password did not meet the requirements." />}
-            {error === 'invalidCode' && <Alert input="Invalid code. Your link is expired." />}
-            {error === 'invalidEmail' && <Alert input="Invalid email. This user does not exist in our database." />}
-            <form method="post" action="/auth/local/newPassword" id="confirm" className="usa-form">
+            {invalid && <Alert input="Invalid password. Your password did not meet the requirements." />}
+            {invalidLink && <Alert input="This link is no longer valid. Please request another." />}
+            {error && <Alert input="An unexpected error has occurred. Please try again." />}
+            <form onSubmit={onSubmit} id="confirm" className="usa-form">
               <RequiredInput
+                type="password"
                 label="Password"
                 name="password"
                 value={password}
@@ -41,22 +75,16 @@ export default function NewPassword() {
                 onChange={setPassword}
               />
               <RequiredInput
+                type="password"
                 label="Confirm"
-                name="password"
+                name="confirm"
                 value={confirm}
                 handleValidationEvent={handleValidationEvent}
                 onChange={setConfirm}
               />
-              <input type="hidden" name="email" value={url.searchParams.get('email')} />
-              <input type="hidden" name="code" value={url.searchParams.get('code')} />
               <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
                 Reset Password
               </button>
-              {isNotValid() ? (
-                <span class="usa-error-message">
-                  <i class="fas fa-exclamation-circle"></i> These passwords do not meet the requirements.
-                </span>
-              ) : null}
             </form>
           </div>
         </div>

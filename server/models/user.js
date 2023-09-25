@@ -78,8 +78,11 @@ module.exports = (sequelize) => {
           verificationCode: token,
         });
       } else if (method === 'resetPassword') {
+        const params = new URLSearchParams();
+        params.append('email', this.email);
+        params.append('code', token);
         await sendMail(this.email, 'Password Reset from Routed', 'passwordReset', {
-          passwordResetLink: `${process.env.BASE_URL}/reset/newPassword/?email=${this.email}&code=${token}`,
+          passwordResetLink: `${process.env.BASE_URL}/reset/newPassword?${params}`,
         });
       }
     }

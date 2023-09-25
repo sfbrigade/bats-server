@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
@@ -14,7 +14,9 @@ export default function Login() {
   const [invalid, setInvalid] = useState();
   const [error, setError] = useState();
   const { setUser } = useContext(Context);
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   function isNotValid() {
     if (email.trim() === '' || password.trim() === '') {
@@ -63,6 +65,7 @@ export default function Login() {
             </h4>
             {invalid && <Alert input="Invalid email and/or password." />}
             {error && <Alert input="An unexpected error has occurred. Please try again." />}
+            {!error && !invalid && location.state?.flash?.success && <Alert type="success" input={location.state.flash.success} />}
             <form id="login" className="usa-form" onSubmit={onSubmit}>
               <RequiredInput type="email" name="username" label="Email" handleValidationEvent={handleValidationEvent} onChange={setEmail} />
               <RequiredInput

@@ -53,7 +53,7 @@ router.get('/logout', (req, res) => {
   }
 });
 
-router.post('/reset', async (req, res) => {
+router.post('/forgot', async (req, res) => {
   let user = await models.User.findOne({
     where: {
       email: req.body.email,
@@ -67,7 +67,7 @@ router.post('/reset', async (req, res) => {
   }
 });
 
-router.post('/newPassword', async (req, res) => {
+router.post('/reset', async (req, res) => {
   const { email, code, password } = req.body;
   let user = await models.User.findOne({
     where: {
@@ -75,7 +75,7 @@ router.post('/newPassword', async (req, res) => {
     },
   });
   if (user == null) {
-    res.status(HttpStatus.NOT_FOUND).end();
+    res.status(HttpStatus.FORBIDDEN).end();
   } else {
     const verified = user.verifyTwoFactor(code);
     if (verified) {
@@ -87,7 +87,7 @@ router.post('/newPassword', async (req, res) => {
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
       }
     } else {
-      res.status(HttpStatus.UNAUTHORIZED).end();
+      res.status(HttpStatus.FORBIDDEN).end();
     }
   }
 });
