@@ -96,5 +96,8 @@ export default {
     twoFactor(params) {
       return instance.post('/auth/local/twoFactor', params);
     },
+    reset(params) {
+      return instance.post('/auth/local/reset', params);
+    },
   },
 };

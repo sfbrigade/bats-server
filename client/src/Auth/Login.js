@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ApiService from '../ApiService';
 import Context from '../Context';
 
-import Error from './Components/Error';
+import Alert from './Components/Alert';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
 
@@ -48,10 +48,6 @@ export default function Login() {
     }
   }
 
-  const url = new URL(window.location.href);
-  const auth = url.searchParams.get('auth');
-  const reset = url.searchParams.get('reset');
-
   return (
     <div className="grid-container">
       <div className="grid-row">
@@ -65,10 +61,8 @@ export default function Login() {
               <br />
               email and password below.
             </h4>
-            {reset && <Error input="Your password has been reset. You may now log in." />}
-            {auth && <Error input="Invalid attempt. You are not authorized." />}
-            {invalid && <Error input="Invalid email and/or password." />}
-            {error && <Error input="An unexpected error has occurred. Please try again." />}
+            {invalid && <Alert input="Invalid email and/or password." />}
+            {error && <Alert input="An unexpected error has occurred. Please try again." />}
             <form id="login" className="usa-form" onSubmit={onSubmit}>
               <RequiredInput type="email" name="username" label="Email" handleValidationEvent={handleValidationEvent} onChange={setEmail} />
               <RequiredInput

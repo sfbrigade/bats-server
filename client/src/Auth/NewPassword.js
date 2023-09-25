@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
 import { Link } from 'react-router-dom';
-import Error from './Components/Error';
+import Alert from './Components/Alert';
 
 export default function NewPassword() {
   const [password, setPassword] = useState('');
@@ -29,9 +29,9 @@ export default function NewPassword() {
               Enter and confirm a new password for your account. Your new password must contain atleast 8 characters, including upper and
               lowercase letters, a number, and a symbol.
             </h4>
-            {error === 'invalidPassword' && <Error input="Invalid password. Your password did not meet the requirements." />}
-            {error === 'invalidCode' && <Error input="Invalid code. Your link is expired." />}
-            {error === 'invalidEmail' && <Error input="Invalid email. This user does not exist in our database." />}
+            {error === 'invalidPassword' && <Alert input="Invalid password. Your password did not meet the requirements." />}
+            {error === 'invalidCode' && <Alert input="Invalid code. Your link is expired." />}
+            {error === 'invalidEmail' && <Alert input="Invalid email. This user does not exist in our database." />}
             <form method="post" action="/auth/local/newPassword" id="confirm" className="usa-form">
               <RequiredInput
                 label="Password"

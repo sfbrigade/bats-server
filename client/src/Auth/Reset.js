@@ -1,18 +1,39 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import ApiService from '../ApiService';
+import Alert from './Components/Alert';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
-import { Link } from 'react-router-dom';
-import Error from './Components/Error';
 
 export default function Reset() {
   const [email, setEmail] = useState('');
-  const url = new URL(window.location.href);
-  const error = url.searchParams.get('error');
+
+  const [invalid, setInvalid] = useState();
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState();
+
   function isNotValid() {
     if (email !== '') {
       return false;
     }
     return true;
+  }
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    setError();
+    setInvalid();
+    try {
+      await ApiService.auth.reset({ email });
+      setSuccess(true);
+    } catch (err) {
+      if (err.response?.status === 404) {
+        setInvalid(true);
+      } else {
+        setError(true);
+      }
+    }
   }
 
   return (
@@ -29,13 +50,22 @@ export default function Reset() {
               Enter your email and we will send you a<br />
               code to reset your password.
             </h4>
-            {error && <Error input="Invalid email" />}
-            <form method="post" action="/auth/local/reset" id="reset" className="usa-form">
-              <RequiredInput label="Email" name="email" value={email} handleValidationEvent={handleValidationEvent} onChange={setEmail} />
-              <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
-                Send Code
-              </button>
-            </form>
+            {invalid && <Alert input="Invalid email address." />}
+            {error && <Alert input="An unexpected error has occurred. Please try again." />}
+            {success && (
+              <Alert
+                type="success"
+                input="Please check your email for a reset password link. It may take a few minutes for the email to arrive."
+              />
+            )}
+            {!success && (
+              <form className="usa-form" onSubmit={onSubmit}>
+                <RequiredInput label="Email" name="email" value={email} handleValidationEvent={handleValidationEvent} onChange={setEmail} />
+                <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
+                  Send Code
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>
