@@ -48,6 +48,101 @@ test.describe('Initializing ringdowns', () => {
     await emsPage.getByText('Code 2').click();
 
     await expect(emsPage.locator('[value="CODE 2"]')).toBeChecked();
+
+    const ageBox = emsPage.locator('#age');
+
+    await ageBox.fill("25");
+    await expect(ageBox).toHaveValue('25');
+
+    await emsPage.getByText('Non-binary').click();
+
+    await expect(emsPage.locator('[value="NON-BINARY"]')).toBeChecked();
+
+    const chiefComplaintBox = emsPage.locator('#chiefComplaintDescription');
+
+    const complaintText = "Patient ate too many skittles. They are experiencing severe regretitis";
+
+    await chiefComplaintBox.fill(complaintText);
+
+    await expect(chiefComplaintBox).toHaveValue(complaintText);
+
+    await emsPage.getByText('Vitals stable').click();
+
+    await expect(emsPage.locator('#stableIndicator-true')).toBeChecked();
+
+    const systolicBox = emsPage.locator("#systolicBloodPressure");
+
+    await systolicBox.fill("130");
+    await expect(systolicBox).toHaveValue("130");
+
+    const diastolicBox = emsPage.locator("#diastolicBloodPressure");
+
+    await diastolicBox.fill("80");
+    await expect(diastolicBox).toHaveValue("80");
+
+    const pulseBox = emsPage.locator("#heartRateBpm");
+
+    await pulseBox.fill("85");
+    await expect(pulseBox).toHaveValue("85");
+
+    const respiratoryBox = emsPage.locator("#respiratoryRate");
+
+    await respiratoryBox.fill("20");
+    await expect(respiratoryBox).toHaveValue("20");
+
+    const oxygenBox = emsPage.locator("#oxygenSaturation");
+
+    await oxygenBox.fill("40");
+    await expect(oxygenBox).toHaveValue("40");
+
+    await emsPage.getByText('Room Air').click();
+
+    await expect(emsPage.locator('[value="ROOM AIR"]')).toBeChecked();
+
+    const temperatureBox = emsPage.locator("#temperature");
+
+    await temperatureBox.fill("98");
+    await expect(temperatureBox).toHaveValue("98");
+
+    const treatmentNotesBox = emsPage.locator("#treatmentNotes");
+
+    const treatmentNoteText = "N/A";
+
+    await treatmentNotesBox.fill(treatmentNoteText);
+    await expect(treatmentNotesBox).toHaveText(treatmentNoteText);
+
+    await emsPage.getByText("COVID-19 suspected").click();
+
+    await expect(emsPage.locator("#covid19SuspectedIndicator-true")).toBeChecked();
+
+    const otherObservationsBox = emsPage.locator("#otherObservationNotes");
+
+    const otherText = "Patient is a fan of 90s grunge music";
+
+    await otherObservationsBox.fill(otherText);
+    await expect(otherObservationsBox).toHaveText(otherText);
+
+    await emsPage.getByText("Select Hospital").click();
+
+    await expect(emsPage.getByText('Hospital Selection')).toBeVisible();
+
+    await emsPage.locator('label').filter({ hasText: 'CPMC Van Ness' }).click();
+
+    await expect(emsPage.locator('label').filter({ hasText: 'CPMC Van Ness' })).toBeChecked();
+
+    const etaBox = emsPage.locator("#etaMinutes");
+
+    await etaBox.fill("10");
+    await expect(etaBox).toHaveText("10");
+
+
+    await emsPage.getByText("Send Ringdown").click();
+
+    // Unfortunately, if a test fails at this point, the ringdown must be removed. Right now the state is saved
+
+    await expect(emsPage.getByText('Ringdown sent')).toBeVisible();
+
+
   });
 
   test.afterEach(async ({ browser }) => {
