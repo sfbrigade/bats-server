@@ -8,8 +8,7 @@ import ER from './ER';
 import Admin from './Admin';
 import Redirect from './Components/Redirect';
 import Login from './Auth/Login';
-import Reset from './Auth/Reset';
-import EmailSent from './Auth/EmailSent';
+import Forgot from './Auth/Forgot';
 import NewPassword from './Auth/NewPassword';
 import TwoFactor from './Auth/TwoFactor';
 
@@ -50,9 +49,8 @@ function App() {
           <Route path="/admin/*" element={<Admin />} />
           {!user && (
             <>
-              <Route path="/reset/newPassword" element={<NewPassword />} />
-              <Route path="/reset/emailSent" element={<EmailSent />} />
-              <Route path="/reset" element={<Reset />} />
+              <Route path="/reset" element={<NewPassword />} />
+              <Route path="/forgot" element={<Forgot />} />
               <Route path="/twoFactor" element={<TwoFactor />} />
               <Route path="/login" element={<Login />} />
             </>

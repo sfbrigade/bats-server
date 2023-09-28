@@ -82,7 +82,7 @@ module.exports = (sequelize) => {
         params.append('email', this.email);
         params.append('code', token);
         await sendMail(this.email, 'Password Reset from Routed', 'passwordReset', {
-          passwordResetLink: `${process.env.BASE_URL}/reset/newPassword?${params}`,
+          passwordResetLink: `${process.env.BASE_URL}/reset?${params}`,
         });
       }
     }

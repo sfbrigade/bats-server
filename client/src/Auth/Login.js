@@ -79,10 +79,10 @@ export default function Login() {
               <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
                 Login
               </button>
+              <div className="margin-y-3">
+                <Link to="/forgot">Forgot your password?</Link>
+              </div>
             </form>
-            <Link to="/reset">
-              <button className="usa-button width-full margin-top-3"> Reset Password</button>
-            </Link>
           </div>
         </div>
       </div>

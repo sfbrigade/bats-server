@@ -6,7 +6,7 @@ import Alert from './Components/Alert';
 import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
 
-export default function Reset() {
+export default function Forgot() {
   const [email, setEmail] = useState('');
 
   const [invalid, setInvalid] = useState();
@@ -48,7 +48,7 @@ export default function Reset() {
             </Link>
             <h4 className="text-base-light">
               Enter your email and we will send you a<br />
-              code to reset your password.
+              link to reset your password.
             </h4>
             {invalid && <Alert input="Invalid email address." />}
             {error && <Alert input="An unexpected error has occurred. Please try again." />}
@@ -62,7 +62,7 @@ export default function Reset() {
               <form className="usa-form" onSubmit={onSubmit}>
                 <RequiredInput label="Email" name="email" value={email} handleValidationEvent={handleValidationEvent} onChange={setEmail} />
                 <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
-                  Send Code
+                  Send Reset Link
                 </button>
               </form>
             )}
