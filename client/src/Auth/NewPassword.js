@@ -76,7 +76,7 @@ export default function NewPassword() {
               />
               <RequiredInput
                 type="password"
-                label="Confirm"
+                label="Confirm Password"
                 name="confirm"
                 value={confirm}
                 handleValidationEvent={handleValidationEvent}

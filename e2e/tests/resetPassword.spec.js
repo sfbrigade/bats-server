@@ -6,105 +6,43 @@ test.beforeEach(async ({ request }) => {
   await request.delete(`http://${SMTP_HOST}:1080/messages`);
 });
 
-test.describe('2FA', () => {
-  test.describe.configure({ mode: 'serial' });
-
-  test('shows the Routed logo and two factor authentication form', async ({ page }) => {
+test.describe('Reset Password', () => {
+  test('login page has a link to the forgot password page', async ({ page }) => {
     await page.goto('/');
-    await page.getByLabel('Email').fill('mission.bernal.er@c4sf.me');
-    const password = page.getByLabel('Password');
-    await password.fill('abcd1234');
-    await password.press('Enter');
-    await expect(page).toHaveURL('/twoFactor');
-    await expect(page).toHaveTitle(/Routed/);
-    await expect(page.getByAltText('Routed logo')).toBeVisible();
-    await expect(page.getByText('Please enter the Authorization Code that was sent to your email address.')).toBeVisible();
-    await expect(page.getByLabel('Code')).toBeVisible();
-    await expect(page.getByText('Submit')).toBeVisible();
+    await page.getByText('Forgot your password?').click();
+    await expect(page).toHaveURL('/forgot');
+    await expect(page.getByLabel('Email')).toBeVisible();
+    await expect(page.getByText('Send Reset Link')).toBeVisible();
   });
 
-  test('Shows Error after Incorrect Two Factor Authentication', async ({ page }) => {
-    await page.goto('/');
-    await page.getByLabel('Email').fill('mission.bernal.er@c4sf.me');
-    const password = page.getByLabel('Password');
-    await password.fill('abcd1234');
-    await password.press('Enter');
-    await expect(page).toHaveURL('/twoFactor');
-    await page.getByLabel('Code').fill('123456');
-    await page.getByText('Submit').click();
-    await expect(page.getByText('Invalid Authorization Code.')).toBeVisible();
-  });
+  test('sends an email with a reset password link', async ({ page, request }) => {
+    await page.goto('/forgot');
+    await page.getByLabel('Email').fill('op.ems@c4sf.me');
+    await page.getByText('Send Reset Link').click();
+    await expect(
+      page.getByText('Please check your email for a reset password link. It may take a few minutes for the email to arrive.')
+    ).toBeVisible();
+    await page.waitForTimeout(200);
 
-  test('logs in as EMS user with 2FA', async ({ context, request }) => {
-    const appPage = await context.newPage();
+    const messages = await request.get(`http://${SMTP_HOST}:1080/messages`).then((response) => response.json());
+    expect(messages.length).toBe(1);
+    const text = await request.get(`http://${SMTP_HOST}:1080/messages/${messages[0].id}.plain`).then((response) => response.text());
 
-    await appPage.goto('/');
-    await appPage.getByLabel('Email').fill('amr.user@c4sf.me');
-    const password = appPage.getByLabel('Password');
-    await password.fill('abcd1234');
-    await password.press('Enter');
+    const m = text.match(/\/reset\?[^\r\n]+/);
+    expect(m).toBeTruthy();
 
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await page.goto(m[0]);
+    await page.getByTestId('password').fill('Abcd1234!');
+    await page.getByTestId('confirm').fill('Abcd1234!');
+    await page.getByText('Reset Password').click();
 
-    const allMsgsResponse = await request.get(`http://${SMTP_HOST}:1080/messages`);
-    const messages = await allMsgsResponse.json();
-    const lastMessageIdx = messages.length;
-    await expect(lastMessageIdx).toBeGreaterThan(0);
+    await expect(page).toHaveURL('/login');
+    await expect(page.getByText('Your password has been reset and you may log in using your new password.')).toBeVisible();
 
-    const msgResponse = await request.get(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
-    const emailText = await msgResponse.text();
+    await page.getByLabel('Email').fill('op.ems@c4sf.me');
+    await page.getByLabel('Password').fill('Abcd1234!');
+    await page.getByText('Login').click();
 
-    // Use a regular expression to find "Code: " + six-digit number
-    const regex = /code is: (\d{6})/;
-    const foundCode = emailText.match(regex);
-    expect(foundCode).not.toBeNull();
-
-    const authCode = foundCode[1];
-    const code = appPage.getByLabel('Code');
-    await code.fill(authCode);
-    await code.press('Enter');
-
-    const pageBody = appPage.locator('body');
-    await expect(pageBody).not.toHaveText(/Invalid Authorization/);
-    await expect(appPage).toHaveURL('/ems');
-
-    // Gracefully close up everything
-    await context.close();
-  });
-
-  test('logs in as Hospital user with 2FA', async ({ context, request }) => {
-    const appPage = await context.newPage();
-
-    await appPage.goto('/');
-    await appPage.getByLabel('Email').fill('mission.bernal.er@c4sf.me');
-    const password = appPage.getByLabel('Password');
-    await password.fill('abcd1234');
-    await password.press('Enter');
-
-    await new Promise((resolve) => setTimeout(resolve, 200));
-
-    const allMsgsResponse = await request.get(`http://${SMTP_HOST}:1080/messages`);
-    const messages = await allMsgsResponse.json();
-    const lastMessageIdx = messages.length;
-    await expect(lastMessageIdx).toBeGreaterThan(0);
-
-    const msgResponse = await request.get(`http://${SMTP_HOST}:1080/messages/${lastMessageIdx}.plain`);
-    const emailText = await msgResponse.text();
-    // Use a regular expression to find "Code: " + six-digit number
-    const regex = /code is: (\d{6})/;
-    const foundCode = emailText.match(regex);
-    expect(foundCode).not.toBeNull();
-
-    const authCode = foundCode[1];
-    const code = appPage.getByLabel('Code');
-    await code.fill(authCode);
-    await code.press('Enter');
-
-    const pageBody = appPage.locator('body');
-    await expect(pageBody).not.toHaveText(/Invalid Authorization/);
-    await expect(appPage).toHaveURL('/er');
-
-    // Gracefully close up everything
-    await context.close();
+    await expect(page).toHaveURL('/ems');
   });
 });

@@ -22,6 +22,7 @@ function RequiredInput(props) {
           type={type}
           defaultValue={defaultValue}
           id={name}
+          data-testid={name}
           name={name}
           className="usa-input"
           onChange={(e) => onChange(e.target.value)}
@@ -34,6 +35,7 @@ function RequiredInput(props) {
           type={type}
           value={value}
           id={name}
+          data-testid={name}
           name={name}
           className="usa-input"
           onChange={(e) => onChange(e.target.value)}
