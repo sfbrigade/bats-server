@@ -4,7 +4,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "@playwright/test": "^1.30.0",
+    "@playwright/test": "^1.38.1",
     "dotenv": "^16.0.3"
   },
   "scripts": {

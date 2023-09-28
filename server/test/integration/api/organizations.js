@@ -16,7 +16,8 @@ describe('/api/organizations', () => {
       .post('/auth/local/login')
       .set('Accept', 'application/json')
       .send({ username: 'super.user@example.com', password: 'abcd1234' })
-      .expect(HttpStatus.OK);
+      .expect(HttpStatus.ACCEPTED);
+    // since company in fixture has mFa enabled, signing in would require twoFactor
     await helper.twoFactorAuthSession(testSession);
   });
 

@@ -1,5 +1,8 @@
 const assert = require('assert');
 const bcrypt = require('bcrypt');
+const { expect } = require('chai');
+const nodemailermock = require('nodemailer-mock');
+
 const helper = require('../../helper');
 const models = require('../../../models');
 
@@ -31,5 +34,23 @@ describe('models.User', () => {
     assert(user.createdAt);
     assert(user.updatedAt);
     assert(await bcrypt.compare('Abcd1234!', user.hashedPassword));
+  });
+
+  describe('.generateToTPSecret()', () => {
+    it('should send out intended email with ANY provided Email Transporter', async () => {
+      // Generate a secret and send it to the mock transport
+      const user = await models.User.findOne({ where: { email: 'sutter.operational@example.com' } });
+      await user.generateToTPSecret('twoFactor');
+      // Get the sent message from the mock transport
+      const sentMail = nodemailermock.mock.sentMail();
+      // Expect one message to be sent
+      expect(sentMail.length).to.equal(1);
+      // Expect the message to be sent to the correct email address
+      expect(sentMail[0].to).to.equal('sutter.operational@example.com');
+      // Expect the message to have the correct subject
+      expect(sentMail[0].subject).to.equal('Your Authentication Code from Routed');
+      // Expect the message to have the correct text with 6 digit Authentication Code
+      expect(sentMail[0].text).to.contain('Your two-factor authentication code is:');
+    });
   });
 });

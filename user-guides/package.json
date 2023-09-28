@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@playwright/test": "^1.26.1",
+    "@playwright/test": "^1.38.1",
     "contentful-management": "^10.15.1",
     "dotenv": "^16.0.3",
     "fs-extra": "^10.1.0",

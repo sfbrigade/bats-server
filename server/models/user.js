@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { Model } = require('sequelize');
 const metadata = require('shared/metadata/user');
 const initModel = require('../metadata/initModel');
-const { sendMail, createTransport } = require('../mailer/emailTransporter');
+const { sendMail } = require('../mailer/emailTransporter');
 const OTPAuth = require('otpauth');
 
 const SALT_ROUNDS = 10;
@@ -19,6 +19,20 @@ module.exports = (sequelize) => {
         as: 'ActiveHospitalUsers',
         foreignKey: 'edadminuser_uuid',
       });
+    }
+
+    async getLoginPayloadJSON(options = {}) {
+      const { transaction } = options;
+      if (!this.Organization) {
+        this.Organization = await this.getOrganization({ transaction });
+      }
+      if (!this.ActiveHospitalUsers) {
+        this.ActiveHospitalUsers = await this.getActiveHospitalUsers({
+          include: [sequelize.models.Hospital],
+          transaction,
+        });
+      }
+      return this.toJSON();
     }
 
     toJSON() {
@@ -41,7 +55,7 @@ module.exports = (sequelize) => {
       ]);
     }
 
-    async generateToTPSecret() {
+    async generateToTPSecret(method = 'twoFactor') {
       const secret = new OTPAuth.Secret();
       // new TOTP object using the secret key
       const totp = new OTPAuth.TOTP({
@@ -58,18 +72,22 @@ module.exports = (sequelize) => {
 
       await this.update({ twoFactorData: { totptimestamp: Date.now() + 900000, totptoken: token } });
       await this.save();
-
       // send email with token
-      sendMail(
-        createTransport(),
-        this.email,
-        'Your Authentication Code from Routed',
-        `This is your Authentication Code: ${token} . It will expire in 15 minutes.`
-      );
+      if (method === 'twoFactor') {
+        await sendMail(this.email, 'Your Authentication Code from Routed', 'twoFactor', {
+          verificationCode: token,
+        });
+      } else if (method === 'resetPassword') {
+        const params = new URLSearchParams();
+        params.append('email', this.email);
+        params.append('code', token);
+        await sendMail(this.email, 'Password Reset from Routed', 'passwordReset', {
+          passwordResetLink: `${process.env.BASE_URL}/reset?${params}`,
+        });
+      }
     }
 
-    verifyTwoFactor(req) {
-      const token = req.body.code;
+    verifyTwoFactor(token) {
       const totptoken = this.dataValues.twoFactorData.totptoken;
       const totptimestamp = this.dataValues.twoFactorData.totptimestamp;
       const verified = token === totptoken && Date.now() < totptimestamp;
