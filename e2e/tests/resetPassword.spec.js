@@ -32,7 +32,8 @@ test.describe('Reset Password', () => {
     expect(m).toBeTruthy();
 
     await page.goto(m[0]);
-    await page.getByTestId('password').fill('Abcd1234!');
+    await page.getByLabel('Password').fill('Abcd1234!');
+    // TODO: figure out why getByLabel doesn't work with the Confirm Password label/input
     await page.getByTestId('confirm').fill('Abcd1234!');
     await page.getByText('Reset Password').click();
 
