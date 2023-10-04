@@ -42,7 +42,7 @@ test.describe('Initializing ringdowns', () => {
     await expect(erPage).toHaveURL('/er');
   });
 
-  test('Submits a ringdown', async ({ browser }) => {
+  test('Submits a ringdown', async () => {
     // TODO: move this into beforeEach once this works
 
     const unitComboBox = emsPage.locator('#ambulanceIdentifier');
