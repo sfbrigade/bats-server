@@ -156,10 +156,7 @@ test.describe('Initializing ringdowns', () => {
 
     await emsPage.getByText("Send Ringdown").click();
 
-    // Unfortunately, if a test fails at this point, the ringdown must be removed. Right now the state is saved
-
     await expect(emsPage.getByText('Ringdown sent')).toBeVisible();
-
 
   });
 
