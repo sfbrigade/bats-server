@@ -1,9 +1,22 @@
 const { test, expect } = require('@playwright/test');
 
+const cancelRingdown = async (page) => {
+  await page.getByText("Cancel delivery").click();
+
+  await expect(page.getByText('hospital will be notified')).toBeVisible();
+
+  await page.getByText("Yes, cancel delivery").click();
+
+  await expect(page.getByText('Delivery canceled')).toBeVisible();
+
+  await page.getByText("Start new form").click();
+}
+
 let emsContext, erContext;
 let erPage, emsPage;
 test.describe('Initializing ringdowns', () => {
   test.beforeEach(async ({ browser }) => {
+
     emsContext = await browser.newContext();
     erContext = await browser.newContext();
 
@@ -16,6 +29,11 @@ test.describe('Initializing ringdowns', () => {
     await emsPassword.fill(process.env.EMS_PASS);
     await emsPassword.press('Enter');
     await expect(emsPage).toHaveURL('/ems');
+
+    const ringdownPresent = await emsPage.getByText("Ringdown sent");
+    if(await ringdownPresent.count() > 0) {
+      await cancelRingdown(emsPage);
+    }
 
     await erPage.goto('/');
     await erPage.getByLabel('Email').fill(process.env.HOSPITAL_USER);
@@ -133,7 +151,7 @@ test.describe('Initializing ringdowns', () => {
     const etaBox = emsPage.locator("#etaMinutes");
 
     await etaBox.fill("10");
-    await expect(etaBox).toHaveText("10");
+    await expect(etaBox).toHaveValue("10");
 
 
     await emsPage.getByText("Send Ringdown").click();
