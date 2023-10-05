@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
 
@@ -28,6 +28,7 @@ export default function ER() {
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
   const [statusUpdate, setStatusUpdate] = useState();
+  const lastIdRef = useRef(null);
 
   const [playSound] = useSound(notification);
 
@@ -82,7 +83,11 @@ export default function ER() {
       setUnconfirmedRingdowns(newUnconfirmedRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
       if (showRingdown && newUnconfirmedRingdowns.length > 0) {
-        playSound();
+        const lastRingdown = newUnconfirmedRingdowns[newUnconfirmedRingdowns.length - 1];
+        if (lastRingdown.payload.id !== lastIdRef.current) {
+          lastIdRef.current = lastRingdown.payload.id;
+          playSound();
+        }
       }
     }
   }, [hospitalUser, lastMessage, setRingdowns, setUnconfirmedRingdowns, setStatusUpdate, showRingdown, playSound]);
