@@ -10,6 +10,7 @@ test.describe('ER status', () => {
     await password.fill('abcd1234');
     await password.press('Enter');
     await expect(appPage).toHaveURL('/er');
+    await appPage.reload();
     await appPage.getByRole('button', { name: /hospital/i }).click();
     await expect(appPage.getByText(/available beds/i)).toBeVisible();
     await expect(appPage.getByText(/er conditions/i)).toBeVisible();
@@ -23,20 +24,16 @@ test.describe('ER status', () => {
   test('EMS checks hospital status', async ({ context }) => {
     const appPage = await context.newPage();
     await appPage.goto('/');
-    await appPage.getByLabel('Email').fill('op.ems@c4sf.me');
+    await appPage.getByLabel('Email').fill('op.ems.1@c4sf.me');
     const password = appPage.getByLabel('Password');
     await password.fill('abcd1234');
     await password.press('Enter');
     await expect(appPage).toHaveURL('/ems');
     await appPage.getByRole('button', { name: /hospital info/i }).click();
-    // await expect(appPage.locator('.hospitalstatusrow_container')
-    //                   .filter({ hasText: /ucsf parnassus/i })
-    //                   .filter({ has: appPage.locator('.hospitalstatusrow__notes').filter({ hasText: 'scanner fixed' })})).toBeVisible();
-    const row = appPage.locator('.hospitalstatusrow_container').filter({ hasText: /ucsf parnassus/i });
-
-    // await expect(row.locator('.hospitalstatusrow__data', { hasText: '5' })).toBeVisible();
-    // await expect(row.locator('.hospitalstatusrow__data', { hasText: '8' })).toBeVisible();
-    await expect(row.locator('.hospitalstatusrow__notes').filter({ hasText: 'scanner broke' })).toBeVisible();
+    const ucsfRow = appPage.locator('.hospitalstatusrow_container').filter({ hasText: /ucsf parnassus/i });
+    await expect(ucsfRow.getByText('5')).toBeVisible();
+    await expect(ucsfRow.getByText('8')).toBeVisible();
+    await expect(ucsfRow.getByText('scanner broke')).toBeVisible();
     await context.close();
   });
 
@@ -48,6 +45,7 @@ test.describe('ER status', () => {
     await password.fill('abcd1234');
     await password.press('Enter');
     await expect(appPage).toHaveURL('/er');
+    await appPage.reload();
     await appPage.getByRole('button', { name: /hospital/i }).click();
     await expect(appPage.getByText(/available beds/i)).toBeVisible();
     await expect(appPage.getByText(/er conditions/i)).toBeVisible();
@@ -61,7 +59,7 @@ test.describe('ER status', () => {
   test('EMS checks hospital status after reset', async ({ context }) => {
     const appPage = await context.newPage();
     await appPage.goto('/');
-    await appPage.getByLabel('Email').fill('op.ems@c4sf.me');
+    await appPage.getByLabel('Email').fill('op.ems.1@c4sf.me');
     const password = appPage.getByLabel('Password');
     await password.fill('abcd1234');
     await password.press('Enter');

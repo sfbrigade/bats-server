@@ -17,7 +17,7 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
 
   function handleChange(event) {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
-    newStatusUpdate[event.target.name] = parseInt(event.target.value, 10);
+    newStatusUpdate[event.target.name] = parseInt(event.target.value, 10) || 0;
     onStatusUpdate(newStatusUpdate);
   }
 

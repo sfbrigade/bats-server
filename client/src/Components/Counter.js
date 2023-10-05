@@ -40,6 +40,7 @@ function Counter({ label, min, max, name, onChange, value, isEditing }) {
             id={name}
             name={name}
             value={value}
+            onChange={onChange}
           />
         )}
         <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement}>
