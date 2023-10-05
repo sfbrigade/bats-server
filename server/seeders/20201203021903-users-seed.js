@@ -128,6 +128,27 @@ module.exports = {
         },
         { transaction }
       );
+      org = await models.Organization.findOne({
+        where: {
+          name: 'American Medical Response (AMR)',
+        },
+        transaction,
+      });
+      await models.User.create(
+        {
+          OrganizationId: org.id,
+          firstName: 'AMR',
+          lastName: 'User',
+          email: 'amr.user@c4sf.me',
+          hashedPassword: '$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS',
+          isOperationalUser: true,
+          isAdminUser: false,
+          isSuperUser: false,
+          CreatedById: superuser.id,
+          UpdatedById: superuser.id,
+        },
+        { transaction }
+      );
     });
   },
 

@@ -1,16 +1,15 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import Context from '../Context';
 
-function Redirect({ isAdminOnly }) {
+function Redirect() {
   const { user } = useContext(Context);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      if (!isAdminOnly && user.isOperationalUser) {
+      if (user.isOperationalUser) {
         if (user.organization.type === 'HEALTHCARE') {
           navigate('/er');
         } else if (user.organization.type === 'C4SF') {
@@ -21,18 +20,16 @@ function Redirect({ isAdminOnly }) {
       } else if (user.isAdminUser) {
         navigate('/admin');
       }
+    } else {
+      navigate('/login');
     }
-  }, [user, isAdminOnly]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user, navigate]);
 
   return null;
 }
 
-Redirect.propTypes = {
-  isAdminOnly: PropTypes.bool,
-};
+Redirect.propTypes = {};
 
-Redirect.defaultProps = {
-  isAdminOnly: undefined,
-};
+Redirect.defaultProps = {};
 
 export default Redirect;

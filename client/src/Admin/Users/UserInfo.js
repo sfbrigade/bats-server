@@ -79,7 +79,7 @@ function UserInfo({ userId }) {
       } else {
         await ApiService.users.create(data);
       }
-      navigate('/admin/users', { flash: { info: 'Saved!' } });
+      navigate('/admin/users', { state: { flash: { info: 'Saved!' } } });
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);

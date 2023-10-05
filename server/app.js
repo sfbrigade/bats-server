@@ -5,7 +5,6 @@ const path = require('path');
 const cookieSession = require('cookie-session');
 const logger = require('morgan');
 const passport = require('./auth/passport');
-const { isAuthenticated } = require('./auth/middleware');
 
 const app = express();
 const client = (...args) => path.join(__dirname, '../client', ...args);
@@ -54,7 +53,7 @@ app.use(passport.session());
 
 app.use('/', require('./routes'));
 
-app.get('/*', isAuthenticated, (req, res) => {
+app.get('/*', (req, res) => {
   let data = fs.readFileSync(client('build', 'index.html')).toString('utf8');
   data = data.replace(/window\.env\.([^ =]+)[^,;<]+/g, (match, p1) => `window.env.${p1} = '${process.env[p1] ?? ''}'`);
   res.send(data);

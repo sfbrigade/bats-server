@@ -33,13 +33,23 @@
 
    op.ems@c4sf.me/abcd1234 (an operational EMS user)
 
-   If you are running the docker images as instructed above, MailCatcher should be running an SMTP server that will receive 2FA emails with the requested codes. Go to http://localhost:1080/ to see your local inbox, and check [MailCatcher's documentation](https://mailcatcher.me/) if you run into problems.
+   cpmc.davies.er@c4sf.me/abcd1234 (an operational Healthcare user belonging to mFa enabled org)
 
    If you wish to inspect the db, you can run:
 
    ```
    psql $DATABASE_URL
    ```
+
+## Two-factor Authentication Testing
+
+The following test users require 2FA to log in (email/password):
+
+mission.bernal.er@c4sf.me/abcd1234 (an operational Healthcare user)
+
+amr.user@c4sf.me/abcd1234 (an operational EMS user)
+
+If you are running the docker images as instructed above, MailCatcher should be running an SMTP server that will receive 2FA emails with the requested codes. Go to http://localhost:1080/ to see your local inbox, and check [MailCatcher's documentation](https://mailcatcher.me/) if you run into problems.
 
 ## Server Testing
 
