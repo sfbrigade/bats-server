@@ -1,79 +1,45 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
+
+const models = require('../../models');
+
 const router = express.Router();
-
-router.get('/login', (req, res) => {
-  // If user is already logged in and two Factor authenticated then redirect to home page
-  if (req.session.twoFactor) {
-    res.redirect('/');
-  } else {
-    // Check if user is already logged in through passport, if so, log them out
-    if (req.user) req.logout();
-    res.render('auth/local/login');
-  }
-});
-
-router.get('/twoFactor', async (req, res) => {
-  if (req.session.twoFactor) {
-    res.redirect('/');
-  } else if (req.user) {
-    await req.user.generateToTPSecret();
-    res.render('auth/local/twoFactor');
-  } else {
-    res.redirect('/auth/local/login');
-  }
-});
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
-      if (req.accepts('html')) {
-        res.render('auth/local/login', {
-          // TODO: pass error?
-          username: req.body.username,
-        });
-      } else {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
-      }
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     } else if (user) {
       req.login(user, async () => {
-        if (req.accepts('html')) {
-          const org = await user.getOrganization();
-          if (org.isMfaEnabled) {
-            res.redirect('/auth/local/twoFactor');
-          } else {
-            req.session.twoFactor = true;
-            res.redirect('/');
-          }
+        const org = await user.getOrganization();
+        if (org.isMfaEnabled) {
+          await req.user.generateToTPSecret('twoFactor');
+          res.status(HttpStatus.ACCEPTED).end();
         } else {
-          res.status(HttpStatus.OK).end();
+          req.session.twoFactor = true;
+          user.Organization = org;
+          res.json(await user.getLoginPayloadJSON());
         }
       });
-    } else if (req.accepts('html')) {
-      res.render('auth/local/login', {
-        unauthorized: true,
-        username: req.body.username,
-      });
     } else {
-      res.status(HttpStatus.UNAUTHORIZED).end();
+      res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
     }
   })(req, res, next);
 });
 
 router.post('/twoFactor', async (req, res) => {
-  // Redirect if Session is interrupted
   if (req.user) {
-    const verified = await req.user.verifyTwoFactor(req);
-    // If the code is verified, set the session to twoFactor and redirect to home page
+    const verified = req.user.verifyTwoFactor(req.body.code);
+    // If the code is verified, set the session to twoFactor
     if (verified) {
       req.session.twoFactor = true;
-      res.redirect('/');
+      res.json(await req.user.getLoginPayloadJSON());
     } else {
-      res.render('auth/local/twoFactor', { incorrectCode: true });
+      res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
     }
   } else {
-    res.redirect('/auth/local/login');
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
 
@@ -84,6 +50,45 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
   } else {
     res.status(HttpStatus.OK).end();
+  }
+});
+
+router.post('/forgot', async (req, res) => {
+  let user = await models.User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  });
+  if (user) {
+    await user.generateToTPSecret('resetPassword');
+    res.status(HttpStatus.OK).end();
+  } else {
+    res.status(HttpStatus.NOT_FOUND).end();
+  }
+});
+
+router.post('/reset', async (req, res) => {
+  const { email, code, password } = req.body;
+  let user = await models.User.findOne({
+    where: {
+      email,
+    },
+  });
+  if (user == null) {
+    res.status(HttpStatus.FORBIDDEN).end();
+  } else {
+    const verified = user.verifyTwoFactor(code);
+    if (verified) {
+      try {
+        await user.update({ password });
+        await user.save();
+        res.status(HttpStatus.OK).end();
+      } catch (err) {
+        res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
+      }
+    } else {
+      res.status(HttpStatus.FORBIDDEN).end();
+    }
   }
 });
 

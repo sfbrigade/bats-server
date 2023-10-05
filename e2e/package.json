@@ -4,11 +4,14 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "@playwright/test": "^1.30.0",
+    "@playwright/test": "^1.38.1",
     "dotenv": "^16.0.3"
   },
   "scripts": {
-    "test": "DEBUG=pw:webserver playwright test",
+    "test": "cd ../client && yarn build; cd ../e2e && DEBUG=pw:webserver playwright test",
     "install-chromium": "playwright install --with-deps chromium"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

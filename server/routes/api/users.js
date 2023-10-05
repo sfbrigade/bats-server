@@ -107,14 +107,7 @@ router.post(
 );
 
 router.get('/me', middleware.isAuthenticated, async (req, res) => {
-  const org = await req.user.getOrganization();
-  req.user.Organization = org;
-  if (org.type === 'HEALTHCARE') {
-    req.user.ActiveHospitalUsers = await req.user.getActiveHospitalUsers({
-      include: [models.Hospital],
-    });
-  }
-  res.json(req.user.toJSON());
+  res.json(await req.user.getLoginPayloadJSON());
 });
 
 router.get('/active', middleware.isAuthenticated, setParams, async (req, res) => {

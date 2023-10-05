@@ -36,7 +36,7 @@ const twoFactorAuthSession = async (testSession) => {
   await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
   const sentMail = nodemailermock.mock.sentMail();
   // Extract authentication code from the sent email
-  const regex = /Authentication Code: (\d{6})/;
+  const regex = /authentication code is: (\d{6})/;
   const match = regex.exec(sentMail[0].text);
   const authCode = match[1];
   // Submit the authentication code

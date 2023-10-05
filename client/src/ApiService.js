@@ -9,8 +9,8 @@ const instance = axios.create({
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response.status === 401) {
-      window.location = '/auth/local/login';
+    if (error?.response?.status === 401) {
+      window.location = '/login';
     }
     return Promise.reject(error);
   }
@@ -87,6 +87,20 @@ export default {
     },
     update(id, data) {
       return instance.patch(`/api/organizations/${id}`, data);
+    },
+  },
+  auth: {
+    login(params) {
+      return instance.post('/auth/local/login', params);
+    },
+    twoFactor(params) {
+      return instance.post('/auth/local/twoFactor', params);
+    },
+    forgot(params) {
+      return instance.post('/auth/local/forgot', params);
+    },
+    reset(params) {
+      return instance.post('/auth/local/reset', params);
     },
   },
 };
