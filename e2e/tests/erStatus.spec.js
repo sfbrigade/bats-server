@@ -31,8 +31,8 @@ test.describe('ER status', () => {
     await expect(appPage).toHaveURL('/ems');
     await appPage.getByRole('button', { name: /hospital info/i }).click();
     const ucsfRow = appPage.locator('.hospitalstatusrow_container').filter({ hasText: /ucsf parnassus/i });
-    await expect(ucsfRow.getByText('5')).toBeVisible();
-    await expect(ucsfRow.getByText('8')).toBeVisible();
+    await expect(ucsfRow.locator('.hospitalstatusrow__data').filter({ hasText: '5' })).toBeVisible();
+    await expect(ucsfRow.locator('.hospitalstatusrow__data').filter({ hasText: '8' })).toBeVisible();
     await expect(ucsfRow.getByText('scanner broke')).toBeVisible();
     await context.close();
   });
@@ -66,7 +66,6 @@ test.describe('ER status', () => {
     await expect(appPage).toHaveURL('/ems');
     await appPage.getByRole('button', { name: /hospital info/i }).click();
     const row = appPage.locator('.hospitalstatusrow_container', { hasText: /ucsf parnassus/i });
-    // console.log("ROW: ", row)
     await expect(row.locator('.hospitalstatusrow__data', { hasText: '5' })).not.toBeVisible();
     await expect(row.locator('.hospitalstatusrow__data', { hasText: '8' })).not.toBeVisible();
     await expect(row.locator('.hospitalstatusrow__notes', { hasText: 'scanner broke' })).not.toBeVisible();
