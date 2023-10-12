@@ -13,7 +13,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [invalid, setInvalid] = useState();
   const [error, setError] = useState();
-  const { setUser } = useContext(Context);
+  const { setUser, setOrganization } = useContext(Context);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,6 +34,7 @@ export default function Login() {
       if (res.status === 200) {
         // if status returned 200 should set the user in Context
         setUser(res.data);
+        setOrganization(res.data.organization)
         // const userData = res.data;
         navigate('/');
       } else if (res.status === 202) {
