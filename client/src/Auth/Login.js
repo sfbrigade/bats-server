@@ -34,7 +34,7 @@ export default function Login() {
       if (res.status === 200) {
         // if status returned 200 should set the user in Context
         setUser(res.data);
-        setOrganization(res.data.organization)
+        setOrganization(res.data.organization);
         // const userData = res.data;
         navigate('/');
       } else if (res.status === 202) {
