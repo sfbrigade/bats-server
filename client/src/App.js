@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import ApiService from './ApiService';
 import Context from './Context';
@@ -14,6 +14,7 @@ import TwoFactor from './Auth/TwoFactor';
 
 function App() {
   const { user, setUser, setOrganization, setHospital, setHospitalUser } = useContext(Context);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // hit the users endpoint to ensure authenticated
@@ -31,6 +32,8 @@ function App() {
           }
         }
         setUser(user);
+        let destinationUrl = window.location.pathname === '/login' ? '/' : window.location.pathname;
+        navigate(destinationUrl);
       })
       .catch((err) => {
         if (err === 401) {
@@ -42,22 +45,20 @@ function App() {
 
   return (
     <>
-      <Router>
-        <Routes>
-          <Route path="/ems/*" element={<EMS />} />
-          <Route path="/er/*" element={<ER />} />
-          <Route path="/admin/*" element={<Admin />} />
-          {!user && (
-            <>
-              <Route path="/reset" element={<NewPassword />} />
-              <Route path="/forgot" element={<Forgot />} />
-              <Route path="/twoFactor" element={<TwoFactor />} />
-              <Route path="/login" element={<Login />} />
-            </>
-          )}
-          <Route path="/" element={<Redirect />} />
-        </Routes>
-      </Router>
+      <Routes>
+        <Route path="/ems/*" element={<EMS />} />
+        <Route path="/er/*" element={<ER />} />
+        <Route path="/admin/*" element={<Admin />} />
+        {!user && (
+          <>
+            <Route path="/reset" element={<NewPassword />} />
+            <Route path="/forgot" element={<Forgot />} />
+            <Route path="/twoFactor" element={<TwoFactor />} />
+            <Route path="/login" element={<Login />} />
+          </>
+        )}
+        <Route path="/" element={<Redirect />} />
+      </Routes>
     </>
   );
 }
