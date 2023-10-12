@@ -18,6 +18,7 @@ function App() {
 
   useEffect(() => {
     // hit the users endpoint to ensure authenticated
+
     ApiService.users
       .me()
       .then((response) => {
@@ -32,7 +33,9 @@ function App() {
           }
         }
         setUser(user);
-        navigate('/');
+
+        let destinationUrl = window.location.pathname === '/login' ? '/' : window.location.pathname;
+        navigate(destinationUrl);
       })
       .catch((err) => {
         if (err === 401) {
