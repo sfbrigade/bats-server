@@ -2,8 +2,8 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('ER status', () => {
   test.describe.configure({ mode: 'serial' });
-  let erBeds = 0;
-  let behaviorBeds = 0;
+  let numberErBeds = 0;
+  let numberBehaviorBeds = 0;
 
   test('Update ER status', async ({ context }) => {
     const appPage = await context.newPage();
@@ -19,18 +19,18 @@ test.describe('ER status', () => {
     await expect(appPage.getByText(/er conditions/i)).toBeVisible();
     await appPage.getByRole('button', { name: /update hospital/i }).click();
     const erBedsRow = appPage.getByTestId('counter_openEdBedCount');
-    erBeds = parseInt(await erBedsRow.getByRole('textbox').inputValue(), 10);
+    numberErBeds = parseInt(await erBedsRow.getByRole('textbox').inputValue(), 10);
     for (let i = 0; i < 5; i++) {
       await erBedsRow.getByRole('button', { name: '+' }).click();
-      erBeds += 1;
+      numberErBeds++;
     }
 
     const behaviorNode = appPage.getByLabel(/behavioral beds/i);
     const behaviorBedsRow = appPage.getByTestId('counter_openPsychBedCount');
-    behaviorBeds = parseInt(await behaviorNode.inputValue(), 10);
+    numberBehaviorBeds = parseInt(await behaviorNode.inputValue(), 10);
     for (let i = 0; i < 8; i++) {
       await behaviorBedsRow.getByRole('button', { name: '+' }).click();
-      behaviorBeds += 1;
+      numberBehaviorBeds++;
     }
     await appPage.locator('#additionalNotes').fill('scanner broke');
     await appPage.getByRole('button', { name: /confirm/i }).click();
@@ -46,8 +46,8 @@ test.describe('ER status', () => {
     await expect(appPage).toHaveURL('/ems');
     await appPage.getByRole('button', { name: /hospital info/i }).click();
     const ucsfRow = appPage.locator('.hospitalstatusrow_container').filter({ hasText: /ucsf parnassus/i });
-    await expect(ucsfRow.locator('.hospitalstatusrow__data').filter({ hasText: `${erBeds}` })).toBeVisible();
-    await expect(ucsfRow.locator('.hospitalstatusrow__data').filter({ hasText: `${behaviorBeds}` })).toBeVisible();
+    await expect(ucsfRow.locator('.hospitalstatusrow__data').filter({ hasText: `${numberErBeds}` })).toBeVisible();
+    await expect(ucsfRow.locator('.hospitalstatusrow__data').filter({ hasText: `${numberBehaviorBeds}` })).toBeVisible();
     await expect(ucsfRow.getByText('scanner broke')).toBeVisible();
     await context.close();
   });
@@ -66,19 +66,19 @@ test.describe('ER status', () => {
     await expect(appPage.getByText(/er conditions/i)).toBeVisible();
     await appPage.getByRole('button', { name: /update hospital/i }).click();
     const erBedsRow = appPage.getByTestId('counter_openEdBedCount');
-    erBeds = parseInt(await erBedsRow.getByRole('textbox').inputValue(), 10);
-    while (erBeds >= 0) {
+    numberErBeds = parseInt(await erBedsRow.getByRole('textbox').inputValue(), 10);
+    while (numberErBeds >= 0) {
       await erBedsRow.getByTestId('decrement').click();
-      erBeds--;
+      numberErBeds--;
     }
     const erBedValue = await appPage.getByRole('textbox', { name: /er beds/i }).inputValue();
     expect(erBedValue).toBe('0');
 
     const behaviorBedsRow = appPage.getByTestId('counter_openPsychBedCount');
-    behaviorBeds = parseInt(await behaviorBedsRow.getByRole('textbox').inputValue(), 10);
-    while (behaviorBeds >= 0) {
+    numberBehaviorBeds = parseInt(await behaviorBedsRow.getByRole('textbox').inputValue(), 10);
+    while (numberBehaviorBeds >= 0) {
       await behaviorBedsRow.getByTestId('decrement').click();
-      behaviorBeds--;
+      numberBehaviorBeds--;
     }
     expect(await appPage.getByRole('textbox', { name: /behavioral beds/i }).inputValue()).toBe('0');
     await appPage.locator('#additionalNotes').fill('');
