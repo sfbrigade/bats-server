@@ -52,7 +52,7 @@ test.describe('ER status', () => {
     await context.close();
   });
 
-  test('Update ER status reset', async ({ context }) => {
+  test('Decrement beds in ER back to 0', async ({ context }) => {
     const appPage = await context.newPage();
     await appPage.goto('/');
     await appPage.getByLabel('Email').fill('ucsf.parnassus.er@c4sf.me');
@@ -85,7 +85,7 @@ test.describe('ER status', () => {
     await appPage.getByRole('button', { name: /confirm/i }).click();
   });
 
-  test('EMS checks hospital status after reset', async ({ context }) => {
+  test('Hospital status matches latest changes after decrementing', async ({ context }) => {
     const appPage = await context.newPage();
     await appPage.goto('/');
     await appPage.getByLabel('Email').fill('op.ems.1@c4sf.me');
