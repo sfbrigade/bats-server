@@ -44,6 +44,28 @@ describe('/api/users', () => {
   });
 
   describe('GET /me', () => {
+    it('returns 401 Unauthorized if not logged in', async () => {
+      await testSession.get('/api/users/me').set('Accept', 'application/json').expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('returns 401 Unauthorized if twoFactor enabled on org and not completed', async () => {
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'batsadmin@c4sf.me', password: 'abcd1234' })
+        .expect(HttpStatus.ACCEPTED);
+      await testSession.get('/api/users/me').set('Accept', 'application/json').expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('returns 403 Forbidden if not an active User account', async () => {
+      await testSession
+        .post('/auth/local/login')
+        .set('Accept', 'application/json')
+        .send({ username: 'inactive.sutter@example.com', password: 'abcd1234' })
+        .expect(HttpStatus.OK);
+      await testSession.get('/api/users/me').set('Accept', 'application/json').expect(HttpStatus.FORBIDDEN);
+    });
+
     it('returns the logged-in users info', async () => {
       await testSession
         .post('/auth/local/login')
