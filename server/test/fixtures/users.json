@@ -34,6 +34,23 @@
   {
     "model": "User",
     "data": {
+      "id": "38f58e29-2fb8-414e-bc0a-e30109066112",
+      "OrganizationId": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
+      "firstName": "Inactive",
+      "lastName": "User",
+      "email": "inactive.sutter@example.com",
+      "hashedPassword": "$2b$10$s2eQxhoZ2Khb4KrbOaAl/ekpWKiGmyX1HFICIVl3ZX3NnL191fPuS",
+      "isActive": false,
+      "isOperationalUser": false,
+      "isAdminUser": true,
+      "isSuperUser": false,
+      "CreatedById": "b1e48210-e062-410d-9687-23bd262c978d",
+      "UpdatedById": "b1e48210-e062-410d-9687-23bd262c978d"
+    }
+  },
+  {
+    "model": "User",
+    "data": {
       "id": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "OrganizationId": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
       "firstName": "Sutter",
