@@ -4,16 +4,16 @@ const isAuthenticated = (req, res, next) => {
   if (req.user) {
     // ensure authenticated user is active
     if (!req.user.isActive) {
-      // res.status(HttpStatus.FORBIDDEN).end();
+      res.status(HttpStatus.FORBIDDEN).end();
     } else if (!req.session.twoFactor) {
-      // res.status(HttpStatus.UNAUTHORIZED).end();
+      res.status(HttpStatus.UNAUTHORIZED).end();
     } else {
       next();
     }
   } else if (req.accepts('html')) {
-    // res.redirect('/');
+    res.redirect('/');
   } else {
-    // res.status(HttpStatus.UNAUTHORIZED).end();
+    res.status(HttpStatus.UNAUTHORIZED).end();
   }
 };
 

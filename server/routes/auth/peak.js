@@ -16,6 +16,7 @@ router.get('/callback', (req, res, next) => {
       }
     } else if (user) {
       req.login(user, () => {
+        req.session.twoFactor = true;
         if (req.accepts('html')) {
           res.redirect('/');
         } else {
