@@ -16,7 +16,7 @@ app.use(expressLayouts);
 // redirect all requests to https in production
 if (process.env.NODE_ENV === 'production') {
   app.use((req, res, next) => {
-    if (req.secure) {
+    if (req.secure || req.path?.startsWith('/webhooks')) {
       next();
     } else {
       res.redirect(`https://${req.headers.host}${req.url}`);
