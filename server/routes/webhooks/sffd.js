@@ -6,7 +6,7 @@ const models = require('../../models');
 
 const router = express.Router();
 
-const UNIT_SFFD_REGEX = /^\d+$/;
+const UNIT_SFFD_REGEX = /^M\d+$/;
 const UNIT_AM_REGEX = /^AM\d+$/;
 const UNIT_KM_REGEX = /^KM\d+$/;
 
