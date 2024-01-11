@@ -1,698 +1,459 @@
 [
   {
-    "UNIT": "74",
-    "DISPATCH_DTTM": "2021-04-26T08:48:52Z",
-    "ADDRESS": "1415 EVANS AV",
+    "UNIT": "M547",
+    "CALL_NO": "233391418",
+    "INC_NO": "23163889",
+    "ADDRESS": "500 RAYMOND AV #215B, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:01:18Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:03:22Z",
     "PRIORITY": "3"
   },
   {
-    "UNIT": "70",
-    "INC_NO": "21049703",
-    "DISPATCH_DTTM": "2021-04-26T00:18:47Z",
-    "ADDRESS": "114 POWELL ST",
+    "UNIT": "KM203",
+    "CALL_NO": "233391476",
+    "INC_NO": "23163901",
+    "ADDRESS": "528 VALENCIA ST #311, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:18:05Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:15:35Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "56",
-    "INC_NO": "21049702",
-    "DISPATCH_DTTM": "2021-04-26T00:17:04Z",
-    "ADDRESS": "2410 40TH AV",
+    "UNIT": "M583",
+    "CALL_NO": "233391495",
+    "INC_NO": "23163903",
+    "ADDRESS": "4907 MISSION ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:22:05Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:00:59Z",
     "PRIORITY": "3"
   },
   {
-    "UNIT": "55",
-    "INC_NO": "21049751",
-    "DISPATCH_DTTM": "2021-04-26T05:11:54Z",
-    "ADDRESS": "433 POWELL ST",
+    "UNIT": "M591",
+    "CALL_NO": "233391517",
+    "INC_NO": "23163905",
+    "ADDRESS": "1751 CARROLL AV, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:27:33Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:56:08Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "AM106",
+    "CALL_NO": "233391545",
+    "INC_NO": "23163908",
+    "ADDRESS": "88 6TH ST #LOBBY, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:34:45Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:24:54Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M558",
+    "CALL_NO": "233391564",
+    "INC_NO": "23163912",
+    "ADDRESS": "2250 32ND AV #UPPER, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:37:33Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:51:00Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M588",
+    "CALL_NO": "233391625",
+    "INC_NO": "23163917",
+    "ADDRESS": "34 6TH ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:56:45Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:17:01Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M582",
+    "CALL_NO": "233391630",
+    "INC_NO": "23163918",
+    "ADDRESS": "822 HAIGHT ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T12:58:24Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:44:41Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M527",
+    "CALL_NO": "233391639",
+    "INC_NO": "23163919",
+    "ADDRESS": "2190 POWELL ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:02:55Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:43:31Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "87",
-    "DISPATCH_DTTM": "2021-04-26T05:01:52Z",
-    "ADDRESS": "1415 EVANS AV",
+    "UNIT": "M561",
+    "CALL_NO": "233391653",
+    "INC_NO": "23163924",
+    "ADDRESS": "BELVEDERE ST/WALLER ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:04:26Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:38:46Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M574",
+    "CALL_NO": "233391652",
+    "INC_NO": "23163923",
+    "ADDRESS": "1075 LE CONTE AV #202, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:05:31Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:11:58Z",
+    "PRIORITY": "2"
+  },
+  {
+    "UNIT": "AM213",
+    "CALL_NO": "233391658",
+    "INC_NO": "23163925",
+    "ADDRESS": "1760 DIAMOND ST #H, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:06:56Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:38:47Z",
+    "PRIORITY": "2"
+  },
+  {
+    "UNIT": "M573",
+    "CALL_NO": "233391675",
+    "ADDRESS": "2241 JERROLD AV, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:07:29Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:45:25Z",
+    "PRIORITY": "I"
+  },
+  {
+    "UNIT": "AM108",
+    "CALL_NO": "233391680",
+    "INC_NO": "23163929",
+    "ADDRESS": "2351 CLAY ST #STE513D, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:08:59Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:38:30Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M504",
+    "CALL_NO": "233391679",
+    "INC_NO": "23163928",
+    "ADDRESS": "125 BAYSHORE BL, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:10:01Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:28:22Z",
+    "PRIORITY": "2"
+  },
+  {
+    "UNIT": "M562",
+    "CALL_NO": "233391696",
+    "INC_NO": "23163931",
+    "ADDRESS": "755 LONDON ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:12:53Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:59:32Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "KM108",
+    "CALL_NO": "233391697",
+    "INC_NO": "23163932",
+    "ADDRESS": "1790 DOLORES ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:13:35Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "KM110",
+    "CALL_NO": "233391711",
+    "INC_NO": "23163934",
+    "ADDRESS": "9 CASTELO AV, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:16:07Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "AM114",
+    "CALL_NO": "233391727",
+    "INC_NO": "23163935",
+    "ADDRESS": "363 NOE ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:20:34Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:37:08Z",
+    "PRIORITY": "2"
+  },
+  {
+    "UNIT": "M579",
+    "CALL_NO": "233391747",
+    "INC_NO": "23163936",
+    "ADDRESS": "550 BAYSHORE BL, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:25:17Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M566",
+    "CALL_NO": "233391751",
+    "INC_NO": "23163937",
+    "ADDRESS": "129 THE EMBARCADERO SOU, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:25:59Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "KM114",
+    "CALL_NO": "233391771",
+    "INC_NO": "23163939",
+    "ADDRESS": "301 MISSION ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:31:52Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:58:22Z",
+    "PRIORITY": "2"
+  },
+  {
+    "UNIT": "AM102",
+    "CALL_NO": "233391787",
+    "INC_NO": "23163942",
+    "ADDRESS": "125 BAYSHORE BL, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:35:30Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:47:04Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M565",
+    "CALL_NO": "233391797",
+    "INC_NO": "23163944",
+    "ADDRESS": "1335 WEBSTER ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:36:58Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "AM110",
+    "CALL_NO": "233391773",
+    "INC_NO": "23163940",
+    "ADDRESS": "1025 FILLMORE ST #11L, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:40:39Z",
+    "PRIORITY": "2"
+  },
+  {
+    "UNIT": "M568",
+    "CALL_NO": "233391822",
+    "INC_NO": "23163947",
+    "ADDRESS": "471 CAMPBELL AV, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:41:43Z",
     "PRIORITY": "3"
   },
   {
     "UNIT": "AM104",
-    "INC_NO": "21049769",
-    "DISPATCH_DTTM": "2021-04-26T06:23:04Z",
-    "ADDRESS": "373 ELLIS ST ",
+    "CALL_NO": "233391824",
+    "INC_NO": "23163948",
+    "ADDRESS": "238 EDDY ST #402, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:42:49Z",
     "PRIORITY": "3"
   },
   {
-    "UNIT": "66",
-    "INC_NO": "21049768",
-    "DISPATCH_DTTM": "2021-04-26T06:17:56Z",
-    "ADDRESS": "480 ELLIS ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "55",
-    "INC_NO": "21049767",
-    "DISPATCH_DTTM": "2021-04-26T06:14:59Z",
-    "ADDRESS": "88 KING ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "59",
-    "INC_NO": "21049765",
-    "DISPATCH_DTTM": "2021-04-26T06:09:30Z",
-    "ADDRESS": "HOWARD ST/LANGTON ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "62",
-    "INC_NO": "21049765",
-    "DISPATCH_DTTM": "2021-04-26T06:06:18Z",
-    "ADDRESS": "HOWARD ST/LANGTON ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "76",
-    "INC_NO": "21049764",
-    "DISPATCH_DTTM": "2021-04-26T06:11:31Z",
-    "ADDRESS": "JONES ST/GEARY ST",
+    "UNIT": "M546",
+    "CALL_NO": "233391842",
+    "INC_NO": "23163950",
+    "ADDRESS": "1251 3RD ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:46:38Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "KM04",
-    "INC_NO": "21049709",
-    "DISPATCH_DTTM": "2021-04-26T00:42:47Z",
-    "ADDRESS": "144 EDDY ST ",
+    "UNIT": "M590",
+    "CALL_NO": "233391881",
+    "INC_NO": "23163954",
+    "ADDRESS": "995 POTRERO AV #BLDG 80 6TH FLR, SF",
+    "DISPATCH_DTTM": "2023-12-05T13:56:16Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "86",
-    "INC_NO": "21049708",
-    "DISPATCH_DTTM": "2021-04-26T00:37:40Z",
-    "ADDRESS": "684 ELLIS ST ",
+    "UNIT": "M555",
+    "CALL_NO": "233391900",
+    "INC_NO": "23163955",
+    "ADDRESS": "54 BERKELEY WY, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:03:35Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M586",
+    "CALL_NO": "233391953",
+    "INC_NO": "23163962",
+    "ADDRESS": "7TH ST/MARKET ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:19:27Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M589",
+    "CALL_NO": "233391958",
+    "INC_NO": "23163963",
+    "ADDRESS": "1201 44TH AV #5, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:20:09Z",
+    "PRIORITY": "E"
+  },
+  {
+    "UNIT": "M571",
+    "CALL_NO": "233391973",
+    "INC_NO": "23163965",
+    "ADDRESS": "2727 MARIPOSA ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:25:12Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "KM13",
-    "INC_NO": "21049707",
-    "DISPATCH_DTTM": "2021-04-26T00:35:54Z",
-    "ADDRESS": "24TH ST/MISSION ST",
+    "UNIT": "M553",
+    "CALL_NO": "233391983",
+    "INC_NO": "23163966",
+    "ADDRESS": "666 ELLIS ST #1104, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:27:04Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M592",
+    "CALL_NO": "233391988",
+    "INC_NO": "23163967",
+    "ADDRESS": "16TH ST/BRYANT ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:28:06Z",
+    "PRIORITY": "E"
+  },
+  {
+    "UNIT": "M587",
+    "CALL_NO": "233391991",
+    "INC_NO": "23163968",
+    "ADDRESS": "POLK ST/FRANCISCO ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:29:00Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "66",
-    "INC_NO": "21049706",
-    "DISPATCH_DTTM": "2021-04-26T00:32:33Z",
-    "ADDRESS": "1000 HARRISON ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "AM118",
-    "INC_NO": "21049705",
-    "DISPATCH_DTTM": "2021-04-26T00:31:22Z",
-    "ADDRESS": "383 SOUTH VAN NESS AV ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "95",
-    "INC_NO": "21049743",
-    "DISPATCH_DTTM": "2021-04-26T03:44:23Z",
-    "ADDRESS": "1761 GENEVA AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "70",
-    "INC_NO": "21049741",
-    "DISPATCH_DTTM": "2021-04-26T03:43:48Z",
-    "ADDRESS": "AMADOR ST/CARGO WY",
+    "UNIT": "KM203",
+    "CALL_NO": "233392001",
+    "INC_NO": "23163969",
+    "ADDRESS": "188 BUCHANAN ST #107, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:30:45Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "87",
-    "INC_NO": "21049741",
-    "DISPATCH_DTTM": "2021-04-26T03:39:52Z",
-    "ADDRESS": "AMADOR ST/CARGO WY",
+    "UNIT": "M588",
+    "CALL_NO": "233392007",
+    "INC_NO": "23163970",
+    "ADDRESS": "VAN NESS AV/EDDY ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:32:42Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:54:15Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "66",
-    "INC_NO": "21049739",
-    "DISPATCH_DTTM": "2021-04-26T03:31:22Z",
-    "ADDRESS": "1429 LEAVENWORTH ST ",
+    "UNIT": "M574",
+    "CALL_NO": "233392011",
+    "INC_NO": "23163971",
+    "ADDRESS": "1036 GRIFFITH ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:33:30Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M559",
+    "CALL_NO": "233392016",
+    "INC_NO": "23163975",
+    "ADDRESS": "865 MARKET ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:35:00Z",
+    "PRIORITY": "3"
+  },
+  {
+    "UNIT": "M560",
+    "CALL_NO": "233392012",
+    "INC_NO": "23163972",
+    "ADDRESS": "150 9TH ST #210, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:36:30Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "67",
-    "INC_NO": "21049734",
-    "DISPATCH_DTTM": "2021-04-26T02:57:32Z",
-    "ADDRESS": "765 GEARY ST ",
+    "UNIT": "M504",
+    "CALL_NO": "233392026",
+    "INC_NO": "23163977",
+    "ADDRESS": "MARKET ST/PINE ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:37:07Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:43:22Z",
     "PRIORITY": "3"
   },
   {
-    "UNIT": "62",
-    "INC_NO": "21049733",
-    "DISPATCH_DTTM": "2021-04-26T02:56:09Z",
-    "ADDRESS": "25 ESSEX ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "KM04",
-    "INC_NO": "21049732",
-    "DISPATCH_DTTM": "2021-04-26T02:55:08Z",
-    "ADDRESS": "766 29TH AV",
+    "UNIT": "AM114",
+    "CALL_NO": "233392014",
+    "INC_NO": "23163973",
+    "ADDRESS": "VAN NESS AV/EDDY ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:37:58Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:48:50Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "64",
-    "INC_NO": "21049731",
-    "DISPATCH_DTTM": "2021-04-26T02:51:14Z",
-    "ADDRESS": "1015 GEARY ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "56",
-    "INC_NO": "21049749",
-    "DISPATCH_DTTM": "2021-04-26T04:56:59Z",
-    "ADDRESS": "JONES ST/GEARY ST",
+    "UNIT": "M547",
+    "CALL_NO": "233392033",
+    "INC_NO": "23163979",
+    "ADDRESS": "285 BUCKINGHAM WY #604, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:38:37Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "KM13",
-    "INC_NO": "21049761",
-    "DISPATCH_DTTM": "2021-04-26T05:44:34Z",
-    "ADDRESS": "MASONIC AV/FULTON ST",
+    "UNIT": "AM108",
+    "CALL_NO": "233392047",
+    "INC_NO": "23163982",
+    "ADDRESS": "868 BRANNAN ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:41:30Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "68",
-    "INC_NO": "21049760",
-    "DISPATCH_DTTM": "2021-04-26T05:35:55Z",
-    "ADDRESS": "FULTON ST/LARKIN ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "74",
-    "INC_NO": "21049759",
-    "DISPATCH_DTTM": "2021-04-26T05:37:47Z",
-    "ADDRESS": "40 PICO AV",
+    "UNIT": "M595",
+    "CALL_NO": "233392045",
+    "INC_NO": "23163981",
+    "ADDRESS": "887 POTRERO AV #2ND FL, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:42:08Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:43:32Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "84",
-    "INC_NO": "21049758",
-    "DISPATCH_DTTM": "2021-04-26T05:34:51Z",
-    "ADDRESS": "1182 MARKET ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "66",
-    "DISPATCH_DTTM": "2021-04-26T05:30:53Z",
-    "ADDRESS": "1415 EVANS AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "70",
-    "INC_NO": "21049726",
-    "DISPATCH_DTTM": "2021-04-26T02:16:31Z",
-    "ADDRESS": "350 UNIVERSITY ST",
+    "UNIT": "M554",
+    "CALL_NO": "233392045",
+    "INC_NO": "23163981",
+    "ADDRESS": "887 POTRERO AV #2ND FL, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:43:13Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:46:07Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "74",
-    "INC_NO": "21049789",
-    "DISPATCH_DTTM": "2021-04-26T07:40:22Z",
-    "ADDRESS": "145 GUERRERO ST ",
+    "UNIT": "M561",
+    "CALL_NO": "233392061",
+    "INC_NO": "23163984",
+    "ADDRESS": "138 WILSON ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:43:58Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:47:56Z",
     "PRIORITY": "3"
   },
   {
-    "UNIT": "58",
-    "INC_NO": "21049788",
-    "DISPATCH_DTTM": "2021-04-26T07:37:24Z",
-    "ADDRESS": "EVANS AV/MENDELL ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "77",
-    "INC_NO": "21049787",
-    "DISPATCH_DTTM": "2021-04-26T07:35:45Z",
-    "ADDRESS": "FRANKLIN ST/BROADWAY",
+    "UNIT": "M573",
+    "CALL_NO": "233392045",
+    "INC_NO": "23163981",
+    "ADDRESS": "887 POTRERO AV #2ND FL, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:45:54Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "56",
-    "INC_NO": "21049786",
-    "DISPATCH_DTTM": "2021-04-26T07:37:47Z",
-    "ADDRESS": "THOMAS AV/3RD ST",
+    "UNIT": "M554",
+    "CALL_NO": "233392061",
+    "INC_NO": "23163984",
+    "ADDRESS": "138 WILSON ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:46:27Z",
     "PRIORITY": "3"
   },
   {
-    "UNIT": "58",
-    "INC_NO": "21049786",
-    "DISPATCH_DTTM": "2021-04-26T07:32:06Z",
-    "ADDRESS": "THOMAS AV/3RD ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "81",
-    "INC_NO": "21049819",
-    "DISPATCH_DTTM": "2021-04-26T09:28:35Z",
-    "ADDRESS": "49 TOWNSEND ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "85",
-    "INC_NO": "21049817",
-    "DISPATCH_DTTM": "2021-04-26T09:26:49Z",
-    "ADDRESS": "140 ORSI CI",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "68",
-    "INC_NO": "21049815",
-    "DISPATCH_DTTM": "2021-04-26T09:26:24Z",
-    "ADDRESS": "440 GEARY ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "76",
-    "INC_NO": "21049814",
-    "DISPATCH_DTTM": "2021-04-26T09:26:03Z",
-    "ADDRESS": "LAFAYETTE ST/NATOMA ST",
+    "UNIT": "M561",
+    "CALL_NO": "233392096",
+    "INC_NO": "23163987",
+    "ADDRESS": "1855 15TH ST #1004, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:52:41Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "KM08",
-    "INC_NO": "21049813",
-    "DISPATCH_DTTM": "2021-04-26T09:25:03Z",
-    "ADDRESS": "1115 MCALLISTER ST ",
+    "UNIT": "M504",
+    "CALL_NO": "233392108",
+    "INC_NO": "23163988",
+    "ADDRESS": "201 BERRY ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:56:56Z",
     "PRIORITY": "3"
   },
   {
-    "UNIT": "56",
-    "INC_NO": "21049812",
-    "DISPATCH_DTTM": "2021-04-26T09:23:21Z",
-    "ADDRESS": "2488 SAN BRUNO AV ",
+    "UNIT": "AM213",
+    "CALL_NO": "233392111",
+    "INC_NO": "23163989",
+    "ADDRESS": "143 DORE ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:59:05Z",
+    "AVAILABLE_DTTM": "2023-12-05T14:59:42Z",
     "PRIORITY": "2"
   },
   {
-    "UNIT": "81",
-    "INC_NO": "21049811",
-    "DISPATCH_DTTM": "2021-04-26T09:15:43Z",
-    "ADDRESS": "SOUTHARD PL/GREENWICH ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "67",
-    "INC_NO": "21049763",
-    "DISPATCH_DTTM": "2021-04-26T05:55:51Z",
-    "ADDRESS": "150 OTIS ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "83",
-    "INC_NO": "21049762",
-    "DISPATCH_DTTM": "2021-04-26T05:52:01Z",
-    "ADDRESS": "823 47TH AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "59",
-    "INC_NO": "21049794",
-    "DISPATCH_DTTM": "2021-04-26T07:58:40Z",
-    "ADDRESS": "241 QUINT ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "79",
-    "INC_NO": "21049794",
-    "DISPATCH_DTTM": "2021-04-26T07:59:47Z",
-    "ADDRESS": "241 QUINT ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "KM15",
-    "INC_NO": "21049793",
-    "DISPATCH_DTTM": "2021-04-26T07:57:16Z",
-    "ADDRESS": "150 GOLDEN GATE AV",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "68",
-    "INC_NO": "21049792",
-    "DISPATCH_DTTM": "2021-04-26T07:54:53Z",
-    "ADDRESS": "203 GATES ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "67",
-    "INC_NO": "21049791",
-    "DISPATCH_DTTM": "2021-04-26T07:51:24Z",
-    "ADDRESS": "145 WINDING WY",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "84",
-    "INC_NO": "21049790",
-    "DISPATCH_DTTM": "2021-04-26T07:49:46Z",
-    "ADDRESS": "38 CARR ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "54",
-    "INC_NO": "21049719",
-    "DISPATCH_DTTM": "2021-04-26T01:29:19Z",
-    "ADDRESS": "1229 UNDERWOOD AV",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "KM04",
-    "INC_NO": "21049718",
-    "DISPATCH_DTTM": "2021-04-26T01:15:56Z",
-    "ADDRESS": "301 EDDY ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "AM120",
-    "INC_NO": "21049730",
-    "DISPATCH_DTTM": "2021-04-26T02:35:39Z",
-    "ADDRESS": "125 6TH ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "58",
-    "INC_NO": "21049729",
-    "DISPATCH_DTTM": "2021-04-26T02:34:13Z",
-    "ADDRESS": "181 BELVEDERE ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "93",
-    "DISPATCH_DTTM": "2021-04-26T02:30:21Z",
-    "ADDRESS": "1415 EVANS AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "56",
-    "INC_NO": "21049737",
-    "DISPATCH_DTTM": "2021-04-26T03:18:17Z",
-    "ADDRESS": "1296 SHOTWELL ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "66",
-    "INC_NO": "21049746",
-    "DISPATCH_DTTM": "2021-04-26T04:09:53Z",
-    "ADDRESS": "1201 CALIFORNIA ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "87",
-    "INC_NO": "21049756",
-    "DISPATCH_DTTM": "2021-04-26T05:28:13Z",
-    "ADDRESS": "750 KEARNY ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "56",
-    "INC_NO": "21049753",
-    "DISPATCH_DTTM": "2021-04-26T05:21:08Z",
-    "ADDRESS": "JONES ST/TURK ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "85",
-    "INC_NO": "21049752",
-    "DISPATCH_DTTM": "2021-04-26T05:18:53Z",
-    "ADDRESS": "863 JAMESTOWN AV",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "76",
-    "INC_NO": "21049774",
-    "DISPATCH_DTTM": "2021-04-26T06:50:41Z",
-    "ADDRESS": "1001 FRANKLIN ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "AM106",
-    "INC_NO": "21049773",
-    "DISPATCH_DTTM": "2021-04-26T06:49:11Z",
-    "ADDRESS": "1-NB 280NB SAN JOSE ALEM ON",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "68",
-    "INC_NO": "21049772",
-    "DISPATCH_DTTM": "2021-04-26T06:46:26Z",
-    "ADDRESS": "RANDOLPH ST/HEAD ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "84",
-    "INC_NO": "21049771",
-    "DISPATCH_DTTM": "2021-04-26T06:45:52Z",
-    "ADDRESS": "950 TURK ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "KM02",
-    "INC_NO": "21049779",
-    "DISPATCH_DTTM": "2021-04-26T07:14:07Z",
-    "ADDRESS": "1560 VAN NESS AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "85",
-    "INC_NO": "21049778",
-    "DISPATCH_DTTM": "2021-04-26T07:11:32Z",
-    "ADDRESS": "124 TURK ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "AM106",
-    "INC_NO": "21049777",
-    "DISPATCH_DTTM": "2021-04-26T07:03:05Z",
-    "ADDRESS": "114 POWELL ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "74",
-    "INC_NO": "21049776",
-    "DISPATCH_DTTM": "2021-04-26T07:02:07Z",
-    "ADDRESS": "55 LAGUNA ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "66",
-    "INC_NO": "21049810",
-    "DISPATCH_DTTM": "2021-04-26T09:14:09Z",
-    "ADDRESS": "3330 JACKSON ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "60",
-    "INC_NO": "21049797",
-    "DISPATCH_DTTM": "2021-04-26T08:13:17Z",
-    "ADDRESS": "2445 21ST AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "76",
-    "INC_NO": "21049795",
-    "DISPATCH_DTTM": "2021-04-26T08:10:47Z",
-    "ADDRESS": "95 LAGUNA ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "87",
-    "INC_NO": "21049805",
-    "DISPATCH_DTTM": "2021-04-26T08:38:54Z",
-    "ADDRESS": "1563 MISSION ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "60",
-    "INC_NO": "21049785",
-    "DISPATCH_DTTM": "2021-04-26T07:28:19Z",
-    "ADDRESS": "1618 22ND AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "81",
-    "INC_NO": "21049783",
-    "DISPATCH_DTTM": "2021-04-26T07:27:12Z",
-    "ADDRESS": "455 BAY ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "KM02",
-    "INC_NO": "21049782",
-    "DISPATCH_DTTM": "2021-04-26T07:21:58Z",
-    "ADDRESS": "740 LA PLAYA ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "55",
-    "INC_NO": "21049804",
-    "DISPATCH_DTTM": "2021-04-26T08:25:05Z",
-    "ADDRESS": "SAN JOSE AV/RANDALL ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "83",
-    "INC_NO": "21049803",
-    "DISPATCH_DTTM": "2021-04-26T08:24:09Z",
-    "ADDRESS": "428 11TH ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "59",
-    "INC_NO": "21049800",
-    "DISPATCH_DTTM": "2021-04-26T08:18:14Z",
-    "ADDRESS": "2190 LOMBARD ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "KM15",
-    "INC_NO": "21049799",
-    "DISPATCH_DTTM": "2021-04-26T08:17:36Z",
-    "ADDRESS": "1077 OAKDALE AV",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "KM04",
-    "INC_NO": "21049798",
-    "DISPATCH_DTTM": "2021-04-26T08:16:54Z",
-    "ADDRESS": "3049 SACRAMENTO ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "86",
-    "INC_NO": "21049717",
-    "DISPATCH_DTTM": "2021-04-26T01:08:41Z",
-    "ADDRESS": "684 ELLIS ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "AM120",
-    "INC_NO": "21049716",
-    "DISPATCH_DTTM": "2021-04-26T01:07:59Z",
-    "ADDRESS": "111 TAYLOR ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "67",
-    "INC_NO": "21049715",
-    "DISPATCH_DTTM": "2021-04-26T01:02:15Z",
-    "ADDRESS": "323 CAPP ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "93",
-    "INC_NO": "21049714",
-    "DISPATCH_DTTM": "2021-04-26T01:03:52Z",
-    "ADDRESS": "147 LEE AV",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "68",
-    "INC_NO": "21049725",
-    "DISPATCH_DTTM": "2021-04-26T02:13:10Z",
-    "ADDRESS": "320 CLEMENTINA ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "83",
-    "INC_NO": "21049724",
-    "DISPATCH_DTTM": "2021-04-26T02:11:13Z",
-    "ADDRESS": "1800 SUTTER ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "KM13",
-    "INC_NO": "21049723",
-    "DISPATCH_DTTM": "2021-04-26T02:10:28Z",
-    "ADDRESS": "1231 MARKET ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "62",
-    "INC_NO": "21049722",
-    "DISPATCH_DTTM": "2021-04-26T02:06:02Z",
-    "ADDRESS": "3RD ST/HOWARD ST",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "62",
-    "INC_NO": "21049748",
-    "DISPATCH_DTTM": "2021-04-26T04:41:03Z",
-    "ADDRESS": "439 ARGONAUT AV",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "73",
-    "INC_NO": "21049747",
-    "DISPATCH_DTTM": "2021-04-26T04:21:37Z",
-    "ADDRESS": "2176 MISSION ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "52",
-    "INC_NO": "21049701",
-    "DISPATCH_DTTM": "2021-04-26T00:12:37Z",
-    "ADDRESS": "45TH AV/LAWTON ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "68",
-    "INC_NO": "21049699",
-    "DISPATCH_DTTM": "2021-04-26T00:03:48Z",
-    "ADDRESS": "25 SANCHEZ ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "64",
-    "INC_NO": "21049713",
-    "DISPATCH_DTTM": "2021-04-26T00:52:19Z",
-    "ADDRESS": "LEAVENWORTH ST/SACRAMENTO ST",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "73",
-    "INC_NO": "21049711",
-    "DISPATCH_DTTM": "2021-04-26T00:47:57Z",
-    "ADDRESS": "1477 GROVE ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "58",
-    "INC_NO": "21049710",
-    "DISPATCH_DTTM": "2021-04-26T00:46:49Z",
-    "ADDRESS": "25 ESSEX ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "56",
-    "INC_NO": "21049721",
-    "DISPATCH_DTTM": "2021-04-26T01:41:57Z",
-    "ADDRESS": "1600 FELL ST ",
-    "PRIORITY": "2"
-  },
-  {
-    "UNIT": "KM04",
-    "INC_NO": "21049720",
-    "DISPATCH_DTTM": "2021-04-26T01:33:11Z",
-    "ADDRESS": "1015 GEARY ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "54",
-    "INC_NO": "21049744",
-    "DISPATCH_DTTM": "2021-04-26T03:45:20Z",
-    "ADDRESS": "480 ELLIS ST ",
-    "PRIORITY": "3"
-  },
-  {
-    "UNIT": "87",
-    "INC_NO": "21049770",
-    "DISPATCH_DTTM": "2021-04-26T06:42:35Z",
-    "ADDRESS": "350 UNIVERSITY ST ",
+    "UNIT": "AM114",
+    "CALL_NO": "233392111",
+    "INC_NO": "23163989",
+    "ADDRESS": "143 DORE ST, SF",
+    "DISPATCH_DTTM": "2023-12-05T14:59:59Z",
     "PRIORITY": "2"
   }
 ]

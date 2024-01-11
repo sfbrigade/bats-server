@@ -24,13 +24,13 @@ describe('/webhooks/sffd', () => {
       await testSession.post('/webhooks/sffd/cad').set('Accept', 'application/json').send(data).expect(HttpStatus.OK);
 
       const ambulances = await models.Ambulance.findAll();
-      assert.deepStrictEqual(ambulances.length, 35);
+      assert.deepStrictEqual(ambulances.length, 40);
 
       const emsCalls = await models.EmergencyMedicalServiceCall.findAll();
-      assert.deepStrictEqual(emsCalls.length, 92);
+      assert.deepStrictEqual(emsCalls.length, 49);
 
       const emsCallsAmbulances = await models.EmergencyMedicalServiceCallAmbulance.findAll();
-      assert.deepStrictEqual(emsCallsAmbulances.length, 96);
+      assert.deepStrictEqual(emsCallsAmbulances.length, 53);
     });
 
     it('handles multiple Ambulance dispached to EMSCall records across separate callbacks', async () => {
@@ -40,7 +40,7 @@ describe('/webhooks/sffd', () => {
         .set('Accept', 'application/json')
         .send([
           {
-            UNIT: '59',
+            UNIT: 'M559',
             INC_NO: '21049765',
             DISPATCH_DTTM: '2021-04-26T06:09:30Z',
             ADDRESS: 'HOWARD ST/LANGTON ST',
@@ -55,7 +55,7 @@ describe('/webhooks/sffd', () => {
         .set('Accept', 'application/json')
         .send([
           {
-            UNIT: '62',
+            UNIT: 'M562',
             INC_NO: '21049765',
             DISPATCH_DTTM: '2021-04-26T06:06:18Z',
             ADDRESS: 'HOWARD ST/LANGTON ST',
@@ -74,8 +74,8 @@ describe('/webhooks/sffd', () => {
 
       const ambulances = await emsCall.getAmbulances();
       assert(ambulances.length, 2);
-      assert(ambulances.find((ambulance) => ambulance.ambulanceIdentifier === '59'));
-      assert(ambulances.find((ambulance) => ambulance.ambulanceIdentifier === '62'));
+      assert(ambulances.find((ambulance) => ambulance.ambulanceIdentifier === 'M559'));
+      assert(ambulances.find((ambulance) => ambulance.ambulanceIdentifier === 'M562'));
     });
   });
 });
