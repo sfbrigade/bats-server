@@ -28,14 +28,24 @@ function Counter({ label, min, max, name, onChange, value, isEditing }) {
       <label className="counter__label" htmlFor={name}>
         {label}
       </label>
-      <div className="counter__control">
-        <button type="button" className="usa-button counter__button counter__button--decrement" onClick={handleDecrement}>
+      <div className="counter__control" data-testid={`counter_${name}`}>
+        <button
+          data-testid="decrement"
+          type="button"
+          className="usa-button counter__button counter__button--decrement"
+          onClick={handleDecrement}
+        >
           &minus;
         </button>
         {!Number.isNaN(value) && (
           <input className="usa-input usa-input--small counter__input" type="text" readOnly id={name} name={name} value={value} />
         )}
-        <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement}>
+        <button
+          data-testid="increment"
+          type="button"
+          className="usa-button counter__button counter__button--increment"
+          onClick={handleIncrement}
+        >
           +
         </button>
       </div>

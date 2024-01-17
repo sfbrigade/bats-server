@@ -8,7 +8,7 @@ import './HospitalStatusRow.scss';
 function HospitalStatusRow({ hospitalStatus }) {
   const disabled = window.env.REACT_APP_DISABLE_PILOT_HOSPITALS === 'true' && hospitalStatus.hospitalName !== 'SF General';
   return (
-    <div className="grid-row">
+    <div className="grid-row hospitalstatusrow_container">
       <div className="grid-col-4 hospitalstatusrow__name-container">
         <h3 className="hospitalstatusrow__name">{hospitalStatus.hospitalName}</h3>
         <div className="hospitalstatusrow__timestamp">
