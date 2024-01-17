@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Ringdown from '../Models/Ringdown';
 import RingdownCard from '../Components/RingdownCard';
+import Context from '../Context';
 
 import './RingdownSection.scss';
 
 function RingdownSection({ title, ringdowns, onStatusChange }) {
-  const [isExpanded, setExpanded] = useState(true);
+  const { ringdownSection, setRingdownSection } = useContext(Context);
+
+  const isExpanded = !!ringdownSection[title];
+
+  const handleExpand = () => {
+    setRingdownSection({
+      ...ringdownSection,
+      [title]: !isExpanded,
+    });
+  };
 
   return (
     <div className="ringdown-section">
       <div
         className="usa-accordion__heading ringdown-section__header"
-        onClick={() => setExpanded(!isExpanded)}
+        onClick={handleExpand}
         onKeyDown={(event) => {
-          if (event.key === 'Enter') setExpanded(!isExpanded);
+          if (event.key === 'Enter') handleExpand();
         }}
         role="button"
         tabIndex={0}
