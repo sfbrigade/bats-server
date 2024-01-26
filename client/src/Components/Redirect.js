@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Context from '../Context';
+import Spinner from './Spinner';
 
 function Redirect() {
   const { user } = useContext(Context);
@@ -20,12 +21,11 @@ function Redirect() {
       } else if (user.isAdminUser) {
         navigate('/admin');
       }
-    } else {
+    } else if (user === null) {
       navigate('/login');
     }
   }, [user, navigate]);
-
-  return null;
+  return <Spinner />;
 }
 
 Redirect.propTypes = {};
