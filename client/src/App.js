@@ -34,8 +34,7 @@ function App() {
       })
       .catch((err) => {
         if (err === 401) {
-          //set error for unauthorized user
-          console.log('you are unauthorized');
+          setUser(null);
         }
       });
   }, [setUser, setOrganization, setHospital, setHospitalUser]);
