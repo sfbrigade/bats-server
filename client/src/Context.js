@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Context = createContext();
@@ -11,9 +11,21 @@ function ContextProvider({ children }) {
   const [hospital, setHospital] = useState();
   const [hospitalUser, setHospitalUser] = useState();
 
+  const setUserAndHospital = useCallback(function (user) {
+    setOrganization(user.organization);
+    if (user.organization?.type === 'HEALTHCARE') {
+      // TODO: handle user added to multiple hospitals
+      if (user.activeHospitals?.length > 0) {
+        setHospital(user.activeHospitals[0].hospital);
+        setHospitalUser(user.activeHospitals[0]);
+      }
+    }
+    setUser(user);
+  }, []);
+
   const value = {
     user,
-    setUser,
+    setUser: setUserAndHospital,
     ringdowns,
     setRingdowns,
     statusUpdates,

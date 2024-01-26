@@ -13,31 +13,19 @@ import NewPassword from './Auth/NewPassword';
 import TwoFactor from './Auth/TwoFactor';
 
 function App() {
-  const { user, setUser, setOrganization, setHospital, setHospitalUser } = useContext(Context);
+  const { user, setUser } = useContext(Context);
 
   useEffect(() => {
     // hit the users endpoint to ensure authenticated
     ApiService.users
       .me()
-      .then((response) => {
-        // save the user data into the context
-        const user = response.data;
-        setOrganization(user.organization);
-        if (user.organization?.type === 'HEALTHCARE') {
-          // TODO: handle user added to multiple hospitals
-          if (user.activeHospitals?.length > 0) {
-            setHospital(user.activeHospitals[0].hospital);
-            setHospitalUser(user.activeHospitals[0]);
-          }
-        }
-        setUser(user);
-      })
+      .then((response) => setUser(response.data))
       .catch((err) => {
         if (err === 401) {
           setUser(null);
         }
       });
-  }, [setUser, setOrganization, setHospital, setHospitalUser]);
+  }, [setUser]);
 
   return (
     <>
