@@ -56,6 +56,6 @@ describe('models.Patient', () => {
 
     const call = await patient.getEmergencyMedicalServiceCall();
     assert(call);
-    assert.deepStrictEqual(call.dispatchCallNumber, 911);
+    assert.deepStrictEqual(call.dispatchCallNumber, '911');
   });
 });

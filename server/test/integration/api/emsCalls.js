@@ -40,9 +40,9 @@ describe('/api/emscalls', () => {
       const { dispatchCallNumbers } = response.body;
       assert.deepStrictEqual(dispatchCallNumbers.length, 3);
       // should be sorted descending
-      assert(dispatchCallNumbers[0] === 911);
-      assert(dispatchCallNumbers[1] === 333);
-      assert(dispatchCallNumbers[2] === 111);
+      assert(dispatchCallNumbers[0] === '911');
+      assert(dispatchCallNumbers[1] === '333');
+      assert(dispatchCallNumbers[2] === '111');
     });
   });
 });

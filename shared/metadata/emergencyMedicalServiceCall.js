@@ -10,7 +10,7 @@ const fields = [
   },
   {
     name: 'dispatchCallNumber',
-    type: 'integer',
+    type: 'string',
     allowNull: false,
     required: true,
     defaultValue: '',

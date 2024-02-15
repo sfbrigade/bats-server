@@ -185,7 +185,7 @@ describe('models.PatientDelivery', () => {
       assert.deepStrictEqual(json, {
         id: '8b95ea8a-0171-483a-be74-ec17bbc12247',
         ambulance: { ambulanceIdentifier: 'SFFD-1' },
-        emsCall: { dispatchCallNumber: 911 },
+        emsCall: { dispatchCallNumber: '911' },
         hospital: {
           id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
           name: 'CPMC Davies Campus',

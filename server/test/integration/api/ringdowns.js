@@ -112,7 +112,7 @@ describe('/api/ringdowns', () => {
             ambulanceIdentifier: 'NORCAL-1',
           },
           emsCall: {
-            dispatchCallNumber: 1234,
+            dispatchCallNumber: '1234',
           },
           hospital: {
             id: '00752f60-068f-11eb-adc1-0242ac120002',
@@ -125,7 +125,7 @@ describe('/api/ringdowns', () => {
         .expect(HttpStatus.CREATED);
       assert(response.body.id);
       assert.deepStrictEqual(response.body.ambulance.ambulanceIdentifier, 'NORCAL-1');
-      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 1234);
+      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, '1234');
       assert.deepStrictEqual(response.body.hospital.id, '00752f60-068f-11eb-adc1-0242ac120002');
       assert.deepStrictEqual(response.body.patient, patientData);
       assert.deepStrictEqual(response.body.patientDelivery.currentDeliveryStatus, 'RINGDOWN SENT');
@@ -147,7 +147,7 @@ describe('/api/ringdowns', () => {
             ambulanceIdentifier: 'NEW-1',
           },
           emsCall: {
-            dispatchCallNumber: 1234,
+            dispatchCallNumber: '1234',
           },
           hospital: {
             id: '00752f60-068f-11eb-adc1-0242ac120002',
@@ -211,7 +211,7 @@ describe('/api/ringdowns', () => {
             ambulanceIdentifier: 'NORCAL-1',
           },
           emsCall: {
-            dispatchCallNumber: 1234,
+            dispatchCallNumber: '1234',
           },
           hospital: {
             id: '00752f60-068f-11eb-adc1-0242ac120002',
@@ -224,7 +224,7 @@ describe('/api/ringdowns', () => {
         .expect(HttpStatus.CREATED);
       assert(response.body.id);
       assert.deepStrictEqual(response.body.ambulance.ambulanceIdentifier, 'NORCAL-1');
-      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 1234);
+      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, '1234');
       assert.deepStrictEqual(response.body.hospital.id, '00752f60-068f-11eb-adc1-0242ac120002');
       assert.deepStrictEqual(response.body.patient, patientData);
       assert.deepStrictEqual(response.body.patientDelivery.currentDeliveryStatus, 'RINGDOWN SENT');
@@ -246,7 +246,7 @@ describe('/api/ringdowns', () => {
             ambulanceIdentifier: 'NEW-1',
           },
           emsCall: {
-            dispatchCallNumber: 1234,
+            dispatchCallNumber: '1234',
           },
           hospital: {
             id: '00752f60-068f-11eb-adc1-0242ac120002',
@@ -444,7 +444,7 @@ describe('/api/ringdowns', () => {
             ambulanceIdentifier: 'SFFD-2',
           },
           emsCall: {
-            dispatchCallNumber: 7777,
+            dispatchCallNumber: '7777',
           },
           hospital: {
             id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
@@ -461,7 +461,7 @@ describe('/api/ringdowns', () => {
         .expect(HttpStatus.OK);
 
       assert.deepStrictEqual(response.body.ambulance.ambulanceIdentifier, 'SFFD-2');
-      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, 7777);
+      assert.deepStrictEqual(response.body.emsCall.dispatchCallNumber, '7777');
       assert.deepStrictEqual(response.body.hospital.id, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
       assert.deepStrictEqual(response.body.patient.age, 99);
       assert.deepStrictEqual(response.body.patient.sex, 'FEMALE');
@@ -492,7 +492,7 @@ describe('/api/ringdowns', () => {
       assert.deepStrictEqual(response.body, {
         id: '8b95ea8a-0171-483a-be74-ec17bbc12247',
         ambulance: { ambulanceIdentifier: 'SFFD-1' },
-        emsCall: { dispatchCallNumber: 911 },
+        emsCall: { dispatchCallNumber: '911' },
         hospital: {
           id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
           name: 'CPMC Davies Campus',
