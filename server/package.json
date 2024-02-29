@@ -27,6 +27,7 @@
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.6.1",
     "pg": "^8.7.3",
+    "rollbar": "^2.26.3",
     "sequelize": "^6.21.2",
     "sequelize-auto": "^0.5.4",
     "sequelize-cli": "^6.4.1",
