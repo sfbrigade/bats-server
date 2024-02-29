@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
+const rollbar = require('../../lib/rollbar');
 const { getActiveHospitalUsers, getActiveOrganizationUsers } = require('../../wss');
 
 const { setPaginationHeaders, wrapper } = require('../helpers');
@@ -152,7 +153,8 @@ router.get('/:id', middleware.isAdminUser, setParams, async (req, res) => {
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }
-  } catch (err) {
+  } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -209,7 +211,8 @@ router.delete('/:id', middleware.isAdminUser, async (req, res) => {
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }
-  } catch {
+  } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });

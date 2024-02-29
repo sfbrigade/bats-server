@@ -3,6 +3,7 @@ const HttpStatus = require('http-status-codes');
 
 const middleware = require('../../auth/middleware');
 const { Ambulance, Organization } = require('../../models');
+const rollbar = require('../../lib/rollbar');
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.get('/identifiers', middleware.isAuthenticated, async (req, res) => {
     const ambulanceIdentifiers = ambulances.map((ambulance) => ambulance.ambulanceIdentifier);
     res.status(HttpStatus.OK).json({ ambulanceIdentifiers });
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });

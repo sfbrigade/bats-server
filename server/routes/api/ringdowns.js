@@ -3,8 +3,11 @@ const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
 
 const { DeliveryStatus } = require('shared/constants');
+
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
+const rollbar = require('../../lib/rollbar');
+
 const { dispatchRingdownUpdate } = require('../../wss');
 const { setPaginationHeaders } = require('../helpers');
 
@@ -42,6 +45,7 @@ router.get(
         res.json(await patientDelivery.toRingdownJSON());
       }
     } catch (error) {
+      rollbar.error(error, req);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     }
   }
@@ -75,6 +79,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
       throw new Error();
     }
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.FORBIDDEN).end();
   }
 
@@ -95,6 +100,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
     setPaginationHeaders(req, res, page, pages, total);
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -177,6 +183,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
       await dispatchRingdownUpdate(patientDelivery.id);
     }
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -237,6 +244,7 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
       await dispatchRingdownUpdate(patientDelivery.id);
     }
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -313,6 +321,7 @@ router.patch('/:id', middleware.isAuthenticated, async (req, res) => {
       await dispatchRingdownUpdate(patientDelivery.id);
     }
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
