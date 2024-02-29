@@ -3,6 +3,7 @@ const HttpStatus = require('http-status-codes');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
+const rollbar = require('../../lib/rollbar');
 const { dispatchStatusUpdate } = require('../../wss');
 
 const router = express.Router();
@@ -13,6 +14,7 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
     const response = await Promise.all(statusUpdates.map((statusUpdate) => statusUpdate.toJSON()));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });
@@ -52,6 +54,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
     res.status(HttpStatus.CREATED).json(await statusUpdate.toJSON());
     await dispatchStatusUpdate(req.body.hospitalId);
   } catch (error) {
+    rollbar.error(error, req);
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
   }
 });

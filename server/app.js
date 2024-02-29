@@ -4,7 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const cookieSession = require('cookie-session');
 const logger = require('morgan');
+
 const passport = require('./auth/passport');
+const rollbar = require('./lib/rollbar');
 
 const app = express();
 const client = (...args) => path.join(__dirname, '../client', ...args);
@@ -58,5 +60,8 @@ app.get('/*', (req, res) => {
   data = data.replace(/window\.env\.([^ =]+)[^,;<]+/g, (match, p1) => `window.env.${p1} = '${process.env[p1] ?? ''}'`);
   res.send(data);
 });
+
+// log unhandled errors with Rollbar
+app.use(rollbar.errorHandler());
 
 module.exports = app;

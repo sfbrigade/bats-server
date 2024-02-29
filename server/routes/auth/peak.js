@@ -2,6 +2,8 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 
+const rollbar = require('../../lib/rollbar');
+
 const router = express.Router();
 
 router.get('/', passport.authenticate('peak'));
@@ -9,6 +11,7 @@ router.get('/', passport.authenticate('peak'));
 router.get('/callback', (req, res, next) => {
   passport.authenticate('peak', (err, user) => {
     if (err) {
+      rollbar.error(err, req);
       if (req.accepts('html')) {
         res.redirect('/auth/peak');
       } else {

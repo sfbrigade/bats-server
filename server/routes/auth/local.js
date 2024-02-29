@@ -3,12 +3,14 @@ const HttpStatus = require('http-status-codes');
 const passport = require('passport');
 
 const models = require('../../models');
+const rollbar = require('../../lib/rollbar');
 
 const router = express.Router();
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     if (err) {
+      rollbar.error(err, req);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     } else if (user) {
       req.login(user, async () => {
