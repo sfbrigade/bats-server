@@ -29,6 +29,18 @@ const fields = [
     allowNull: false,
   },
   {
+    name: 'mciRedCapacity',
+    type: 'integer',
+  },
+  {
+    name: 'mciYellowCapacity',
+    type: 'integer',
+  },
+  {
+    name: 'mciGreenCapacity',
+    type: 'integer',
+  },
+  {
     name: 'openEdBedCount',
     type: 'integer',
     allowNull: false,

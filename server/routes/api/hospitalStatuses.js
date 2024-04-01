@@ -39,6 +39,9 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
   try {
     const statusUpdate = await models.HospitalStatusUpdate.create({
       HospitalId: req.body.hospitalId,
+      mciRedCapacity: req.body.mciRedCapacity,
+      mciYellowCapacity: req.body.mciYellowCapacity,
+      mciGreenCapacity: req.body.mciGreenCapacity,
       openEdBedCount: req.body.openEdBedCount,
       openPsychBedCount: req.body.openPsychBedCount,
       bedCountUpdateDateTimeLocal: req.body.bedCountUpdateDateTimeLocal,

@@ -60,6 +60,9 @@ module.exports = (sequelize) => {
     async toJSON(options) {
       const json = _.pick(this, [
         'id',
+        'mciRedCapacity',
+        'mciYellowCapacity',
+        'mciGreenCapacity',
         'openEdBedCount',
         'openPsychBedCount',
         'bedCountUpdateDateTimeLocal',
