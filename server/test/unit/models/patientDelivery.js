@@ -191,6 +191,8 @@ describe('models.PatientDelivery', () => {
           name: 'CPMC Davies Campus',
         },
         patient: {
+          triageTag: null,
+          triagePriority: null,
           age: null,
           sex: null,
           emergencyServiceResponseType: 'CODE 2',

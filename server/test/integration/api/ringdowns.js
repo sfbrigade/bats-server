@@ -72,6 +72,8 @@ describe('/api/ringdowns', () => {
 
   describe('POST /', () => {
     const patientData = {
+      triageTag: null,
+      triagePriority: null,
       age: 30,
       sex: 'MALE',
       emergencyServiceResponseType: 'CODE 2',
@@ -171,6 +173,8 @@ describe('/api/ringdowns', () => {
 
   describe('POST /', () => {
     const patientData = {
+      triageTag: null,
+      triagePriority: null,
       age: 30,
       sex: 'MALE',
       emergencyServiceResponseType: 'CODE 2',
@@ -498,6 +502,8 @@ describe('/api/ringdowns', () => {
           name: 'CPMC Davies Campus',
         },
         patient: {
+          triageTag: null,
+          triagePriority: null,
           age: null,
           sex: null,
           emergencyServiceResponseType: 'CODE 2',
