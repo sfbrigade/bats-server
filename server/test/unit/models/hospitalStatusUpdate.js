@@ -99,6 +99,9 @@ describe('models.HospitalStatusUpdate', () => {
       const json = await hospitalStatusUpdate.toJSON();
       assert.deepStrictEqual(json, {
         id: '9169fb04-b262-42ee-9c81-da1bb6818e6b',
+        mciRedCapacity: null,
+        mciYellowCapacity: null,
+        mciGreenCapacity: null,
         openEdBedCount: 10,
         openPsychBedCount: 2,
         bedCountUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),

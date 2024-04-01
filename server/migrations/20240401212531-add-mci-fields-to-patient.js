@@ -4,14 +4,14 @@ module.exports = {
     await queryInterface.addColumn('patient', 'triagetag', {
       type: Sequelize.STRING,
     });
-    await queryInterface.addColumn('patient', 'triagepriority', {
+    await queryInterface.addColumn('patient', 'triagepriorityenum', {
       type: Sequelize.STRING,
     });
     await queryInterface.sequelize.query(`CREATE TYPE triageprioritytype AS ENUM ('RED', 'YELLOW', 'GREEN')`);
     await queryInterface.sequelize.query(`
       ALTER TABLE patient 
-      ALTER COLUMN triagepriority TYPE triageprioritytype 
-      USING triagepriority::triageprioritytype;
+      ALTER COLUMN triagepriorityenum TYPE triageprioritytype
+      USING triagepriorityenum::triageprioritytype;
     `);
   },
 
