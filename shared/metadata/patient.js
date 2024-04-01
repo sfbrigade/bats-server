@@ -23,6 +23,15 @@ const fields = [
     required: true,
   },
   {
+    name: 'triageTag',
+    type: 'string',
+  },
+  {
+    name: 'triagePriority',
+    type: 'enum',
+    typeArgs: ['RED', 'YELLOW', 'GREEN'],
+  },
+  {
     name: 'age',
     type: 'integer',
     label: 'Age (estimated)',
