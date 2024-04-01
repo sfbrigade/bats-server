@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation, useResolvedPath } from 'react-router-dom';
 import ApiService from '../ApiService';
 import Context from '../Context';
 import HospitalIcon from '../Components/Icons/Hospital';
+import { ReactComponent as MciIcon } from '../assets/img/icon-mci.svg';
 import { ReactComponent as SettingsIcon } from '../assets/img/icon-settings.svg';
 import { ReactComponent as UserIcon } from '../assets/img/icon-users.svg';
 import { ReactComponent as DashboardIcon } from '../assets/img/icon-dashboard.svg';
@@ -57,13 +58,13 @@ function AdminNavigation() {
   return (
     <div className="admin-navigation">
       <div className="admin-navigation__container grid-container">
-        <div className="display-flex flex-row flex-justify">
-          <div>
+        <div className="display-flex flex-row flex-justify flex-align-center">
+          <div className="display-flex flex-row flex-justify flex-align-center">
             {user?.isSuperUser && (
-              <h2 className="admin-navigation__name">
+              <h2>
                 <div className="display-flex flex-align-center">
                   {/* eslint-disable-next-line jsx-a11y/no-onchange */}
-                  <select value={organization?.id} onChange={onChangeOrganization} className="usa-select">
+                  <select value={organization?.id} onChange={onChangeOrganization} className="usa-select margin-0">
                     {organizations?.map((o) => (
                       <option key={o.id} value={o.id}>
                         {o.name}
@@ -73,14 +74,16 @@ function AdminNavigation() {
                 </div>
               </h2>
             )}
-            {!user?.isSuperUser && <h2 className="admin-navigation__name">{organization?.name}</h2>}
-            Welcome,{' '}
-            <Link to={`${url}/users/${user?.id}`} onClick={reset}>
-              {user?.firstName} {user?.lastName}
-            </Link>
-            !
+            {!user?.isSuperUser && <h2>{organization?.name}</h2>}
           </div>
-          <div className="admin-navigation__logout">
+          <div>
+            <span className="margin-right-2">
+              Welcome,{' '}
+              <Link to={`${url}/users/${user?.id}`} onClick={reset}>
+                {user?.firstName} {user?.lastName}
+              </Link>
+              !
+            </span>
             {user?.isOperationalUser && (
               <>
                 <Link to="/" onClick={reset}>
@@ -99,6 +102,16 @@ function AdminNavigation() {
           >
             <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
           </NavLink>
+          {user?.isSuperUser && (
+            <>
+              <NavLink
+                to={`${url}/mcis`}
+                className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+              >
+                <MciIcon className="admin-navigation__link-icon" /> MCIs
+              </NavLink>
+            </>
+          )}
           <NavLink
             to={`${url}/users`}
             className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
