@@ -32,15 +32,14 @@ function MciForm() {
         setData(data);
       });
     } else {
-      const now = DateTime.now().toISO();
-      // TODO format for datetime-local
+      const now = DateTime.now().toISO({ includeOffset: false });
       const data = {
         incidentNumber: '',
         address1: '',
         address2: '',
         city: '',
         state: '',
-        startedAt: now,
+        startedAt: now.substring(0, now.lastIndexOf(':')),
         endedAt: '',
       };
       setData(data);
