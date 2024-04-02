@@ -16,8 +16,19 @@ function MciForm() {
   useEffect(() => {
     if (mciId && mciId !== 'new') {
       ApiService.mcis.get(mciId).then((response) => {
-        const { data } = response;
-        // TODO process timestamps for datetime-local input
+        const data = { ...response.data };
+        // process timestamps for datetime-local input
+        if (data.startedAt) {
+          data.startedAt = DateTime.fromISO(data.startedAt).toISO({ suppressMilliseconds: true, includeOffset: false });
+        }
+        if (data.endedAt) {
+          data.endedAt = DateTime.fromISO(data.endedAt).toISO({ suppressMilliseconds: true, includeOffset: false });
+        }
+        // don't modify estimated counts
+        delete data.estimatedRedCount;
+        delete data.estimatedYellowCount;
+        delete data.estimatedGreenCount;
+        delete data.estimatedZebraCount;
         setData(data);
       });
     } else {
@@ -31,10 +42,6 @@ function MciForm() {
         state: '',
         startedAt: now,
         endedAt: '',
-        estimatedRedCount: 0,
-        estimatedYellowCount: 0,
-        estimatedGreenCount: 0,
-        estimatedZebraCount: 0,
       };
       setData(data);
     }

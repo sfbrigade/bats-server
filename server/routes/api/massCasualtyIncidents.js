@@ -22,7 +22,7 @@ router.post(
   '/',
   middleware.isSuperUser,
   wrapper(async (req, res) => {
-    const record = await models.MassCasualtyIncident.create({
+    const data = {
       ..._.pick(req.body, [
         'incidentNumber',
         'address1',
@@ -39,7 +39,8 @@ router.post(
       ]),
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
-    });
+    };
+    const record = await models.MassCasualtyIncident.create(data);
     if (record) {
       res.status(HttpStatus.CREATED).json(record.toJSON());
     } else {

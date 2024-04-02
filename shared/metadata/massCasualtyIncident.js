@@ -52,21 +52,25 @@ const fields = [
     name: 'estimatedRedCount',
     type: 'integer',
     allowNull: false,
+    defaultValue: 0,
   },
   {
     name: 'estimatedYellowCount',
     type: 'integer',
     allowNull: false,
+    defaultValue: 0,
   },
   {
     name: 'estimatedGreenCount',
     type: 'integer',
     allowNull: false,
+    defaultValue: 0,
   },
   {
     name: 'estimatedZebraCount',
     type: 'integer',
     allowNull: false,
+    defaultValue: 0,
   },
 ];
 

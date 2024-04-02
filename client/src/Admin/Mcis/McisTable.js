@@ -18,8 +18,8 @@ function McisTable() {
         <tr>
           <th className="w-20">Incident #</th>
           <th className="w-30">Address</th>
-          <th className="w-25">Started at</th>
-          <th className="w-25">Ended at</th>
+          <th className="w-25">Started</th>
+          <th className="w-25">Ended</th>
         </tr>
       </thead>
       <tbody>
