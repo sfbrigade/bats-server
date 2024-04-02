@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { DateTime } from 'luxon';
 
 import { ReactComponent as NoteIcon } from '../../assets/img/icon-note.svg';
@@ -6,13 +6,16 @@ import MciCounter from '../../Components/MciCounter';
 
 import './MciHospitalCapacityRow.scss';
 
-function MciHospitalCapacityRow({ statusUpdate }) {
+function MciHospitalCapacityRow({ onChange, statusUpdate }) {
+  const timeoutRef = useRef();
   const [internalData, setInternalData] = useState(statusUpdate.toJSON());
 
   function onChangeInternal(event) {
+    clearTimeout(timeoutRef.current);
     const newInternalData = { ...internalData };
     newInternalData[event.target.name] = event.target.value;
     setInternalData(newInternalData);
+    timeoutRef.current = setTimeout(() => onChange(newInternalData), 250);
   }
 
   return (

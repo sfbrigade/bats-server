@@ -6,7 +6,7 @@ import ApiService from '../../ApiService';
 import Alert from '../../Components/Alert';
 
 import MciDetails from './MciDetails';
-import MciEstimatedPatientCounts from './MciEstimatedPatientCounts';
+import MciPatientCounts from './MciPatientCounts';
 import MciHospitalCapacity from './MciHospitalCapacity';
 
 function Mci() {
@@ -48,11 +48,11 @@ function Mci() {
         <>
           <MciDetails data={data} onEnd={onEnd} />
           <h2>Estimated Patient Counts</h2>
-          <MciEstimatedPatientCounts data={data} onChange={onChangeEstimatedPatientCounts} />
+          <MciPatientCounts className="margin-bottom-4" data={data} isEditable={!data.endedAt} onChange={onChangeEstimatedPatientCounts} />
           {!data.endedAt && (
             <>
               <h2>Hospital Capacity</h2>
-              <MciHospitalCapacity />
+              <MciHospitalCapacity onError={setError} />
             </>
           )}
         </>

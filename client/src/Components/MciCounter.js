@@ -63,7 +63,7 @@ function MciCounter({ className, isEditable, label, name, onChange, type, value 
           readOnly={!isEditable}
           type="number"
           className="mci-counter__input"
-          value={value}
+          value={value ?? ''}
           onBlur={onBlur}
           onChange={onChangeInternal}
         />

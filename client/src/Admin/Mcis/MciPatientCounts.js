@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
+import classNames from 'classnames';
+
 import MciCounter from '../../Components/MciCounter';
 
-function MciEstimatedPatientCounts({ data, onChange }) {
+function MciPatientCounts({ className, data, includeDead, isEditable, onChange }) {
   const timeoutRef = useRef();
   const [internalData, setInternalData] = useState(data);
 
@@ -13,17 +15,13 @@ function MciEstimatedPatientCounts({ data, onChange }) {
     timeoutRef.current = setTimeout(() => onChange(newInternalData), 250);
   }
 
-  const estimatedTotal =
-    internalData.estimatedRedCount +
-    internalData.estimatedYellowCount +
-    internalData?.estimatedGreenCount +
-    internalData.estimatedZebraCount;
+  const estimatedTotal = internalData.estimatedRedCount + internalData.estimatedYellowCount + internalData.estimatedGreenCount;
 
   return (
-    <div className="display-flex flex-row flex-align-center flex-justify">
+    <div className={classNames('display-flex flex-row flex-align-center flex-justify', className)}>
       <MciCounter
         className="flex-1"
-        isEditable={!internalData.endedAt}
+        isEditable={isEditable}
         label="Immediate"
         type="immediate"
         name="estimatedRedCount"
@@ -33,7 +31,7 @@ function MciEstimatedPatientCounts({ data, onChange }) {
       <h2 className="margin-x-1">+</h2>
       <MciCounter
         className="flex-1"
-        isEditable={!internalData.endedAt}
+        isEditable={isEditable}
         label="Delayed"
         type="delayed"
         name="estimatedYellowCount"
@@ -43,27 +41,27 @@ function MciEstimatedPatientCounts({ data, onChange }) {
       <h2 className="margin-x-1">+</h2>
       <MciCounter
         className="flex-1"
-        isEditable={!internalData.endedAt}
+        isEditable={isEditable}
         label="Minor"
         type="minor"
         name="estimatedGreenCount"
         value={internalData.estimatedGreenCount}
         onChange={onChangeInternal}
       />
-      <h2 className="margin-x-1">+</h2>
+      <h2 className="margin-x-1">=</h2>
+      <MciCounter className="flex-1" label="Total" type="total" value={estimatedTotal} />
+      <h2 className="margin-x-1 opacity-0">+</h2>
       <MciCounter
-        className="flex-1"
-        isEditable={!internalData.endedAt}
+        className={classNames('flex-1', { 'opacity-0': !includeDead })}
+        isEditable={isEditable}
         label="Dead"
         type="dead"
         name="estimatedZebraCount"
-        value={internalData.estimatedZebraCount}
+        value={internalData.estimatedZebraCount ?? 0}
         onChange={onChangeInternal}
       />
-      <h2 className="margin-x-1">=</h2>
-      <MciCounter className="flex-1" label="Total" type="total" value={estimatedTotal} />
     </div>
   );
 }
 
-export default MciEstimatedPatientCounts;
+export default MciPatientCounts;
