@@ -1,0 +1,161 @@
+@import '../theme/base';
+
+.mci-counter {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 1;
+  overflow: hidden;
+}
+
+.mci-counter__label {
+  @include h4;
+  text-align: center;
+}
+
+.mci-counter__control {
+  flex-shrink: 1;
+  border-top: 2px solid color('base-light');
+  border-bottom: 2px solid color('base-light');
+  overflow: hidden;
+  &:first-child {
+    border-left: 2px solid color('base-light');
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &:last-child {
+    border-right: 2px solid color('base-light');
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+}
+
+.mci-counter__button {
+  @include h2;
+  border: 0;
+  width: 4em;
+  &:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  &:not([disabled]):focus,
+  &:focus {
+    border: 0;
+    outline: none;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.mci-counter__input {
+  @include h2;
+  border: 2px solid transparent;
+  width: 100%;
+  text-align: center;
+  // hide browser default numeric spin controls
+  -moz-appearance: textfield; /* Firefox */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+$mci-color-immediate: 'red-50';
+$mci-color-immediate-darker: 'red-60';
+$mci-color-immediate-darkest: 'red-70';
+$mci-color-delayed: 'yellow-20v';
+$mci-color-delayed-darker: 'yellow-30v';
+$mci-color-delayed-darkest: 'yellow-40v';
+$mci-color-minor: 'mint-40v';
+$mci-color-minor-darker: 'mint-50v';
+$mci-color-minor-darkest: 'mint-60v';
+$mci-color-dead: 'gray-70';
+$mci-color-dead-darker: 'gray-80';
+$mci-color-dead-darkest: 'black';
+
+.mci-counter--immediate {
+  .mci-counter__control {
+    border-color: color($mci-color-immediate);
+  }
+  .mci-counter__button {
+    background-color: color($mci-color-immediate);
+    color: white;
+    &:hover {
+      background-color: color($mci-color-immediate-darker);
+    }
+    &:active {
+      background-color: color($mci-color-immediate-darkest);
+    }
+  }
+  .mci-counter__label {
+    color: color($mci-color-immediate);
+  }
+}
+
+.mci-counter--delayed {
+  .mci-counter__control {
+    border-color: color($mci-color-delayed);
+  }
+  .mci-counter__button {
+    background-color: color($mci-color-delayed);
+    color: white;
+    &:hover {
+      background-color: color($mci-color-delayed-darker);
+    }
+    &:active {
+      background-color: color($mci-color-delayed-darkest);
+    }
+  }
+  .mci-counter__label {
+    color: color($mci-color-delayed-darker);
+  }
+}
+
+.mci-counter--minor {
+  .mci-counter__control {
+    border-color: color($mci-color-minor);
+  }
+  .mci-counter__button {
+    background-color: color($mci-color-minor);
+    color: white;
+    &:hover {
+      background-color: color($mci-color-minor-darker);
+    }
+    &:active {
+      background-color: color($mci-color-minor-darkest);
+    }
+  }
+  .mci-counter__label {
+    color: color($mci-color-minor);
+  }
+}
+
+.mci-counter--dead {
+  .mci-counter__control {
+    border-color: color($mci-color-dead);
+  }
+  .mci-counter__button {
+    background-color: color($mci-color-dead);
+    color: white;
+    &:hover {
+      background-color: color($mci-color-dead-darker);
+    }
+    &:active {
+      background-color: color($mci-color-dead-darkest);
+    }
+  }
+  .mci-counter__label {
+    color: color($mci-color-dead);
+  }
+}
+
+.mci-counter--total {
+  .mci-counter__control {
+    border-color: color('base-light');
+  }
+}

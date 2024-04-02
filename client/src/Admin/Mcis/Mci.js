@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 
 import ApiService from '../../ApiService';
 import Alert from '../../Components/Alert';
+import MciEstimatedPatientCounts from './MciEstimatedPatientCounts';
 
 function Mci() {
   const { mciId } = useParams();
@@ -29,13 +30,23 @@ function Mci() {
     }
   }
 
+  async function onChangeEstimatedPatientCounts(newData) {
+    try {
+      const { estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount } = newData;
+      await ApiService.mcis.update(mciId, { estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount });
+      setData({ ...data, estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount });
+    } catch (error) {
+      setError(error);
+    }
+  }
+
   return (
     <main>
       <h1>MCI #{data?.incidentNumber}</h1>
       {data && (
         <>
-          {data.address1 && <div>{data.address1}</div>}
-          {data.address2 && <div>{data.address2}</div>}
+          {data.address1 && <div className="margin-bottom-1">{data.address1}</div>}
+          {data.address2 && <div className="margin-bottom-1">{data.address2}</div>}
           <div className="margin-bottom-1">
             <b>Started:</b> {DateTime.fromISO(data.startedAt).toLocaleString(DateTime.DATETIME_FULL)}
           </div>
@@ -44,7 +55,7 @@ function Mci() {
               <b>Ended:</b> {DateTime.fromISO(data.endedAt).toLocaleString(DateTime.DATETIME_FULL)}
             </div>
           )}
-          <div className="usa-form-group">
+          <div className="margin-top-2 margin-bottom-3">
             {!data.endedAt && (
               <button onClick={() => setConfirmEnd(true)} className="usa-button usa-button--secondary">
                 End MCI
@@ -74,6 +85,8 @@ function Mci() {
               onCancel={() => setError(null)}
             />
           )}
+          <h2>Estimated Patient Counts</h2>
+          <MciEstimatedPatientCounts data={data} onChange={onChangeEstimatedPatientCounts} />
         </>
       )}
     </main>
