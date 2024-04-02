@@ -1,85 +1,71 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { DateTime } from 'luxon';
 
 import FormInput from '../../Components/FormInput';
-import FormCheckbox from '../../Components/FormCheckbox';
 import FormError from '../../Models/FormError';
 import ApiService from '../../ApiService';
-import Context from '../../Context';
 
-function MciForm({ mciId }) {
+function MciForm() {
   const navigate = useNavigate();
-  const { organization, hospital } = useContext(Context);
-  const [mci, setMci] = useState();
+  const { mciId } = useParams();
+  const [data, setData] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
     if (mciId && mciId !== 'new') {
-      ApiService.mcis
-        .get(mciId, { organizationId: organization?.id, hospitalId: hospital?.id })
-        .then((response) => {
-          const { data } = response;
-          if (data.organization?.id !== organization?.id) {
-            navigate('/admin/mcis');
-          }
-          if (hospital) {
-            const hospitalMci = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital?.id);
-            if (hospitalMci) {
-              data.isActive = hospitalMci.isActive;
-              data.isInfoMci = hospitalMci.isInfoMci;
-              data.isRingdownMci = hospitalMci.isRingdownMci;
-            } else {
-              navigate('/admin/mcis');
-            }
-          }
-          setMci(response.data);
-        })
-        .catch(() => {
-          navigate('/admin/mcis');
-        });
+      ApiService.mcis.get(mciId).then((response) => {
+        const { data } = response;
+        // TODO process timestamps for datetime-local input
+        setData(data);
+      });
     } else {
+      const now = DateTime.now().toISO();
+      // TODO format for datetime-local
       const data = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        isAdminMci: false,
-        isOperationalMci: true,
+        incidentNumber: '',
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        startedAt: now,
+        endedAt: '',
+        estimatedRedCount: 0,
+        estimatedYellowCount: 0,
+        estimatedGreenCount: 0,
+        estimatedZebraCount: 0,
       };
-      if (hospital) {
-        data.isActive = true;
-        data.isInfoMci = true;
-        data.isRingdownMci = true;
-      }
-      setMci(data);
+      setData(data);
     }
-  }, [mciId, organization, hospital]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [mciId]);
 
   function onChange(property, value) {
-    const newMci = { ...mci };
-    newMci[property] = value;
-    setMci(newMci);
+    const newData = { ...data };
+    newData[property] = value;
+    setData(newData);
   }
 
   async function onSubmit(event) {
     event.preventDefault();
     try {
       setError();
-      const data = {
-        ...mci,
-        organizationId: organization.id,
-        hospitalId: hospital?.id,
-      };
-      if (data.password === '') {
-        delete data.password;
-      }
-      if (mciId && mciId !== 'new') {
-        await ApiService.mcis.update(mciId, data);
+      // process timestamps from datetime-local
+      const newData = { ...data };
+      newData.startedAt = DateTime.fromISO(newData.startedAt, { zone: 'local' }).toISO();
+      if (newData.endedAt) {
+        newData.endedAt = DateTime.fromISO(newData.endedAt, { zone: 'local' }).toISO();
       } else {
-        await ApiService.mcis.create(data);
+        newData.endedAt = null;
       }
-      navigate('/admin/mcis', { state: { flash: { info: 'Saved!' } } });
+      let id = mciId;
+      if (mciId && mciId !== 'new') {
+        await ApiService.mcis.update(mciId, newData);
+      } else {
+        const response = await ApiService.mcis.create(newData);
+        ({ id } = response.data);
+      }
+      navigate(`/admin/mcis/${id}`);
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);
@@ -89,7 +75,7 @@ function MciForm({ mciId }) {
   return (
     <main>
       <h1>MCI</h1>
-      {mci && (
+      {data && (
         <form onSubmit={onSubmit} className="usa-form">
           <div className="grid-row">
             <div className="tablet:grid-col-6">
@@ -102,57 +88,37 @@ function MciForm({ mciId }) {
               )}
               <fieldset className="usa-fieldset">
                 <FormInput
-                  label="First Name"
+                  label="Incident Number"
                   onChange={onChange}
-                  property="firstName"
+                  property="incidentNumber"
                   required
                   showRequiredHint
                   type="text"
-                  value={mci.firstName}
+                  value={data.incidentNumber}
                   error={error}
                 />
                 <FormInput
-                  label="Last Name"
+                  label="Started At"
                   onChange={onChange}
-                  property="lastName"
+                  property="startedAt"
                   required
                   showRequiredHint
-                  type="text"
-                  value={mci.lastName}
+                  type="datetime-local"
+                  value={data.startedAt}
                   error={error}
                 />
-                <FormInput
-                  label="Email"
-                  onChange={onChange}
-                  property="email"
-                  required
-                  showRequiredHint
-                  type="text"
-                  value={mci.email}
-                  error={error}
-                />
-                <FormInput
-                  label="Password"
-                  onChange={onChange}
-                  property="password"
-                  required={!mciId || mciId === 'new'}
-                  showRequiredHint
-                  type="password"
-                  value={mci.password}
-                  error={error}
-                />
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label className="usa-label">Role</label>
-                <FormCheckbox label="Administrative" onChange={onChange} property="isAdminMci" currentValue={mci.isAdminMci} />
-                <FormCheckbox label="Operational" onChange={onChange} property="isOperationalMci" currentValue={mci.isOperationalMci} />
-                {hospital && (
-                  <>
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label className="usa-label">Tabs</label>
-                    <FormCheckbox label="Info tab" onChange={onChange} property="isInfoMci" currentValue={mci.isInfoMci} />
-                    <FormCheckbox label="Ringdowns tab" onChange={onChange} property="isRingdownMci" currentValue={mci.isRingdownMci} />
-                  </>
+                {mciId && mciId !== 'new' && (
+                  <FormInput
+                    label="Ended At"
+                    onChange={onChange}
+                    property="endedAt"
+                    type="datetime-local"
+                    value={data.endedAt}
+                    error={error}
+                  />
                 )}
+                <FormInput label="Address 1" onChange={onChange} property="address1" type="text" value={data.address1} error={error} />
+                <FormInput label="Address 2" onChange={onChange} property="address2" type="text" value={data.address2} error={error} />
                 <button className="usa-button margin-y-3" type="submit">
                   Submit
                 </button>

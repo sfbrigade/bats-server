@@ -8,7 +8,7 @@ router.use('/ringdowns', require('./ringdowns'));
 router.use('/hospitalstatuses', require('./hospitalStatuses'));
 router.use('/ambulances', require('./ambulances'));
 router.use('/emscalls', require('./emsCalls'));
-// this may not be needed will keep for now
+router.use('/mcis', require('./massCasualtyIncidents'));
 router.use('/organizations', require('./organizations'));
 
 router.get('/health', (req, res) => {

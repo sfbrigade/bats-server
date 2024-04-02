@@ -36,6 +36,20 @@ export default {
       return instance.post('/api/hospitalstatuses', data);
     },
   },
+  mcis: {
+    index() {
+      return instance.get('/api/mcis');
+    },
+    create(data) {
+      return instance.post('/api/mcis', data);
+    },
+    get(id) {
+      return instance.get(`/api/mcis/${id}`);
+    },
+    update(id, data) {
+      return instance.patch(`/api/mcis/${id}`, data);
+    },
+  },
   ringdowns: {
     create(data) {
       return instance.post('/api/ringdowns', data);

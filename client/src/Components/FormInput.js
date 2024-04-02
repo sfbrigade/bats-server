@@ -112,7 +112,7 @@ FormInput.propTypes = {
   required: PropTypes.bool,
   showRequiredHint: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
-  type: PropTypes.oneOf(['number', 'text', 'password']),
+  type: PropTypes.oneOf(['number', 'text', 'password', 'datetime-local']),
   min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   unit: PropTypes.string,

@@ -41,6 +41,7 @@ const fields = [
     name: 'startedAt',
     colName: 'startedattimestamp',
     type: 'date',
+    allowNull: false,
   },
   {
     name: 'endedAt',
