@@ -1,61 +1,41 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { DateTime } from 'luxon';
 
 import ApiService from '../../ApiService';
-import Context from '../../Context';
 
-function McisTable({ isActive }) {
-  const { mci, organization, hospital } = useContext(Context);
-  const [mcis, setMcis] = useState([]);
+function McisTable() {
+  const navigate = useNavigate();
+  const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    if (mci && organization) {
-      const params = { organizationId: organization?.id, hospitalId: hospital?.id };
-      let request;
-      if (isActive) {
-        request = ApiService.mcis.active(params);
-      } else {
-        request = ApiService.mcis.index(params);
-      }
-      request.then((response) => {
-        setMcis(response.data);
-      });
-    }
-  }, [mci, organization, hospital, isActive]);
+    ApiService.mcis.index().then((response) => setRecords(response.data));
+  }, []);
 
   return (
-    <table className="usa-table usa-table--borderless width-full">
+    <table className="usa-table usa-table--striped usa-table--borderless usa-table--hoverable width-full">
       <thead>
         <tr>
-          <th>Incident #</th>
-          <th>Address</th>
-          <th>Started at</th>
-          <th>Ended at</th>
+          <th className="w-20">Incident #</th>
+          <th className="w-30">Address</th>
+          <th className="w-25">Started at</th>
+          <th className="w-25">Ended at</th>
         </tr>
       </thead>
       <tbody>
-        {mcis.map((u) => (
-          <tr key={u.id}>
-            <td>{u.firstName}</td>
-            <td>{u.lastName}</td>
-            <td>{u.email}</td>
+        {records.map((r) => (
+          <tr key={r.id} onClick={() => navigate(r.id)}>
+            <td>{r.incidentNumber}</td>
             <td>
-              <Link to={`/admin/mcis/${u.id}`}>More &gt;</Link>
+              {r.address1} {r.address2}
             </td>
+            <td>{DateTime.fromISO(r.startedAt).toLocaleString(DateTime.DATETIME_FULL)}</td>
+            <td>{r.endedAt && DateTime.fromISO(r.endedAt).toLocaleString(DateTime.DATETIME_FULL)}</td>
           </tr>
         ))}
       </tbody>
     </table>
   );
 }
-
-McisTable.propTypes = {
-  isActive: PropTypes.bool,
-};
-
-McisTable.defaultProps = {
-  isActive: undefined,
-};
 
 export default McisTable;
