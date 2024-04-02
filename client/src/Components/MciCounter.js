@@ -32,13 +32,13 @@ function MciCounter({ className, isEditable, label, name, onChange, type, value 
     onChange({
       target: {
         name,
-        value: value + 1,
+        value: (value ?? -1) + 1,
       },
     });
   }
 
   function onDecrement() {
-    const newValue = value - 1;
+    const newValue = (value ?? 1) - 1;
     if (newValue >= 0) {
       onChange({
         target: {

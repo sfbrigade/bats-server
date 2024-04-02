@@ -4,8 +4,10 @@ import { DateTime } from 'luxon';
 
 import ApiService from '../../ApiService';
 import Alert from '../../Components/Alert';
+
 import MciDetails from './MciDetails';
 import MciEstimatedPatientCounts from './MciEstimatedPatientCounts';
+import MciHospitalCapacity from './MciHospitalCapacity';
 
 function Mci() {
   const { mciId } = useParams();
@@ -47,6 +49,12 @@ function Mci() {
           <MciDetails data={data} onEnd={onEnd} />
           <h2>Estimated Patient Counts</h2>
           <MciEstimatedPatientCounts data={data} onChange={onChangeEstimatedPatientCounts} />
+          {!data.endedAt && (
+            <>
+              <h2>Hospital Capacity</h2>
+              <MciHospitalCapacity />
+            </>
+          )}
         </>
       )}
       {error && (

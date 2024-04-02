@@ -2,6 +2,9 @@ class HospitalStatus {
   constructor({
     id,
     hospital,
+    mciRedCapacity,
+    mciYellowCapacity,
+    mciGreenCapacity,
     openEdBedCount,
     openPsychBedCount,
     bedCountUpdateDateTimeLocal,
@@ -17,6 +20,9 @@ class HospitalStatus {
     this.hospitalName = hospital?.name;
     this.ambulancesEnRoute = hospital?.ambulancesEnRoute;
     this.ambulancesOffloading = hospital?.ambulancesOffloading;
+    this.mciRedCapacity = mciRedCapacity;
+    this.mciYellowCapacity = mciYellowCapacity;
+    this.mciGreenCapacity = mciGreenCapacity;
     this.openEdBedCount = openEdBedCount;
     this.openPsychBedCount = openPsychBedCount;
     this.bedCountUpdateDateTimeLocal = bedCountUpdateDateTimeLocal;
@@ -44,6 +50,9 @@ class HospitalStatus {
   toJSON() {
     return {
       hospitalId: this.hospitalId,
+      mciRedCapacity: this.mciRedCapacity,
+      mciYellowCapacity: this.mciYellowCapacity,
+      mciGreenCapacity: this.mciGreenCapacity,
       openEdBedCount: this.openEdBedCount,
       openPsychBedCount: this.openPsychBedCount,
       bedCountUpdateDateTimeLocal: this.bedCountUpdateDateTimeLocal,

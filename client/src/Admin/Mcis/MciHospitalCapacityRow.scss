@@ -1,0 +1,50 @@
+@import '../../theme/base';
+
+.mci-hospital-capacity-row {
+  border: 2px solid color('base-light');
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.mci-hospital-capacity-row__status {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+}
+
+.mci-hospital-capacity-row__info {
+  flex-shrink: 0;
+  width: 30%;
+}
+
+.mci-hospital-capacity-row__name {
+  margin: 0;
+}
+
+.mci-hospital-capacity-row__updated {
+  color: color('base-light');
+}
+
+.mci-hospital-capacity-row__controls {
+  display: flex;
+  flex-direction: row;
+  .mci-counter {
+    max-width: 180px;
+    margin-left: 1rem;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
+
+.mci-hospital-capacity-row__notes {
+  background-color: color('base-lightest');
+  color: color('base-dark');
+  width: 100%;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+}
