@@ -6,20 +6,28 @@ import './Counter.scss';
 
 function Counter({ className, label, min, max, name, onChange, value, isEditing }) {
   function handleIncrement(event) {
-    if (typeof max !== 'undefined' && parseInt(value, 10) >= max) {
+    let newValue = parseInt(value, 10);
+    if (Number.isNaN(newValue)) {
+      newValue = -1;
+    }
+    if (typeof max !== 'undefined' && newValue >= max) {
       return;
     }
     event.target.name = name;
-    event.target.value = parseInt(value, 10) + 1;
+    event.target.value = newValue + 1;
     onChange(event);
   }
 
   function handleDecrement(event) {
-    if (typeof min !== 'undefined' && parseInt(value, 10) <= min) {
+    let newValue = parseInt(value, 10);
+    if (Number.isNaN(newValue)) {
+      newValue = 1;
+    }
+    if (typeof min !== 'undefined' && newValue <= min) {
       return;
     }
     event.target.name = name;
-    event.target.value = parseInt(value, 10) - 1;
+    event.target.value = newValue - 1;
     onChange(event);
   }
 
