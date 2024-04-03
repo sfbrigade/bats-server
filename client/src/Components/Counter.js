@@ -52,7 +52,7 @@ function Counter({ className, label, min, max, name, onChange, value, isEditing 
         {label}
       </label>
       <div className="counter__control">
-        <button type="button" className="usa-button counter__button counter__button--decrement" onClick={handleDecrement}>
+        <button type="button" className="usa-button counter__button counter__button--decrement" onClick={handleDecrement} tabIndex={-1}>
           &minus;
         </button>
         <input
@@ -64,7 +64,7 @@ function Counter({ className, label, min, max, name, onChange, value, isEditing 
           onChange={onChangeInternal}
           value={Number.isNaN(value) ? '' : value}
         />
-        <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement}>
+        <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement} tabIndex={-1}>
           +
         </button>
       </div>
