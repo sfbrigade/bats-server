@@ -79,6 +79,16 @@ async function getStatusUpdateData(hospitalId) {
   return data;
 }
 
+async function dispatchMciUpdate() {
+  // dispatch to all hospitals
+  return Promise.all(
+    [...hospitalServer.clients].map(async (ws) => {
+      const data = await getStatusUpdateData(ws.info.hospitalId);
+      ws.send(data);
+    })
+  );
+}
+
 async function dispatchStatusUpdate(hospitalId) {
   // dispatch to all user clients
   const cachedStatusUpdates = await Promise.all(
@@ -185,6 +195,7 @@ function configure(server, app) {
 
 module.exports = {
   configure,
+  dispatchMciUpdate,
   dispatchRingdownUpdate,
   dispatchStatusUpdate,
   getActiveHospitalUsers,

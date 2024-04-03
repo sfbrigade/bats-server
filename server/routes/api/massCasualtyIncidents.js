@@ -6,6 +6,8 @@ const middleware = require('../../auth/middleware');
 const models = require('../../models');
 const { wrapper } = require('../helpers');
 
+const { dispatchMciUpdate } = require('../../wss');
+
 const router = express.Router();
 
 router.get('/', middleware.isSuperUser, async (req, res) => {
@@ -43,6 +45,7 @@ router.post(
     const record = await models.MassCasualtyIncident.create(data);
     if (record) {
       res.status(HttpStatus.CREATED).json(record.toJSON());
+      await dispatchMciUpdate();
     } else {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     }
@@ -87,6 +90,7 @@ router.patch(
     });
     if (record) {
       res.json(record.toJSON());
+      await dispatchMciUpdate();
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }
