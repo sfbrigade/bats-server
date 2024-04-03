@@ -26,11 +26,22 @@ module.exports = (sequelize) => {
         'estimatedYellowCount',
         'estimatedGreenCount',
         'estimatedZebraCount',
+        'updatedAt',
       ]);
     }
   }
 
   initModel(MassCasualtyIncident, metadata, sequelize);
+
+  MassCasualtyIncident.addScope('active', {
+    where: {
+      endedAt: null,
+    },
+    order: [
+      ['endedAt', 'DESC'],
+      ['startedAt', 'DESC'],
+    ],
+  });
 
   return MassCasualtyIncident;
 };

@@ -11,7 +11,7 @@ const tabs = [
   { label: 'Hospital Info', Icon: HospitalIcon, id: 'hospitalInfo' },
 ];
 
-export default function RoutedHeader({ selectedTab, onSelect }) {
+function RoutedHeader({ selectedTab, onSelect }) {
   return (
     <Header name="Routed">
       <TabBar tabs={tabs} selectedTab={selectedTab} onSelect={onSelect} />
@@ -23,3 +23,5 @@ RoutedHeader.propTypes = {
   selectedTab: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
 };
+
+export default RoutedHeader;

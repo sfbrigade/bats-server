@@ -22,10 +22,6 @@ const fields = [
     type: 'string',
   },
   {
-    name: 'address1',
-    type: 'string',
-  },
-  {
     name: 'city',
     type: 'string',
   },

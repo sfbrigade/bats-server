@@ -26,6 +26,9 @@
     color: color('base');
     vertical-align: top;
     white-space: nowrap;
+    &:first-child {
+      width: 30%;
+    }
   }
 
   th[colspan='2'] {

@@ -137,3 +137,18 @@ $theme-link-active-color: 'primary-darker';
 $theme-link-reverse-color: 'base-lighter';
 $theme-link-reverse-hover-color: 'base-lightest';
 $theme-link-reverse-active-color: 'white';
+
+// MCI related colors
+
+$mci-color-immediate: 'red-50';
+$mci-color-immediate-darker: 'red-60';
+$mci-color-immediate-darkest: 'red-70';
+$mci-color-delayed: 'yellow-20v';
+$mci-color-delayed-darker: 'yellow-30v';
+$mci-color-delayed-darkest: 'yellow-40v';
+$mci-color-minor: 'mint-40v';
+$mci-color-minor-darker: 'mint-50v';
+$mci-color-minor-darkest: 'mint-60v';
+$mci-color-dead: 'gray-70';
+$mci-color-dead-darker: 'gray-80';
+$mci-color-dead-darkest: 'black';

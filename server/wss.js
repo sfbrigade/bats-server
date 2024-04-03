@@ -64,6 +64,7 @@ async function getStatusUpdateData(hospitalId) {
   if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
     delete options.where.HospitalId;
   }
+  const mcis = await models.MassCasualtyIncident.scope('active').findAll();
   const patientDeliveries = await models.PatientDelivery.findAll(options);
   const statusUpdate = await models.HospitalStatusUpdate.scope('latest').findOne({
     where: {
@@ -71,6 +72,7 @@ async function getStatusUpdateData(hospitalId) {
     },
   });
   const data = JSON.stringify({
+    mcis: mcis.map((mci) => mci.toJSON()),
     ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
     statusUpdate: await statusUpdate.toJSON(),
   });
