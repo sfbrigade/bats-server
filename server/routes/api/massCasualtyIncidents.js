@@ -90,6 +90,40 @@ router.patch(
     });
     if (record) {
       res.json(record.toJSON());
+      // check for active MCIs, if all closed, reset MCI counts for all hospitals
+      await models.sequelize.transaction(async (transaction) => {
+        const mcis = await models.MassCasualtyIncident.scope('active').findAll({ transaction });
+        if (mcis.length === 0) {
+          const statusUpdates = await models.HospitalStatusUpdate.scope('latest').findAll({
+            transaction,
+          });
+          await Promise.all(
+            statusUpdates.map((su) => {
+              const data = {
+                ..._.pick(su, [
+                  'HospitalId',
+                  'openEdBedCount',
+                  'openPsychBedCount',
+                  'bedCountUpdateDateTimeLocal',
+                  'divertStatusIncicator',
+                  'divertStatusUpdateDateTimeLocal',
+                  'additionalServiceAvailabilityNotes',
+                  'notesUpdateDateTimeLocal',
+                ]),
+                mciRedCapacity: null,
+                mciYellowCapacity: null,
+                mciGreenCapacity: null,
+                mciUpdateDateTime: null,
+                updateDateTimeLocal: new Date(),
+                EdAdminUserId: req.user.id,
+                CreatedById: req.user.id,
+                UpdatedById: req.user.id,
+              };
+              return models.HospitalStatusUpdate.create(data, { transaction });
+            })
+          );
+        }
+      });
       await dispatchMciUpdate();
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
