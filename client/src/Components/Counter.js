@@ -23,6 +23,29 @@ function Counter({ className, label, min, max, name, onChange, value, isEditing 
     onChange(event);
   }
 
+  function onChangeInternal(event) {
+    const newValue = parseInt(event.target.value, 10);
+    // reset if not a valid number
+    if (Number.isNaN(newValue)) {
+      event.target.value = value;
+      onChange(event);
+      return;
+    }
+    // if less than min, may not be done typing, just return
+    if (typeof min !== 'undefined' && newValue < min) {
+      return;
+    }
+    // if greater than max, reset
+    if (typeof max !== 'undefined' && newValue > min) {
+      event.target.value = value;
+      onChange(event);
+      return;
+    }
+    // otherwise, dispatch
+    event.target.value = newValue;
+    onChange(event);
+  }
+
   return (
     <div className={classNames('counter', { 'counter--editing': isEditing }, className)}>
       <label className="counter__label" htmlFor={name}>
@@ -32,9 +55,15 @@ function Counter({ className, label, min, max, name, onChange, value, isEditing 
         <button type="button" className="usa-button counter__button counter__button--decrement" onClick={handleDecrement}>
           &minus;
         </button>
-        {!Number.isNaN(value) && (
-          <input className="usa-input usa-input--small counter__input" type="text" readOnly id={name} name={name} value={value} />
-        )}
+        <input
+          className="usa-input usa-input--small counter__input"
+          type="number"
+          id={name}
+          name={name}
+          onBlur={onChangeInternal}
+          onChange={onChangeInternal}
+          value={Number.isNaN(value) ? '' : value}
+        />
         <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement}>
           +
         </button>
