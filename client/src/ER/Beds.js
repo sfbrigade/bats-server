@@ -11,7 +11,7 @@ import HospitalStatus from '../Models/HospitalStatus';
 
 import './Beds.scss';
 
-function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
+function Beds({ showMci, statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
   const [additionalNotes, setAdditionalNotes] = useState(null);
   const [isEditing, setEditing] = useState(false);
 
@@ -36,6 +36,40 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
     <div className="usa-accordion beds">
       <div className="usa-accordion__content">
         <form className="usa-form">
+          {showMci && (
+            <>
+              <Heading title="MCI Capacity" />
+              <fieldset className="usa-fieldset beds__availability">
+                <Counter
+                  className="beds__counter beds__counter--immediate"
+                  isEditing={isEditing}
+                  label="Immediate"
+                  name="mciRedCapacity"
+                  min={0}
+                  onChange={handleChange}
+                  value={statusUpdate.mciRedCapacity}
+                />
+                <Counter
+                  className="beds__counter beds__counter--delayed"
+                  isEditing={isEditing}
+                  label="Delayed"
+                  name="mciYellowCapacity"
+                  min={0}
+                  onChange={handleChange}
+                  value={statusUpdate.mciYellowCapacity}
+                />
+                <Counter
+                  className="beds__counter beds__counter--minor"
+                  isEditing={isEditing}
+                  label="Minor"
+                  name="mciGreenCapacity"
+                  min={0}
+                  onChange={handleChange}
+                  value={statusUpdate.mciGreenCapacity}
+                />
+              </fieldset>
+            </>
+          )}
           <Heading title="Available Beds">
             {incomingRingdownsCount > 0 && (
               <span className="beds__incoming">

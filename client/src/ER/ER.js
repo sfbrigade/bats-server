@@ -109,10 +109,15 @@ export default function ER() {
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
           <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
-          {!!mcis.length && mcis.map((mci) => <MciCard className="margin-x-3 margin-y-2" data={mci} />)}
+          {!!mcis.length && mcis.map((mci) => <MciCard key={mci.id} className="margin-x-3 margin-y-2" data={mci} />)}
           {showRingdown && (!showTabs || selectedTab === 'ringdown') && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
           {showInfo && (!showTabs || selectedTab === 'hospitalInfo') && (
-            <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
+            <Beds
+              showMci={!!mcis.length}
+              statusUpdate={statusUpdate}
+              onStatusUpdate={onStatusUpdate}
+              incomingRingdownsCount={incomingRingdownsCount}
+            />
           )}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
         </div>

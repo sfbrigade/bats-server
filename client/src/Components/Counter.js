@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import './Counter.scss';
 
-function Counter({ label, min, max, name, onChange, value, isEditing }) {
+function Counter({ className, label, min, max, name, onChange, value, isEditing }) {
   function handleIncrement(event) {
     if (typeof max !== 'undefined' && parseInt(value, 10) >= max) {
       return;
@@ -24,7 +24,7 @@ function Counter({ label, min, max, name, onChange, value, isEditing }) {
   }
 
   return (
-    <div className={classNames('counter', { 'counter--editing': isEditing })}>
+    <div className={classNames('counter', { 'counter--editing': isEditing }, className)}>
       <label className="counter__label" htmlFor={name}>
         {label}
       </label>

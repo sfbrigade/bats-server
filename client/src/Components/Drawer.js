@@ -39,10 +39,14 @@ function Drawer({ title, subtitle, children, isOpened, onToggle }) {
 
 Drawer.propTypes = {
   title: PropTypes.node.isRequired,
-  subtitle: PropTypes.node.isRequired,
+  subtitle: PropTypes.node,
   children: PropTypes.node.isRequired,
   isOpened: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
+};
+
+Drawer.defaultProps = {
+  subtitle: undefined,
 };
 
 export default Drawer;

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { patient } from 'shared/metadata';
+import MassCasualtyIncident from '../Models/MassCasualtyIncident';
 import Ringdown from '../Models/Ringdown';
 import { isValueEmpty } from '../utils';
 
@@ -35,7 +36,7 @@ export function RingdownTable({ ringdown, className, children }) {
 }
 
 RingdownTable.propTypes = {
-  ringdown: PropTypes.instanceOf(Ringdown).isRequired,
+  ringdown: PropTypes.oneOfType([PropTypes.instanceOf(Ringdown), PropTypes.instanceOf(MassCasualtyIncident)]).isRequired,
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]).isRequired,
   className: PropTypes.string,
 };
@@ -88,7 +89,7 @@ export function FieldRow({ label, property, unit, visible, renderValue }) {
 
 FieldRow.propTypes = {
   property: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   unit: PropTypes.string,
   visible: PropTypes.bool,
   renderValue: PropTypes.func,
