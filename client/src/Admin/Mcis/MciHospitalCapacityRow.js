@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DateTime } from 'luxon';
 
 import { ReactComponent as NoteIcon } from '../../assets/img/icon-note.svg';
@@ -9,6 +9,10 @@ import './MciHospitalCapacityRow.scss';
 function MciHospitalCapacityRow({ onChange, statusUpdate }) {
   const timeoutRef = useRef();
   const [internalData, setInternalData] = useState(statusUpdate.toJSON());
+
+  useEffect(() => {
+    setInternalData(statusUpdate);
+  }, [statusUpdate]);
 
   function onChangeInternal(event) {
     clearTimeout(timeoutRef.current);

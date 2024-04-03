@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import MciCounter from '../../Components/MciCounter';
@@ -6,6 +6,10 @@ import MciCounter from '../../Components/MciCounter';
 function MciPatientCounts({ className, data, includeDead, isEditable, onChange }) {
   const timeoutRef = useRef();
   const [internalData, setInternalData] = useState(data);
+
+  useEffect(() => {
+    setInternalData(data);
+  }, [data]);
 
   function onChangeInternal(event) {
     clearTimeout(timeoutRef.current);

@@ -102,6 +102,7 @@ describe('models.HospitalStatusUpdate', () => {
         mciRedCapacity: null,
         mciYellowCapacity: null,
         mciGreenCapacity: null,
+        mciUpdateDateTime: null,
         openEdBedCount: 10,
         openPsychBedCount: 2,
         bedCountUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),

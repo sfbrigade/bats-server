@@ -10,6 +10,9 @@ module.exports = {
     await queryInterface.addColumn('hospitalstatusupdate', 'mcigreencapacity', {
       type: Sequelize.SMALLINT,
     });
+    await queryInterface.addColumn('hospitalstatusupdate', 'mciupdatedatetime', {
+      type: Sequelize.DATE,
+    });
   },
 
   async down(queryInterface, Sequelize) {

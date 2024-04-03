@@ -17,7 +17,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.removeColumn('patient', 'triagetag');
-    await queryInterface.removeColumn('patient', 'triagepriority');
+    await queryInterface.removeColumn('patient', 'triagepriorityenum');
     await queryInterface.sequelize.query(`DROP TYPE triageprioritytype`);
   },
 };

@@ -63,6 +63,7 @@ module.exports = (sequelize) => {
         'mciRedCapacity',
         'mciYellowCapacity',
         'mciGreenCapacity',
+        'mciUpdateDateTime',
         'openEdBedCount',
         'openPsychBedCount',
         'bedCountUpdateDateTimeLocal',

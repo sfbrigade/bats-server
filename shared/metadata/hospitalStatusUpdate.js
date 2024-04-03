@@ -41,6 +41,10 @@ const fields = [
     type: 'integer',
   },
   {
+    name: 'mciUpdateDateTime',
+    type: 'date',
+  },
+  {
     name: 'openEdBedCount',
     type: 'integer',
     allowNull: false,

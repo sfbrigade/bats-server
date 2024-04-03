@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
+import { DateTime } from 'luxon';
 
 import HospitalStatus from '../../Models/HospitalStatus';
 import Spinner from '../../Components/Spinner';
@@ -23,12 +24,23 @@ function MciHospitalCapacity({ onError }) {
   async function onChangeHospitalStatus(newStatusUpdate) {
     try {
       const { hospitalId, mciRedCapacity, mciYellowCapacity, mciGreenCapacity } = newStatusUpdate;
-      await ApiService.hospitalStatuses.create({
+      const now = DateTime.now().toISO();
+      const data = {
         hospitalId,
         mciRedCapacity,
         mciYellowCapacity,
         mciGreenCapacity,
-      });
+        mciUpdateDateTime: now,
+        updateDateTimeLocal: now,
+      };
+      const oldStatusUpdate = statusUpdates.find((su) => su.hospitalId === newStatusUpdate.hospitalId);
+      oldStatusUpdate.mciRedCapacity = mciRedCapacity;
+      oldStatusUpdate.mciYellowCapacity = mciYellowCapacity;
+      oldStatusUpdate.mciGreenCapacity = mciGreenCapacity;
+      oldStatusUpdate.mciUpdateDateTime = now;
+      oldStatusUpdate.updateDateTimeLocal = now;
+      setStatusUpdates([...statusUpdates]);
+      await ApiService.hospitalStatuses.create(data);
     } catch (error) {
       onError(error);
     }
@@ -41,12 +53,13 @@ function MciHospitalCapacity({ onError }) {
     totals.estimatedYellowCount = (totals.estimatedYellowCount ?? 0) + (su.mciYellowCapacity ?? 0);
     totals.estimatedGreenCount = (totals.estimatedGreenCount ?? 0) + (su.mciGreenCapacity ?? 0);
   });
+
   return (
     <>
       {!statusUpdates && <Spinner />}
       {totals && <MciPatientCounts className="margin-bottom-3" data={totals} isEditable={false} />}
       {statusUpdates?.map((su) => (
-        <MciHospitalCapacityRow key={su.id} onChange={onChangeHospitalStatus} statusUpdate={su} />
+        <MciHospitalCapacityRow key={su.hospitalId} onChange={onChangeHospitalStatus} statusUpdate={su} />
       ))}
     </>
   );
