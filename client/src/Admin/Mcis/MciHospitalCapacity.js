@@ -87,7 +87,7 @@ function MciHospitalCapacity({ id, onError }) {
       {!statusUpdates && <Spinner />}
       {totals && <MciPatientCounts className="margin-bottom-3" data={totals} isEditable={false} />}
       {statusUpdates?.map((su) => (
-        <MciHospitalCapacityRow key={su.hospitalId} onChange={onChangeHospitalStatus} statusUpdate={su} />
+        <MciHospitalCapacityRow key={su.hospitalId} onChange={onChangeHospitalStatus} ringdowns={ringdowns} statusUpdate={su} />
       ))}
     </>
   );
