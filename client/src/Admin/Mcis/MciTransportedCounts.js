@@ -3,13 +3,12 @@ import Spinner from '../../Components/Spinner';
 import MciPatientCounts from './MciPatientCounts';
 
 function MciTransportedCounts({ ringdowns }) {
-  let transportedTotals;
+  let transportedTotals = {
+    estimatedRedCount: 0,
+    estimatedYellowCount: 0,
+    estimatedGreenCount: 0,
+  };
   ringdowns?.forEach((rd) => {
-    transportedTotals = transportedTotals ?? {
-      estimatedRedCount: 0,
-      estimatedYellowCount: 0,
-      estimatedGreenCount: 0,
-    };
     switch (rd.triagePriority) {
       case 'RED':
         transportedTotals.estimatedRedCount += 1;
@@ -26,8 +25,8 @@ function MciTransportedCounts({ ringdowns }) {
   });
   return (
     <>
-      {!transportedTotals && <Spinner />}
-      {transportedTotals && <MciPatientCounts className="margin-bottom-3" data={transportedTotals} isEditable={false} />}
+      {!ringdowns && <Spinner />}
+      {ringdowns && <MciPatientCounts className="margin-bottom-3" data={transportedTotals} isEditable={false} />}
     </>
   );
 }

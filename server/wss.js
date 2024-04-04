@@ -41,12 +41,7 @@ async function getMciData(mciId, cachedStatusUpdates) {
       models.PatientDeliveryUpdate,
       {
         model: models.Patient,
-        include: {
-          model: models.EmergencyMedicalServiceCall,
-          // where: {
-          //   dispatchCallNumber: mci.incidentNumber,
-          // },
-        },
+        include: models.EmergencyMedicalServiceCall,
       },
     ],
     where: {

@@ -1,6 +1,8 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
+const { Op } = require('sequelize');
+const { DeliveryStatus } = require('shared/constants');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
@@ -51,6 +53,32 @@ router.post(
     }
   })
 );
+
+router.get('/:id/ringdowns', middleware.isSuperUser, async (req, res) => {
+  const record = await models.MassCasualtyIncident.findByPk(req.params.id);
+  if (record) {
+    const patientDeliveries = await models.PatientDelivery.findAll({
+      include: [
+        models.Ambulance,
+        models.Hospital,
+        models.PatientDeliveryUpdate,
+        {
+          model: models.Patient,
+          include: models.EmergencyMedicalServiceCall,
+        },
+      ],
+      where: {
+        currentDeliveryStatus: {
+          [Op.lt]: DeliveryStatus.CANCELLED,
+        },
+        '$Patient.EmergencyMedicalServiceCall.dispatchcallnumber$': record.incidentNumber,
+      },
+    });
+    res.json(await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())));
+  } else {
+    res.status(HttpStatus.NOT_FOUND).end();
+  }
+});
 
 router.get('/:id', middleware.isSuperUser, async (req, res) => {
   const record = await models.MassCasualtyIncident.findByPk(req.params.id);

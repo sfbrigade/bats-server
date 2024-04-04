@@ -46,6 +46,9 @@ export default {
     get(id) {
       return instance.get(`/api/mcis/${id}`);
     },
+    ringdowns(id) {
+      return instance.get(`/api/mcis/${id}/ringdowns`);
+    },
     update(id, data) {
       return instance.patch(`/api/mcis/${id}`, data);
     },
