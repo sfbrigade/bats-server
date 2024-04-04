@@ -5,8 +5,7 @@ import ApiService from '../../ApiService';
 import Alert from '../../Components/Alert';
 
 import MciActive from './MciActive';
-import MciDetails from './MciDetails';
-import MciPatientCounts from './MciPatientCounts';
+import MciEnded from './MciEnded';
 
 function Mci() {
   const { mciId } = useParams();
@@ -25,13 +24,7 @@ function Mci() {
       <h1>MCI #{data?.incidentNumber}</h1>
       {data && (
         <>
-          {!!data.endedAt && (
-            <>
-              <MciDetails data={data} />
-              <h2>Estimated Patient Counts</h2>
-              <MciPatientCounts className="margin-bottom-4" data={data} />
-            </>
-          )}
+          {!!data.endedAt && <MciEnded data={data} />}
           {!data.endedAt && <MciActive id={mciId} onEnd={setData} onError={setError} />}
         </>
       )}
