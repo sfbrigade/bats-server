@@ -2,27 +2,39 @@ import { useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { DateTime } from 'luxon';
 
+import ApiService from '../../ApiService';
+import Spinner from '../../Components/Spinner';
 import HospitalStatus from '../../Models/HospitalStatus';
 import Ringdown from '../../Models/Ringdown';
-import Spinner from '../../Components/Spinner';
 
 import MciHospitalCapacityRow from './MciHospitalCapacityRow';
 import MciPatientCounts from './MciPatientCounts';
-import ApiService from '../../ApiService';
 
-function MciHospitalCapacity({ id, onError }) {
+function MciActive({ id, onError }) {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/mci?id=${id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const [statusUpdates, setStatusUpdates] = useState();
   const [ringdowns, setRingdowns] = useState();
+  const [data, setData] = useState();
 
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
       setStatusUpdates(data.statusUpdates.map((su) => new HospitalStatus(su)));
       setRingdowns(data.ringdowns.map((rd) => new Ringdown(rd)));
+      setData(data.mci);
     }
   }, [lastMessage]);
+
+  async function onChangeEstimatedPatientCounts(newData) {
+    try {
+      const { estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount } = newData;
+      await ApiService.mcis.update(id, { estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount });
+      setData({ ...data, estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount });
+    } catch (error) {
+      onError(error);
+    }
+  }
 
   async function onChangeHospitalStatus(newStatusUpdate) {
     try {
@@ -81,7 +93,11 @@ function MciHospitalCapacity({ id, onError }) {
 
   return (
     <>
+      <h2>Estimated Patient Counts</h2>
+      {!data && <Spinner />}
+      {!!data && <MciPatientCounts className="margin-bottom-4" data={data} isEditable onChange={onChangeEstimatedPatientCounts} />}
       <h2>Transported Patients</h2>
+      {!transportedTotals && <Spinner />}
       {transportedTotals && <MciPatientCounts className="margin-bottom-3" data={transportedTotals} isEditable={false} />}
       <h2>Hospital Capacity</h2>
       {!statusUpdates && <Spinner />}
@@ -93,4 +109,4 @@ function MciHospitalCapacity({ id, onError }) {
   );
 }
 
-export default MciHospitalCapacity;
+export default MciActive;

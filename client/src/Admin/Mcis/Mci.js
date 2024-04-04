@@ -7,7 +7,7 @@ import Alert from '../../Components/Alert';
 
 import MciDetails from './MciDetails';
 import MciPatientCounts from './MciPatientCounts';
-import MciHospitalCapacity from './MciHospitalCapacity';
+import MciActive from './MciActive';
 
 function Mci() {
   const { mciId } = useParams();
@@ -31,29 +31,19 @@ function Mci() {
     }
   }
 
-  async function onChangeEstimatedPatientCounts(newData) {
-    try {
-      const { estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount } = newData;
-      await ApiService.mcis.update(mciId, { estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount });
-      setData({ ...data, estimatedRedCount, estimatedYellowCount, estimatedGreenCount, estimatedZebraCount });
-    } catch (error) {
-      setError(error);
-    }
-  }
-
   return (
     <main>
       <h1>MCI #{data?.incidentNumber}</h1>
       {data && (
         <>
           <MciDetails data={data} onEnd={onEnd} />
-          <h2>Estimated Patient Counts</h2>
-          <MciPatientCounts className="margin-bottom-4" data={data} isEditable={!data.endedAt} onChange={onChangeEstimatedPatientCounts} />
-          {!data.endedAt && (
+          {!!data.endedAt && (
             <>
-              <MciHospitalCapacity id={mciId} onError={setError} />
+              <h2>Estimated Patient Counts</h2>
+              <MciPatientCounts className="margin-bottom-4" data={data} />
             </>
           )}
+          {!data.endedAt && <MciActive id={mciId} onError={setError} />}
         </>
       )}
       {error && (
