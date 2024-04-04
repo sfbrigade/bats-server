@@ -33,7 +33,7 @@
 
   th[colspan='2'] {
     @include h4-bold;
-    border-top-color: transparent;
+    border-top-color: transparent !important;
     color: color('base-darker');
     padding-top: 1rem !important;
   }
@@ -58,6 +58,6 @@
 .ringdown-details__header + tr {
   & > td,
   th {
-    border-top-color: transparent;
+    border-top-color: transparent !important;
   }
 }

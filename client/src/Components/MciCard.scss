@@ -1,28 +1,22 @@
 @import '../theme/base';
 
 .mci-card {
-  background-color: color($theme-color-accent-warm-lighter);
-  border: 2px solid color($theme-color-accent-warm);
+  background-color: color($mci-color-delayed-lightest);
+  border: 2px solid color($mci-color-delayed-darker);
   box-sizing: border-box;
   border-radius: 8px;
   overflow: hidden;
 
   .drawer__content {
-    border-top-color: color($theme-color-accent-warm-light);
+    border-top-color: color($mci-color-delayed-lighter);
   }
 
   .ringdown-details {
-    background-color: color($theme-color-accent-warm-lighter);
+    background-color: color($mci-color-delayed-lightest);
     td,
     th {
-      background-color: color($theme-color-accent-warm-lighter);
-      border-color: color($theme-color-accent-warm-light);
-    }
-    .ringdown-details__header + tr {
-      td,
-      th {
-        border-top-color: transparent;
-      }
+      background-color: color($mci-color-delayed-lightest);
+      border-color: color($mci-color-delayed-lighter);
     }
     td {
       font-weight: bold;

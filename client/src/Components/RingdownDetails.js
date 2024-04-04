@@ -34,6 +34,18 @@ const supplementalO2 = (value, ringdown) => {
     </>
   );
 };
+const triagePriority = (value) => {
+  switch (value) {
+    case 'RED':
+      return 'Immediate';
+    case 'YELLOW':
+      return 'Delayed';
+    case 'GREEN':
+      return 'Minor';
+    default:
+      return '';
+  }
+};
 
 function RingdownDetails({ className, ringdown }) {
   return (
@@ -44,6 +56,8 @@ function RingdownDetails({ className, ringdown }) {
         <PatientFieldRow property="emergencyServiceResponseType" renderValue={toSentenceCase} />
       </Section>
       <Section title="Patient info">
+        {!!ringdown.triageTag && <PatientFieldRow property="triageTag" />}
+        {!!ringdown.triagePriority && <PatientFieldRow property="triagePriority" renderValue={triagePriority} />}
         <PatientFieldRow property="age" />
         <PatientFieldRow property="sex" renderValue={toSentenceCase} />
         <PatientFieldRow property="chiefComplaintDescription" />

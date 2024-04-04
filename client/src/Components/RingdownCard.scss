@@ -19,7 +19,7 @@
   @include h3;
   align-items: center;
   margin: 0.75rem;
-  color: color('base');
+  color: color('base-dark');
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -45,4 +45,52 @@
 
 .ringdown-card--expanded {
   border: 2px solid color('primary-vivid');
+}
+
+.ringdown-card--immediate {
+  border-color: color($mci-color-immediate) !important;
+  background-color: color($mci-color-immediate-lightest);
+  .drawer__content {
+    border-top-color: color($mci-color-immediate-lighter);
+  }
+  .ringdown-details {
+    background-color: color($mci-color-immediate-lightest);
+    td,
+    th {
+      background-color: color($mci-color-immediate-lightest);
+      border-color: color($mci-color-immediate-lighter);
+    }
+  }
+}
+
+.ringdown-card--delayed {
+  border-color: color($mci-color-delayed-darker) !important;
+  background-color: color($mci-color-delayed-lightest);
+  .drawer__content {
+    border-top-color: color($mci-color-delayed-lighter);
+  }
+  .ringdown-details {
+    background-color: color($mci-color-delayed-lightest);
+    td,
+    th {
+      background-color: color($mci-color-delayed-lightest);
+      border-color: color($mci-color-delayed-lighter);
+    }
+  }
+}
+
+.ringdown-card--minor {
+  border-color: color($mci-color-minor) !important;
+  background-color: color($mci-color-minor-lightest);
+  .drawer__content {
+    border-top-color: color($mci-color-minor-lighter);
+  }
+  .ringdown-details {
+    background-color: color($mci-color-minor-lightest);
+    td,
+    th {
+      background-color: color($mci-color-minor-lightest);
+      border-color: color($mci-color-minor-lighter);
+    }
+  }
 }

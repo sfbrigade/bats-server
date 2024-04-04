@@ -23,7 +23,7 @@ const AcknowledgedStatus = {
 function RingdownCard({ children, className, ringdown, dismissable, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const { currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj, timestamps } = ringdown;
+  const { triageTag, triagePriority, currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj, timestamps } = ringdown;
 
   function handleDismiss() {
     setShowConfirmation(false);
@@ -52,6 +52,9 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
       className={classNames('ringdown-card height-auto', className, {
         'ringdown-card--dismissable': canBeDismissed,
         'ringdown-card--expanded': isExpanded,
+        'ringdown-card--immediate': triagePriority === 'RED',
+        'ringdown-card--delayed': triagePriority === 'YELLOW',
+        'ringdown-card--minor': triagePriority === 'GREEN',
       })}
     >
       {canBeDismissed && (
@@ -68,7 +71,12 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
       {!canBeDismissed && (
         <Drawer
           title={drawerTitle}
-          subtitle={<div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>}
+          subtitle={
+            <div className="ringdown-card__complaint-summary">
+              {!!triageTag && `#${triageTag}: `}
+              {chiefComplaintDescription}
+            </div>
+          }
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
         >
