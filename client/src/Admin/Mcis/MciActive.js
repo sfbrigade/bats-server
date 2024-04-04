@@ -10,6 +10,7 @@ import Ringdown from '../../Models/Ringdown';
 import MciDetails from './MciDetails';
 import MciHospitalCapacityRow from './MciHospitalCapacityRow';
 import MciPatientCounts from './MciPatientCounts';
+import MciTransportedCounts from './MciTransportedCounts';
 
 function MciActive({ id, onEnd, onError }) {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/mci?id=${id}`;
@@ -83,28 +84,6 @@ function MciActive({ id, onEnd, onError }) {
     totals.estimatedGreenCount = (totals.estimatedGreenCount ?? 0) + (su.mciGreenCapacity ?? 0);
   });
 
-  let transportedTotals;
-  ringdowns?.forEach((rd) => {
-    transportedTotals = transportedTotals ?? {
-      estimatedRedCount: 0,
-      estimatedYellowCount: 0,
-      estimatedGreenCount: 0,
-    };
-    switch (rd.triagePriority) {
-      case 'RED':
-        transportedTotals.estimatedRedCount += 1;
-        break;
-      case 'YELLOW':
-        transportedTotals.estimatedYellowCount += 1;
-        break;
-      case 'GREEN':
-        transportedTotals.estimatedGreenCount += 1;
-        break;
-      default:
-        break;
-    }
-  });
-
   return (
     <>
       {!data && <Spinner />}
@@ -113,8 +92,7 @@ function MciActive({ id, onEnd, onError }) {
       {!data && <Spinner />}
       {!!data && <MciPatientCounts className="margin-bottom-4" data={data} isEditable onChange={onChangeEstimatedPatientCounts} />}
       <h2>Transported Patients</h2>
-      {!transportedTotals && <Spinner />}
-      {transportedTotals && <MciPatientCounts className="margin-bottom-3" data={transportedTotals} isEditable={false} />}
+      <MciTransportedCounts ringdowns={ringdowns} />
       <h2>Hospital Capacity</h2>
       {!statusUpdates && <Spinner />}
       {totals && <MciPatientCounts className="margin-bottom-3" data={totals} isEditable={false} />}
