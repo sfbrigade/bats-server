@@ -51,8 +51,7 @@ function Mci() {
           <MciPatientCounts className="margin-bottom-4" data={data} isEditable={!data.endedAt} onChange={onChangeEstimatedPatientCounts} />
           {!data.endedAt && (
             <>
-              <h2>Hospital Capacity</h2>
-              <MciHospitalCapacity onError={setError} />
+              <MciHospitalCapacity id={mciId} onError={setError} />
             </>
           )}
         </>

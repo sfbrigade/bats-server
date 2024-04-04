@@ -45,7 +45,7 @@ router.post(
     const record = await models.MassCasualtyIncident.create(data);
     if (record) {
       res.status(HttpStatus.CREATED).json(record.toJSON());
-      await dispatchMciUpdate();
+      await dispatchMciUpdate(record.id);
     } else {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     }
@@ -124,7 +124,7 @@ router.patch(
           );
         }
       });
-      await dispatchMciUpdate();
+      await dispatchMciUpdate(record.id);
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }

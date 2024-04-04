@@ -5,6 +5,15 @@ const WebSocket = require('ws');
 const { DeliveryStatus } = require('shared/constants');
 const models = require('./models');
 
+const mciServer = new WebSocket.Server({ noServer: true });
+mciServer.on('connection', async (ws, req) => {
+  // eslint-disable-next-line no-param-reassign
+  ws.info = { useId: req.user.id, mciId: req.mci.id };
+  // eslint-disable-next-line no-use-before-define
+  const data = await getMciData(req.mci.id);
+  ws.send(data);
+});
+
 const userServer = new WebSocket.Server({ noServer: true });
 userServer.on('connection', async (ws, req) => {
   // eslint-disable-next-line no-param-reassign
@@ -22,6 +31,42 @@ hospitalServer.on('connection', async (ws, req) => {
   const data = await getStatusUpdateData(req.hospital.id);
   ws.send(data);
 });
+
+async function getMciData(mciId, cachedStatusUpdates) {
+  const mci = await models.MassCasualtyIncident.findByPk(mciId);
+  const patientDeliveries = await models.PatientDelivery.findAll({
+    include: [
+      models.Ambulance,
+      models.Hospital,
+      models.PatientDeliveryUpdate,
+      {
+        model: models.Patient,
+        include: {
+          model: models.EmergencyMedicalServiceCall,
+          // where: {
+          //   dispatchCallNumber: mci.incidentNumber,
+          // },
+        },
+      },
+    ],
+    where: {
+      currentDeliveryStatus: {
+        [Op.lt]: DeliveryStatus.CANCELLED,
+      },
+      '$Patient.EmergencyMedicalServiceCall.dispatchcallnumber$': mci.incidentNumber,
+    },
+  });
+  const data = JSON.stringify({
+    mci: mci.toJSON(),
+    ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
+    statusUpdates:
+      cachedStatusUpdates ||
+      (await Promise.all(
+        (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
+      )),
+  });
+  return data;
+}
 
 async function getRingdownData(userId, cachedMcis, cachedStatusUpdates) {
   const patientDeliveries = await models.PatientDelivery.findAll({
@@ -79,7 +124,14 @@ async function getStatusUpdateData(hospitalId, cachedMcis) {
   return data;
 }
 
-async function dispatchMciUpdate() {
+async function dispatchMciUpdate(mciId) {
+  // dispatch to all watching the specific mci
+  const data = await getMciData(mciId);
+  mciServer.clients.forEach((ws) => {
+    if (ws.info.mciId === mciId) {
+      ws.send(data);
+    }
+  });
   // dispatch to all hospitals
   const cachedMcis = (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON());
   return Promise.all(
@@ -168,6 +220,19 @@ function configure(server, app) {
       // connect based on pathname
       const { pathname } = url.parse(req.url);
       switch (pathname) {
+        case '/wss/mci':
+          if (query.id && query.id !== 'undefined') {
+            req.mci = await models.MassCasualtyIncident.findByPk(query.id);
+          }
+          if (!req.user.isSuperUser || !req.mci) {
+            socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+            socket.destroy();
+            return;
+          }
+          mciServer.handleUpgrade(req, socket, head, (ws) => {
+            mciServer.emit('connection', ws, req);
+          });
+          break;
         case '/wss/user':
           userServer.handleUpgrade(req, socket, head, (ws) => {
             userServer.emit('connection', ws, req);
