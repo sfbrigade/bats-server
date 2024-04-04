@@ -7,10 +7,11 @@ import Spinner from '../../Components/Spinner';
 import HospitalStatus from '../../Models/HospitalStatus';
 import Ringdown from '../../Models/Ringdown';
 
+import MciDetails from './MciDetails';
 import MciHospitalCapacityRow from './MciHospitalCapacityRow';
 import MciPatientCounts from './MciPatientCounts';
 
-function MciActive({ id, onError }) {
+function MciActive({ id, onEnd, onError }) {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/mci?id=${id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const [statusUpdates, setStatusUpdates] = useState();
@@ -23,8 +24,11 @@ function MciActive({ id, onError }) {
       setStatusUpdates(data.statusUpdates.map((su) => new HospitalStatus(su)));
       setRingdowns(data.ringdowns.map((rd) => new Ringdown(rd)));
       setData(data.mci);
+      if (data.mci.endedAt) {
+        onEnd(data.mci);
+      }
     }
-  }, [lastMessage]);
+  }, [lastMessage, onEnd]);
 
   async function onChangeEstimatedPatientCounts(newData) {
     try {
@@ -56,6 +60,16 @@ function MciActive({ id, onError }) {
       oldStatusUpdate.updateDateTimeLocal = now;
       setStatusUpdates([...statusUpdates]);
       await ApiService.hospitalStatuses.create(data);
+    } catch (error) {
+      onError(error);
+    }
+  }
+
+  async function onEndInternal() {
+    try {
+      const endedAt = DateTime.now().toISO();
+      await ApiService.mcis.update(id, { endedAt });
+      onEnd({ ...data, endedAt });
     } catch (error) {
       onError(error);
     }
@@ -93,6 +107,8 @@ function MciActive({ id, onError }) {
 
   return (
     <>
+      {!data && <Spinner />}
+      {data && <MciDetails data={data} onEnd={onEndInternal} />}
       <h2>Estimated Patient Counts</h2>
       {!data && <Spinner />}
       {!!data && <MciPatientCounts className="margin-bottom-4" data={data} isEditable onChange={onChangeEstimatedPatientCounts} />}

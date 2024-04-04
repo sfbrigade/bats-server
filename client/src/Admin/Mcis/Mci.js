@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { DateTime } from 'luxon';
 
 import ApiService from '../../ApiService';
 import Alert from '../../Components/Alert';
 
+import MciActive from './MciActive';
 import MciDetails from './MciDetails';
 import MciPatientCounts from './MciPatientCounts';
-import MciActive from './MciActive';
 
 function Mci() {
   const { mciId } = useParams();
@@ -21,29 +20,19 @@ function Mci() {
     }
   }, [mciId]);
 
-  async function onEnd() {
-    try {
-      const endedAt = DateTime.now().toISO();
-      await ApiService.mcis.update(mciId, { endedAt });
-      setData({ ...data, endedAt });
-    } catch (error) {
-      setError(error);
-    }
-  }
-
   return (
     <main>
       <h1>MCI #{data?.incidentNumber}</h1>
       {data && (
         <>
-          <MciDetails data={data} onEnd={onEnd} />
           {!!data.endedAt && (
             <>
+              <MciDetails data={data} />
               <h2>Estimated Patient Counts</h2>
               <MciPatientCounts className="margin-bottom-4" data={data} />
             </>
           )}
-          {!data.endedAt && <MciActive id={mciId} onError={setError} />}
+          {!data.endedAt && <MciActive id={mciId} onEnd={setData} onError={setError} />}
         </>
       )}
       {error && (
