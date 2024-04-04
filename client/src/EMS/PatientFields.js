@@ -72,7 +72,16 @@ function PatientFields({ ringdown, onChange }) {
             validationState={ringdown.getValidationState('dispatchCallNumber')}
             value={ringdown.dispatchCallNumber}
           />
+          {ringdown.isMci &&
+            <div className="usa-alert usa-alert--warning usa-alert--slim usa-alert--no-icon">
+              <div className="usa-alert__body">
+                <p className="usa-alert__text">
+                  This incident is an active MCI.
+                </p>
+              </div>
+            </div>}
         </fieldset>
+        {!ringdown.isMci &&
         <FormRadioFieldSet
           label="Urgency"
           property="emergencyServiceResponseType"
@@ -83,10 +92,31 @@ function PatientFields({ ringdown, onChange }) {
         >
           <FormRadio label="Code 2" value="CODE 2" />
           <FormRadio label="Code 3" value="CODE 3" disabled={window.env.REACT_APP_DISABLE_CODE_3 === 'true'} />
-        </FormRadioFieldSet>
+        </FormRadioFieldSet>}
       </div>
       <Heading title="Patient info" />
       <div className="usa-accordion__content">
+        {ringdown.isMci && <>
+          <fieldset className="usa-fieldset">
+            <FormField metadata={Patient.triageTag} required />
+          </fieldset>
+          <fieldset className="usa-fieldset">
+            <FormComboBox
+              label="Triage Priority"
+              property="triagePriority"
+              isFreeFormDisabled
+              onChange={handleUserInput}              
+              options={[
+                <option key="RED" value="RED">Immediate</option>,
+                <option key="YELLOW" value="YELLOW">Delayed</option>,
+                <option key="GREEN" value="GREEN">Minor</option>,
+              ]}
+              required
+              validationState={ringdown.getValidationState('triagePriority')}
+              value={ringdown.triagePriority ?? ''}
+            />
+          </fieldset>
+        </>}
         <fieldset className="usa-fieldset">
           <FormField metadata={Patient.age} />
         </fieldset>

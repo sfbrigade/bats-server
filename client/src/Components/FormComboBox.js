@@ -16,7 +16,18 @@ import ValidationMessage from './ValidationMessage';
  * it can still be typed in manually into the box.
  *
  */
-function FormComboBox({ label, property, required, onChange, options, showRequiredHint, size, validationState, value }) {
+function FormComboBox({
+  isFreeFormDisabled,
+  label,
+  property,
+  required,
+  onChange,
+  options,
+  showRequiredHint,
+  size,
+  validationState,
+  value,
+}) {
   const ref = useRef();
   const [focused, setFocused] = useState(false);
   // the inputValue state mirrors the contents of the input box created by USWDS ComboBox
@@ -25,49 +36,73 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
   useEffect(() => {
     const { current } = ref;
     comboBox.on(current);
+    const comboBoxEl = current.querySelector('.usa-combo-box');
     // get a reference to the select component so we can dispatch events through it
-    const select = current.querySelector('select');
+    const selectEl = current.querySelector('select');
     function dispatchSelectChangeEvent(value) {
-      select.value = value;
+      selectEl.value = value;
       const event = new CustomEvent('change', {
         bubbles: true,
         cancelable: true,
         detail: { value },
       });
-      select.dispatchEvent(event);
+      selectEl.dispatchEvent(event);
     }
-    // manually add event handlers to the custom input added by USWDS
-    const input = current.querySelector('input[type="text"]');
-    input.addEventListener('input', (e) => {
-      // just capture the typed in input value so that it can be added to the
-      // select options if it doesn't already match one of them
-      setInputValue(e.target.value);
-    });
-    input.addEventListener('change', (e) => {
-      if (e instanceof CustomEvent) {
-        // a custom change event on the input is done sometimes by USWDS ComboBox
-        // that causes the input value and select value to get out of sync-
-        // this puts it back into sync
-        setInputValue(e.target.value);
-        dispatchSelectChangeEvent(e.target.value);
-      }
-    });
-    input.addEventListener('focus', () => setFocused(true));
-    input.addEventListener('blur', () => {
-      // when we blur/exit the input, we dispatch the value through the
-      // select as the selected value
-      setFocused(false);
-    });
+    const inputEl = current.querySelector('input[type="text"]');
+    const eventListeners = [];
+    eventListeners.push([
+      'change',
+      (e) => {
+        if (e instanceof CustomEvent) {
+          // a custom change event on the input is done sometimes by USWDS ComboBox
+          // that causes the input value and select value to get out of sync-
+          // this puts it back into sync
+          const { value } = e.target;
+          setInputValue(value);
+          const option = options.find((o) => value.localeCompare(o.props.children, undefined, { sensitivity: 'base' }) === 0);
+          console.log('?', option?.props.children, value);
+          if (option) {
+            dispatchSelectChangeEvent(option.props.value);
+          } else {
+            dispatchSelectChangeEvent(value);
+          }
+        }
+      },
+    ]);
+    if (!isFreeFormDisabled) {
+      // manually add event handlers to the custom input added by USWDS
+      eventListeners.push([
+        'input',
+        (e) => {
+          // just capture the typed in input value so that it can be added to the
+          // select options if it doesn't already match one of them
+          setInputValue(e.target.value);
+          setTimeout(() => {
+            comboBox.displayList(comboBoxEl);
+            dispatchSelectChangeEvent(e.target.value);
+          }, 0);
+        },
+      ]);
+      eventListeners.push(['focus', () => setFocused(true)]);
+      eventListeners.push(['blur', () => setFocused(false)]);
+    }
+    eventListeners.forEach(([type, handler]) => inputEl.addEventListener(type, handler));
     return () => {
+      eventListeners.forEach(([type, handler]) => inputEl.removeEventListener(type, handler));
       comboBox.off(current);
     };
-  }, []);
+  }, [isFreeFormDisabled, options]);
 
   useEffect(() => {
     const { current } = ref;
+    const option = options.find((o) => value.localeCompare(o.props.value, undefined, { sensitivity: 'base' }) === 0);
     const input = current.querySelector('input[type="text"]');
-    input.value = value;
-  }, [value]);
+    if (option) {
+      input.value = option.props.children;
+    } else {
+      input.value = value;
+    }
+  }, [options, value]);
 
   const hasError =
     (validationState === ValidationState.REQUIRED_ERROR || validationState === ValidationState.RANGE_ERROR) &&
@@ -86,7 +121,11 @@ function FormComboBox({ label, property, required, onChange, options, showRequir
 
   // combine the custom entered value in the input box with the options as needed
   let combinedOptions = options;
-  if (inputValue && options.every((o) => inputValue.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)) {
+  if (
+    !isFreeFormDisabled &&
+    inputValue &&
+    options.every((o) => inputValue.toString().localeCompare(o.props.value, undefined, { sensitivity: 'base' }) !== 0)
+  ) {
     combinedOptions = [
       <option key={inputValue} value={inputValue}>
         {inputValue}

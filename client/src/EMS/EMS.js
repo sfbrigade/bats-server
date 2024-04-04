@@ -1,10 +1,11 @@
 import classNames from 'classnames';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { useLocation } from 'react-router-dom';
 
 import RoutedHeader from '../Components/RoutedHeader';
 import Context from '../Context';
+import MassCasualtyIncident from '../Models/MassCasualtyIncident';
 import Ringdown from '../Models/Ringdown';
 import HospitalStatus from '../Models/HospitalStatus';
 import HospitalStatuses from './HospitalStatuses';
@@ -15,6 +16,7 @@ export default function EMS() {
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
+  const [mcis, setMcis] = useState([]);
   const { selectedTab, setScrollTopPositions, handleSelectTab } = useTabPositions('ringdown', {
     ringdown: 0,
     hospitalInfo: 0,
@@ -47,6 +49,7 @@ export default function EMS() {
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
+      setMcis(data.mcis.map((mci) => new MassCasualtyIncident(mci)));
       setRingdowns(data.ringdowns.map((r) => new Ringdown(r)));
       setStatusUpdates(data.statusUpdates.map((su) => new HospitalStatus(su)));
     }
@@ -65,6 +68,7 @@ export default function EMS() {
           <RingdownForm
             defaultPayload={defaultPayload}
             className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'ringdown' })}
+            mcis={mcis}
           />
           <HospitalStatuses
             onReturn={() => handleSelectTab('ringdown')}

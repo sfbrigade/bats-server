@@ -25,11 +25,13 @@ const fields = [
   {
     name: 'triageTag',
     type: 'string',
+    label: 'Triage Tag #',
   },
   {
     name: 'triagePriority',
     type: 'enum',
     typeArgs: ['RED', 'YELLOW', 'GREEN'],
+    label: 'Triage Priority',
   },
   {
     name: 'age',
