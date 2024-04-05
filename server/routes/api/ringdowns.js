@@ -235,7 +235,7 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
       }
       // update status
       try {
-        await patientDelivery.createDeliveryStatusUpdate(req.user.id, deliveryStatus, dateTimeLocal);
+        await patientDelivery.createDeliveryStatusUpdate(req.user.id, deliveryStatus, dateTimeLocal, { transaction });
       } catch (error) {
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
         return;
