@@ -9,8 +9,20 @@ function Ringdowns({ ringdowns, onStatusChange }) {
     (r) => r.currentDeliveryStatus === Ringdown.Status.ARRIVED || r.currentDeliveryStatus === Ringdown.Status.OFFLOADED
   );
 
+  const mcs = ringdowns.filter(
+    (r) =>
+      !!r.triagePriority &&
+      r.currentDeliveryStatus !== Ringdown.Status.ARRIVED &&
+      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
+      r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED_ACKNOWLEDGED &&
+      r.currentDeliveryStatus !== Ringdown.Status.CANCEL_ACKNOWLEDGED &&
+      r.currentDeliveryStatus !== Ringdown.Status.REDIRECT_ACKNOWLEDGED &&
+      r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
+  );
+
   const enroute = ringdowns.filter(
     (r) =>
+      !r.triagePriority &&
       r.currentDeliveryStatus !== Ringdown.Status.ARRIVED &&
       r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED &&
       r.currentDeliveryStatus !== Ringdown.Status.OFFLOADED_ACKNOWLEDGED &&
@@ -23,6 +35,7 @@ function Ringdowns({ ringdowns, onStatusChange }) {
     <>
       <div className="usa-accordion ringdowns">
         <RingdownSection title="Waiting" ringdowns={waiting} onStatusChange={onStatusChange} />
+        {!!mcs.length && <RingdownSection title="MCI Incoming" ringdowns={mcs} onStatusChange={onStatusChange} />}
         <RingdownSection title="Incoming" ringdowns={enroute} onStatusChange={onStatusChange} />
       </div>
     </>
