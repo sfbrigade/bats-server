@@ -8,11 +8,16 @@ import './UnconfirmedRingdowns.scss';
 
 const UnconfirmedRingdowns = ({ onConfirm, ringdowns }) => {
   useEffect(() => {
+    let isCancelled = false;
     ringdowns.forEach((ringdown) => {
+      if (isCancelled) return;
       if (!ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED]) {
-        ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
+        try {
+          ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
+        } catch {}
       }
     });
+    return () => (isCancelled = true);
   }, [ringdowns]);
 
   async function confirm(ringdown) {
