@@ -42,7 +42,7 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
     ) : (
       <Timestamp
         className="ringdown-card__status"
-        label={hasArrived ? 'Arrived At:' : 'ETA:'}
+        label={hasArrived ? 'Arrived At:' : !!ringdown.etaMinutes ? 'ETA:' : 'Departed:'}
         time={hasArrived ? DateTime.fromISO(timestamps.ARRIVED) : etaDateTimeLocalObj}
       />
     );
@@ -65,7 +65,10 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
               Dismiss
             </button>
           </div>
-          <div className="ringdown-card__complaint-summary">{chiefComplaintDescription}</div>
+          <div className="ringdown-card__complaint-summary">
+            {!!triageTag && `#${triageTag}: `}
+            {chiefComplaintDescription}
+          </div>
         </>
       )}
       {!canBeDismissed && (
@@ -80,7 +83,7 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
           isOpened={isExpanded}
           onToggle={() => setExpanded(!isExpanded)}
         >
-          <RingdownDetails ringdown={ringdown} />
+          <RingdownDetails onStatusChange={onStatusChange} ringdown={ringdown} />
           {children}
         </Drawer>
       )}

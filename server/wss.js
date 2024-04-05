@@ -163,6 +163,13 @@ async function dispatchStatusUpdate(hospitalId) {
       ws.send(data);
     }
   });
+  // dispatch to all active MCIs
+  await Promise.all(
+    [...mciServer.clients].map(async (ws) => {
+      const data = await getMciData(ws.info.mciId, cachedStatusUpdates);
+      ws.send(data);
+    })
+  );
 }
 
 async function dispatchRingdownUpdate(patientDeliveryId) {

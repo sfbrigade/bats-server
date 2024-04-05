@@ -46,6 +46,10 @@ export default function ER() {
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
     rd.currentDeliveryStatus = status;
+    rd.timestamps = {
+      ...rd.timestamps,
+      [status]: now,
+    };
     setRingdowns([...ringdowns]);
   }
 

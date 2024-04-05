@@ -175,6 +175,10 @@ class Ringdown {
     return this.payload.patientDelivery.timestamps ?? {};
   }
 
+  set timestamps(newTimestamps) {
+    this.payload.patientDelivery.timestamps = newTimestamps;
+  }
+
   // Validators
 
   get isPatientValid() {
