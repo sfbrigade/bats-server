@@ -20,12 +20,14 @@ function Drawer({ title, subtitle, children, isOpened, onToggle }) {
         <div className="drawer__prompt">
           {!isOpened && (
             <>
-              More info <i className="fas fa-caret-down" />
+              More&nbsp;info&nbsp;
+              <i className="fas fa-caret-down" />
             </>
           )}
           {isOpened && (
             <>
-              Less info <i className="fas fa-caret-up" />
+              Less&nbsp;info&nbsp;
+              <i className="fas fa-caret-up" />
             </>
           )}
         </div>

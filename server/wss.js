@@ -129,12 +129,25 @@ async function dispatchMciUpdate(mciId) {
   });
   // dispatch to all hospitals
   const cachedMcis = (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON());
-  return Promise.all(
+  Promise.all(
     [...hospitalServer.clients].map(async (ws) => {
       const data = await getStatusUpdateData(ws.info.hospitalId, cachedMcis);
       ws.send(data);
     })
   );
+  // dispatch to all user clients
+  const cachedStatusUpdates = await Promise.all(
+    (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
+  );
+  const userPromises = [];
+  userServer.clients.forEach((ws) => {
+    userPromises.push(
+      getRingdownData(ws.info.userId, cachedMcis, cachedStatusUpdates).then((data) => {
+        ws.send(data);
+      })
+    );
+  });
+  return Promise.all(userPromises);
 }
 
 async function dispatchStatusUpdate(hospitalId) {
