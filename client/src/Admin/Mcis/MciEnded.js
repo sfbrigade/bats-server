@@ -15,7 +15,13 @@ function MciEnded({ data }) {
   useEffect(() => {
     const { id } = data ?? {};
     if (id) {
-      ApiService.mcis.ringdowns(id).then((response) => setRingdowns(response.data.map((r) => new Ringdown(r))));
+      ApiService.mcis.ringdowns(id).then((response) => {
+        let ringdowns = response.data.map((r) => new Ringdown(r));
+        ringdowns.sort((a, b) => {
+          return a.triagePrioritySort - b.triagePrioritySort;
+        });
+        setRingdowns(ringdowns);
+      });
     }
   }, [data]);
 
@@ -27,7 +33,7 @@ function MciEnded({ data }) {
       <h2>Transported Patients</h2>
       <MciTransportedCounts ringdowns={ringdowns} />
       {ringdowns?.map((r) => (
-        <RingdownCard ringdown={r} />
+        <RingdownCard className="margin-bottom-2" ringdown={r} />
       ))}
     </>
   );

@@ -118,6 +118,19 @@ class Ringdown {
 
   // Patient Info
 
+  get triagePrioritySort() {
+    switch (this.triagePriority) {
+      case 'RED':
+        return 1;
+      case 'YELLOW':
+        return 2;
+      case 'GREEN':
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
   get hasVitals() {
     return !!(
       this.systolicBloodPressure ||
