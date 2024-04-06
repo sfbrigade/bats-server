@@ -58,5 +58,15 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "EmergencyMedicalServiceCall",
+    "data": {
+      "id": "9f1ad38f-dce2-45f2-a14f-d1fe92ee54c5",
+      "dispatchCallNumber": "1004",
+      "startDateTimeLocal": "2024-04-05T12:14:32-07:00",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]

@@ -42,9 +42,29 @@
   {
     "model": "Ambulance",
     "data": {
+      "id": "1c8dcd8b-6163-4d2d-b370-6da0255fa9d7",
+      "OrganizationId": "7c9023ff-dd16-4e87-823a-80567a7b834a",
+      "ambulanceIdentifier": "AMR-2",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Ambulance",
+    "data": {
       "id": "bb972448-97ca-4b72-8dad-c11c95886583",
       "OrganizationId": "0a276fb6-6766-4e2c-b735-cabc4da684ff",
       "ambulanceIdentifier": "KING-1",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Ambulance",
+    "data": {
+      "id": "67755b5d-bf77-4b79-bc4e-07f2df5253e0",
+      "OrganizationId": "0a276fb6-6766-4e2c-b735-cabc4da684ff",
+      "ambulanceIdentifier": "KING-2",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }

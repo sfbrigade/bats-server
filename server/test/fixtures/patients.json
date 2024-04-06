@@ -48,5 +48,55 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "33c70ad4-8211-4356-aa80-d88439207fa2",
+      "EmergencyMedicalServiceCallId": "9f1ad38f-dce2-45f2-a14f-d1fe92ee54c5",
+      "emergencyServiceResponseType": "CODE 3",
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "8a1cf97a-39d5-4e31-87b6-767210eac6a8",
+      "EmergencyMedicalServiceCallId": "9f1ad38f-dce2-45f2-a14f-d1fe92ee54c5",
+      "emergencyServiceResponseType": "CODE 3",
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "57a23c1e-2dfc-452c-b58b-fa746e265d51",
+      "EmergencyMedicalServiceCallId": "9f1ad38f-dce2-45f2-a14f-d1fe92ee54c5",
+      "emergencyServiceResponseType": "CODE 2",
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "ba3b7604-a30e-488f-8d77-277510ca5c3e",
+      "EmergencyMedicalServiceCallId": "9f1ad38f-dce2-45f2-a14f-d1fe92ee54c5",
+      "emergencyServiceResponseType": "CODE 2",
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "Patient",
+    "data": {
+      "id": "db10aaa5-58c1-4607-bf63-5178cf80be8e",
+      "EmergencyMedicalServiceCallId": "9f1ad38f-dce2-45f2-a14f-d1fe92ee54c5",
+      "emergencyServiceResponseType": "CODE 2",
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
   }
 ]

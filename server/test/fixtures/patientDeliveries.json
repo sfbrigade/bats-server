@@ -73,5 +73,80 @@
       "CreatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8",
       "UpdatedById": "0a1f4d2e-689d-4b54-bb3c-7feba4444bb8"
     }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "1cc17dce-d1d7-4a7c-b0c1-2efde17aa14a",
+      "AmbulanceId": "85a6681d-a8ec-413c-8e4b-af7b3e79ee5f",
+      "PatientId": "33c70ad4-8211-4356-aa80-d88439207fa2",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "ParamedicUserId": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "currentDeliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatusDateTimeLocal": "2024-04-05T12:24:32-07:00",
+      "etaMinutes": null,
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "8ea6d29d-3e38-48b7-956f-bb8b0666ccdd",
+      "AmbulanceId": "85a6681d-a8ec-413c-8e4b-af7b3e79ee5f",
+      "PatientId": "8a1cf97a-39d5-4e31-87b6-767210eac6a8",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "ParamedicUserId": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "currentDeliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatusDateTimeLocal": "2024-04-05T12:24:32-07:00",
+      "etaMinutes": null,
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "1af603b7-073d-46fc-ae5e-6af6fdb357bd",
+      "AmbulanceId": "1c8dcd8b-6163-4d2d-b370-6da0255fa9d7",
+      "PatientId": "57a23c1e-2dfc-452c-b58b-fa746e265d51",
+      "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
+      "ParamedicUserId": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "currentDeliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatusDateTimeLocal": "2024-04-05T12:34:32-07:00",
+      "etaMinutes": null,
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "dca67fbc-67d9-4e45-8162-e32cf28047de",
+      "AmbulanceId": "1c8dcd8b-6163-4d2d-b370-6da0255fa9d7",
+      "PatientId": "ba3b7604-a30e-488f-8d77-277510ca5c3e",
+      "HospitalId": "00752f60-068f-11eb-adc1-0242ac120002",
+      "ParamedicUserId": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "currentDeliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatusDateTimeLocal": "2024-04-05T12:34:32-07:00",
+      "etaMinutes": null,
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
+  },
+  {
+    "model": "PatientDelivery",
+    "data": {
+      "id": "62df4044-c23e-466c-a919-52375a344f0a",
+      "AmbulanceId": "67755b5d-bf77-4b79-bc4e-07f2df5253e0",
+      "PatientId": "db10aaa5-58c1-4607-bf63-5178cf80be8e",
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "ParamedicUserId": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "currentDeliveryStatus": "RINGDOWN SENT",
+      "currentDeliveryStatusDateTimeLocal": "2024-04-05T12:44:32-07:00",
+      "etaMinutes": null,
+      "CreatedById": "f1fcac64-71a1-11eb-9439-0242ac130002",
+      "UpdatedById": "f1fcac64-71a1-11eb-9439-0242ac130002"
+    }
   }
 ]

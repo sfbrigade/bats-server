@@ -19,6 +19,8 @@ module.exports = (sequelize) => {
 
     async getAmbulanceCounts(options) {
       const counts = await sequelize.models.PatientDelivery.count({
+        col: 'AmbulanceId',
+        distinct: true,
         where: {
           HospitalId: this.id,
         },

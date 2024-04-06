@@ -6,21 +6,29 @@ const { DeliveryStatus } = require('shared/constants');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
-const { wrapper } = require('../helpers');
+const { setPaginationHeaders, wrapper } = require('../helpers');
 
 const { dispatchMciUpdate } = require('../../wss');
 
 const router = express.Router();
 
-router.get('/', middleware.isSuperUser, async (req, res) => {
-  const records = await models.MassCasualtyIncident.findAll({
-    order: [
-      ['endedAt', 'DESC'],
-      ['startedAt', 'DESC'],
-    ],
-  });
-  res.json(records.map((r) => r.toJSON()));
-});
+router.get(
+  '/',
+  middleware.isSuperUser,
+  wrapper(async (req, res) => {
+    const page = req.query.page || '1';
+    const options = {
+      page,
+      order: [
+        ['endedAt', 'DESC'],
+        ['startedAt', 'DESC'],
+      ],
+    };
+    const { records, pages, total } = await models.MassCasualtyIncident.paginate(options);
+    setPaginationHeaders(req, res, page, pages, total);
+    res.json(records.map((r) => r.toJSON()));
+  })
+);
 
 router.post(
   '/',

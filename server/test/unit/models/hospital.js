@@ -46,7 +46,7 @@ describe('models.Hospital', () => {
     it('returns enRoute/offloading counts for the associated hospital', async () => {
       const hospital = await models.Hospital.findByPk('7f666fe4-dbdd-4c7f-ab44-d9157379a680');
       const deliveries = await hospital.getAmbulanceCounts();
-      assert.deepStrictEqual(deliveries, { enRoute: 1, offloading: 1 });
+      assert.deepStrictEqual(deliveries, { enRoute: 3, offloading: 1 });
     });
   });
 });

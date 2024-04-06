@@ -26,6 +26,9 @@ module.exports = (sequelize) => {
         'estimatedYellowCount',
         'estimatedGreenCount',
         'estimatedZebraCount',
+        'CreatedById',
+        'createdAt',
+        'UpdatedById',
         'updatedAt',
       ]);
     }
