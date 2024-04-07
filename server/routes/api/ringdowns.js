@@ -150,9 +150,25 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
         { transaction }
       );
       patient.EmergencyMedicalServiceCall = emsCall;
+      // check if patient is from an MCI
+      const isMCI = !!patient.triageTag || !!patient.triagePriority;
+      // allow setting/creating ambulance record for other agencies in MCI
+      let { OrganizationId } = req.user;
+      if (isMCI && req.body.ambulance.organization) {
+        const { state, stateUniqueId } = req.body.ambulance.organization;
+        const organization = await models.Organization.findOne({
+          where: {
+            state,
+            stateUniqueId,
+          },
+          rejectOnEmpty: true,
+          transaction,
+        });
+        OrganizationId = organization.id;
+      }
       const [ambulance] = await models.Ambulance.findOrCreate({
         where: {
-          OrganizationId: req.user.OrganizationId,
+          OrganizationId,
           ambulanceIdentifier: req.body.ambulance.ambulanceIdentifier,
         },
         defaults: {
