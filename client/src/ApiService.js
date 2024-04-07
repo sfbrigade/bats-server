@@ -100,6 +100,9 @@ export default {
     index() {
       return instance.get('/api/organizations/');
     },
+    create(data) {
+      return instance.post(`/api/organizations`, data);
+    },
     get(id) {
       return instance.get(`/api/organizations/${id}`);
     },

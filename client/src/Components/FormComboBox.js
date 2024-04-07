@@ -17,6 +17,7 @@ import ValidationMessage from './ValidationMessage';
  *
  */
 function FormComboBox({
+  className,
   isFreeFormDisabled,
   label,
   property,
@@ -134,7 +135,7 @@ function FormComboBox({
   }
 
   return (
-    <div ref={ref}>
+    <div className={className} ref={ref}>
       <label
         className={classNames('usa-label', {
           'usa-label--required': showRequiredHint && required,

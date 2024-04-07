@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import ApiService from '../../../ApiService';
 
@@ -13,6 +13,12 @@ function OrganizationsList() {
 
   return (
     <main>
+      <div className="display-flex flex-align-center flex-justify">
+        <h1>Organizations</h1>
+        <Link to="new" className="usa-button usa-button--primary">
+          Add new Organization
+        </Link>
+      </div>
       <table className="usa-table usa-table--striped usa-table--borderless usa-table--hoverable width-full">
         <thead>
           <tr>

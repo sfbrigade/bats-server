@@ -6,7 +6,7 @@ import OrganizationsList from './OrganizationsList';
 function OrganizationsRoutes() {
   return (
     <Routes>
-      <Route path=":id" element={<OrganizationForm />} />
+      <Route path=":orgId" element={<OrganizationForm />} />
       <Route path="" element={<OrganizationsList />} />
     </Routes>
   );
