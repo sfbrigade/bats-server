@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import ApiService from '../../ApiService';
+import ApiService from '../../../ApiService';
 
-import RingdownCard from '../../Components/RingdownCard';
+import RingdownCard from '../../../Components/RingdownCard';
 
 import MciDetails from './MciDetails';
 import MciPatientCounts from './MciPatientCounts';
 import MciTransportedCounts from './MciTransportedCounts';
-import Ringdown from '../../Models/Ringdown';
+import Ringdown from '../../../Models/Ringdown';
 
 function MciEnded({ data }) {
   const [ringdowns, setRingdowns] = useState();

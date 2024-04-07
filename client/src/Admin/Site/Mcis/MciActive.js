@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { DateTime } from 'luxon';
 
-import ApiService from '../../ApiService';
-import Spinner from '../../Components/Spinner';
-import HospitalStatus from '../../Models/HospitalStatus';
-import Ringdown from '../../Models/Ringdown';
+import ApiService from '../../../ApiService';
+import Spinner from '../../../Components/Spinner';
+import HospitalStatus from '../../../Models/HospitalStatus';
+import Ringdown from '../../../Models/Ringdown';
 
 import MciDetails from './MciDetails';
 import MciHospitalCapacityRow from './MciHospitalCapacityRow';

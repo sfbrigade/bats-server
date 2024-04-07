@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
-import ApiService from '../../ApiService';
+import ApiService from '../../../ApiService';
 
 function McisTable() {
   const navigate = useNavigate();

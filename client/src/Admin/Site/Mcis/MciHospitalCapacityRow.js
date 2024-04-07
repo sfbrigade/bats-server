@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { DateTime } from 'luxon';
 
-import { ReactComponent as NoteIcon } from '../../assets/img/icon-note.svg';
-import MciCounter from '../../Components/MciCounter';
+import { ReactComponent as NoteIcon } from '../../../assets/img/icon-note.svg';
+import MciCounter from '../../../Components/MciCounter';
 
 import './MciHospitalCapacityRow.scss';
 

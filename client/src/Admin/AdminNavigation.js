@@ -14,6 +14,7 @@ import './AdminNavigation.scss';
 function AdminNavigation() {
   const location = useLocation();
   const url = useResolvedPath('').pathname;
+  const isSiteAdmin = location.pathname.startsWith(`${url}/site`);
   const { user, organization, setOrganization, setHospital } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
   const [showFlash, setShowFlash] = useState(false);
@@ -60,7 +61,7 @@ function AdminNavigation() {
       <div className="admin-navigation__container grid-container">
         <div className="display-flex flex-row flex-justify flex-align-center">
           <div className="display-flex flex-row flex-justify flex-align-center">
-            {user?.isSuperUser && (
+            {user?.isSuperUser && !isSiteAdmin && (
               <h2>
                 <div className="display-flex flex-align-center">
                   {/* eslint-disable-next-line jsx-a11y/no-onchange */}
@@ -74,7 +75,7 @@ function AdminNavigation() {
                 </div>
               </h2>
             )}
-            {!user?.isSuperUser && <h2>{organization?.name}</h2>}
+            {!user?.isSuperUser || (isSiteAdmin && <h2>{organization?.name}</h2>)}
           </div>
           <div>
             <span className="margin-right-2">
@@ -84,6 +85,22 @@ function AdminNavigation() {
               </Link>
               !
             </span>
+            {user?.isSuperUser && isSiteAdmin && (
+              <>
+                <Link to={url} onClick={reset}>
+                  Manage Orgs
+                </Link>
+                &nbsp;|&nbsp;
+              </>
+            )}
+            {user?.isSuperUser && !isSiteAdmin && (
+              <>
+                <Link to={`${url}/site`} onClick={reset}>
+                  Manage Site
+                </Link>
+                &nbsp;|&nbsp;
+              </>
+            )}
             {user?.isOperationalUser && (
               <>
                 <Link to="/" onClick={reset}>
@@ -96,47 +113,64 @@ function AdminNavigation() {
           </div>
         </div>
         <div className="display-flex flex-row flex-justify-center">
-          <NavLink
-            to={`${url}/dashboard`}
-            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
-          >
-            <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
-          </NavLink>
-          {user?.isSuperUser && (
+          {user?.isSuperUser && isSiteAdmin && (
             <>
               <NavLink
-                to={`${url}/mcis`}
+                to={`${url}/site/dashboard`}
+                className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+              >
+                <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
+              </NavLink>
+              <NavLink
+                to={`${url}/site/mcis`}
                 className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
               >
                 <MciIcon className="admin-navigation__link-icon" /> MCIs
               </NavLink>
+              <NavLink
+                to={`${url}/site/organizations`}
+                className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+              >
+                <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Organizations</span>
+              </NavLink>
             </>
           )}
-          <NavLink
-            to={`${url}/users`}
-            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
-          >
-            <UserIcon className="admin-navigation__link-icon" /> Users
-          </NavLink>
-          {organization?.type === 'HEALTHCARE' && (
-            <NavLink
-              to={`${url}/hospitals`}
-              className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
-            >
-              <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
-            </NavLink>
-          )}
-          <NavLink
-            to={`${url}/settings`}
-            className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
-          >
-            <SettingsIcon className="admin-navigation__link-icon" /> <span>Settings</span>
-          </NavLink>
-          {/* <NavLink to={`${url}/ringdowns`}
+          {!user?.isSuperUser ||
+            (!isSiteAdmin && (
+              <>
+                <NavLink
+                  to={`${url}/dashboard`}
+                  className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+                >
+                  <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
+                </NavLink>
+                <NavLink
+                  to={`${url}/users`}
+                  className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+                >
+                  <UserIcon className="admin-navigation__link-icon" /> Users
+                </NavLink>
+                {organization?.type === 'HEALTHCARE' && (
+                  <NavLink
+                    to={`${url}/hospitals`}
+                    className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+                  >
+                    <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
+                  </NavLink>
+                )}
+                <NavLink
+                  to={`${url}/settings`}
+                  className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+                >
+                  <SettingsIcon className="admin-navigation__link-icon" /> <span>Settings</span>
+                </NavLink>
+                {/* <NavLink to={`${url}/ringdowns`}
             className={({isActive}) => `admin-navigation__link ${(isActive ? 'admin-navigation__link--active' : '')}`}
           >
             Ringdowns
           </NavLink> */}
+              </>
+            ))}
         </div>
         {showFlash && location.state?.flash?.info && (
           <div className="admin-navigation__alert usa-alert usa-alert--success usa-alert--slim usa-alert--no-icon">

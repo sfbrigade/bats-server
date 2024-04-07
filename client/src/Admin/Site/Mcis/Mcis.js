@@ -8,7 +8,7 @@ function Mcis() {
     <main>
       <div className="display-flex flex-align-center flex-justify">
         <h1>MCIs</h1>
-        <Link to="/admin/mcis/new" className="usa-button usa-button--primary">
+        <Link to="new" className="usa-button usa-button--primary">
           Start new MCI
         </Link>
       </div>

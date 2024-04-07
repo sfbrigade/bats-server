@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 
-import FormInput from '../../Components/FormInput';
-import FormError from '../../Models/FormError';
-import ApiService from '../../ApiService';
+import FormInput from '../../../Components/FormInput';
+import FormError from '../../../Models/FormError';
+import ApiService from '../../../ApiService';
 
 function MciForm() {
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ function MciForm() {
         const response = await ApiService.mcis.create(newData);
         ({ id } = response.data);
       }
-      navigate(`/admin/mcis/${id}`);
+      navigate(`/admin/site/mcis/${id}`);
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);
