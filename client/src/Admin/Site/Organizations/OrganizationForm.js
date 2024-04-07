@@ -108,15 +108,14 @@ function OrganizationForm() {
                       California
                     </option>,
                   ]}
-                  required
-                  value={data.state}
+                  value={data.state ?? ''}
                 />
                 <FormInput
                   label="State Unique Id"
                   onChange={onChange}
                   property="stateUniqueId"
                   type="text"
-                  value={data.stateUniqueId}
+                  value={data.stateUniqueId ?? ''}
                   error={error}
                 />
                 <FormComboBox

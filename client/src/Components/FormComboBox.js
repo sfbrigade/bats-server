@@ -61,7 +61,6 @@ function FormComboBox({
           const { value } = e.target;
           setInputValue(value);
           const option = options.find((o) => value.localeCompare(o.props.children, undefined, { sensitivity: 'base' }) === 0);
-          console.log('?', option?.props.children, value);
           if (option) {
             dispatchSelectChangeEvent(option.props.value);
           } else {
