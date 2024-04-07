@@ -239,10 +239,13 @@ function configure(server, app) {
           if (query.id && query.id !== 'undefined') {
             req.mci = await models.MassCasualtyIncident.findByPk(query.id);
           }
-          if (!req.user.isSuperUser || !req.mci) {
-            socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
-            socket.destroy();
-            return;
+          if (!req.user.isSuperUser) {
+            const org = await req.user.getOrganization();
+            if (org.type !== 'C4SF') {
+              socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+              socket.destroy();
+              return;
+            }
           }
           mciServer.handleUpgrade(req, socket, head, (ws) => {
             mciServer.emit('connection', ws, req);

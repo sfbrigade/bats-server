@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
-import MciCounter from '../../../Components/MciCounter';
+import MciCounter from '../../Components/MciCounter';
 
 function MciPatientCounts({ className, data, includeDead, isEditable, onChange }) {
   const timeoutRef = useRef();

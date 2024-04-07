@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import ApiService from '../../../ApiService';
-import Alert from '../../../Components/Alert';
+import ApiService from '../../ApiService';
+import Alert from '../../Components/Alert';
 
 import MciActive from './MciActive';
 import MciEnded from './MciEnded';

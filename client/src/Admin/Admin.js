@@ -6,6 +6,7 @@ import Dashboard from './Dashboard';
 import Ringdowns from './Ringdowns/Ringdowns';
 import Users from './Users/Users';
 import Hospitals from './Hospitals';
+import MciRoutes from './Mcis/McisRoutes';
 import Settings from './Settings';
 import SiteRoutes from './Site/SiteRoutes';
 
@@ -17,6 +18,7 @@ export default function Admin() {
         <Routes>
           <Route path="site/*" element={<SiteRoutes />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="mcis/*" element={<MciRoutes />} />
           <Route path="ringdowns" element={<Ringdowns />} />
           <Route path="users/:userId?" element={<Users />} />
           <Route path="hospitals" element={<Hospitals />} />

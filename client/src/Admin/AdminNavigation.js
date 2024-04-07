@@ -13,6 +13,8 @@ import './AdminNavigation.scss';
 
 function AdminNavigation() {
   const location = useLocation();
+  const { flash } = location.state ?? {};
+  window.history.replaceState({}, '');
   const url = useResolvedPath('').pathname;
   const isSiteAdmin = location.pathname.startsWith(`${url}/site`);
   const { user, organization, setOrganization, setHospital } = useContext(Context);
@@ -20,13 +22,13 @@ function AdminNavigation() {
   const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
-    if (location.state?.flash) {
+    if (flash) {
       setShowFlash(true);
       setTimeout(() => setShowFlash(false), 2000);
     } else {
       setShowFlash(false);
     }
-  }, [location]);
+  }, [flash]);
 
   useEffect(() => {
     if (user?.isSuperUser) {
@@ -75,7 +77,7 @@ function AdminNavigation() {
                 </div>
               </h2>
             )}
-            {!user?.isSuperUser || (isSiteAdmin && <h2>{organization?.name}</h2>)}
+            {(!user?.isSuperUser || isSiteAdmin) && <h2>{organization?.name}</h2>}
           </div>
           <div>
             <span className="margin-right-2">
@@ -101,7 +103,7 @@ function AdminNavigation() {
                 &nbsp;|&nbsp;
               </>
             )}
-            {user?.isOperationalUser && (
+            {user?.isOperationalUser && user.organization.type !== 'C4SF' && (
               <>
                 <Link to="/" onClick={reset}>
                   Exit Admin
@@ -122,12 +124,6 @@ function AdminNavigation() {
                 <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
               </NavLink>
               <NavLink
-                to={`${url}/site/mcis`}
-                className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
-              >
-                <MciIcon className="admin-navigation__link-icon" /> MCIs
-              </NavLink>
-              <NavLink
                 to={`${url}/site/organizations`}
                 className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
               >
@@ -135,47 +131,53 @@ function AdminNavigation() {
               </NavLink>
             </>
           )}
-          {!user?.isSuperUser ||
-            (!isSiteAdmin && (
-              <>
+          {(!user?.isSuperUser || !isSiteAdmin) && (
+            <>
+              <NavLink
+                to={`${url}/dashboard`}
+                className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+              >
+                <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
+              </NavLink>
+              {organization?.type === 'C4SF' && (
                 <NavLink
-                  to={`${url}/dashboard`}
+                  to={`${url}/mcis`}
                   className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
                 >
-                  <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
+                  <MciIcon className="admin-navigation__link-icon" /> MCIs
                 </NavLink>
+              )}
+              {(user?.isAdminUser || user?.isSuperUser) && (
                 <NavLink
                   to={`${url}/users`}
                   className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
                 >
                   <UserIcon className="admin-navigation__link-icon" /> Users
                 </NavLink>
-                {organization?.type === 'HEALTHCARE' && (
-                  <NavLink
-                    to={`${url}/hospitals`}
-                    className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
-                  >
-                    <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
-                  </NavLink>
-                )}
+              )}
+              {organization?.type === 'HEALTHCARE' && (
+                <NavLink
+                  to={`${url}/hospitals`}
+                  className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+                >
+                  <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
+                </NavLink>
+              )}
+              {(user?.isAdminUser || user?.isSuperUser) && (
                 <NavLink
                   to={`${url}/settings`}
                   className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
                 >
                   <SettingsIcon className="admin-navigation__link-icon" /> <span>Settings</span>
                 </NavLink>
-                {/* <NavLink to={`${url}/ringdowns`}
-            className={({isActive}) => `admin-navigation__link ${(isActive ? 'admin-navigation__link--active' : '')}`}
-          >
-            Ringdowns
-          </NavLink> */}
-              </>
-            ))}
+              )}
+            </>
+          )}
         </div>
-        {showFlash && location.state?.flash?.info && (
+        {showFlash && flash?.info && (
           <div className="admin-navigation__alert usa-alert usa-alert--success usa-alert--slim usa-alert--no-icon">
             <div className="usa-alert__body">
-              <p className="usa-alert__text">{location.state.flash.info}</p>
+              <p className="usa-alert__text">{flash.info}</p>
             </div>
           </div>
         )}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
-import Alert from '../../../Components/Alert';
+import Alert from '../../Components/Alert';
 
 function MciDetails({ data, onEnd }) {
   const [confirmEnd, setConfirmEnd] = useState(false);
