@@ -93,6 +93,10 @@ module.exports = {
         field: 'user_uuid',
       },
     });
+    await queryInterface.addIndex('masscasualtyincident', {
+      fields: ['incidentnumber'],
+      unique: true,
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('masscasualtyincident');

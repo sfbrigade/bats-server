@@ -12,6 +12,9 @@ const fields = [
     name: 'incidentNumber',
     type: 'string',
     allowNull: false,
+    unique: {
+      msg: 'An incident with this number already exists.',
+    },
   },
   {
     name: 'address1',
