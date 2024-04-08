@@ -27,7 +27,9 @@ function MciActive({ id, onEnd, onError }) {
           .filter((mci) => !!id || !mci.endedAt)
           .map((mci) => {
             mci.ringdowns = mci.ringdowns.map((rd) => new Ringdown(rd));
-            allRingdowns = allRingdowns.concat(mci.ringdowns);
+            if (!id || mci.id === id) {
+              allRingdowns = allRingdowns.concat(mci.ringdowns);
+            }
             return mci;
           })
       );
@@ -113,8 +115,8 @@ function MciActive({ id, onEnd, onError }) {
       totals.updateDateTimeLocal = su.updateDateTimeLocal;
     }
     totals.mciRedCapacity = (totals.mciRedCapacity ?? 0) + (su.mciRedCapacity ?? 0);
-    totals.mciRedCapacity = (totals.mciRedCapacity ?? 0) + (su.mciYellowCapacity ?? 0);
-    totals.mciRedCapacity = (totals.mciRedCapacity ?? 0) + (su.mciGreenCapacity ?? 0);
+    totals.mciYellowCapacity = (totals.mciYellowCapacity ?? 0) + (su.mciYellowCapacity ?? 0);
+    totals.mciGreenCapacity = (totals.mciGreenCapacity ?? 0) + (su.mciGreenCapacity ?? 0);
   });
 
   let data;
@@ -144,7 +146,7 @@ function MciActive({ id, onEnd, onError }) {
     <>
       {!mcis && <Spinner />}
       {!!data && <MciDetails data={data} onEnd={() => onEndInternal(data.id)} />}
-      {!data && !mcis?.length && <h3>There are no active MCIs at this time.</h3>}
+      {!data && !!mcis && !mcis.length && <h3>There are no active MCIs at this time.</h3>}
       {!!mcis?.length && (
         <>
           <h2>Estimated Patient Counts</h2>
@@ -153,6 +155,7 @@ function MciActive({ id, onEnd, onError }) {
             <MciPatientCounts
               className="margin-bottom-4"
               data={data}
+              ringdowns={data.ringdowns}
               isEditable
               onChange={(newData) => onChangeEstimatedPatientCounts(data.id, newData)}
             />
@@ -165,6 +168,7 @@ function MciActive({ id, onEnd, onError }) {
                   key={mci.id}
                   className="margin-bottom-4"
                   data={mci}
+                  ringdowns={mci.ringdowns}
                   isEditable
                   onChange={(newData) => onChangeEstimatedPatientCounts(mci.id, newData)}
                   onEnd={() => onEndInternal(mci.id)}
@@ -172,7 +176,7 @@ function MciActive({ id, onEnd, onError }) {
                   showEnd
                 />
               ))}
-          {!!all && <MciPatientCounts className="margin-bottom-4" data={all} showTransported />}
+          {!!all && <MciPatientCounts className="margin-bottom-4" data={all} ringdowns={allRingdowns} showTransported />}
           <h2 className="margin-top-4">Hospital Capacity</h2>
           {!statusUpdates && <Spinner />}
           {totals && <MciHospitalCapacityRow ringdowns={allRingdowns} showTotal statusUpdate={totals} />}

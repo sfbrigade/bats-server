@@ -27,7 +27,7 @@ function MciHospitalCapacityRow({ onChange, ringdowns, showTotal, statusUpdate }
     green: 0,
   };
   ringdowns.forEach((rd) => {
-    if (rd.hospitalId === statusUpdate.hospitalId) {
+    if (!statusUpdate.hospitalId || rd.hospitalId === statusUpdate.hospitalId) {
       switch (rd.triagePriority) {
         case 'RED':
           transportedTotals.red += 1;
