@@ -139,7 +139,7 @@ function AdminNavigation() {
               >
                 <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
               </NavLink>
-              {organization?.type === 'C4SF' && (
+              {(user?.isSuperUser || organization?.type === 'C4SF') && (
                 <NavLink
                   to={`${url}/mcis`}
                   className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}

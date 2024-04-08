@@ -71,7 +71,11 @@ function MciForm() {
         const response = await ApiService.mcis.create(newData);
         ({ id } = response.data);
       }
-      navigate(`/admin/mcis/${id}`);
+      if (newData.endedAt) {
+        navigate(`/admin/mcis/${id}`);
+      } else {
+        navigate(`/admin/dashboard`);
+      }
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);

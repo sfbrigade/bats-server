@@ -1,14 +1,14 @@
 @import '../../theme/base';
 
-.mci-hospital-capacity-row {
+.mci-row {
   border: 2px solid color('base-light');
   border-radius: 8px;
   margin-bottom: 1rem;
   overflow: hidden;
 }
 
-.mci-hospital-capacity-row__status,
-.mci-hospital-capacity-row__transported {
+.mci-row__status,
+.mci-row__transported {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -16,36 +16,31 @@
   padding: 0.75rem;
 }
 
-.mci-hospital-capacity-row__transported {
+.mci-row__transported {
   border-top: 1px solid color('base-light');
 }
 
-.mci-hospital-capacity-row__info {
+.mci-row__info {
   flex-shrink: 0;
   width: 30%;
 }
 
-.mci-hospital-capacity-row__name {
+.mci-row__name {
   margin: 0;
 }
 
-.mci-hospital-capacity-row__updated {
+.mci-row__updated {
   color: color('base-light');
 }
 
-.mci-hospital-capacity-row__controls {
+.mci-row__controls {
+  min-width: 0;
+  flex-shrink: 1;
   display: flex;
   flex-direction: row;
-  .mci-counter {
-    max-width: 180px;
-    margin-left: 1rem;
-    &:first-child {
-      margin-left: 0;
-    }
-  }
 }
 
-.mci-hospital-capacity-row__notes {
+.mci-row__notes {
   background-color: color('base-lightest');
   color: color('base-dark');
   width: 100%;

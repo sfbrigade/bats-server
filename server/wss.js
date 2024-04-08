@@ -8,9 +8,9 @@ const models = require('./models');
 const mciServer = new WebSocket.Server({ noServer: true });
 mciServer.on('connection', async (ws, req) => {
   // eslint-disable-next-line no-param-reassign
-  ws.info = { useId: req.user.id, mciId: req.mci.id };
+  ws.info = { useId: req.user.id };
   // eslint-disable-next-line no-use-before-define
-  const data = await getMciData(req.mci.id);
+  const data = await getMciData();
   ws.send(data);
 });
 
@@ -32,28 +32,41 @@ hospitalServer.on('connection', async (ws, req) => {
   ws.send(data);
 });
 
-async function getMciData(mciId, cachedStatusUpdates) {
-  const mci = await models.MassCasualtyIncident.findByPk(mciId);
-  const patientDeliveries = await models.PatientDelivery.findAll({
-    include: [
-      models.Ambulance,
-      models.Hospital,
-      models.PatientDeliveryUpdate,
-      {
-        model: models.Patient,
-        include: models.EmergencyMedicalServiceCall,
-      },
-    ],
-    where: {
-      currentDeliveryStatus: {
-        [Op.lt]: DeliveryStatus.CANCELLED,
-      },
-      '$Patient.EmergencyMedicalServiceCall.dispatchcallnumber$': mci.incidentNumber,
-    },
-  });
+async function getMciData(cachedMcis, cachedStatusUpdates, mciId) {
+  const mcis = cachedMcis || (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON());
+  if (mciId) {
+    if (!mcis.find((mci) => mci.id === mciId)) {
+      const mci = await models.MassCasualtyIncident.findByPk(mciId);
+      mcis.push(mci.toJSON());
+    }
+  }
+  await Promise.all(
+    mcis.map(async (mci) => {
+      mci.ringdowns = await Promise.all(
+        (
+          await models.PatientDelivery.findAll({
+            include: [
+              models.Ambulance,
+              models.Hospital,
+              models.PatientDeliveryUpdate,
+              {
+                model: models.Patient,
+                include: models.EmergencyMedicalServiceCall,
+              },
+            ],
+            where: {
+              currentDeliveryStatus: {
+                [Op.lt]: DeliveryStatus.CANCELLED,
+              },
+              '$Patient.EmergencyMedicalServiceCall.dispatchcallnumber$': mci.incidentNumber,
+            },
+          })
+        ).map((pd) => pd.toRingdownJSON())
+      );
+    })
+  );
   const data = JSON.stringify({
-    mci: mci.toJSON(),
-    ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
+    mcis,
     statusUpdates:
       cachedStatusUpdates ||
       (await Promise.all(
@@ -120,13 +133,6 @@ async function getStatusUpdateData(hospitalId, cachedMcis) {
 }
 
 async function dispatchMciUpdate(mciId) {
-  // dispatch to all watching the specific mci
-  const data = await getMciData(mciId);
-  mciServer.clients.forEach((ws) => {
-    if (ws.info.mciId === mciId) {
-      ws.send(data);
-    }
-  });
   // dispatch to all hospitals
   const cachedMcis = (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON());
   Promise.all(
@@ -146,6 +152,11 @@ async function dispatchMciUpdate(mciId) {
         ws.send(data);
       })
     );
+  });
+  // dispatch to all watching mcis
+  const data = await getMciData(cachedMcis, cachedStatusUpdates, mciId);
+  mciServer.clients.forEach((ws) => {
+    ws.send(data);
   });
   return Promise.all(userPromises);
 }
@@ -179,7 +190,7 @@ async function dispatchStatusUpdate(hospitalId) {
   // dispatch to all active MCIs
   await Promise.all(
     [...mciServer.clients].map(async (ws) => {
-      const data = await getMciData(ws.info.mciId, cachedStatusUpdates);
+      const data = await getMciData(cachedMcis, cachedStatusUpdates);
       ws.send(data);
     })
   );
@@ -236,9 +247,6 @@ function configure(server, app) {
       const { pathname } = url.parse(req.url);
       switch (pathname) {
         case '/wss/mci':
-          if (query.id && query.id !== 'undefined') {
-            req.mci = await models.MassCasualtyIncident.findByPk(query.id);
-          }
           if (!req.user.isSuperUser) {
             const org = await req.user.getOrganization();
             if (org.type !== 'C4SF') {

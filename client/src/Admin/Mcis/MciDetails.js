@@ -14,8 +14,12 @@ function MciDetails({ data, onEnd }) {
 
   return (
     <>
-      {data.address1 && <div className="margin-bottom-1">{data.address1}</div>}
-      {data.address2 && <div className="margin-bottom-1">{data.address2}</div>}
+      {data.address1 && (
+        <div className="margin-bottom-1">
+          <b>Address:</b> {data.address1}
+          {data.address2 && `, ${data.address2}`}
+        </div>
+      )}
       <div className="margin-bottom-1">
         <b>Started:</b> {DateTime.fromISO(data.startedAt).toLocaleString(DateTime.DATETIME_FULL)}
       </div>

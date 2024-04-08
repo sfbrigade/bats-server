@@ -4,6 +4,8 @@ import Mci from './Mci';
 import Mcis from './Mcis';
 import MciForm from './MciForm';
 
+import './McisRoutes.scss';
+
 function McisRoutes() {
   return (
     <Routes>

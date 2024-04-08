@@ -6,7 +6,6 @@ import RingdownCard from '../../Components/RingdownCard';
 
 import MciDetails from './MciDetails';
 import MciPatientCounts from './MciPatientCounts';
-import MciTransportedCounts from './MciTransportedCounts';
 import Ringdown from '../../Models/Ringdown';
 
 function MciEnded({ data }) {
@@ -29,9 +28,8 @@ function MciEnded({ data }) {
     <>
       <MciDetails data={data} />
       <h2>Estimated Patient Counts</h2>
-      <MciPatientCounts className="margin-bottom-4" data={data} />
-      <h2>Transported Patients</h2>
-      <MciTransportedCounts ringdowns={ringdowns} />
+      <MciPatientCounts className="margin-bottom-4" data={data} ringdowns={ringdowns} showTransported />
+      <h2 className="margin-top-4">Transported Patients</h2>
       {ringdowns?.map((r) => (
         <RingdownCard className="margin-bottom-2" ringdown={r} />
       ))}

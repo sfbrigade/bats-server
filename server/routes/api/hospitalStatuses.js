@@ -23,17 +23,28 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
 router.post('/', middleware.isAuthenticated, async (req, res) => {
   try {
     if (!req.user.isSuperUser) {
-      // ensure authenticated user is an administrator of this hospital ED
-      await models.HospitalUser.findOne({
-        where: {
-          HospitalId: req.body.hospitalId,
-          EdAdminUserId: req.user.id,
-        },
-        rejectOnEmpty: true,
-      });
-      // ensure authenticated user is an operational user allowed to do this
-      if (!req.user.isOperationalUser) {
-        throw new Error();
+      let isAllowed = false;
+      // check if MCIs are active
+      const isMCI = (await models.MassCasualtyIncident.scope('active').count()) > 0;
+      if (isMCI) {
+        const org = await req.user.getOrganization();
+        if (org.type === 'C4SF') {
+          isAllowed = true;
+        }
+      }
+      if (!isAllowed) {
+        // ensure authenticated user is an administrator of this hospital ED
+        await models.HospitalUser.findOne({
+          where: {
+            HospitalId: req.body.hospitalId,
+            EdAdminUserId: req.user.id,
+          },
+          rejectOnEmpty: true,
+        });
+        // ensure authenticated user is an operational user allowed to do this
+        if (!req.user.isOperationalUser) {
+          throw new Error();
+        }
       }
     }
   } catch (error) {
