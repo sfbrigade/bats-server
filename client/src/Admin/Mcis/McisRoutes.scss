@@ -16,6 +16,10 @@
   padding: 0.75rem;
 }
 
+.mci-row:nth-child(even) .mci-row__status {
+  background-color: color($theme-color-base-lightest);
+}
+
 .mci-row__transported {
   border-top: 1px solid color('base-light');
 }
@@ -41,7 +45,7 @@
 }
 
 .mci-row__notes {
-  background-color: color('base-lightest');
+  background-color: color($theme-color-warning-lighter);
   color: color('base-dark');
   width: 100%;
   padding: 0.75rem;
