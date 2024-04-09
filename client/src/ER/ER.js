@@ -86,7 +86,7 @@ export default function ER() {
       const newUnconfirmedRingdowns = data.ringdowns.filter(
         (r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT || r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED
       );
-      setMcis(data.mcis.map((mci) => new MassCasualtyIncident(mci)));
+      setMcis(data.mcis.filter((mci) => !mci.endedAt).map((mci) => new MassCasualtyIncident(mci)));
       setRingdowns(newRingdowns);
       setUnconfirmedRingdowns(newUnconfirmedRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
