@@ -49,7 +49,7 @@ export default function EMS() {
   useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
-      setMcis(data.mcis.map((mci) => new MassCasualtyIncident(mci)));
+      setMcis(data.mcis.filter((mci) => !mci.endedAt).map((mci) => new MassCasualtyIncident(mci)));
       setRingdowns(data.ringdowns.map((r) => new Ringdown(r)));
       setStatusUpdates(data.statusUpdates.map((su) => new HospitalStatus(su)));
     }
