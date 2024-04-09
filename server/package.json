@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@node-oauth/express-oauth-server": "^4.0.0",
     "axios": "^0.21.4",
     "bcrypt": "^5.0.1",
     "bufferutil": "^4.0.6",
@@ -20,6 +21,7 @@
     "luxon": "^1.28.0",
     "mockery": "^2.1.0",
     "morgan": "^1.10.0",
+    "node-cache": "^5.1.2",
     "nodemailer": "^6.9.1",
     "nodemailer-mock": "^2.0.1",
     "otpauth": "^9.1.1",
@@ -27,6 +29,7 @@
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.6.1",
     "pg": "^8.7.3",
+    "randomstring": "^1.3.0",
     "rollbar": "^2.26.3",
     "sequelize": "^6.21.2",
     "sequelize-auto": "^0.5.4",
