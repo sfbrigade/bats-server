@@ -1,0 +1,11 @@
+.sticky-footer {
+  background-color: white;
+  bottom: 0;
+  box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.1);
+  clip-path: inset(-8px 0 0 0);
+  position: sticky;
+}
+
+.sticky-footer--scrolled {
+  box-shadow: none;
+}

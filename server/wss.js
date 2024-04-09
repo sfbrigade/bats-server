@@ -5,6 +5,15 @@ const WebSocket = require('ws');
 const { DeliveryStatus } = require('shared/constants');
 const models = require('./models');
 
+const mciServer = new WebSocket.Server({ noServer: true });
+mciServer.on('connection', async (ws, req) => {
+  // eslint-disable-next-line no-param-reassign
+  ws.info = { useId: req.user.id };
+  // eslint-disable-next-line no-use-before-define
+  const data = await getMciData();
+  ws.send(data);
+});
+
 const userServer = new WebSocket.Server({ noServer: true });
 userServer.on('connection', async (ws, req) => {
   // eslint-disable-next-line no-param-reassign
@@ -23,7 +32,51 @@ hospitalServer.on('connection', async (ws, req) => {
   ws.send(data);
 });
 
-async function getRingdownData(userId, cachedStatusUpdates) {
+async function getMciData(cachedMcis, cachedStatusUpdates, mciId) {
+  const mcis = cachedMcis || (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON());
+  if (mciId) {
+    if (!mcis.find((mci) => mci.id === mciId)) {
+      const mci = await models.MassCasualtyIncident.findByPk(mciId);
+      mcis.push(mci.toJSON());
+    }
+  }
+  await Promise.all(
+    mcis.map(async (mci) => {
+      mci.ringdowns = await Promise.all(
+        (
+          await models.PatientDelivery.findAll({
+            include: [
+              models.Ambulance,
+              models.Hospital,
+              models.PatientDeliveryUpdate,
+              {
+                model: models.Patient,
+                include: models.EmergencyMedicalServiceCall,
+              },
+            ],
+            where: {
+              currentDeliveryStatus: {
+                [Op.lt]: DeliveryStatus.CANCELLED,
+              },
+              '$Patient.EmergencyMedicalServiceCall.dispatchcallnumber$': mci.incidentNumber,
+            },
+          })
+        ).map((pd) => pd.toRingdownJSON())
+      );
+    })
+  );
+  const data = JSON.stringify({
+    mcis,
+    statusUpdates:
+      cachedStatusUpdates ||
+      (await Promise.all(
+        (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
+      )),
+  });
+  return data;
+}
+
+async function getRingdownData(userId, cachedMcis, cachedStatusUpdates) {
   const patientDeliveries = await models.PatientDelivery.findAll({
     include: { all: true },
     where: {
@@ -34,6 +87,7 @@ async function getRingdownData(userId, cachedStatusUpdates) {
     },
   });
   const data = JSON.stringify({
+    mcis: cachedMcis || (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON()),
     ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
     statusUpdates:
       cachedStatusUpdates ||
@@ -44,8 +98,8 @@ async function getRingdownData(userId, cachedStatusUpdates) {
   return data;
 }
 
-async function getStatusUpdateData(hospitalId) {
-  /// dispatch to all clients watching this hospital's ringdowns
+async function getStatusUpdateData(hospitalId, cachedMcis) {
+  // dispatch to all clients watching this hospital's ringdowns
   const options = {
     include: { all: true },
     where: {
@@ -71,13 +125,22 @@ async function getStatusUpdateData(hospitalId) {
     },
   });
   const data = JSON.stringify({
+    mcis: cachedMcis || (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON()),
     ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
     statusUpdate: await statusUpdate.toJSON(),
   });
   return data;
 }
 
-async function dispatchStatusUpdate(hospitalId) {
+async function dispatchMciUpdate(mciId) {
+  // dispatch to all hospitals
+  const cachedMcis = (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON());
+  Promise.all(
+    [...hospitalServer.clients].map(async (ws) => {
+      const data = await getStatusUpdateData(ws.info.hospitalId, cachedMcis);
+      ws.send(data);
+    })
+  );
   // dispatch to all user clients
   const cachedStatusUpdates = await Promise.all(
     (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
@@ -85,14 +148,36 @@ async function dispatchStatusUpdate(hospitalId) {
   const userPromises = [];
   userServer.clients.forEach((ws) => {
     userPromises.push(
-      getRingdownData(ws.info.userId, cachedStatusUpdates).then((data) => {
+      getRingdownData(ws.info.userId, cachedMcis, cachedStatusUpdates).then((data) => {
+        ws.send(data);
+      })
+    );
+  });
+  // dispatch to all watching mcis
+  const data = await getMciData(cachedMcis, cachedStatusUpdates, mciId);
+  mciServer.clients.forEach((ws) => {
+    ws.send(data);
+  });
+  return Promise.all(userPromises);
+}
+
+async function dispatchStatusUpdate(hospitalId) {
+  // dispatch to all user clients
+  const cachedMcis = (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON());
+  const cachedStatusUpdates = await Promise.all(
+    (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
+  );
+  const userPromises = [];
+  userServer.clients.forEach((ws) => {
+    userPromises.push(
+      getRingdownData(ws.info.userId, cachedMcis, cachedStatusUpdates).then((data) => {
         ws.send(data);
       })
     );
   });
   await Promise.all(userPromises);
   // dispatch to all clients watching this hospital's ringdowns
-  const data = await getStatusUpdateData(hospitalId);
+  const data = await getStatusUpdateData(hospitalId, cachedMcis);
   hospitalServer.clients.forEach((ws) => {
     // when showing ringdowns across all hospitals for testing, send
     // ringdown updates to all hospitals
@@ -102,6 +187,13 @@ async function dispatchStatusUpdate(hospitalId) {
       ws.send(data);
     }
   });
+  // dispatch to all active MCIs
+  await Promise.all(
+    [...mciServer.clients].map(async (ws) => {
+      const data = await getMciData(cachedMcis, cachedStatusUpdates);
+      ws.send(data);
+    })
+  );
 }
 
 async function dispatchRingdownUpdate(patientDeliveryId) {
@@ -142,7 +234,7 @@ function configure(server, app) {
   server.on('upgrade', (req, socket, head) => {
     app.sessionParser(req, {}, async () => {
       const query = querystring.parse(url.parse(req.url).query);
-      /// ensure user logged in
+      // ensure user logged in
       if (req.session?.passport?.user) {
         req.user = await models.User.findByPk(req.session.passport.user);
       }
@@ -151,16 +243,29 @@ function configure(server, app) {
         socket.destroy();
         return;
       }
-      /// connect based on pathname
+      // connect based on pathname
       const { pathname } = url.parse(req.url);
       switch (pathname) {
+        case '/wss/mci':
+          if (!req.user.isSuperUser) {
+            const org = await req.user.getOrganization();
+            if (org.type !== 'C4SF') {
+              socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+              socket.destroy();
+              return;
+            }
+          }
+          mciServer.handleUpgrade(req, socket, head, (ws) => {
+            mciServer.emit('connection', ws, req);
+          });
+          break;
         case '/wss/user':
           userServer.handleUpgrade(req, socket, head, (ws) => {
             userServer.emit('connection', ws, req);
           });
           break;
         case '/wss/hospital':
-          /// ensure valid hospital
+          // ensure valid hospital
           if (query.id && query.id !== 'undefined') {
             req.hospital = await models.Hospital.findByPk(query.id);
           }
@@ -183,6 +288,7 @@ function configure(server, app) {
 
 module.exports = {
   configure,
+  dispatchMciUpdate,
   dispatchRingdownUpdate,
   dispatchStatusUpdate,
   getActiveHospitalUsers,

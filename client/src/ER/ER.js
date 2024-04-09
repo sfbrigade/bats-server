@@ -7,8 +7,10 @@ import UnconfirmedRingdowns from './UnconfirmedRingdowns';
 
 import ApiService from '../ApiService';
 import Context from '../Context';
-import Ringdown from '../Models/Ringdown';
+import MciCard from '../Components/MciCard';
 import HospitalStatus from '../Models/HospitalStatus';
+import MassCasualtyIncident from '../Models/MassCasualtyIncident';
+import Ringdown from '../Models/Ringdown';
 
 import Beds from './Beds';
 import Ringdowns from './Ringdowns';
@@ -25,6 +27,7 @@ export default function ER() {
     hospitalInfo: 0,
   });
 
+  const [mcis, setMcis] = useState([]);
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
   const [statusUpdate, setStatusUpdate] = useState();
@@ -43,6 +46,10 @@ export default function ER() {
     ApiService.ringdowns.setDeliveryStatus(rd.id, status, now);
     // update local object for immediate feedback
     rd.currentDeliveryStatus = status;
+    rd.timestamps = {
+      ...rd.timestamps,
+      [status]: now,
+    };
     setRingdowns([...ringdowns]);
   }
 
@@ -79,6 +86,7 @@ export default function ER() {
       const newUnconfirmedRingdowns = data.ringdowns.filter(
         (r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT || r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED
       );
+      setMcis(data.mcis.map((mci) => new MassCasualtyIncident(mci)));
       setRingdowns(newRingdowns);
       setUnconfirmedRingdowns(newUnconfirmedRingdowns);
       setStatusUpdate(new HospitalStatus(data.statusUpdate));
@@ -105,9 +113,15 @@ export default function ER() {
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
           <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
+          {!!mcis.length && mcis.map((mci) => <MciCard key={mci.id} className="margin-x-3 margin-y-2" data={mci} />)}
           {showRingdown && (!showTabs || selectedTab === 'ringdown') && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
           {showInfo && (!showTabs || selectedTab === 'hospitalInfo') && (
-            <Beds statusUpdate={statusUpdate} onStatusUpdate={onStatusUpdate} incomingRingdownsCount={incomingRingdownsCount} />
+            <Beds
+              showMci={!!mcis.length}
+              statusUpdate={statusUpdate}
+              onStatusUpdate={onStatusUpdate}
+              incomingRingdownsCount={incomingRingdownsCount}
+            />
           )}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
         </div>

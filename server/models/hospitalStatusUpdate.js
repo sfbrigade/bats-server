@@ -15,37 +15,36 @@ module.exports = (sequelize) => {
     }
 
     static async getLatestUpdatesWithAmbulanceCounts(options) {
-      // NOTE: processing the ambulances enroute and offloading in memory here because it was easier
-      // than figuring it out in Sequelize. We can probably use a raw SQL query if this ever becomes
-      // a performance issue.
-      const activeDeliveries = await sequelize.models.PatientDelivery.findAll({
-        include: [sequelize.models.Hospital],
+      const ambulanceCountsByHospitalId = {};
+      const enroute = await sequelize.models.PatientDelivery.count({
+        distinct: true,
+        col: 'AmbulanceId',
         where: {
           currentDeliveryStatus: {
-            [Op.lt]: DeliveryStatus.OFFLOADED,
+            [Op.lt]: DeliveryStatus.ARRIVED,
           },
         },
+        group: 'HospitalId',
+        attributes: ['HospitalId'],
         transaction: options?.transaction,
       });
-
-      const ambulanceCountsByHospitalId = activeDeliveries.reduce((accumulator, delivery) => {
-        const ambulanceCounts = {
-          enRoute: _.get(accumulator, `${delivery.HospitalId}.enRoute`, 0),
-          offloading: _.get(accumulator, `${delivery.HospitalId}.offloading`, 0),
-        };
-        if (
-          delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_SENT ||
-          delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
-          delivery.currentDeliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED
-        ) {
-          ambulanceCounts.enRoute += 1;
-        } else if (delivery.currentDeliveryStatus === DeliveryStatus.ARRIVED) {
-          ambulanceCounts.offloading += 1;
-        }
-        accumulator[delivery.HospitalId] = ambulanceCounts;
-        return accumulator;
-      }, {});
-
+      enroute.forEach((result) => {
+        ambulanceCountsByHospitalId[result.HospitalId] = { enRoute: result.count, offloading: 0 };
+      });
+      const offloading = await sequelize.models.PatientDelivery.count({
+        distinct: true,
+        col: 'AmbulanceId',
+        where: {
+          currentDeliveryStatus: DeliveryStatus.ARRIVED,
+        },
+        group: 'HospitalId',
+        attributes: ['HospitalId'],
+        transaction: options?.transaction,
+      });
+      offloading.forEach((result) => {
+        ambulanceCountsByHospitalId[result.HospitalId] ||= { enRoute: 0 };
+        ambulanceCountsByHospitalId[result.HospitalId].offloading = result.count;
+      });
       const statusUpdates = await HospitalStatusUpdate.scope('latest').findAll({
         include: [sequelize.models.Hospital],
         transaction: options?.transaction,
@@ -60,6 +59,10 @@ module.exports = (sequelize) => {
     async toJSON(options) {
       const json = _.pick(this, [
         'id',
+        'mciRedCapacity',
+        'mciYellowCapacity',
+        'mciGreenCapacity',
+        'mciUpdateDateTime',
         'openEdBedCount',
         'openPsychBedCount',
         'bedCountUpdateDateTimeLocal',

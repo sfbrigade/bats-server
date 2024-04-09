@@ -10,7 +10,9 @@ function Redirect() {
 
   useEffect(() => {
     if (user) {
-      if (user.isOperationalUser) {
+      if (user.isSuperUser) {
+        navigate('/admin/site');
+      } else if (user.isOperationalUser) {
         if (user.organization.type === 'HEALTHCARE') {
           navigate('/er');
         } else if (user.organization.type === 'C4SF') {

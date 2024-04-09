@@ -20,12 +20,14 @@ function Drawer({ title, subtitle, children, isOpened, onToggle }) {
         <div className="drawer__prompt">
           {!isOpened && (
             <>
-              More info <i className="fas fa-caret-down" />
+              More&nbsp;info&nbsp;
+              <i className="fas fa-caret-down" />
             </>
           )}
           {isOpened && (
             <>
-              Less info <i className="fas fa-caret-up" />
+              Less&nbsp;info&nbsp;
+              <i className="fas fa-caret-up" />
             </>
           )}
         </div>
@@ -39,10 +41,14 @@ function Drawer({ title, subtitle, children, isOpened, onToggle }) {
 
 Drawer.propTypes = {
   title: PropTypes.node.isRequired,
-  subtitle: PropTypes.node.isRequired,
+  subtitle: PropTypes.node,
   children: PropTypes.node.isRequired,
   isOpened: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
+};
+
+Drawer.defaultProps = {
+  subtitle: undefined,
 };
 
 export default Drawer;

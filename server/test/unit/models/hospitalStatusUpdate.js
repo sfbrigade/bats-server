@@ -84,11 +84,11 @@ describe('models.HospitalStatusUpdate', () => {
       // each update should reflect the latest (test data year 2005 vs 2004)
       assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'Sutter Hospital');
       assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
-      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.ambulanceCounts.enRoute, 2);
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.ambulanceCounts.enRoute, 3);
       assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.ambulanceCounts.offloading, 0);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies Campus');
       assert.deepStrictEqual(hospitalStatusUpdates[1].updateDateTimeLocal.getFullYear(), 2005);
-      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.enRoute, 1);
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.enRoute, 3);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.offloading, 1);
     });
   });
@@ -99,6 +99,10 @@ describe('models.HospitalStatusUpdate', () => {
       const json = await hospitalStatusUpdate.toJSON();
       assert.deepStrictEqual(json, {
         id: '9169fb04-b262-42ee-9c81-da1bb6818e6b',
+        mciRedCapacity: null,
+        mciYellowCapacity: null,
+        mciGreenCapacity: null,
+        mciUpdateDateTime: null,
         openEdBedCount: 10,
         openPsychBedCount: 2,
         bedCountUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),
@@ -116,7 +120,7 @@ describe('models.HospitalStatusUpdate', () => {
           state: '06',
           stateFacilityCode: '20048',
           sortSequenceNumber: 2,
-          ambulancesEnRoute: 1,
+          ambulancesEnRoute: 3,
           ambulancesOffloading: 1,
         },
       });

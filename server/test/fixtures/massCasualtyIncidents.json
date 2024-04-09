@@ -1,0 +1,102 @@
+[
+  {
+    "model": "MassCasualtyIncident",
+    "data": {
+      "id": "b4884ed7-7802-4e89-817c-571cb762f680",
+      "incidentNumber": "1001",
+      "address1": "1234 Main St",
+      "address2": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "startedAt": "2024-04-02T12:14:32-07:00",
+      "endedAt": "2024-04-02T16:14:32-07:00",
+      "estimatedRedCount": 2,
+      "estimatedYellowCount": 3,
+      "estimatedGreenCount": 5,
+      "estimatedZebraCount": 0,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "MassCasualtyIncident",
+    "data": {
+      "id": "8dc8259a-3ecf-41a3-b5f2-80e9a7be2048",
+      "incidentNumber": "1002",
+      "address1": "4567 Fake St",
+      "address2": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "startedAt": "2024-04-03T12:14:32-07:00",
+      "endedAt": "2024-04-03T16:14:32-07:00",
+      "estimatedRedCount": 4,
+      "estimatedYellowCount": 1,
+      "estimatedGreenCount": 0,
+      "estimatedZebraCount": 0,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "MassCasualtyIncident",
+    "data": {
+      "id": "ed4fc597-ca4c-4b8d-a428-e226459c8f87",
+      "incidentNumber": "1003",
+      "address1": "7890 Another Rd",
+      "address2": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "startedAt": "2024-04-04T12:14:32-07:00",
+      "endedAt": "2024-04-04T16:14:32-07:00",
+      "estimatedRedCount": 1,
+      "estimatedYellowCount": 2,
+      "estimatedGreenCount": 4,
+      "estimatedZebraCount": 0,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "MassCasualtyIncident",
+    "data": {
+      "id": "752f8a8a-1f14-4eb1-ae6e-5bb48a16acde",
+      "incidentNumber": "1004",
+      "address1": "1357 Active Way",
+      "address2": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "startedAt": "2024-04-05T12:14:32-07:00",
+      "endedAt": null,
+      "estimatedRedCount": 1,
+      "estimatedYellowCount": 2,
+      "estimatedGreenCount": 3,
+      "estimatedZebraCount": 0,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "MassCasualtyIncident",
+    "data": {
+      "id": "a9362c42-f8d7-4e05-b0b6-c9e3b191c7d4",
+      "incidentNumber": "1005",
+      "address1": "2468 Also Active Ln",
+      "address2": "",
+      "city": "",
+      "state": "",
+      "zip": "",
+      "startedAt": "2024-04-05T13:14:32-07:00",
+      "endedAt": null,
+      "estimatedRedCount": 0,
+      "estimatedYellowCount": 1,
+      "estimatedGreenCount": 2,
+      "estimatedZebraCount": 3,
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  }
+]

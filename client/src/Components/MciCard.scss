@@ -1,0 +1,60 @@
+@import '../theme/base';
+
+.mci-card {
+  background-color: color($mci-color-delayed-lightest);
+  border: 2px solid color($mci-color-delayed-darker);
+  box-sizing: border-box;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .drawer__content {
+    border-top-color: color($mci-color-delayed-lighter);
+  }
+
+  .ringdown-details {
+    background-color: color($mci-color-delayed-lightest);
+    td,
+    th {
+      background-color: color($mci-color-delayed-lightest);
+      border-color: color($mci-color-delayed-lighter);
+    }
+    td {
+      font-weight: bold;
+    }
+    tr:last-child {
+      td {
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+.mci-card__number {
+  display: flex;
+  align-items: center;
+  color: color('base-darkest');
+  font-weight: bold;
+  span {
+    font-weight: normal;
+  }
+  svg {
+    color: color($theme-color-accent-warm);
+    margin-right: 0.5rem;
+  }
+}
+
+.mci-card__label {
+  font-weight: bold;
+}
+
+.mci-card__label--immediate {
+  color: color($mci-color-immediate);
+}
+
+.mci-card__label--delayed {
+  color: color($mci-color-delayed-darker);
+}
+
+.mci-card__label--minor {
+  color: color($mci-color-minor);
+}

@@ -11,6 +11,8 @@ const validatedFields = [
   'ambulanceIdentifier',
   'dispatchCallNumber',
   'emergencyServiceResponseType',
+  'triageTag',
+  'triagePriority',
   'age',
   'sex',
   'chiefComplaintDescription',
@@ -80,6 +82,8 @@ class Ringdown {
   }
 
   constructor(payload, validationData) {
+    this.isMci = false;
+
     this.payload = {
       ...createDefaultPayload(),
       ...payload,
@@ -113,6 +117,19 @@ class Ringdown {
   }
 
   // Patient Info
+
+  get triagePrioritySort() {
+    switch (this.triagePriority) {
+      case 'RED':
+        return 1;
+      case 'YELLOW':
+        return 2;
+      case 'GREEN':
+        return 3;
+      default:
+        return 0;
+    }
+  }
 
   get hasVitals() {
     return !!(
@@ -158,6 +175,10 @@ class Ringdown {
     return this.payload.patientDelivery.timestamps ?? {};
   }
 
+  set timestamps(newTimestamps) {
+    this.payload.patientDelivery.timestamps = newTimestamps;
+  }
+
   // Validators
 
   get isPatientValid() {
@@ -176,6 +197,8 @@ class Ringdown {
       this.ambulanceIdentifier !== '' &&
       this.dispatchCallNumber !== null &&
       this.dispatchCallNumber !== '' &&
+      (!this.isMci ||
+        (this.isMci && this.triageTag !== null && this.triageTag !== '' && this.triagePriority !== null && this.triagePriority !== '')) &&
       this.age !== null &&
       this.age !== '' &&
       this.sex !== null &&

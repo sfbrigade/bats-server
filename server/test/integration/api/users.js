@@ -87,6 +87,8 @@ describe('/api/users', () => {
           id: '25ffdd7c-b4cf-4ebb-9750-1e628370e13b',
           name: 'Sutter Health',
           type: 'HEALTHCARE',
+          state: null,
+          stateUniqueId: null,
           timeZoneIsoCode: 'PST',
           isActive: true,
           isMfaEnabled: false,

@@ -16,7 +16,7 @@ class FormError extends Error {
   }
 
   errorsFor(name) {
-    const errors = this.data?.messages?.filter((e) => e.path === name);
+    const errors = this.data?.messages?.filter((e) => e.path?.toLowerCase() === name?.toLowerCase());
     return errors?.length ? errors : null;
   }
 }

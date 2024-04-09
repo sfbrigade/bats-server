@@ -24,6 +24,13 @@
   border: 0;
   max-width: units(6) !important;
   @include u-margin-top(0);
+  // hide browser default numeric spin controls
+  -moz-appearance: textfield; /* Firefox */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 .counter__button {

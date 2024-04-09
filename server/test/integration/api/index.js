@@ -1,6 +1,7 @@
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
 
+require('../../helper');
 const app = require('../../../app');
 
 describe('/api/health', () => {

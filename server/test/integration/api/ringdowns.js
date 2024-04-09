@@ -38,7 +38,7 @@ describe('/api/ringdowns', () => {
       await helper.twoFactorAuthSession(testSession);
 
       const response = await testSession.get('/api/ringdowns').set('Accept', 'application/json').expect(HttpStatus.OK);
-      assert.deepStrictEqual(response.body.length, 5);
+      assert.deepStrictEqual(response.body.length, 10);
     });
 
     it('returns a list of all ringdowns filtered by hospital', async () => {
@@ -53,8 +53,8 @@ describe('/api/ringdowns', () => {
         .query({ hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680' })
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK);
-      assert.deepStrictEqual(response.body.length, 3);
-      assert.deepStrictEqual(response.body[0].id, 'f3ad9b22-719f-11eb-9439-0242ac130002');
+      assert.deepStrictEqual(response.body.length, 6);
+      assert.deepStrictEqual(response.body[0].id, '62df4044-c23e-466c-a919-52375a344f0a');
     });
 
     it('returns a list of active ringdowns created by the calling EMS user', async () => {
@@ -72,6 +72,8 @@ describe('/api/ringdowns', () => {
 
   describe('POST /', () => {
     const patientData = {
+      triageTag: null,
+      triagePriority: null,
       age: 30,
       sex: 'MALE',
       emergencyServiceResponseType: 'CODE 2',
@@ -171,6 +173,8 @@ describe('/api/ringdowns', () => {
 
   describe('POST /', () => {
     const patientData = {
+      triageTag: null,
+      triagePriority: null,
       age: 30,
       sex: 'MALE',
       emergencyServiceResponseType: 'CODE 2',
@@ -498,6 +502,8 @@ describe('/api/ringdowns', () => {
           name: 'CPMC Davies Campus',
         },
         patient: {
+          triageTag: null,
+          triagePriority: null,
           age: null,
           sex: null,
           emergencyServiceResponseType: 'CODE 2',

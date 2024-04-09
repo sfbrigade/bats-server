@@ -7,11 +7,12 @@ import ApiService from '../ApiService';
 import Counter from '../Components/Counter';
 import FormTextArea from '../Components/FormTextArea';
 import Heading from '../Components/Heading';
+import StickyFooter from '../Components/StickyFooter';
 import HospitalStatus from '../Models/HospitalStatus';
 
 import './Beds.scss';
 
-function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
+function Beds({ showMci, statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
   const [additionalNotes, setAdditionalNotes] = useState(null);
   const [isEditing, setEditing] = useState(false);
 
@@ -36,6 +37,40 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
     <div className="usa-accordion beds">
       <div className="usa-accordion__content">
         <form className="usa-form">
+          {showMci && (
+            <>
+              <Heading title="MCI Capacity" />
+              <fieldset className="usa-fieldset beds__availability">
+                <Counter
+                  className="beds__counter beds__counter--immediate"
+                  isEditing={isEditing}
+                  label="Immediate"
+                  name="mciRedCapacity"
+                  min={0}
+                  onChange={handleChange}
+                  value={statusUpdate.mciRedCapacity}
+                />
+                <Counter
+                  className="beds__counter beds__counter--delayed"
+                  isEditing={isEditing}
+                  label="Delayed"
+                  name="mciYellowCapacity"
+                  min={0}
+                  onChange={handleChange}
+                  value={statusUpdate.mciYellowCapacity}
+                />
+                <Counter
+                  className="beds__counter beds__counter--minor"
+                  isEditing={isEditing}
+                  label="Minor"
+                  name="mciGreenCapacity"
+                  min={0}
+                  onChange={handleChange}
+                  value={statusUpdate.mciGreenCapacity}
+                />
+              </fieldset>
+            </>
+          )}
           <Heading title="Available Beds">
             {incomingRingdownsCount > 0 && (
               <span className="beds__incoming">
@@ -65,26 +100,30 @@ function Beds({ statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
           )}
           <Heading title="ER conditions" />
           {statusUpdate && (
-            <fieldset className="usa-fieldset beds__notes">
-              <FormTextArea
-                property="additionalNotes"
-                disabled={!isEditing}
-                value={additionalNotes == null ? statusUpdate.additionalServiceAvailabilityNotes : additionalNotes}
-                onChange={(property, value) => setAdditionalNotes(value)}
-              />
-              {!isEditing ? (
-                <button className="usa-button usa-button--outline width-full" type="button" onClick={() => setEditing(true)}>
-                  Update Hospital Info
-                </button>
-              ) : (
-                <button className="usa-button width-full" type="button" onClick={handleUpdate}>
-                  Confirm Updates
-                </button>
-              )}
-              <div className="beds__updated">
-                Last updated on {DateTime.fromISO(statusUpdate.updateDateTimeLocal).toLocaleString(DateTime.DATETIME_SHORT)}
-              </div>
-            </fieldset>
+            <>
+              <fieldset className="usa-fieldset beds__notes">
+                <FormTextArea
+                  property="additionalNotes"
+                  disabled={!isEditing}
+                  value={additionalNotes == null ? statusUpdate.additionalServiceAvailabilityNotes : additionalNotes}
+                  onChange={(property, value) => setAdditionalNotes(value)}
+                />
+              </fieldset>
+              <StickyFooter className="usa-fieldset">
+                {!isEditing ? (
+                  <button className="usa-button usa-button--outline width-full" type="button" onClick={() => setEditing(true)}>
+                    Update Hospital Info
+                  </button>
+                ) : (
+                  <button className="usa-button width-full" type="button" onClick={handleUpdate}>
+                    Confirm Updates
+                  </button>
+                )}
+                <div className="beds__updated">
+                  Last updated on {DateTime.fromISO(statusUpdate.updateDateTimeLocal).toLocaleString(DateTime.DATETIME_SHORT)}
+                </div>
+              </StickyFooter>
+            </>
           )}
         </form>
       </div>

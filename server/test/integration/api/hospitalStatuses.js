@@ -43,7 +43,7 @@ describe('/api/hospitalstatuses', () => {
       assert.deepStrictEqual(sutterHospital.openEdBedCount, 0);
       assert.deepStrictEqual(sutterHospital.divertStatusIndicator, true);
       assert.deepStrictEqual(sutterHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
-      assert.deepStrictEqual(sutterHospital.hospital.ambulancesEnRoute, 2);
+      assert.deepStrictEqual(sutterHospital.hospital.ambulancesEnRoute, 3);
       assert.deepStrictEqual(sutterHospital.hospital.ambulancesOffloading, 0);
       assert.deepStrictEqual(sutterHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(sutterHospital.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
@@ -53,7 +53,7 @@ describe('/api/hospitalstatuses', () => {
       assert(cpmcHospital.updateDateTimeLocal);
       assert.deepStrictEqual(cpmcHospital.openEdBedCount, 10);
       assert.deepStrictEqual(cpmcHospital.divertStatusIndicator, false);
-      assert.deepStrictEqual(cpmcHospital.hospital.ambulancesEnRoute, 1);
+      assert.deepStrictEqual(cpmcHospital.hospital.ambulancesEnRoute, 3);
       assert.deepStrictEqual(cpmcHospital.hospital.ambulancesOffloading, 1);
       assert.deepStrictEqual(cpmcHospital.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(cpmcHospital.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
@@ -84,6 +84,38 @@ describe('/api/hospitalstatuses', () => {
       assert.deepStrictEqual(response.body.bedCountUpdateDateTimeLocal, '2021-03-25T10:23:54.000Z');
       assert.deepStrictEqual(response.body.divertStatusIndicator, false);
       assert.deepStrictEqual(response.body.divertStatusUpdateDateTimeLocal, '2021-03-25T10:23:54.000Z');
+      assert.deepStrictEqual(response.body.updateDateTimeLocal, '2021-03-25T10:23:54.000Z');
+      assert.deepStrictEqual(response.body.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(response.body.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+      assert.deepStrictEqual(response.body.updatedById, '449b1f54-7583-417c-8c25-8da7dde65f6d');
+    });
+
+    it('can apply changes to the previous update', async () => {
+      const response = await testSession
+        .post('/api/hospitalstatuses')
+        .set('Accept', 'application/json')
+        .send({
+          hospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
+          mciRedCapacity: 5,
+          mciYellowCapacity: 3,
+          mciGreenCapacity: 10,
+          mciUpdateDateTime: '2021-03-25T10:23:54Z',
+          updateDateTimeLocal: '2021-03-25 10:23:54',
+        })
+        .expect(HttpStatus.CREATED);
+
+      assert(response.body.id);
+      assert.deepStrictEqual(response.body.hospital.id, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
+      assert.deepStrictEqual(response.body.mciRedCapacity, 5);
+      assert.deepStrictEqual(response.body.mciYellowCapacity, 3);
+      assert.deepStrictEqual(response.body.mciGreenCapacity, 10);
+      assert.deepStrictEqual(response.body.mciUpdateDateTime, '2021-03-25T10:23:54.000Z');
+      // the following should match the prior status values from the fixture
+      assert.deepStrictEqual(response.body.openEdBedCount, 10);
+      assert.deepStrictEqual(response.body.openPsychBedCount, 2);
+      assert.deepStrictEqual(response.body.bedCountUpdateDateTimeLocal, '2004-10-19T10:23:54.000Z');
+      assert.deepStrictEqual(response.body.divertStatusIndicator, false);
+      assert.deepStrictEqual(response.body.divertStatusUpdateDateTimeLocal, '2004-10-19T10:23:54.000Z');
       assert.deepStrictEqual(response.body.updateDateTimeLocal, '2021-03-25T10:23:54.000Z');
       assert.deepStrictEqual(response.body.edAdminUserId, '449b1f54-7583-417c-8c25-8da7dde65f6d');
       assert.deepStrictEqual(response.body.createdById, '449b1f54-7583-417c-8c25-8da7dde65f6d');

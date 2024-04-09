@@ -15,7 +15,7 @@ import HospitalSelection from './HospitalSelection';
 import PatientFields from './PatientFields';
 import RingdownStatus from './RingdownStatus';
 
-function RingdownForm({ defaultPayload, className }) {
+function RingdownForm({ defaultPayload, className, mcis }) {
   const { ringdowns, setRingdowns } = useContext(Context);
   const [ringdown, setRingdown] = useState(new Ringdown(defaultPayload));
   const [step, setStep] = useState(0);
@@ -66,9 +66,23 @@ function RingdownForm({ defaultPayload, className }) {
   }
 
   function onChange(property, value) {
+    console.log('!!!', property, value);
     ringdown[property] = value;
     ringdown.validatePatientField(property, value);
-    setRingdown(new Ringdown(ringdown.payload, ringdown.validationData));
+    const newRingdown = new Ringdown(ringdown.payload, ringdown.validationData);
+    newRingdown.isMci = ringdown.isMci;
+    if (property === 'dispatchCallNumber') {
+      newRingdown.isMci = !!mcis.find((mci) => mci.incidentNumber === ringdown.dispatchCallNumber);
+    } else if (property === 'triagePriority') {
+      switch (value) {
+        case 'RED':
+          newRingdown.emergencyServiceResponseType = 'CODE 3';
+          break;
+        default:
+          newRingdown.emergencyServiceResponseType = 'CODE 2';
+      }
+    }
+    setRingdown(newRingdown);
   }
 
   function handleConfirmClear() {
@@ -142,7 +156,7 @@ function RingdownForm({ defaultPayload, className }) {
           <fieldset className="usa-fieldset border-top border-base-lighter">
             {step === 0 && (
               <>
-                <PatientFields onChange={onChange} ringdown={ringdown} />
+                <PatientFields onChange={onChange} ringdown={ringdown} mcis={mcis} />
                 <button disabled={!ringdown.isPatientValid} className="usa-button width-full" type="button" onClick={next}>
                   Select Hospital
                 </button>

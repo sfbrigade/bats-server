@@ -4,6 +4,7 @@ const emergencyMedicalServiceCallAmbulance = require('./emergencyMedicalServiceC
 const hospital = require('./hospital');
 const hospitalStatusUpdate = require('./hospitalStatusUpdate');
 const hospitalUser = require('./hospitalUser');
+const massCasualtyIncident = require('./massCasualtyIncident');
 const organization = require('./organization');
 const patient = require('./patient');
 const patientDeliveryUpdate = require('./patientDeliveryUpdate');
@@ -17,6 +18,7 @@ module.exports = {
   hospital,
   hospitalStatusUpdate,
   hospitalUser,
+  massCasualtyIncident,
   organization,
   patient,
   patientDelivery,

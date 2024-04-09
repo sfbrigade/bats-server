@@ -150,9 +150,25 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
         { transaction }
       );
       patient.EmergencyMedicalServiceCall = emsCall;
+      // check if patient is from an MCI
+      const isMCI = !!patient.triageTag || !!patient.triagePriority;
+      // allow setting/creating ambulance record for other agencies in MCI
+      let { OrganizationId } = req.user;
+      if (isMCI && req.body.ambulance.organization) {
+        const { state, stateUniqueId } = req.body.ambulance.organization;
+        const organization = await models.Organization.findOne({
+          where: {
+            state,
+            stateUniqueId,
+          },
+          rejectOnEmpty: true,
+          transaction,
+        });
+        OrganizationId = organization.id;
+      }
       const [ambulance] = await models.Ambulance.findOrCreate({
         where: {
-          OrganizationId: req.user.OrganizationId,
+          OrganizationId,
           ambulanceIdentifier: req.body.ambulance.ambulanceIdentifier,
         },
         defaults: {
@@ -198,39 +214,44 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
         rejectOnEmpty: true,
         transaction,
       });
+      const { deliveryStatus, dateTimeLocal } = req.body;
+      // check if patient is from an MCI
+      const isMCI = !!patientDelivery.Patient.triageTag || !!patientDelivery.Patient.triagePriority;
       // check if calling user is allowed to modify this record
-      if (
-        req.body.deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
-        req.body.deliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED ||
-        req.body.deliveryStatus === DeliveryStatus.OFFLOADED_ACKNOWLEDGED ||
-        req.body.deliveryStatus === DeliveryStatus.CANCEL_ACKNOWLEDGED ||
-        req.body.deliveryStatus === DeliveryStatus.REDIRECT_ACKNOWLEDGED
-      ) {
-        // check if user is in the receiving hospital ED
-        const options = {
-          where: {
-            HospitalId: patientDelivery.HospitalId,
-            EdAdminUserId: req.user.id,
-          },
-          transaction,
-        };
-        // when showing ringdowns from all hospitals for testing, also
-        // allow any hospital user to update its delivery status
-        if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
-          delete options.where.HospitalId;
-        }
-        const hospitalUser = await models.HospitalUser.findOne(options);
-        if (!hospitalUser || !req.user.isOperationalUser) {
+      if (!isMCI && !req.user.isSuperUser && req.user.id !== patientDelivery.CreatedById) {
+        if (
+          deliveryStatus === DeliveryStatus.RINGDOWN_RECEIVED ||
+          deliveryStatus === DeliveryStatus.RINGDOWN_CONFIRMED ||
+          deliveryStatus === DeliveryStatus.OFFLOADED_ACKNOWLEDGED ||
+          deliveryStatus === DeliveryStatus.CANCEL_ACKNOWLEDGED ||
+          deliveryStatus === DeliveryStatus.REDIRECT_ACKNOWLEDGED
+        ) {
+          // check if user is in the receiving hospital ED
+          const options = {
+            where: {
+              HospitalId: patientDelivery.HospitalId,
+              EdAdminUserId: req.user.id,
+            },
+            transaction,
+          };
+          // when showing ringdowns from all hospitals for testing, also
+          // allow any hospital user to update its delivery status
+          if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
+            delete options.where.HospitalId;
+          }
+          const hospitalUser = await models.HospitalUser.findOne(options);
+          if (!hospitalUser || !req.user.isOperationalUser) {
+            res.status(HttpStatus.FORBIDDEN).end();
+            return;
+          }
+        } else {
           res.status(HttpStatus.FORBIDDEN).end();
           return;
         }
-      } else if (req.user.id !== patientDelivery.CreatedById) {
-        res.status(HttpStatus.FORBIDDEN).end();
-        return;
       }
       // update status
       try {
-        await patientDelivery.createDeliveryStatusUpdate(req.user.id, req.body.deliveryStatus, req.body.dateTimeLocal);
+        await patientDelivery.createDeliveryStatusUpdate(req.user.id, deliveryStatus, dateTimeLocal, { transaction });
       } catch (error) {
         res.status(HttpStatus.UNPROCESSABLE_ENTITY).end();
         return;

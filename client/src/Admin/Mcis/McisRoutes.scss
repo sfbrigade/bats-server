@@ -1,0 +1,54 @@
+@import '../../theme/base';
+
+.mci-row {
+  border: 2px solid color('base-light');
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.mci-row__status,
+.mci-row__transported {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+}
+
+.mci-row:nth-child(even) .mci-row__status {
+  background-color: color($theme-color-base-lightest);
+}
+
+.mci-row__transported {
+  border-top: 1px solid color('base-light');
+}
+
+.mci-row__info {
+  flex-shrink: 0;
+  width: 30%;
+}
+
+.mci-row__name {
+  margin: 0;
+}
+
+.mci-row__updated {
+  color: color('base-light');
+}
+
+.mci-row__controls {
+  min-width: 0;
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.mci-row__notes {
+  background-color: color($theme-color-warning-lighter);
+  color: color('base-dark');
+  width: 100%;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+}

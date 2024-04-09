@@ -1,5 +1,7 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
+const _ = require('lodash');
+
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
 const { wrapper } = require('../helpers');
@@ -13,6 +15,19 @@ router.get('/', middleware.isSuperUser, async (req, res) => {
   });
   res.json(orgs.map((org) => org.toJSON()));
 });
+
+router.post(
+  '/',
+  middleware.isSuperUser,
+  wrapper(async (req, res) => {
+    const record = await models.Organization.create({
+      ..._.pick(req.body, ['name', 'type', 'state', 'stateUniqueId', 'timeZoneIsoCode', 'isMfaEnabled', 'isActive']),
+      CreatedById: req.user.id,
+      UpdatedById: req.user.id,
+    });
+    res.status(HttpStatus.CREATED).json(record.toJSON());
+  })
+);
 
 router.get('/:id', middleware.isAdminUser, async (req, res) => {
   const organization = await models.Organization.findByPk(req.params.id, {

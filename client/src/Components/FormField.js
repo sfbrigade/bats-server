@@ -50,6 +50,13 @@ export default function FormField({ metadata, ...props }) {
         />
       );
 
+    case 'string':
+      return (<FormInput
+        {...commonProps}
+        {...props}
+        type="text"
+      />);
+
     case 'text':
       return (
         <FormTextArea

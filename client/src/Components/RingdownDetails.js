@@ -34,45 +34,82 @@ const supplementalO2 = (value, ringdown) => {
     </>
   );
 };
+const triagePriority = (value) => {
+  switch (value) {
+    case 'RED':
+      return 'Immediate';
+    case 'YELLOW':
+      return 'Delayed';
+    case 'GREEN':
+      return 'Minor';
+    default:
+      return '';
+  }
+};
 
-function RingdownDetails({ className, ringdown }) {
+const { Status } = Ringdown;
+
+function RingdownDetails({ className, onStatusChange, ringdown }) {
+  const isMCI = !!ringdown.triageTag || !!ringdown.triagePriority;
+
+  const isArrived = Status.is(ringdown.currentDeliveryStatus, Status.ARRIVED);
+  const isOffloaded = Status.is(ringdown.currentDeliveryStatus, Status.OFFLOADED);
+
   return (
-    <RingdownTable ringdown={ringdown} className={className}>
-      <Section title="Incident info">
-        <FieldRow label="Unit #" property="ambulanceIdentifier" />
-        <FieldRow label="Incident #" property="dispatchCallNumber" />
-        <PatientFieldRow property="emergencyServiceResponseType" renderValue={toSentenceCase} />
-      </Section>
-      <Section title="Patient info">
-        <PatientFieldRow property="age" />
-        <PatientFieldRow property="sex" renderValue={toSentenceCase} />
-        <PatientFieldRow property="chiefComplaintDescription" />
-        {/* we always want to show the vitals stability row, even when the value is false, so set the visible prop */}
-        <PatientFieldRow property="stableIndicator" visible renderValue={stability} />
-      </Section>
-      <Section title="Vitals" visible={ringdown.hasVitals}>
-        <FieldRow
-          property="systolicBloodPressure"
-          label="BP"
-          visible={!!(ringdown.systolicBloodPressure || ringdown.diastolicBloodPressure)}
-          renderValue={bp}
-        />
-        <PatientFieldRow property="heartRateBpm" />
-        <PatientFieldRow property="respiratoryRate" />
-        <PatientFieldRow property="oxygenSaturation" renderValue={supplementalO2} />
-        <PatientFieldRow property="temperature" renderValue={temp} />
-      </Section>
-      <Section title="Additional notes" visible={ringdown.hasAdditionalNotes}>
-        <PatientFieldRow property="treatmentNotes" />
-        <PatientFieldRow property="etohSuspectedIndicator" renderValue={suspected} />
-        <PatientFieldRow property="drugsSuspectedIndicator" renderValue={suspected} />
-        <PatientFieldRow property="psychIndicator" renderValue={yes} />
-        <PatientFieldRow property="combativeBehaviorIndicator" renderValue={combative} />
-        <PatientFieldRow property="covid19SuspectedIndicator" renderValue={suspected} />
-        <PatientFieldRow property="glasgowComaScale" />
-        <PatientFieldRow property="otherObservationNotes" />
-      </Section>
-    </RingdownTable>
+    <>
+      {isMCI && (
+        <div className="margin-top-2 margin-x-1 display-flex flex-justify-start">
+          {!isArrived && (
+            <button onClick={() => onStatusChange(ringdown, Status.ARRIVED)} className="usa-button width-auto">
+              Mark&nbsp;Arrived
+            </button>
+          )}
+          {isArrived && !isOffloaded && (
+            <button onClick={() => onStatusChange(ringdown, Status.OFFLOADED)} className="usa-button width-auto">
+              Mark&nbsp;Offloaded
+            </button>
+          )}
+        </div>
+      )}
+      <RingdownTable ringdown={ringdown} className={className}>
+        <Section title="Incident info">
+          <FieldRow label="Unit #" property="ambulanceIdentifier" />
+          <FieldRow label="Incident #" property="dispatchCallNumber" />
+          <PatientFieldRow property="emergencyServiceResponseType" renderValue={toSentenceCase} />
+        </Section>
+        <Section title="Patient info">
+          {!!ringdown.triageTag && <PatientFieldRow property="triageTag" />}
+          {!!ringdown.triagePriority && <PatientFieldRow property="triagePriority" renderValue={triagePriority} />}
+          <PatientFieldRow property="age" />
+          <PatientFieldRow property="sex" renderValue={toSentenceCase} />
+          <PatientFieldRow property="chiefComplaintDescription" />
+          {/* we always want to show the vitals stability row, even when the value is false, so set the visible prop */}
+          <PatientFieldRow property="stableIndicator" visible renderValue={stability} />
+        </Section>
+        <Section title="Vitals" visible={ringdown.hasVitals}>
+          <FieldRow
+            property="systolicBloodPressure"
+            label="BP"
+            visible={!!(ringdown.systolicBloodPressure || ringdown.diastolicBloodPressure)}
+            renderValue={bp}
+          />
+          <PatientFieldRow property="heartRateBpm" />
+          <PatientFieldRow property="respiratoryRate" />
+          <PatientFieldRow property="oxygenSaturation" renderValue={supplementalO2} />
+          <PatientFieldRow property="temperature" renderValue={temp} />
+        </Section>
+        <Section title="Additional notes" visible={ringdown.hasAdditionalNotes}>
+          <PatientFieldRow property="treatmentNotes" />
+          <PatientFieldRow property="etohSuspectedIndicator" renderValue={suspected} />
+          <PatientFieldRow property="drugsSuspectedIndicator" renderValue={suspected} />
+          <PatientFieldRow property="psychIndicator" renderValue={yes} />
+          <PatientFieldRow property="combativeBehaviorIndicator" renderValue={combative} />
+          <PatientFieldRow property="covid19SuspectedIndicator" renderValue={suspected} />
+          <PatientFieldRow property="glasgowComaScale" />
+          <PatientFieldRow property="otherObservationNotes" />
+        </Section>
+      </RingdownTable>
+    </>
   );
 }
 
