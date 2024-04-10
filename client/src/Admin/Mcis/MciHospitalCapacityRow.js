@@ -46,14 +46,22 @@ function MciHospitalCapacityRow({ onChange, ringdowns, showTotal, statusUpdate }
 
   return (
     <div className="mci-row">
-      <div className="mci-row__status">
-        <div className="mci-row__info">
-          <h3 className={classNames('mci-row__name', { 'text-bold': !statusUpdate.hospitalId })}>{statusUpdate.hospitalName}</h3>
-          <div className="mci-row__updated">
-            {DateTime.fromISO(statusUpdate.updateDateTimeLocal).toLocaleString(DateTime.DATETIME_SHORT)}
-          </div>
+      <div className={classNames('mci-row__header', { 'mci-row__header--alert': statusUpdate.additionalServiceAvailabilityNotes })}>
+        <div className="display-flex">
+          <h3 className={classNames('mci-row__name flex-0', { 'text-bold': !statusUpdate.hospitalId })}>{statusUpdate.hospitalName}</h3>
+          {statusUpdate.additionalServiceAvailabilityNotes && (
+            <div className="display-flex flex-align-center margin-left-3">
+              <NoteIcon />
+              <span className="margin-left-05">{statusUpdate.additionalServiceAvailabilityNotes}</span>
+            </div>
+          )}
         </div>
+        <div className="mci-row__updated">{DateTime.fromISO(statusUpdate.updateDateTimeLocal).toLocaleString(DateTime.DATETIME_SHORT)}</div>
+      </div>
+      <div className="mci-row__status">
         <div className="mci-row__controls">
+          <div className="flex-1"></div>
+          <h2 className={classNames('margin-x-1', { 'opacity-0': !showTotal })}>=</h2>
           <MciCounter
             className="flex-1"
             isEditable={!!statusUpdate.hospitalId}
@@ -93,10 +101,11 @@ function MciHospitalCapacityRow({ onChange, ringdowns, showTotal, statusUpdate }
         </div>
       </div>
       <div className="mci-row__transported">
-        <div className="mci-row__info">
-          <h4 className="margin-y-0">Transported</h4>
-        </div>
         <div className="mci-row__controls">
+          <div className="flex-1">
+            <h3 className="margin-y-0">Transported</h3>
+          </div>
+          <h2 className={classNames('margin-x-1 margin-y-0', { 'opacity-0': !showTotal })}>=</h2>
           <MciCounter className="flex-1" type="immediate" value={transportedTotals.red} />
           <h2 className={classNames('margin-x-1 margin-y-0', { 'opacity-0': !showTotal })}>+</h2>
           <MciCounter className="flex-1" type="delayed" value={transportedTotals.yellow} />
@@ -110,12 +119,6 @@ function MciHospitalCapacityRow({ onChange, ringdowns, showTotal, statusUpdate }
           />
         </div>
       </div>
-      {statusUpdate.additionalServiceAvailabilityNotes && (
-        <div className="mci-row__notes">
-          <NoteIcon />
-          <span className="margin-left-1">{statusUpdate.additionalServiceAvailabilityNotes}</span>
-        </div>
-      )}
     </div>
   );
 }
