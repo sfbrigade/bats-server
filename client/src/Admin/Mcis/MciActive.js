@@ -131,6 +131,7 @@ function MciActive({ id, onEnd, onError }) {
       estimatedRedCount: 0,
       estimatedYellowCount: 0,
       estimatedGreenCount: 0,
+      estimatedZebraCount: 0,
     };
     for (const mci of mcis) {
       if (DateTime.fromISO(all.updatedAt) < DateTime.fromISO(mci.updatedAt)) {
@@ -139,6 +140,7 @@ function MciActive({ id, onEnd, onError }) {
       all.estimatedRedCount += mci.estimatedRedCount;
       all.estimatedYellowCount += mci.estimatedYellowCount;
       all.estimatedGreenCount += mci.estimatedGreenCount;
+      all.estimatedZebraCount += mci.estimatedZebraCount;
     }
   }
 
@@ -179,7 +181,7 @@ function MciActive({ id, onEnd, onError }) {
           {!!all && <MciPatientCounts className="margin-bottom-4" data={all} ringdowns={allRingdowns} showTransported />}
           <h2 className="margin-top-4">Hospital Capacity</h2>
           {!statusUpdates && <Spinner />}
-          {totals && <MciHospitalCapacityRow ringdowns={allRingdowns} showTotal statusUpdate={totals} />}
+          {totals && <MciHospitalCapacityRow ringdowns={allRingdowns} statusUpdate={totals} />}
           {statusUpdates?.map((su) => (
             <MciHospitalCapacityRow key={su.hospitalId} onChange={onChangeHospitalStatus} ringdowns={allRingdowns} statusUpdate={su} />
           ))}
