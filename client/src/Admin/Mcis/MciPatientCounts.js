@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import classNames from 'classnames';
 
@@ -61,7 +62,17 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
   return (
     <div className={classNames('mci-row', className)}>
       <div className="mci-row__header">
-        {!!data.incidentNumber && <h2 className="mci-row__name">#{data.incidentNumber}</h2>}
+        {!!data.incidentNumber && (
+          <h2 className="mci-row__name">
+            <Link to={`/admin/mcis/${data.id}`}>#{data.incidentNumber}</Link>{' '}
+            {data.address1 && (
+              <span className="margin-left-105">
+                {data.address1}
+                {data.address2 && `, ${data.address2}`}
+              </span>
+            )}
+          </h2>
+        )}
         {!data.incidentNumber && <h3 className="mci-row__name text-bold">All MCIs</h3>}
         <div className="mci-row__updated">{DateTime.fromISO(data.updatedAt).toLocaleString(DateTime.DATETIME_SHORT)}</div>
       </div>

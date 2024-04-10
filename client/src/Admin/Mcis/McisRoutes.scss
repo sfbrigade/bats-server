@@ -44,8 +44,17 @@
 }
 
 .mci-row__name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   margin: 0;
   text-wrap: nowrap;
+  a {
+    text-decoration: none;
+  }
+  span {
+    @include h4;
+  }
 }
 
 .mci-row__updated {
