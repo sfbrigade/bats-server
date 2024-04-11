@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import classNames from 'classnames';
 
@@ -27,12 +28,17 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
     onEnd(data.id);
   }
 
-  const estimatedTotal = internalData.estimatedRedCount + internalData.estimatedYellowCount + internalData.estimatedGreenCount;
+  const estimatedTotal =
+    internalData.estimatedRedCount +
+    internalData.estimatedYellowCount +
+    internalData.estimatedGreenCount +
+    internalData.estimatedZebraCount;
 
   let transportedTotals = {
     red: 0,
     yellow: 0,
     green: 0,
+    zebra: 0,
   };
   ringdowns?.forEach((rd) => {
     switch (rd.triagePriority) {
@@ -45,6 +51,9 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
       case 'GREEN':
         transportedTotals.green += 1;
         break;
+      case 'ZEBRA':
+        transportedTotals.zebra += 1;
+        break;
       default:
         break;
     }
@@ -52,13 +61,25 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
 
   return (
     <div className={classNames('mci-row', className)}>
+      <div className="mci-row__header">
+        {!!data.incidentNumber && (
+          <h2 className="mci-row__name">
+            <Link to={`/admin/mcis/${data.id}`}>#{data.incidentNumber}</Link>{' '}
+            {data.address1 && (
+              <span className="margin-left-105">
+                {data.address1}
+                {data.address2 && `, ${data.address2}`}
+              </span>
+            )}
+          </h2>
+        )}
+        {!data.incidentNumber && <h3 className="mci-row__name text-bold">All MCIs</h3>}
+        <div className="mci-row__updated">{DateTime.fromISO(data.updatedAt).toLocaleString(DateTime.DATETIME_SHORT)}</div>
+      </div>
       <div className="mci-row__status">
-        <div className="mci-row__info">
-          {!!data.incidentNumber && <h3 className="mci-row__name">#{data.incidentNumber}</h3>}
-          {!data.incidentNumber && <h3 className="mci-row__name text-bold">All MCIs</h3>}
-          <div className="mci-row__updated">{DateTime.fromISO(data.updatedAt).toLocaleString(DateTime.DATETIME_SHORT)}</div>
-        </div>
         <div className="mci-row__controls">
+          <MciCounter className="flex-1" label="Total" type="total" value={estimatedTotal} />
+          <h2 className="margin-x-1">=</h2>
           <MciCounter
             className="flex-1"
             isEditable={isEditable}
@@ -88,34 +109,36 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
             value={internalData.estimatedGreenCount}
             onChange={onChangeInternal}
           />
-          <h2 className="margin-x-1">=</h2>
-          <MciCounter className="flex-1" label="Total" type="total" value={estimatedTotal} />
+          <h2 className="margin-x-1">+</h2>
+          <MciCounter
+            className="flex-1"
+            isEditable={isEditable}
+            label="Dead"
+            type="dead"
+            name="estimatedZebraCount"
+            value={internalData.estimatedZebraCount}
+            onChange={onChangeInternal}
+          />
         </div>
       </div>
       {!!showTransported && (
         <div className="mci-row__transported">
-          <div className="mci-row__info">
-            <h4 className="margin-y-0">
-              Transported{' '}
+          <div className="mci-row__controls">
+            <h3 className="margin-y-0 flex-1">Transported</h3>
+            <h2 className="margin-x-1 margin-y-0 opacity-0">+</h2>
+            <MciCounter className="flex-1" type="immediate" value={transportedTotals.red} />
+            <h2 className="margin-x-1 margin-y-0 opacity-0">+</h2>
+            <MciCounter className="flex-1" type="delayed" value={transportedTotals.yellow} />
+            <h2 className="margin-x-1 margin-y-0 opacity-0">+</h2>
+            <MciCounter className="flex-1" type="minor" value={transportedTotals.green} />
+            <h2 className="margin-x-1 margin-y-0 opacity-0">=</h2>
+            <div className="flex-1 text-right">
               {!!showEnd && (
                 <button onClick={() => setConfirmEnd(true)} className="usa-button usa-button--outline usa-button--secondary margin-left-1">
                   End MCI
                 </button>
-              )}
-            </h4>
-          </div>
-          <div className="mci-row__controls">
-            <MciCounter className="flex-1" type="immediate" value={transportedTotals.red} />
-            <h2 className="margin-x-1 margin-y-0">+</h2>
-            <MciCounter className="flex-1" type="delayed" value={transportedTotals.yellow} />
-            <h2 className="margin-x-1 margin-y-0">+</h2>
-            <MciCounter className="flex-1" type="minor" value={transportedTotals.green} />
-            <h2 className="margin-x-1 margin-y-0">=</h2>
-            <MciCounter
-              className="flex-1"
-              type="total"
-              value={transportedTotals.red + transportedTotals.yellow + transportedTotals.green}
-            />
+              )}{' '}
+            </div>
           </div>
         </div>
       )}

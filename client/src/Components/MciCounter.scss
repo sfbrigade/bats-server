@@ -11,6 +11,9 @@
   @include h4;
   text-align: center;
   background-color: white;
+  overflow: hidden;
+  padding: 0 0.5rem;
+  text-overflow: ellipsis;
 }
 
 .mci-counter__control {
@@ -32,6 +35,8 @@
 
 .mci-counter__button {
   @include h2;
+  min-width: 32px;
+  padding: 0;
   border: 0;
   width: 4em;
   &:first-child {
@@ -54,7 +59,9 @@
 
 .mci-counter__input {
   @include h2;
+  background-color: white;
   border: 2px solid transparent;
+  color: color('base-dark');
   width: 100%;
   text-align: center;
   // hide browser default numeric spin controls
@@ -63,6 +70,11 @@
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+  &:disabled {
+    color: color('base-dark');
+    -webkit-text-fill-color: color('base-dark');
+    opacity: 1;
   }
 }
 
