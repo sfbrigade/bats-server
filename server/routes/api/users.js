@@ -64,6 +64,12 @@ router.get('/', middleware.isAdminUser, setParams, async (req, res) => {
       OrganizationId: req.organizationId,
     };
   }
+  if (req.query.search) {
+    options.where ||= {};
+    options.where.email = {
+      [models.Sequelize.Op.iLike]: `%${req.query.search}%`,
+    };
+  }
   const { records, pages, total } = await models.User.paginate(options);
   setPaginationHeaders(req, res, page, pages, total);
   res.json(records.map((u) => u.toJSON()));

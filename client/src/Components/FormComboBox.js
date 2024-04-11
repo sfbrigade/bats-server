@@ -23,6 +23,7 @@ function FormComboBox({
   property,
   required,
   onChange,
+  onChangeInput,
   options,
   showRequiredHint,
   size,
@@ -85,13 +86,22 @@ function FormComboBox({
       ]);
       eventListeners.push(['focus', () => setFocused(true)]);
       eventListeners.push(['blur', () => setFocused(false)]);
+    } else {
+      eventListeners.push([
+        'input',
+        (e) => {
+          if (onChangeInput) {
+            onChangeInput(e);
+          }
+        },
+      ]);
     }
     eventListeners.forEach(([type, handler]) => inputEl.addEventListener(type, handler));
     return () => {
       eventListeners.forEach(([type, handler]) => inputEl.removeEventListener(type, handler));
       comboBox.off(current);
     };
-  }, [isFreeFormDisabled, options]);
+  }, [isFreeFormDisabled, onChangeInput, options]);
 
   useEffect(() => {
     const { current } = ref;

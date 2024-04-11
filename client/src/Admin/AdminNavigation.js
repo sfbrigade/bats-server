@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation, useResolvedPath } from 'react-router-dom';
 import ApiService from '../ApiService';
 import Context from '../Context';
 import HospitalIcon from '../Components/Icons/Hospital';
+import { ReactComponent as OAuthIcon } from '../assets/img/icon-oauth.svg';
 import { ReactComponent as MciIcon } from '../assets/img/icon-mci.svg';
 import { ReactComponent as SettingsIcon } from '../assets/img/icon-settings.svg';
 import { ReactComponent as UserIcon } from '../assets/img/icon-users.svg';
@@ -124,6 +125,12 @@ function AdminNavigation() {
                 <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
               </NavLink>
               <NavLink
+                to={`${url}/site/clients`}
+                className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+              >
+                <OAuthIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Clients</span>
+              </NavLink>
+              <NavLink
                 to={`${url}/site/organizations`}
                 className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
               >
@@ -139,7 +146,7 @@ function AdminNavigation() {
               >
                 <DashboardIcon className="admin-navigation__link-icon" /> Dashboard
               </NavLink>
-              {(user?.isSuperUser || organization?.type === 'C4SF') && (
+              {organization?.type === 'C4SF' && (
                 <NavLink
                   to={`${url}/mcis`}
                   className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}

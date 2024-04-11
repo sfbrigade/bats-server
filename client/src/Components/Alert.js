@@ -4,14 +4,14 @@ import classNames from 'classnames';
 
 import './Alert.scss';
 
-function Alert({ className, type, title, message, cancel, primary, destructive, onCancel, onPrimary, onDestructive }) {
+function Alert({ children, className, type, title, message, cancel, primary, destructive, onCancel, onPrimary, onDestructive }) {
   return (
     <div className={classNames('alert', className)}>
       <div className="alert__content">
         <div className={`usa-alert usa-alert--${type}`}>
           <div className="usa-alert__body">
             <h3 className="usa-alert__heading">{title}</h3>
-            <p className="usa-alert__text">{message}</p>
+            <p className="usa-alert__text">{message ?? children ?? ''}</p>
           </div>
           <ul className="usa-button-group flex-column flex-align-stretch">
             {destructive && (
@@ -43,10 +43,11 @@ function Alert({ className, type, title, message, cancel, primary, destructive, 
 }
 
 Alert.propTypes = {
+  children: PropTypes.node,
   className: PropTypes.string,
   type: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  message: PropTypes.string.isRequired,
+  message: PropTypes.string,
   cancel: PropTypes.string,
   primary: PropTypes.string,
   destructive: PropTypes.string,
@@ -56,10 +57,12 @@ Alert.propTypes = {
 };
 
 Alert.defaultProps = {
+  children: undefined,
   className: undefined,
   cancel: undefined,
   primary: undefined,
   destructive: undefined,
+  message: undefined,
   onCancel: undefined,
   onPrimary: undefined,
   onDestructive: undefined,

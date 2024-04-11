@@ -28,6 +28,8 @@ const resetDatabase = async () => {
     DELETE FROM emergencymedicalservicecall;
     DELETE FROM masscasualtyincident;
     DELETE FROM organization;
+    DELETE FROM token;
+    DELETE FROM client;
     DELETE FROM batsuser;
   `);
 };

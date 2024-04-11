@@ -1,0 +1,30 @@
+[
+  {
+    "model": "Client",
+    "data": {
+      "id": "b5856463-a1ac-4276-8d84-61a12b7b0c79",
+      "name": "Test Client 1",
+      "clientId": "sVKBATjgnoWeQDRfUraw",
+      "hashedClientSecret": "$2b$12$v7WVaQfm9UaukU6Fhz.1xulLBKA2pmbjgBwsTk9x8s0fRkvvyR3Di",
+      "UserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "createdAt": "2020-04-07T19:53:42.434Z",
+      "updatedAt": "2020-04-07T19:53:42.434Z"
+    }
+  },
+  {
+    "model": "Client",
+    "data": {
+      "id": "9db6b601-13fc-4755-906a-c532ce319be0",
+      "name": "Test Client 2",
+      "clientId": "R7M6UhUuKq76aYtcdbr5",
+      "hashedClientSecret": "$2b$12$v7WVaQfm9UaukU6Fhz.1xulLBKA2pmbjgBwsTk9x8s0fRkvvyR3Di",
+      "redirectUri": "http://localhost:3000/callback",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "createdAt": "2020-04-07T19:53:42.434Z",
+      "updatedAt": "2020-04-07T19:53:42.434Z"
+    }
+  }
+]

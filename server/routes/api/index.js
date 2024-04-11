@@ -1,8 +1,13 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 
+const middleware = require('../../auth/middleware');
+
 const router = express.Router();
 
+router.use(middleware.checkAuthorizationHeader);
+
+router.use('/clients', require('./clients'));
 router.use('/users', require('./users'));
 router.use('/ringdowns', require('./ringdowns'));
 router.use('/hospitalstatuses', require('./hospitalStatuses'));
