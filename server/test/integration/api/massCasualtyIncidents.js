@@ -79,6 +79,29 @@ describe('/api/mcis', () => {
       assert.deepStrictEqual(record.estimatedGreenCount, 3);
       assert.deepStrictEqual(record.estimatedZebraCount, 4);
     });
+
+    it('updates an existing MCI record by incidentNumber', async () => {
+      await testSession
+        .post('/api/mcis')
+        .set('Accept', 'application/json')
+        .send({
+          incidentNumber: '1005',
+          estimatedRedCount: 1,
+          estimatedYellowCount: 2,
+          estimatedGreenCount: 3,
+          estimatedZebraCount: 4,
+        })
+        .expect(HttpStatus.OK);
+
+      const record = await models.MassCasualtyIncident.findByPk('a9362c42-f8d7-4e05-b0b6-c9e3b191c7d4');
+      assert.deepStrictEqual(record.incidentNumber, '1005');
+      assert.deepStrictEqual(record.address1, '2468 Also Active Ln');
+      assert.deepStrictEqual(record.startedAt, new Date('2024-04-05T13:14:32-07:00'));
+      assert.deepStrictEqual(record.estimatedRedCount, 1);
+      assert.deepStrictEqual(record.estimatedYellowCount, 2);
+      assert.deepStrictEqual(record.estimatedGreenCount, 3);
+      assert.deepStrictEqual(record.estimatedZebraCount, 4);
+    });
   });
 
   describe('GET /:id', () => {
