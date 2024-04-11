@@ -55,6 +55,7 @@ router.post(
     client.CreatedById = req.user.id;
     client.UpdatedById = req.user.id;
     await client.save();
+    client.User = await client.getUser();
     const data = client.toJSON();
     data.clientSecret = clientSecret;
     res.status(HttpStatus.CREATED).json(data);
@@ -70,7 +71,6 @@ router.get(
     });
     if (client) {
       const data = client.toJSON();
-      data.UserEmail = client.User?.email;
       res.json(data);
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
@@ -104,7 +104,10 @@ router.patch(
     let client;
     let clientSecret;
     await models.sequelize.transaction(async (transaction) => {
-      client = await models.Client.findByPk(req.params.id, { transaction });
+      client = await models.Client.findByPk(req.params.id, {
+        include: models.User,
+        transaction,
+      });
       if (client) {
         ({ clientSecret } = client.generateClientIdAndSecret());
         client.UpdatedById = req.user.id;
@@ -130,8 +133,20 @@ router.patch(
       client = await models.Client.findByPk(req.params.id, { transaction });
       if (client) {
         const data = _.pick(req.body, ['name', 'UserId', 'redirectUri']);
+        const { UserEmail: email } = req.body;
+        if (email) {
+          const user = await models.User.findOne({ where: { email } });
+          if (user) {
+            data.UserId = user.id;
+          } else {
+            throw new ValidationError('Invalid', [
+              new ValidationErrorItem('This email is not registered to a user in Routed', 'FUNCTION', 'UserEmail', email),
+            ]);
+          }
+        }
         data.UpdatedById = req.user.id;
         await client.update(data, { transaction });
+        client.User = await client.getUser({ transaction });
       }
     });
     if (client) {

@@ -27,9 +27,11 @@ module.exports = (sequelize) => {
     }
 
     toJSON() {
-      const attributes = { ...this.get() };
-      delete attributes.hashedClientSecret;
-      return attributes;
+      const data = { ...this.get() };
+      delete data.hashedClientSecret;
+      data.User = this.User?.toJSON();
+      data.UserEmail = this.User?.email;
+      return data;
     }
   }
 

@@ -36,6 +36,12 @@ export default {
     update(id, data) {
       return instance.patch(`/api/clients/${id}`, data);
     },
+    regenerate(id) {
+      return instance.patch(`/api/clients/${id}/regenerate`);
+    },
+    delete(id) {
+      return instance.delete(`/api/clients/${id}`);
+    },
   },
   emsCalls: {
     getDispatchCallNumbers(ambulanceIdentifier) {

@@ -12,6 +12,7 @@ function FormInput({
   onChange,
   isWrapped,
   property,
+  readOnly,
   required,
   showRequiredHint,
   size,
@@ -49,6 +50,7 @@ function FormInput({
       <input
         id={property}
         disabled={disabled}
+        readOnly={readOnly}
         value={value || ''}
         onKeyDown={handleKeyDown}
         onBlur={handleOnBlur}
@@ -109,6 +111,7 @@ FormInput.propTypes = {
   label: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   property: PropTypes.string.isRequired,
+  readOnly: PropTypes.bool,
   required: PropTypes.bool,
   showRequiredHint: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
@@ -126,6 +129,7 @@ FormInput.defaultProps = {
   disabled: false,
   isWrapped: true,
   label: null,
+  readOnly: false,
   required: false,
   showRequiredHint: true,
   size: null,
