@@ -59,6 +59,7 @@ describe('/api/clients', () => {
       assert.deepStrictEqual(data, {
         id: '9db6b601-13fc-4755-906a-c532ce319be0',
         name: 'Test Client 2',
+        User: null,
         UserId: null,
         clientId: 'R7M6UhUuKq76aYtcdbr5',
         redirectUri: 'http://localhost:3000/callback',
