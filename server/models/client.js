@@ -8,7 +8,7 @@ const initModel = require('../metadata/initModel');
 module.exports = (sequelize) => {
   class Client extends Model {
     static associate(models) {
-      Client.hasMany(models.Token, { foreignKey: 'client_uuid' });
+      Client.hasMany(models.Token, { foreignKey: 'clientId' });
       Client.belongsTo(models.User);
       Client.belongsTo(models.User, { as: 'CreatedBy' });
       Client.belongsTo(models.User, { as: 'UpdatedBy' });
