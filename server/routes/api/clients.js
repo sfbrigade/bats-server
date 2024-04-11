@@ -1,7 +1,7 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 const _ = require('lodash');
-const { Op } = require('sequelize');
+const { Op, ValidationError, ValidationErrorItem } = require('sequelize');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
@@ -17,6 +17,7 @@ router.get(
     const options = {
       page,
       order: [['name', 'ASC']],
+      include: models.User,
     };
     const conditions = [];
     if (req.query.search && req.query.search !== '') {
@@ -37,7 +38,19 @@ router.post(
   '/',
   middleware.isSuperUser,
   helpers.wrapper(async (req, res) => {
-    const client = models.Client.build(_.pick(req.body, ['name', 'UserId', 'redirectUri']));
+    const body = _.pick(req.body, ['name', 'UserId', 'redirectUri']);
+    const { UserEmail: email } = req.body;
+    if (email) {
+      const user = await models.User.findOne({ where: { email } });
+      if (user) {
+        body.UserId = user.id;
+      } else {
+        throw new ValidationError('Invalid', [
+          new ValidationErrorItem('This email is not registered to a user in Routed', 'FUNCTION', 'UserEmail', email),
+        ]);
+      }
+    }
+    const client = models.Client.build(body);
     const { clientSecret } = client.generateClientIdAndSecret();
     client.CreatedById = req.user.id;
     client.UpdatedById = req.user.id;
@@ -52,9 +65,13 @@ router.get(
   '/:id',
   middleware.isSuperUser,
   helpers.wrapper(async (req, res) => {
-    const client = await models.Client.findByPk(req.params.id);
+    const client = await models.Client.findByPk(req.params.id, {
+      include: models.User,
+    });
     if (client) {
-      res.json(client.toJSON());
+      const data = client.toJSON();
+      data.UserEmail = client.User?.email;
+      res.json(data);
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }

@@ -23,6 +23,20 @@ export default {
       return instance.get('/api/ambulances/identifiers', { params: { organizationId } });
     },
   },
+  clients: {
+    index() {
+      return instance.get('/api/clients/');
+    },
+    create(data) {
+      return instance.post(`/api/clients`, data);
+    },
+    get(id) {
+      return instance.get(`/api/clients/${id}`);
+    },
+    update(id, data) {
+      return instance.patch(`/api/clients/${id}`, data);
+    },
+  },
   emsCalls: {
     getDispatchCallNumbers(ambulanceIdentifier) {
       return instance.get('/api/emscalls/dispatch-call-numbers', { params: { ambulanceIdentifier } });
@@ -75,8 +89,8 @@ export default {
       return instance.get('/api/users/me');
     },
     index(params) {
-      const { organizationId, hospitalId } = params || {};
-      return instance.get('/api/users/', { params: { organizationId, hospitalId } });
+      const { organizationId, hospitalId, search } = params || {};
+      return instance.get('/api/users/', { params: { organizationId, hospitalId, search } });
     },
     active(params) {
       const { organizationId, hospitalId } = params || {};
