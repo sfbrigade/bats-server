@@ -61,6 +61,11 @@ router.post(
         'estimatedYellowCount',
         'estimatedGreenCount',
         'estimatedZebraCount',
+        'treatedRedCount',
+        'treatedYellowCount',
+        'treatedGreenCount',
+        'treatedZebraCount',
+        'isExternallyUpdated',
       ]),
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
@@ -150,6 +155,11 @@ router.patch(
             'estimatedYellowCount',
             'estimatedGreenCount',
             'estimatedZebraCount',
+            'treatedRedCount',
+            'treatedYellowCount',
+            'treatedGreenCount',
+            'treatedZebraCount',
+            'isExternallyUpdated',
           ]),
           { transaction }
         );
