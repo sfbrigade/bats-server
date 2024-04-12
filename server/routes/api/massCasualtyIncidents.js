@@ -48,9 +48,8 @@ router.post(
   '/',
   isAllowed,
   wrapper(async (req, res) => {
-    const data = {
+    const defaults = {
       ..._.pick(req.body, [
-        'incidentNumber',
         'address1',
         'address2',
         'city',
@@ -66,9 +65,27 @@ router.post(
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     };
-    const record = await models.MassCasualtyIncident.create(data);
+    let record;
+    let isCreated;
+    await models.sequelize.transaction(async (transaction) => {
+      [record, isCreated] = await models.MassCasualtyIncident.findOrCreate({
+        where: {
+          incidentNumber: req.body.incidentNumber,
+        },
+        defaults,
+        transaction,
+      });
+      if (!isCreated) {
+        delete defaults.CreatedById;
+        await record.update(defaults, { transaction });
+      }
+    });
     if (record) {
-      res.status(HttpStatus.CREATED).json(record.toJSON());
+      if (isCreated) {
+        res.status(HttpStatus.CREATED).json(record.toJSON());
+      } else {
+        res.status(HttpStatus.OK).json(record.toJSON());
+      }
       await dispatchMciUpdate(record.id);
     } else {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
