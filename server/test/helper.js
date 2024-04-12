@@ -7,14 +7,14 @@ const path = require('path');
 const models = require('../models');
 const nodemailermock = require('nodemailer-mock');
 
-const loadFixtures = async (files) => {
+async function loadFixtures(files) {
   const filePaths = files.map((f) => path.resolve(__dirname, `fixtures/${f}.json`));
   await models.sequelize.transaction(async (transaction) => {
     await fixtures.loadFiles(filePaths, models, { transaction });
   });
-};
+}
 
-const resetDatabase = async () => {
+async function resetDatabase() {
   /// clear all test data (order matters due to foreign key relationships)
   await models.sequelize.query(`
     DELETE FROM patientdeliveryupdate;
@@ -32,9 +32,15 @@ const resetDatabase = async () => {
     DELETE FROM client;
     DELETE FROM batsuser;
   `);
-};
+}
 
-const twoFactorAuthSession = async (testSession) => {
+async function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+async function twoFactorAuthSession(testSession) {
   // Call the two-factor authentication endpoint
   await testSession.get('/auth/local/twoFactor').set('Accept', 'application/json');
   const sentMail = nodemailermock.mock.sentMail();
@@ -44,7 +50,7 @@ const twoFactorAuthSession = async (testSession) => {
   const authCode = match[1];
   // Submit the authentication code
   await testSession.post('/auth/local/twoFactor').set('Accept', 'application/json').send({ code: authCode });
-};
+}
 
 beforeEach(async () => {
   await resetDatabase();
@@ -62,5 +68,6 @@ after(async () => {
 
 module.exports = {
   loadFixtures,
+  sleep,
   twoFactorAuthSession,
 };

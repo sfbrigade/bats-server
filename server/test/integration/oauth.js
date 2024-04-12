@@ -49,6 +49,7 @@ describe('/oauth', async () => {
       .set('Authorization', 'Bearer 8acb1d4d7da2665278a2c0c0dcbad578d')
       .expect(HttpStatus.UNAUTHORIZED);
 
+    await helper.sleep(100);
     // token is deleted
     const token = await models.Token.findOne({ where: { accessToken: '8acb1d4d7da2665278a2c0c0dcbad578d' } });
     assert.deepStrictEqual(token, null);
