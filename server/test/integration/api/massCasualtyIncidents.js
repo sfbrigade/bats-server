@@ -1,8 +1,9 @@
 const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
-const models = require('../../../models');
+
 const helper = require('../../helper');
+const models = require('../../../models');
 const app = require('../../../app');
 
 describe('/api/mcis', () => {
@@ -121,6 +122,11 @@ describe('/api/mcis', () => {
         estimatedYellowCount: 2,
         estimatedGreenCount: 3,
         estimatedZebraCount: 0,
+        treatedRedCount: null,
+        treatedYellowCount: null,
+        treatedGreenCount: null,
+        treatedZebraCount: null,
+        isExternallyUpdated: false,
         CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
         createdAt: response.body.createdAt,
         UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
