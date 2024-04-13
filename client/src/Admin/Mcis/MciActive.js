@@ -158,7 +158,7 @@ function MciActive({ id, onEnd, onError }) {
               className="margin-bottom-4"
               data={data}
               ringdowns={data.ringdowns}
-              isEditable
+              isEditable={!data.isExternallyUpdated}
               onChange={(newData) => onChangeEstimatedPatientCounts(data.id, newData)}
             />
           )}
@@ -171,7 +171,7 @@ function MciActive({ id, onEnd, onError }) {
                   className="margin-bottom-4"
                   data={mci}
                   ringdowns={mci.ringdowns}
-                  isEditable
+                  isEditable={!mci.isExternallyUpdated}
                   onChange={(newData) => onChangeEstimatedPatientCounts(mci.id, newData)}
                   onEnd={() => onEndInternal(mci.id)}
                   showTransported
