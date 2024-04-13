@@ -129,13 +129,13 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
           <div className="mci-row__controls">
             <MciCounter className="flex-1" label="Treated Total" type="total" value={treatedTotal} />
             <h2 className="margin-x-1 margin-y-0">=</h2>
-            <MciCounter className="flex-1" type="immediate" value={data.treatedRedCount ?? 0} />
+            <MciCounter className="flex-1" label="Immediate" type="immediate" value={data.treatedRedCount ?? 0} />
             <h2 className="margin-x-1 margin-y-0">+</h2>
-            <MciCounter className="flex-1" type="delayed" value={data.treatedYellowCount ?? 0} />
+            <MciCounter className="flex-1" label="Delayed" type="delayed" value={data.treatedYellowCount ?? 0} />
             <h2 className="margin-x-1 margin-y-0">+</h2>
-            <MciCounter className="flex-1" type="minor" value={data.treatedGreenCount ?? 0} />
+            <MciCounter className="flex-1" label="Minor" type="minor" value={data.treatedGreenCount ?? 0} />
             <h2 className="margin-x-1 margin-y-0">+</h2>
-            <MciCounter className="flex-1" type="dead" value={data.treatedZebraCount ?? 0} />
+            <MciCounter className="flex-1" label="Dead" type="dead" value={data.treatedZebraCount ?? 0} />
           </div>
         </div>
       )}
