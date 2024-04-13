@@ -34,6 +34,9 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
     internalData.estimatedGreenCount +
     internalData.estimatedZebraCount;
 
+  let treatedTotal =
+    (data.treatedRedCount ?? 0) + (data.treatedYellowCount ?? 0) + (data.treatedGreenCount ?? 0) + (data.treatedZebraCount ?? 0);
+
   let transportedTotals = {
     red: 0,
     yellow: 0,
@@ -121,6 +124,21 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
           />
         </div>
       </div>
+      {!!treatedTotal && (
+        <div className="mci-row__transported">
+          <div className="mci-row__controls">
+            <h3 className="margin-y-0 flex-1">Treated</h3>
+            <h2 className="margin-x-1 margin-y-0 opacity-0">+</h2>
+            <MciCounter className="flex-1" type="immediate" value={data.treatedRedCount ?? 0} />
+            <h2 className="margin-x-1 margin-y-0 opacity-0">+</h2>
+            <MciCounter className="flex-1" type="delayed" value={data.treatedYellowCount ?? 0} />
+            <h2 className="margin-x-1 margin-y-0 opacity-0">+</h2>
+            <MciCounter className="flex-1" type="minor" value={data.treatedGreenCount ?? 0} />
+            <h2 className="margin-x-1 margin-y-0 opacity-0">=</h2>
+            <MciCounter className="flex-1" type="dead" value={data.treatedZebraCount ?? 0} />
+          </div>
+        </div>
+      )}
       {!!showTransported && (
         <div className="mci-row__transported">
           <div className="mci-row__controls">
