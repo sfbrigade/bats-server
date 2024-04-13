@@ -34,6 +34,9 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
     internalData.estimatedGreenCount +
     internalData.estimatedZebraCount;
 
+  let treatedTotal =
+    (data.treatedRedCount ?? 0) + (data.treatedYellowCount ?? 0) + (data.treatedGreenCount ?? 0) + (data.treatedZebraCount ?? 0);
+
   let transportedTotals = {
     red: 0,
     yellow: 0,
@@ -78,7 +81,7 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
       </div>
       <div className="mci-row__status">
         <div className="mci-row__controls">
-          <MciCounter className="flex-1" label="Total" type="total" value={estimatedTotal} />
+          <MciCounter className="flex-1" label="Estimated Total" type="total" value={estimatedTotal} />
           <h2 className="margin-x-1">=</h2>
           <MciCounter
             className="flex-1"
@@ -121,6 +124,21 @@ function MciPatientCounts({ className, data, isEditable, onChange, onEnd, ringdo
           />
         </div>
       </div>
+      {!!treatedTotal && (
+        <div className="mci-row__transported">
+          <div className="mci-row__controls">
+            <MciCounter className="flex-1" label="Treated Total" type="total" value={treatedTotal} />
+            <h2 className="margin-x-1 margin-y-0">=</h2>
+            <MciCounter className="flex-1" label="Immediate" type="immediate" value={data.treatedRedCount ?? 0} />
+            <h2 className="margin-x-1 margin-y-0">+</h2>
+            <MciCounter className="flex-1" label="Delayed" type="delayed" value={data.treatedYellowCount ?? 0} />
+            <h2 className="margin-x-1 margin-y-0">+</h2>
+            <MciCounter className="flex-1" label="Minor" type="minor" value={data.treatedGreenCount ?? 0} />
+            <h2 className="margin-x-1 margin-y-0">+</h2>
+            <MciCounter className="flex-1" label="Dead" type="dead" value={data.treatedZebraCount ?? 0} />
+          </div>
+        </div>
+      )}
       {!!showTransported && (
         <div className="mci-row__transported">
           <div className="mci-row__controls">

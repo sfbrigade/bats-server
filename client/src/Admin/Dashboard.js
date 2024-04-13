@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Context from '../Context';
 
 import MciActive from './Mcis/MciActive';
-import UsersTable from './Users/UsersTable';
+// import UsersTable from './Users/UsersTable';
 
 export default function Dashboard() {
   const { user, organization } = useContext(Context);
@@ -21,10 +21,10 @@ export default function Dashboard() {
           <MciActive />
         </div>
       )}
-      <div>
+      {/* <div>
         <h1>Active Users</h1>
         <UsersTable isActive />
-      </div>
+      </div> */}
     </main>
   );
 }

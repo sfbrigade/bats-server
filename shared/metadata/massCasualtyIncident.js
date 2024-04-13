@@ -71,6 +71,29 @@ const fields = [
     allowNull: false,
     defaultValue: 0,
   },
+  {
+    name: 'treatedRedCount',
+    type: 'integer',
+  },
+  {
+    name: 'treatedYellowCount',
+    type: 'integer',
+  },
+  {
+    name: 'treatedGreenCount',
+    type: 'integer',
+  },
+  {
+    name: 'treatedZebraCount',
+    type: 'integer',
+  },
+  {
+    name: 'isExternallyUpdated',
+    colName: 'externallyupdatedindicator',
+    type: 'boolean',
+    allowNull: false,
+    defaultValue: false,
+  },
 ];
 
 module.exports = new ModelMetadata({ modelName: 'MassCasualtyIncident', fields });
