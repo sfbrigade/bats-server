@@ -103,7 +103,7 @@ router.get('/:id/ringdowns', isAllowed, async (req, res) => {
   if (record) {
     const patientDeliveries = await models.PatientDelivery.findAll({
       include: [
-        models.Ambulance,
+        { model: models.Ambulance, include: models.Organization },
         models.Hospital,
         models.PatientDeliveryUpdate,
         {

@@ -105,6 +105,12 @@ class Ringdown {
     return this.payload.id;
   }
 
+  // Transporting Agency Organization
+
+  get organizationName() {
+    return this.payload.ambulance?.organization?.name;
+  }
+
   // Hospital
 
   // special-case this field, since the field name (id) is getting mapped to a different name on the Ringdown (hospitalId)

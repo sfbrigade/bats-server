@@ -146,6 +146,7 @@ module.exports = (sequelize) => {
 
     async toRingdownJSON(options) {
       const ambulance = this.Ambulance || (await this.getAmbulance(options));
+      const organization = ambulance.Organization || (await ambulance.getOrganization(options));
       const hospital = this.Hospital || (await this.getHospital(options));
       const patient = this.Patient || (await this.getPatient(options));
       const emsCall = patient.EmergencyMedicalServiceCall || (await patient.getEmergencyMedicalServiceCall(options));
@@ -153,6 +154,10 @@ module.exports = (sequelize) => {
         id: this.id,
         ambulance: {
           ambulanceIdentifier: ambulance.ambulanceIdentifier,
+          organization: {
+            id: organization.id,
+            name: organization.name,
+          },
         },
         emsCall: {
           dispatchCallNumber: emsCall.dispatchCallNumber,
