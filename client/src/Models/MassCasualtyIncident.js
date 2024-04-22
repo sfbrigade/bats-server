@@ -44,7 +44,9 @@ class MassCasualtyIncident {
   }
 
   get estimatedPatientCount() {
-    return (this.estimatedRedCount ?? 0) + (this.estimatedYellowCount ?? 0) + (this.estimatedGreenCount ?? 0);
+    return (
+      (this.estimatedRedCount ?? 0) + (this.estimatedYellowCount ?? 0) + (this.estimatedGreenCount ?? 0) + (this.estimatedZebraCount ?? 0)
+    );
   }
 }
 
