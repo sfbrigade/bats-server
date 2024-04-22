@@ -36,6 +36,7 @@ function MciCard({ className, data }) {
             <FieldRow label={<span className="mci-card__label mci-card__label--immediate">Immediate</span>} property="estimatedRedCount" />
             <FieldRow label={<span className="mci-card__label mci-card__label--delayed">Delayed</span>} property="estimatedYellowCount" />
             <FieldRow label={<span className="mci-card__label mci-card__label--minor">Minor</span>} property="estimatedGreenCount" />
+            <FieldRow label={<span className="mci-card__label mci-card__label--dead">Dead</span>} property="estimatedZebraCount" />
             <FieldRow label={<span className="mci-card__label mci-card__label--total">Total</span>} property="estimatedPatientCount" />
             <FieldRow
               label="Updated at"
