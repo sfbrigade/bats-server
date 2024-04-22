@@ -495,7 +495,13 @@ describe('/api/ringdowns', () => {
 
       assert.deepStrictEqual(response.body, {
         id: '8b95ea8a-0171-483a-be74-ec17bbc12247',
-        ambulance: { ambulanceIdentifier: 'SFFD-1' },
+        ambulance: {
+          ambulanceIdentifier: 'SFFD-1',
+          organization: {
+            id: '1dd0dfd7-562e-48db-ae78-31b9136d3e15',
+            name: 'San Francisco Fire Department',
+          },
+        },
         emsCall: { dispatchCallNumber: '911' },
         hospital: {
           id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',

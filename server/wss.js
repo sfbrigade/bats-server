@@ -46,7 +46,7 @@ async function getMciData(cachedMcis, cachedStatusUpdates, mciId) {
         (
           await models.PatientDelivery.findAll({
             include: [
-              models.Ambulance,
+              { model: models.Ambulance, include: models.Organization },
               models.Hospital,
               models.PatientDeliveryUpdate,
               {

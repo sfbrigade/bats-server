@@ -73,6 +73,7 @@ function RingdownDetails({ className, onStatusChange, ringdown }) {
       )}
       <RingdownTable ringdown={ringdown} className={className}>
         <Section title="Incident info">
+          <FieldRow label="Agency" property="organizationName" />
           <FieldRow label="Unit #" property="ambulanceIdentifier" />
           <FieldRow label="Incident #" property="dispatchCallNumber" />
           <PatientFieldRow property="emergencyServiceResponseType" renderValue={toSentenceCase} />

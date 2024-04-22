@@ -89,7 +89,7 @@ router.get('/:scope?', middleware.isAuthenticated, async (req, res) => {
       page,
       include: [
         { model: models.Patient, include: models.EmergencyMedicalServiceCall },
-        models.Ambulance,
+        { model: models.Ambulance, include: models.Organization },
         models.Hospital,
         models.PatientDeliveryUpdate,
       ],
