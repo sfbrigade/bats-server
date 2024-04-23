@@ -71,6 +71,8 @@ function Counter({ className, label, min, max, name, onChange, value, isEditing 
           onBlur={onChangeInternal}
           onChange={onChangeInternal}
           value={Number.isNaN(value) ? '' : value}
+          readOnly={!isEditing}
+          disabled={!isEditing}
         />
         <button type="button" className="usa-button counter__button counter__button--increment" onClick={handleIncrement} tabIndex={-1}>
           +
