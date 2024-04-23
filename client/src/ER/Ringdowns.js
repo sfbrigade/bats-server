@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Ringdown from '../Models/Ringdown';
 import RingdownSection from './RingdownSection';
 
+import './Ringdowns.scss';
+
 function Ringdowns({ ringdowns, onStatusChange }) {
   const waiting = ringdowns.filter(
     (r) => r.currentDeliveryStatus === Ringdown.Status.ARRIVED || r.currentDeliveryStatus === Ringdown.Status.OFFLOADED

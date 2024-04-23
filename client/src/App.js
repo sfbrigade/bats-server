@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import vh from '@sparing-software/100vh';
 
 import ApiService from './ApiService';
 import Context from './Context';
@@ -11,6 +12,8 @@ import Login from './Auth/Login';
 import Forgot from './Auth/Forgot';
 import NewPassword from './Auth/NewPassword';
 import TwoFactor from './Auth/TwoFactor';
+
+vh.init();
 
 function App() {
   const { user, setUser } = useContext(Context);

@@ -1,5 +1,10 @@
 @import '../theme/base';
 
+.no-scroll {
+  height: var(--vh);
+  overflow: hidden;
+}
+
 .unconfirmed-ringdowns {
   position: absolute;
   top: 0;
@@ -10,14 +15,14 @@
   flex-direction: column;
   flex-grow: 1;
   justify-content: flex-end;
-  height: 100vh;
+  height: var(--vh);
 }
 
 .unconfirmed-ringdowns__container {
   background-color: white;
   border-radius: 1rem 1rem 0 0;
   // the Header is 7.5rem high, so leave a little space between it and the ringdown container
-  max-height: calc(100vh - 8rem);
+  max-height: calc(var(--vh) - 8rem);
   padding: 1.25rem;
   // let the overlay scroll vertically, since the body won't scroll while it's open
   overflow-y: auto;
