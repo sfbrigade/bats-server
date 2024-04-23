@@ -1894,6 +1894,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@sparing-software/100vh@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@sparing-software/100vh/-/100vh-1.2.0.tgz#6125cca0c77cdaca6f440670781e63e6cb11e5db"
+  integrity sha512-50II9Dxpab8f5m3GXEqPlR/GmXnu6bDl+Ymecnrc1QhbUdZcDfGHsvvJLuTbRcH97e5tYGXIjcM+KgQvnVwR2A==
+
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"
   resolved "https://registry.npmjs.org/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-2.2.3.tgz"

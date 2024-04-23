@@ -8,6 +8,16 @@ import './UnconfirmedRingdowns.scss';
 
 const UnconfirmedRingdowns = ({ onConfirm, ringdowns }) => {
   useEffect(() => {
+    window.scroll({ top: 0, left: 0, behavior: 'instant' });
+    document.querySelector('html').classList.add('no-scroll');
+    document.querySelector('body').classList.add('no-scroll');
+    return () => {
+      document.querySelector('html').classList.remove('no-scroll');
+      document.querySelector('body').classList.remove('no-scroll');
+    };
+  }, []);
+
+  useEffect(() => {
     let isCancelled = false;
     ringdowns.forEach((ringdown) => {
       if (isCancelled) return;
