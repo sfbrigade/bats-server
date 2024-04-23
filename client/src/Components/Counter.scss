@@ -21,9 +21,14 @@
 
 .counter__input {
   text-align: center;
-  border: 0;
+  border-color: transparent;
   max-width: units(6) !important;
   @include u-margin-top(0);
+  &:disabled,
+  &:read-only {
+    color: color('base-darkest');
+    opacity: 1;
+  }
   // hide browser default numeric spin controls
   -moz-appearance: textfield; /* Firefox */
   &::-webkit-outer-spin-button,
@@ -51,5 +56,9 @@
   border-color: color('base-dark');
   .counter__button {
     visibility: visible;
+  }
+  .counter__input {
+    border-color: inherit;
+    background-color: white !important;
   }
 }
