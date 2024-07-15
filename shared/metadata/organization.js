@@ -32,9 +32,9 @@ const fields = [
     type: 'string',
   },
   {
-    name: 'timeZoneIsoCode',
+    name: 'timeZone',
     type: 'string',
-    defaultValue: 'PST',
+    defaultValue: 'America/Los_Angeles',
   },
   {
     name: 'isMfaEnabled',

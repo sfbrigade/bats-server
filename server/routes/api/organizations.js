@@ -21,7 +21,7 @@ router.post(
   middleware.isSuperUser,
   wrapper(async (req, res) => {
     const record = await models.Organization.create({
-      ..._.pick(req.body, ['name', 'type', 'state', 'stateUniqueId', 'timeZoneIsoCode', 'isMfaEnabled', 'isActive']),
+      ..._.pick(req.body, ['name', 'type', 'state', 'stateUniqueId', 'timeZone', 'isMfaEnabled', 'isActive']),
       CreatedById: req.user.id,
       UpdatedById: req.user.id,
     });

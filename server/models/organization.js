@@ -17,17 +17,7 @@ module.exports = (sequelize) => {
     toJSON() {
       const attributes = { ...this.get() };
       attributes.hospitals = this.Hospitals?.map((h) => h.toJSON());
-      return _.pick(attributes, [
-        'id',
-        'name',
-        'type',
-        'state',
-        'stateUniqueId',
-        'timeZoneIsoCode',
-        'isActive',
-        'hospitals',
-        'isMfaEnabled',
-      ]);
+      return _.pick(attributes, ['id', 'name', 'type', 'state', 'stateUniqueId', 'timeZone', 'isActive', 'hospitals', 'isMfaEnabled']);
     }
   }
 

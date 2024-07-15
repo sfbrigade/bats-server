@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import State from '../../../Models/State';
+import TimeZone from '../../../Models/TimeZone';
+
 import FormInput from '../../../Components/FormInput';
 import FormCheckbox from '../../../Components/FormCheckbox';
 import FormComboBox from '../../../Components/FormComboBox';
@@ -22,7 +25,7 @@ function OrganizationForm() {
         type: 'EMS',
         state: '06',
         stateUniqueId: '',
-        timeZoneIsoCode: 'PST',
+        timeZone: 'America/Los_Angeles',
         isMfaEnabled: false,
         isActive: true,
       };
@@ -103,11 +106,11 @@ function OrganizationForm() {
                   property="state"
                   isFreeFormDisabled
                   onChange={onChange}
-                  options={[
-                    <option key="06" value="06">
-                      California
-                    </option>,
-                  ]}
+                  options={State.ALL_STATES.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
                   value={data.state ?? ''}
                 />
                 <FormInput
@@ -121,16 +124,16 @@ function OrganizationForm() {
                 <FormComboBox
                   className="margin-top-4"
                   label="Time Zone"
-                  property="timeZoneIsoCode"
+                  property="timeZone"
                   isFreeFormDisabled
                   onChange={onChange}
-                  options={[
-                    <option key="PST" value="PST">
-                      PST
-                    </option>,
-                  ]}
+                  options={TimeZone.ALL_TIMEZONES.map((tz) => (
+                    <option key={tz.id} value={tz.id}>
+                      {tz.name}
+                    </option>
+                  ))}
                   required
-                  value={data.timeZoneIsoCode}
+                  value={data.timeZone}
                 />
                 <div className="margin-top-4">
                   <FormCheckbox

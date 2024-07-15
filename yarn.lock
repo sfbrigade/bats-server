@@ -1748,7 +1748,7 @@
 
 "@node-oauth/express-oauth-server@^4.0.0":
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@node-oauth/express-oauth-server/-/express-oauth-server-4.0.0.tgz#fed87a1332c6535b1014ea8aa210d1932bed3b44"
+  resolved "https://registry.npmjs.org/@node-oauth/express-oauth-server/-/express-oauth-server-4.0.0.tgz"
   integrity sha512-IfVfk0Biypw5NNvVW5Nkz8h0FiieFcOiJLZZXipU8cX8Es+fc9Gbt/zbKgA6HPicL+vCvoUwT5ztSmh/iAxW+Q==
   dependencies:
     "@node-oauth/oauth2-server" "^5.1.0"
@@ -1896,7 +1896,7 @@
 
 "@sparing-software/100vh@^1.2.0":
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@sparing-software/100vh/-/100vh-1.2.0.tgz#6125cca0c77cdaca6f440670781e63e6cb11e5db"
+  resolved "https://registry.npmjs.org/@sparing-software/100vh/-/100vh-1.2.0.tgz"
   integrity sha512-50II9Dxpab8f5m3GXEqPlR/GmXnu6bDl+Ymecnrc1QhbUdZcDfGHsvvJLuTbRcH97e5tYGXIjcM+KgQvnVwR2A==
 
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
@@ -3693,7 +3693,7 @@ cliui@^8.0.1:
 
 clone@2.x:
   version "2.1.2"
-  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
+  resolved "https://registry.npmjs.org/clone/-/clone-2.1.2.tgz"
   integrity sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==
 
 co@^4.6.0:
@@ -8112,7 +8112,7 @@ node-addon-api@^5.0.0:
 
 node-cache@^5.1.2:
   version "5.1.2"
-  resolved "https://registry.yarnpkg.com/node-cache/-/node-cache-5.1.2.tgz#f264dc2ccad0a780e76253a694e9fd0ed19c398d"
+  resolved "https://registry.npmjs.org/node-cache/-/node-cache-5.1.2.tgz"
   integrity sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==
   dependencies:
     clone "2.x"
@@ -9696,7 +9696,7 @@ random-bytes@~1.0.0:
 
 randombytes@2.0.3:
   version "2.0.3"
-  resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.0.3.tgz#674c99760901c3c4112771a31e521dc349cc09ec"
+  resolved "https://registry.npmjs.org/randombytes/-/randombytes-2.0.3.tgz"
   integrity sha512-lDVjxQQFoCG1jcrP06LNo2lbWp4QTShEXnhActFBwYuHprllQV6VUpwreApsYqCgD+N1mHoqJ/BI/4eV4R2GYg==
 
 randombytes@^2.1.0:
@@ -9708,7 +9708,7 @@ randombytes@^2.1.0:
 
 randomstring@^1.3.0:
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/randomstring/-/randomstring-1.3.0.tgz#1bf9d730066899e70aee3285573f84708278683d"
+  resolved "https://registry.npmjs.org/randomstring/-/randomstring-1.3.0.tgz"
   integrity sha512-gY7aQ4i1BgwZ8I1Op4YseITAyiDiajeZOPQUbIq9TPGPhUm5FX59izIaOpmKbME1nmnEiABf28d9K2VSii6BBg==
   dependencies:
     randombytes "2.0.3"
