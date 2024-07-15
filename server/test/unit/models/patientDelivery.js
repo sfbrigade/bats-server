@@ -44,7 +44,7 @@ describe('models.PatientDelivery', () => {
       assert(patient);
 
       const hospital = await patientDelivery.getHospital();
-      assert.deepStrictEqual(hospital.name, 'CPMC Davies Campus');
+      assert.deepStrictEqual(hospital.name, 'CPMC Davies');
 
       const patientDeliveryUpdates = await patientDelivery.getPatientDeliveryUpdates();
       assert.deepStrictEqual(patientDeliveryUpdates.length, 1);
@@ -194,7 +194,7 @@ describe('models.PatientDelivery', () => {
         emsCall: { dispatchCallNumber: '911' },
         hospital: {
           id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
-          name: 'CPMC Davies Campus',
+          name: 'CPMC Davies',
         },
         patient: {
           triageTag: null,

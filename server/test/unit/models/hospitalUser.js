@@ -28,7 +28,7 @@ describe('models.HospitalUser', () => {
     assert.deepStrictEqual(updatedBy.name, 'Super User');
 
     const hospital = await hospitalUser.getHospital();
-    assert.deepStrictEqual(hospital.name, 'CPMC Davies Campus');
+    assert.deepStrictEqual(hospital.name, 'CPMC Davies');
 
     const user = await hospitalUser.getEdAdminUser();
     assert.deepStrictEqual(user.name, 'Sutter Operational');

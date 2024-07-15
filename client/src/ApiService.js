@@ -48,6 +48,20 @@ export default {
       return instance.get('/api/emscalls/dispatch-call-numbers', { params: { ambulanceIdentifier } });
     },
   },
+  hospitals: {
+    index() {
+      return instance.get('/api/hospitals/');
+    },
+    create(data) {
+      return instance.post(`/api/hospitals`, data);
+    },
+    get(id) {
+      return instance.get(`/api/hospitals/${id}`);
+    },
+    update(id, data) {
+      return instance.patch(`/api/hospitals/${id}`, data);
+    },
+  },
   hospitalStatuses: {
     get() {
       return instance.get('/api/hospitalstatuses');
