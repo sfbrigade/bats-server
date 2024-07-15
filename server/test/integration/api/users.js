@@ -89,7 +89,7 @@ describe('/api/users', () => {
           type: 'HEALTHCARE',
           state: null,
           stateUniqueId: null,
-          timeZoneIsoCode: 'PST',
+          timeZone: 'America/Los_Angeles',
           isActive: true,
           isMfaEnabled: false,
         },
