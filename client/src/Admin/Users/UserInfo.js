@@ -10,28 +10,18 @@ import Context from '../../Context';
 
 function UserInfo({ userId }) {
   const navigate = useNavigate();
-  const { organization, hospital } = useContext(Context);
+  const { organization } = useContext(Context);
   const [user, setUser] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
     if (userId && userId !== 'new') {
       ApiService.users
-        .get(userId, { organizationId: organization?.id, hospitalId: hospital?.id })
+        .get(userId, { organizationId: organization?.id })
         .then((response) => {
           const { data } = response;
           if (data.organization?.id !== organization?.id) {
             navigate('/admin/users');
-          }
-          if (hospital) {
-            const hospitalUser = data.activeHospitals?.find((ahu) => ahu.hospital?.id === hospital?.id);
-            if (hospitalUser) {
-              data.isActive = hospitalUser.isActive;
-              data.isInfoUser = hospitalUser.isInfoUser;
-              data.isRingdownUser = hospitalUser.isRingdownUser;
-            } else {
-              navigate('/admin/users');
-            }
           }
           setUser(response.data);
         })
@@ -47,14 +37,9 @@ function UserInfo({ userId }) {
         isAdminUser: false,
         isOperationalUser: true,
       };
-      if (hospital) {
-        data.isActive = true;
-        data.isInfoUser = true;
-        data.isRingdownUser = true;
-      }
       setUser(data);
     }
-  }, [userId, organization, hospital]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [userId, organization, navigate]);
 
   function onChange(property, value) {
     const newUser = { ...user };
@@ -69,7 +54,6 @@ function UserInfo({ userId }) {
       const data = {
         ...user,
         organizationId: organization.id,
-        hospitalId: hospital?.id,
       };
       if (data.password === '') {
         delete data.password;
@@ -144,14 +128,6 @@ function UserInfo({ userId }) {
                 <label className="usa-label">Role</label>
                 <FormCheckbox label="Administrative" onChange={onChange} property="isAdminUser" currentValue={user.isAdminUser} />
                 <FormCheckbox label="Operational" onChange={onChange} property="isOperationalUser" currentValue={user.isOperationalUser} />
-                {hospital && (
-                  <>
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                    <label className="usa-label">Tabs</label>
-                    <FormCheckbox label="Info tab" onChange={onChange} property="isInfoUser" currentValue={user.isInfoUser} />
-                    <FormCheckbox label="Ringdowns tab" onChange={onChange} property="isRingdownUser" currentValue={user.isRingdownUser} />
-                  </>
-                )}
                 <button className="usa-button margin-y-3" type="submit">
                   Submit
                 </button>
