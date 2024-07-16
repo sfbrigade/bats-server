@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FormInput from '../../Components/FormInput';
@@ -8,8 +8,9 @@ import FormError from '../../Models/FormError';
 import ApiService from '../../ApiService';
 import Context from '../../Context';
 
-function UserInfo({ userId }) {
+function UserForm() {
   const navigate = useNavigate();
+  const { userId } = useParams();
   const { organization } = useContext(Context);
   const [user, setUser] = useState();
   const [error, setError] = useState();
@@ -71,7 +72,8 @@ function UserInfo({ userId }) {
   }
 
   return (
-    <>
+    <main>
+      <h1>Hospital</h1>
       {user && (
         <form onSubmit={onSubmit} className="usa-form">
           <div className="grid-row">
@@ -136,13 +138,13 @@ function UserInfo({ userId }) {
           </div>
         </form>
       )}
-    </>
+    </main>
   );
 }
-UserInfo.propTypes = {
+UserForm.propTypes = {
   userId: PropTypes.string,
 };
-UserInfo.defaultProps = {
+UserForm.defaultProps = {
   userId: undefined,
 };
-export default UserInfo;
+export default UserForm;
