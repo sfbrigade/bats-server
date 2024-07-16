@@ -57,6 +57,10 @@ describe('/api/hospitals', () => {
         assert.deepStrictEqual(record.state, '06');
         assert.deepStrictEqual(record.stateFacilityCode, '20050');
         assert.deepStrictEqual(record.isActive, true);
+
+        const statusUpdate = await models.HospitalStatusUpdate.findOne({ where: { HospitalId: record.id } });
+        assert.ok(statusUpdate);
+        assert.deepStrictEqual(statusUpdate.openEdBedCount, 0);
       });
     });
 
