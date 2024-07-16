@@ -1,9 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-function FormCheckbox({ currentValue, disabled, label, onChange, property, value }) {
-  const id = `${property}-${value}`;
-
+function FormCheckbox({ className, currentValue, disabled, id, label, onChange, property, value }) {
   function toggle(val) {
     // if boolean, then negate
     if (typeof value === 'boolean') {
@@ -22,13 +21,13 @@ function FormCheckbox({ currentValue, disabled, label, onChange, property, value
         checked={currentValue === value}
         className="usa-checkbox__input"
         disabled={disabled}
-        id={id}
+        id={id ?? `${property}-${value}`}
         name={property}
         onChange={() => onChange(property, toggle(currentValue))}
         type="checkbox"
         value={value}
       />
-      <label className="usa-checkbox__label" htmlFor={id}>
+      <label className={classNames('usa-checkbox__label', className)} htmlFor={id}>
         {label}
       </label>
     </div>

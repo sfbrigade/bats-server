@@ -18,7 +18,7 @@ function AdminNavigation() {
   window.history.replaceState({}, '');
   const url = useResolvedPath('').pathname;
   const isSiteAdmin = location.pathname.startsWith(`${url}/site`);
-  const { user, organization, setOrganization, setHospital } = useContext(Context);
+  const { user, organization, setOrganization } = useContext(Context);
   const [organizations, setOrganizations] = useState([]);
   const [showFlash, setShowFlash] = useState(false);
 
@@ -42,21 +42,11 @@ function AdminNavigation() {
     const newOrganization = organizations.find((o) => o.id === organizationId);
     if (newOrganization) {
       setOrganization(newOrganization);
-      if (newOrganization.type === 'HEALTHCARE') {
-        setHospital(newOrganization.hospitals[0]);
-      } else {
-        setHospital();
-      }
     }
   }
 
   function reset() {
     setOrganization(user.organization);
-    if (user.organization.type === 'HEALTHCARE') {
-      setHospital(user.activeHospitals[0].hospital);
-    } else {
-      setHospital();
-    }
   }
 
   return (

@@ -4,7 +4,7 @@ import { Routes, Navigate, Route } from 'react-router-dom';
 import AdminNavigation from './AdminNavigation';
 import Dashboard from './Dashboard';
 import Ringdowns from './Ringdowns/Ringdowns';
-import Users from './Users/Users';
+import UsersRoutes from './Users/UsersRoutes';
 import HospitalsRoutes from './Hospitals/HospitalsRoutes';
 import MciRoutes from './Mcis/McisRoutes';
 import Settings from './Settings';
@@ -20,7 +20,7 @@ export default function Admin() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="mcis/*" element={<MciRoutes />} />
           <Route path="ringdowns" element={<Ringdowns />} />
-          <Route path="users/:userId?" element={<Users />} />
+          <Route path="users/*" element={<UsersRoutes />} />
           <Route path="hospitals/*" element={<HospitalsRoutes />} />
           <Route path="settings" element={<Settings />} />
           <Route path="" element={<Navigate to="dashboard" />} />

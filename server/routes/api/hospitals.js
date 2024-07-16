@@ -15,7 +15,7 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
       ['name', 'ASC'],
     ],
   };
-  let { organizationId: OrganizationId } = req.params ?? {};
+  let { organizationId: OrganizationId } = req.query ?? {};
   if (!req.user.isSuperUser) {
     ({ OrganizationId } = req.user);
   }
