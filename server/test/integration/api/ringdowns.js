@@ -505,7 +505,7 @@ describe('/api/ringdowns', () => {
         emsCall: { dispatchCallNumber: '911' },
         hospital: {
           id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
-          name: 'CPMC Davies Campus',
+          name: 'CPMC Davies',
         },
         patient: {
           triageTag: null,

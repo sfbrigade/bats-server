@@ -1,8 +1,9 @@
 const assert = require('assert');
 const HttpStatus = require('http-status-codes');
 const session = require('supertest-session');
-const models = require('../../../models');
+
 const helper = require('../../helper');
+const models = require('../../../models');
 const app = require('../../../app');
 
 describe('/api/organizations', () => {

@@ -5,7 +5,7 @@ import AdminNavigation from './AdminNavigation';
 import Dashboard from './Dashboard';
 import Ringdowns from './Ringdowns/Ringdowns';
 import Users from './Users/Users';
-import Hospitals from './Hospitals';
+import HospitalsRoutes from './Hospitals/HospitalsRoutes';
 import MciRoutes from './Mcis/McisRoutes';
 import Settings from './Settings';
 import SiteRoutes from './Site/SiteRoutes';
@@ -21,7 +21,7 @@ export default function Admin() {
           <Route path="mcis/*" element={<MciRoutes />} />
           <Route path="ringdowns" element={<Ringdowns />} />
           <Route path="users/:userId?" element={<Users />} />
-          <Route path="hospitals" element={<Hospitals />} />
+          <Route path="hospitals/*" element={<HospitalsRoutes />} />
           <Route path="settings" element={<Settings />} />
           <Route path="" element={<Navigate to="dashboard" />} />
         </Routes>

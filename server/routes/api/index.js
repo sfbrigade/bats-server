@@ -10,6 +10,7 @@ router.use(middleware.checkAuthorizationHeader);
 router.use('/clients', require('./clients'));
 router.use('/users', require('./users'));
 router.use('/ringdowns', require('./ringdowns'));
+router.use('/hospitals', require('./hospitals'));
 router.use('/hospitalstatuses', require('./hospitalStatuses'));
 router.use('/ambulances', require('./ambulances'));
 router.use('/emscalls', require('./emsCalls'));

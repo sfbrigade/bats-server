@@ -55,7 +55,7 @@ describe('models.HospitalStatusUpdate', () => {
     assert.deepStrictEqual(updatedBy.name, 'Super User');
 
     const hospital = await hospitalStatusUpdate.getHospital();
-    assert.deepStrictEqual(hospital.name, 'CPMC Davies Campus');
+    assert.deepStrictEqual(hospital.name, 'CPMC Davies');
 
     const hospitalAdmin = await hospitalStatusUpdate.getEdAdminUser();
     assert.deepStrictEqual(hospitalAdmin.name, 'Sutter Admin');
@@ -69,9 +69,9 @@ describe('models.HospitalStatusUpdate', () => {
       // should only return one update per the 2 hospitals
       assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
       // each update should reflect the latest (test data year 2005 vs 2004)
-      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'Sutter Hospital');
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'CPMC Van Ness');
       assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
-      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies Campus');
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies');
       assert.deepStrictEqual(hospitalStatusUpdates[1].updateDateTimeLocal.getFullYear(), 2005);
     });
   });
@@ -82,11 +82,11 @@ describe('models.HospitalStatusUpdate', () => {
       // should only return one update per the 2 hospitals
       assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
       // each update should reflect the latest (test data year 2005 vs 2004)
-      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'Sutter Hospital');
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'CPMC Van Ness');
       assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
       assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.ambulanceCounts.enRoute, 3);
       assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.ambulanceCounts.offloading, 0);
-      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies Campus');
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'CPMC Davies');
       assert.deepStrictEqual(hospitalStatusUpdates[1].updateDateTimeLocal.getFullYear(), 2005);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.enRoute, 3);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.offloading, 1);
@@ -116,7 +116,7 @@ describe('models.HospitalStatusUpdate', () => {
         updatedById: '449b1f54-7583-417c-8c25-8da7dde65f6d',
         hospital: {
           id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
-          name: 'CPMC Davies Campus',
+          name: 'CPMC Davies',
           state: '06',
           stateFacilityCode: '20048',
           sortSequenceNumber: 2,
