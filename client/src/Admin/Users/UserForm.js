@@ -75,7 +75,15 @@ function UserForm() {
     }
   }
 
-  function onChangeHospitalUser(hu, event) {}
+  async function onChangeHospitalUser(hu, property, newValue) {
+    try {
+      await ApiService.hospitalUsers.update(hu.id, { [property]: newValue });
+      hu[property] = newValue;
+      setHospitalUsers([...hospitalUsers]);
+    } catch {
+      // TODO: display an alert
+    }
+  }
 
   return (
     <main>
@@ -163,7 +171,7 @@ function UserForm() {
                 </thead>
                 <tbody>
                   {hospitalUsers?.map((hu) => (
-                    <tr>
+                    <tr key={hu.id}>
                       <td>{hu.hospital?.name}</td>
                       <td className="w-20">
                         <FormCheckbox

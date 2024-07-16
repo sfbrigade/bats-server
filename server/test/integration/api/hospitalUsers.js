@@ -49,6 +49,26 @@ describe('/api/hospitalUsers', () => {
         assert.deepStrictEqual(records[0].hospital?.name, 'CPMC Davies');
       });
     });
+
+    describe('PATCH /:id', () => {
+      it('updates an existing HospitalUser record', async () => {
+        await testSession
+          .patch('/api/hospitalusers/a19bce9b-35ae-4df6-9603-f40150d2c7b0')
+          .send({
+            isActive: false,
+            isInfoUser: false,
+            isRingdownUser: false,
+          })
+          .set('Accept', 'application/json')
+          .expect(HttpStatus.OK);
+
+        const record = await models.HospitalUser.findByPk('a19bce9b-35ae-4df6-9603-f40150d2c7b0');
+        assert.deepStrictEqual(record.isActive, false);
+        assert.deepStrictEqual(record.isInfoUser, false);
+        assert.deepStrictEqual(record.isRingdownUser, false);
+      });
+    });
+
     /*
     describe('POST /', () => {
       it('creates a new Hospital for an Organization', async () => {
@@ -88,27 +108,6 @@ describe('/api/hospitalUsers', () => {
       });
     });
 
-    describe('PATCH /:id', () => {
-      it('updates an existing Hospital record', async () => {
-        await testSession
-          .patch('/api/hospitals/00752f60-068f-11eb-adc1-0242ac120002')
-          .send({
-            name: 'CPMC Van Ness Campus',
-            state: '25',
-            stateFacilityCode: '123456',
-            isActive: false,
-          })
-          .set('Accept', 'application/json')
-          .expect(HttpStatus.OK);
-
-        const record = await models.Hospital.findByPk('00752f60-068f-11eb-adc1-0242ac120002');
-        assert.deepStrictEqual(record.OrganizationId, '25ffdd7c-b4cf-4ebb-9750-1e628370e13b');
-        assert.deepStrictEqual(record.name, 'CPMC Van Ness Campus');
-        assert.deepStrictEqual(record.state, '25');
-        assert.deepStrictEqual(record.stateFacilityCode, '123456');
-        assert.deepStrictEqual(record.isActive, false);
-      });
-    });
     */
   });
 });

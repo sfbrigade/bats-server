@@ -75,6 +75,9 @@ export default {
       const { hospitalId, userId } = params ?? {};
       return instance.get('/api/hospitalusers', { params: { hospitalId, userId } });
     },
+    update(id, data) {
+      return instance.patch(`/api/hospitalusers/${id}`, data);
+    },
   },
   mcis: {
     index() {

@@ -44,6 +44,44 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
   res.json(records.map((record) => record.toJSON()));
 });
 
+router.patch(
+  '/:id',
+  middleware.isAdminUser,
+  wrapper(async (req, res) => {
+    const options = {
+      include: [{ model: models.Hospital }, { model: models.User, as: 'EdAdminUser' }],
+      where: { id: req.params.id },
+    };
+    if (!req.user.isSuperUser) {
+      const { OrganizationId } = req.user;
+      options.include[0].where = {
+        OrganizationId,
+      };
+      options.include[1].where = {
+        OrganizationId,
+      };
+    }
+    let record;
+    await models.sequelize.transaction(async (transaction) => {
+      record = await models.HospitalUser.findOne({ ...options, transaction });
+      if (record) {
+        await record.update(
+          {
+            ..._.pick(req.body, ['isActive', 'isInfoUser', 'isRingdownUser']),
+            UpdatedById: req.user.id,
+          },
+          { transaction }
+        );
+      }
+    });
+    if (record) {
+      res.json(record.toJSON());
+    } else {
+      res.status(HttpStatus.NOT_FOUND).end();
+    }
+  })
+);
+
 /*
 router.post(
   '/',
@@ -73,35 +111,5 @@ router.get('/:id', middleware.isAdminUser, async (req, res) => {
   }
 });
 
-router.patch(
-  '/:id',
-  middleware.isAdminUser,
-  wrapper(async (req, res) => {
-    const options = {
-      where: { id: req.params.id },
-    };
-    if (!req.user.isSuperUser) {
-      options.where.OrganizationId = req.user.OrganizationId;
-    }
-    let record;
-    await models.sequelize.transaction(async (transaction) => {
-      record = await models.Hospital.findOne({ ...options, transaction });
-      if (record) {
-        await record.update(
-          {
-            ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'isActive']),
-            UpdatedById: req.user.id,
-          },
-          { transaction }
-        );
-      }
-    });
-    if (record) {
-      res.json(record.toJSON());
-    } else {
-      res.status(HttpStatus.NOT_FOUND).end();
-    }
-  })
-);
 */
 module.exports = router;
