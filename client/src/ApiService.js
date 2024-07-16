@@ -49,8 +49,9 @@ export default {
     },
   },
   hospitals: {
-    index() {
-      return instance.get('/api/hospitals/');
+    index(params) {
+      const { organizationId } = params ?? {};
+      return instance.get('/api/hospitals/', { params: { organizationId } });
     },
     create(data) {
       return instance.post(`/api/hospitals`, data);
@@ -74,6 +75,9 @@ export default {
     index(params) {
       const { hospitalId, userId } = params ?? {};
       return instance.get('/api/hospitalusers', { params: { hospitalId, userId } });
+    },
+    create(data) {
+      return instance.post(`/api/hospitalusers`, data);
     },
     update(id, data) {
       return instance.patch(`/api/hospitalusers/${id}`, data);

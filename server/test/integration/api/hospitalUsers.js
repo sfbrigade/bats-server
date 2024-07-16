@@ -50,6 +50,27 @@ describe('/api/hospitalUsers', () => {
       });
     });
 
+    describe('POST /', () => {
+      it('creates a new HospitalUser record for a Hospital and User', async () => {
+        const response = await testSession
+          .post('/api/hospitalusers')
+          .send({
+            userId: '38f58e29-2fb8-414e-bc0a-e30109066112',
+            hospitalId: '00752f60-068f-11eb-adc1-0242ac120002',
+          })
+          .set('Accept', 'application/json')
+          .expect(HttpStatus.CREATED);
+
+        assert.ok(response.body.id);
+        const record = await models.HospitalUser.findByPk(response.body.id);
+        assert.deepStrictEqual(record.HospitalId, '00752f60-068f-11eb-adc1-0242ac120002');
+        assert.deepStrictEqual(record.EdAdminUserId, '38f58e29-2fb8-414e-bc0a-e30109066112');
+        assert.deepStrictEqual(record.isActive, true);
+        assert.deepStrictEqual(record.isRingdownUser, true);
+        assert.deepStrictEqual(record.isInfoUser, true);
+      });
+    });
+
     describe('PATCH /:id', () => {
       it('updates an existing HospitalUser record', async () => {
         await testSession
@@ -68,46 +89,5 @@ describe('/api/hospitalUsers', () => {
         assert.deepStrictEqual(record.isRingdownUser, false);
       });
     });
-
-    /*
-    describe('POST /', () => {
-      it('creates a new Hospital for an Organization', async () => {
-        const response = await testSession
-          .post('/api/hospitals')
-          .send({
-            OrganizationId: '25ffdd7c-b4cf-4ebb-9750-1e628370e13b',
-            name: 'CPMC Mission Bernal',
-            state: '06',
-            stateFacilityCode: '20050',
-            isActive: true,
-          })
-          .set('Accept', 'application/json')
-          .expect(HttpStatus.CREATED);
-
-        assert.ok(response.body.id);
-        const record = await models.Hospital.findByPk(response.body.id);
-        assert.deepStrictEqual(record.OrganizationId, '25ffdd7c-b4cf-4ebb-9750-1e628370e13b');
-        assert.deepStrictEqual(record.name, 'CPMC Mission Bernal');
-        assert.deepStrictEqual(record.state, '06');
-        assert.deepStrictEqual(record.stateFacilityCode, '20050');
-        assert.deepStrictEqual(record.isActive, true);
-      });
-    });
-
-    describe('GET /:id', () => {
-      it('returns an existing Hospital record', async () => {
-        const response = await testSession
-          .get('/api/hospitals/00752f60-068f-11eb-adc1-0242ac120002')
-          .set('Accept', 'application/json')
-          .expect(HttpStatus.OK);
-        const record = response.body;
-        assert.deepStrictEqual(record.name, 'CPMC Van Ness');
-        assert.deepStrictEqual(record.state, '06');
-        assert.deepStrictEqual(record.stateFacilityCode, '62636');
-        assert.deepStrictEqual(record.isActive, true);
-      });
-    });
-
-    */
   });
 });

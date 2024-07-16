@@ -44,6 +44,42 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
   res.json(records.map((record) => record.toJSON()));
 });
 
+router.post(
+  '/',
+  middleware.isAdminUser,
+  wrapper(async (req, res) => {
+    const { hospitalId, userId } = req.body;
+    let record;
+    await models.sequelize.transaction(async (transaction) => {
+      const hospital = await models.Hospital.findByPk(hospitalId, { transaction });
+      const user = await models.User.findByPk(userId, { transaction });
+      if (!hospital || !user) {
+        return;
+      } else if (hospital.OrganizationId !== user.OrganizationId) {
+        return;
+      } else if (!req.user.isSuperUser && hospital.OrganizationId !== req.user.OrganizationId) {
+        return;
+      }
+      record = await models.HospitalUser.create(
+        {
+          HospitalId: hospitalId,
+          EdAdminUserId: userId,
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
+        },
+        { transaction }
+      );
+      record.EdAdminuser = user;
+      record.Hospital = hospital;
+    });
+    if (record) {
+      res.status(HttpStatus.CREATED).json(record.toJSON());
+    } else {
+      res.status(HttpStatus.UNPROCESSIBLE_ENTITY).end();
+    }
+  })
+);
+
 router.patch(
   '/:id',
   middleware.isAdminUser,
@@ -82,34 +118,4 @@ router.patch(
   })
 );
 
-/*
-router.post(
-  '/',
-  middleware.isSuperUser,
-  wrapper(async (req, res) => {
-    const record = await models.Hospital.create({
-      ..._.pick(req.body, ['OrganizationId', 'name', 'state', 'stateFacilityCode', 'isActive']),
-      CreatedById: req.user.id,
-      UpdatedById: req.user.id,
-    });
-    res.status(HttpStatus.CREATED).json(record.toJSON());
-  })
-);
-
-router.get('/:id', middleware.isAdminUser, async (req, res) => {
-  const options = {
-    where: { id: req.params.id },
-  };
-  if (!req.user.isSuperUser) {
-    options.where.OrganizationId = req.user.OrganizationId;
-  }
-  const record = await models.Hospital.findOne(options);
-  if (record) {
-    res.json(record.toJSON());
-  } else {
-    res.status(HttpStatus.NOT_FOUND).end();
-  }
-});
-
-*/
 module.exports = router;

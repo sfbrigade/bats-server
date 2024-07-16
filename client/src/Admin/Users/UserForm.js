@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import FormInput from '../../Components/FormInput';
 import FormCheckbox from '../../Components/FormCheckbox';
+import FormComboBox from '../../Components/FormComboBox';
 import FormError from '../../Models/FormError';
 import ApiService from '../../ApiService';
 import Context from '../../Context';
@@ -15,9 +16,14 @@ function UserForm() {
   const [user, setUser] = useState();
   const [error, setError] = useState();
 
+  const [hospitals, setHospitals] = useState();
+  const [selectedHospitalId, setSelectedHospitalId] = useState();
   const [hospitalUsers, setHospitalUsers] = useState();
 
   useEffect(() => {
+    if (organization) {
+      ApiService.hospitals.index({ organizationId: organization.id }).then((response) => setHospitals(response.data));
+    }
     if (userId && userId !== 'new') {
       ApiService.users
         .get(userId, { organizationId: organization?.id })
@@ -65,10 +71,11 @@ function UserForm() {
       }
       if (userId && userId !== 'new') {
         await ApiService.users.update(userId, data);
+        navigate('/admin/users', { state: { flash: { info: 'Saved!' } } });
       } else {
-        await ApiService.users.create(data);
+        const response = await ApiService.users.create(data);
+        navigate(`/admin/users/${response.data.id}`, { state: { flash: { info: 'Created!' } } });
       }
-      navigate('/admin/users', { state: { flash: { info: 'Saved!' } } });
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);
@@ -80,6 +87,19 @@ function UserForm() {
       await ApiService.hospitalUsers.update(hu.id, { [property]: newValue });
       hu[property] = newValue;
       setHospitalUsers([...hospitalUsers]);
+    } catch {
+      // TODO: display an alert
+    }
+  }
+
+  async function onAddHospital() {
+    if (!selectedHospitalId || hospitalUsers.find((hu) => hu.hospital.id === selectedHospitalId)) {
+      return;
+    }
+    try {
+      const response = await ApiService.hospitalUsers.create({ hospitalId: selectedHospitalId, userId });
+      setHospitalUsers([...hospitalUsers, response.data]);
+      setSelectedHospitalId();
     } catch {
       // TODO: display an alert
     }
@@ -157,7 +177,7 @@ function UserForm() {
               </div>
             </div>
           </form>
-          {organization?.type === 'HEALTHCARE' && (
+          {userId !== 'new' && organization?.type === 'HEALTHCARE' && (
             <>
               <h2>Hospitals</h2>
               <table className="usa-table usa-table--striped usa-table--hoverable usa-table--borderless width-full">
@@ -206,6 +226,30 @@ function UserForm() {
                     </tr>
                   ))}
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td>
+                      <FormComboBox
+                        label=""
+                        required={false}
+                        property="selectedHospitalId"
+                        isFreeFormDisabled
+                        onChange={(_, newValue) => setSelectedHospitalId(newValue)}
+                        options={hospitals?.map((h) => (
+                          <option key={h.id} value={h.id}>
+                            {h.name}
+                          </option>
+                        ))}
+                        value={selectedHospitalId ?? ''}
+                      />
+                    </td>
+                    <td colSpan="3">
+                      <button disabled={!selectedHospitalId} onClick={onAddHospital} className="usa-button margin-top-1" type="button">
+                        Add
+                      </button>
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
             </>
           )}
