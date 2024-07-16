@@ -70,6 +70,12 @@ export default {
       return instance.post('/api/hospitalstatuses', data);
     },
   },
+  hospitalUsers: {
+    index(params) {
+      const { hospitalId, userId } = params ?? {};
+      return instance.get('/api/hospitalusers', { params: { hospitalId, userId } });
+    },
+  },
   mcis: {
     index() {
       return instance.get('/api/mcis');

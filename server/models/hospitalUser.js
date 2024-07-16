@@ -15,8 +15,9 @@ module.exports = (sequelize) => {
 
     toJSON() {
       const attributes = { ...this.get() };
+      attributes.user = this.EdAdminUser?.toJSON() || { id: this.EdAdminUserId };
       attributes.hospital = this.Hospital?.toJSON() || { id: this.HospitalId };
-      return _.pick(attributes, ['hospital', 'isActive', 'isInfoUser', 'isRingdownUser']);
+      return _.pick(attributes, ['id', 'user', 'hospital', 'isActive', 'isInfoUser', 'isRingdownUser']);
     }
   }
 

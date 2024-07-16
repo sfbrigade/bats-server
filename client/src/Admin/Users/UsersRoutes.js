@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
-import UserForm from './UserInfo';
-import UsersList from './Users';
+import UserForm from './UserForm';
+import UsersList from './UsersList';
 
 function UsersRoutes() {
   return (

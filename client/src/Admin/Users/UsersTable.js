@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import ApiService from '../../ApiService';
 import Context from '../../Context';
 
 function UsersTable({ isActive }) {
+  const navigate = useNavigate();
   const { user, organization } = useContext(Context);
   const [users, setUsers] = useState([]);
 
@@ -25,7 +26,7 @@ function UsersTable({ isActive }) {
   }, [user, organization, isActive]);
 
   return (
-    <table className="usa-table usa-table--borderless width-full">
+    <table className="usa-table usa-table--striped usa-table--hoverable usa-table--borderless width-full">
       <thead>
         <tr>
           <th>First Name</th>
@@ -36,7 +37,7 @@ function UsersTable({ isActive }) {
       </thead>
       <tbody>
         {users.map((u) => (
-          <tr key={u.id}>
+          <tr key={u.id} onClick={() => navigate(`/admin/users/${u.id}`)}>
             <td>{u.firstName}</td>
             <td>{u.lastName}</td>
             <td>{u.email}</td>

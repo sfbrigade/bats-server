@@ -1,4 +1,3 @@
-version: '2.3'
 services:
   db:
     image: postgres:12
@@ -13,6 +12,6 @@ services:
       - db
   mail:
     image: dockage/mailcatcher:0.8.2
-    # ports:
-    #   - 1025:1025
-    #   - 1080:1080
+    ports:
+      - 1025:1025
+      - 1080:1080
