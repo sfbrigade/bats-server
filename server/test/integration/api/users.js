@@ -95,6 +95,7 @@ describe('/api/users', () => {
         },
         activeHospitals: [
           {
+            id: 'a19bce9b-35ae-4df6-9603-f40150d2c7b0',
             isActive: true,
             isRingdownUser: true,
             isInfoUser: true,
@@ -105,6 +106,9 @@ describe('/api/users', () => {
               stateFacilityCode: '20048',
               sortSequenceNumber: 2,
               isActive: true,
+            },
+            user: {
+              id: '449b1f54-7583-417c-8c25-8da7dde65f6d',
             },
           },
         ],
