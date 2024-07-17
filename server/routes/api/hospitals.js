@@ -32,10 +32,33 @@ router.post(
   '/',
   middleware.isSuperUser,
   wrapper(async (req, res) => {
-    const record = await models.Hospital.create({
-      ..._.pick(req.body, ['OrganizationId', 'name', 'state', 'stateFacilityCode', 'isActive']),
-      CreatedById: req.user.id,
-      UpdatedById: req.user.id,
+    let record;
+    await models.sequelize.transaction(async (transaction) => {
+      record = await models.Hospital.create(
+        {
+          ..._.pick(req.body, ['OrganizationId', 'name', 'state', 'stateFacilityCode', 'isActive']),
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
+        },
+        { transaction }
+      );
+      // create an initial empty update
+      const now = new Date();
+      await models.HospitalStatusUpdate.create(
+        {
+          HospitalId: record.id,
+          EdAdminUserId: req.user.id,
+          divertStatusIndicator: false,
+          divertStatusUpdateDateTimeLocal: now,
+          openEdBedCount: 0,
+          openPsychBedCount: 0,
+          bedCountUpdateDateTimeLocal: now,
+          updateDateTimeLocal: now,
+          CreatedById: req.user.id,
+          UpdatedById: req.user.id,
+        },
+        { transaction }
+      );
     });
     res.status(HttpStatus.CREATED).json(record.toJSON());
   })
