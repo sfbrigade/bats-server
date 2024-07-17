@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+const models = require('../models');
+
+async function createMissingStatusUpdates() {
+  if (process.argv.length < 3) {
+    console.log('Usage: bin/create-missing-status-updates superuser@email.address');
+    return;
+  }
+  const [,,email] = process.argv;
+  const superuser = await models.User.findOne({ where: { email, isSuperUser: true }});
+  if (!superuser) {
+    console.log('Super user not found');
+    return;
+  }
+  const [results,] = await models.sequelize.query(`SELECT hospital.hospital_uuid, hospitalstatusupdate_uuid FROM hospital LEFT JOIN hospitalstatusupdate ON hospitalstatusupdate.hospital_uuid=hospital.hospital_uuid WHERE hospitalstatusupdate_uuid IS NULL`);
+  const now = new Date();
+  await Promise.all(results.map((r) => models.HospitalStatusUpdate.create({
+    HospitalId: r.hospital_uuid,
+    EdAdminUserId: superuser.id,
+    divertStatusIndicator: false,
+    divertStatusUpdateDateTimeLocal: now,
+    openEdBedCount: 0,
+    openPsychBedCount: 0,
+    bedCountUpdateDateTimeLocal: now,
+    updateDateTimeLocal: now,
+    CreatedById: superuser.id,
+    UpdatedById: superuser.id,
+  })));
+  console.log('Missing status updates created!');
+}
+
+createMissingStatusUpdates()
+  .catch((error) => console.log(error))
+  .finally(async function () {
+    await models.sequelize.close();
+    process.exit(0);
+  });
