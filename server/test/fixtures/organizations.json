@@ -5,6 +5,7 @@
       "id": "aac13870-f6f3-11ea-adc1-0242ac120002",
       "name": "Code for San Francisco",
       "type": "C4SF",
+      "state": "06",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "isMfaEnabled": true
@@ -16,6 +17,19 @@
       "id": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
       "name": "Sutter Health",
       "type": "HEALTHCARE",
+      "state": "06",
+      "stateUniqueId": "",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Organization",
+    "data": {
+      "id": "0b01d3a3-3a8c-40a9-b07a-b360f256d5fc",
+      "name": "UCSF Health",
+      "type": "HEALTHCARE",
+      "state": "06",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
@@ -26,6 +40,8 @@
       "id": "1dd0dfd7-562e-48db-ae78-31b9136d3e15",
       "name": "San Francisco Fire Department",
       "type": "EMS",
+      "state": "06",
+      "stateUniqueId": "S38-50827",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
@@ -36,6 +52,8 @@
       "id": "7c9023ff-dd16-4e87-823a-80567a7b834a",
       "name": "American Medical Response (AMR)",
       "type": "EMS",
+      "state": "06",
+      "stateUniqueId": "S38-50088",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
@@ -46,6 +64,8 @@
       "id": "0a276fb6-6766-4e2c-b735-cabc4da684ff",
       "name": "King American",
       "type": "EMS",
+      "state": "06",
+      "stateUniqueId": "S38-50502",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
@@ -56,6 +76,8 @@
       "id": "49f916bb-bfb9-40cf-965c-6e9a8ab7e970",
       "name": "NORCal Ambulance",
       "type": "EMS",
+      "state": "06",
+      "stateUniqueId": "S38-50672",
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
