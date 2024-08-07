@@ -23,6 +23,8 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
     options.where = {
       OrganizationId,
     };
+  } else {
+    options.include = ['Organization'];
   }
   const records = await models.Hospital.findAll(options);
   res.json(records.map((record) => record.toJSON()));
