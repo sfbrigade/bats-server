@@ -64,7 +64,7 @@ export default {
     },
     sort(data) {
       return instance.patch(`/api/hospitals/sort`, data);
-    }
+    },
   },
   hospitalStatuses: {
     get() {
