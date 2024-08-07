@@ -62,6 +62,9 @@ export default {
     update(id, data) {
       return instance.patch(`/api/hospitals/${id}`, data);
     },
+    sort(data) {
+      return instance.patch(`/api/hospitals/sort`, data);
+    }
   },
   hospitalStatuses: {
     get() {

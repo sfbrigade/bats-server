@@ -78,6 +78,31 @@ describe('/api/hospitals', () => {
       });
     });
 
+    describe('PATCH /sort', () => {
+      it('bulk updates the sort sequence of the specified hospital records', async () => {
+        await testSession
+          .patch('/api/hospitals/sort')
+          .send([
+            {
+              id: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
+              sortSequenceNumber: 1,
+            },
+            {
+              id: '00752f60-068f-11eb-adc1-0242ac120002',
+              sortSequenceNumber: 2,
+            },
+          ])
+          .set('Accept', 'application/json')
+          .expect(HttpStatus.OK);
+
+        let record = await models.Hospital.findByPk('7f666fe4-dbdd-4c7f-ab44-d9157379a680');
+        assert.deepStrictEqual(record.sortSequenceNumber, 1);
+
+        record = await models.Hospital.findByPk('00752f60-068f-11eb-adc1-0242ac120002');
+        assert.deepStrictEqual(record.sortSequenceNumber, 2);
+      });
+    });
+
     describe('PATCH /:id', () => {
       it('updates an existing Hospital record', async () => {
         await testSession

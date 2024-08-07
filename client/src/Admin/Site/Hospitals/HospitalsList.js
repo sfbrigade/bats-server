@@ -1,38 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ReactSortable } from 'react-sortablejs';
 
 import ApiService from '../../../ApiService';
 
 function HospitalsList() {
-  const navigate = useNavigate();
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
     ApiService.hospitals.index().then((response) => setRecords(response.data));
   }, []);
 
+  async function onDrop(records) {
+    let i = 1;
+    for (const record of records) {
+      record.sortSequenceNumber = i++;
+    }
+    setRecords(records);
+    try {
+      await ApiService.hospitals.sort(records.map((r) => ({ id: r.id, sortSequenceNumber: r.sortSequenceNumber })));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <main>
       <div className="display-flex flex-align-center flex-justify">
         <h1>Hospitals</h1>
       </div>
-      <table className="usa-table usa-table--striped usa-table--borderless usa-table--hoverable width-full">
+      <table className="usa-table usa-table--striped usa-table--borderless width-full">
         <thead>
           <tr>
+            <th></th>
             <th className="w-35">Name</th>
             <th className="w-35">Organization</th>
             <th>State Facility Code</th>
           </tr>
         </thead>
-        <tbody>
+        <ReactSortable tag="tbody" list={records} setList={(list) => onDrop(list)}>
           {records.map((r) => (
-            <tr key={r.id} onClick={() => navigate(r.id)}>
+            <tr key={r.id}>
+              <td className="cursor--grab">&equiv;</td>
               <td>{r.name}</td>
               <td>{r.organization?.name}</td>
               <td>{r.stateFacilityCode}</td>
             </tr>
           ))}
-        </tbody>
+        </ReactSortable>
       </table>
     </main>
   );

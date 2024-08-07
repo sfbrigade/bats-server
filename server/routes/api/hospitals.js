@@ -82,6 +82,22 @@ router.get('/:id', middleware.isAdminUser, async (req, res) => {
 });
 
 router.patch(
+  '/sort',
+  middleware.isAdminUser,
+  wrapper(async (req, res) => {
+    await models.sequelize.transaction(async (transaction) => {
+      await Promise.all(
+        req.body.map((record) => {
+          const { id, sortSequenceNumber } = record;
+          return models.Hospital.update({ sortSequenceNumber }, { where: { id }, transaction });
+        })
+      );
+    });
+    res.status(HttpStatus.OK).end();
+  })
+);
+
+router.patch(
   '/:id',
   middleware.isAdminUser,
   wrapper(async (req, res) => {
