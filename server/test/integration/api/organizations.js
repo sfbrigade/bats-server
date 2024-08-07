@@ -22,7 +22,52 @@ describe('/api/organizations', () => {
     await helper.twoFactorAuthSession(testSession);
   });
 
-  describe('PATCH/', () => {
+  describe('POST /', () => {
+    it('creates a new Organization', async () => {
+      const response = await testSession
+        .post('/api/organizations')
+        .set('Accept', 'application/json')
+        .send({
+          name: 'Kaiser Permanente',
+          type: 'HEALTHCARE',
+          state: '06',
+          stateUniqueId: '',
+          timeZone: 'America/Los_Angeles',
+          isActive: true,
+        })
+        .expect(HttpStatus.CREATED);
+
+      const data = response.body;
+      assert.ok(data.id);
+      assert.deepStrictEqual(data.name, 'Kaiser Permanente');
+      assert.deepStrictEqual(data.type, 'HEALTHCARE');
+      assert.deepStrictEqual(data.state, '06');
+      assert.deepStrictEqual(data.stateUniqueId, null);
+      assert.deepStrictEqual(data.timeZone, 'America/Los_Angeles');
+      assert.deepStrictEqual(data.isActive, true);
+
+      const record = await models.Organization.findByPk(data.id);
+      assert.deepStrictEqual(record.name, 'Kaiser Permanente');
+      assert.deepStrictEqual(record.type, 'HEALTHCARE');
+      assert.deepStrictEqual(record.state, '06');
+      assert.deepStrictEqual(record.stateUniqueId, null);
+      assert.deepStrictEqual(record.timeZone, 'America/Los_Angeles');
+      assert.deepStrictEqual(record.isActive, true);
+    });
+  });
+
+  describe('PATCH /:id', () => {
+    it('updates an existing Organization record', async () => {
+      const response = await testSession
+        .patch('/api/organizations/0b01d3a3-3a8c-40a9-b07a-b360f256d5fc')
+        .set('Accept', 'application/json')
+        .send({ name: 'UC San Francisco Health', stateUniqueId: '' })
+        .expect(HttpStatus.OK);
+      const { body: data } = response;
+      assert.deepStrictEqual(data.name, 'UC San Francisco Health');
+      assert.deepStrictEqual(data.stateUniqueId, null);
+    });
+
     it('turns on mfa for an organization', async () => {
       const orgId = '25ffdd7c-b4cf-4ebb-9750-1e628370e13b';
 
