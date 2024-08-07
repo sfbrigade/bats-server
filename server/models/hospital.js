@@ -47,8 +47,11 @@ module.exports = (sequelize) => {
     }
 
     toJSON() {
-      const attributes = { ...this.get() };
-      return _.pick(attributes, ['id', 'name', 'state', 'stateFacilityCode', 'sortSequenceNumber', 'isActive']);
+      const json = _.pick(this.get(), ['id', 'name', 'state', 'stateFacilityCode', 'sortSequenceNumber', 'isActive']);
+      if (this.Organization) {
+        json.organization = this.Organization.toJSON();
+      }
+      return json;
     }
   }
 

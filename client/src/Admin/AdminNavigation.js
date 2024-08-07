@@ -126,6 +126,12 @@ function AdminNavigation() {
               >
                 <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Organizations</span>
               </NavLink>
+              <NavLink
+                to={`${url}/site/hospitals`}
+                className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}
+              >
+                <HospitalIcon variation="outlined" className="admin-navigation__link-icon" /> <span>Hospitals</span>
+              </NavLink>
             </>
           )}
           {(!user?.isSuperUser || !isSiteAdmin) && (

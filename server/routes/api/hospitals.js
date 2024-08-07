@@ -23,6 +23,8 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
     options.where = {
       OrganizationId,
     };
+  } else {
+    options.include = ['Organization'];
   }
   const records = await models.Hospital.findAll(options);
   res.json(records.map((record) => record.toJSON()));
@@ -78,6 +80,22 @@ router.get('/:id', middleware.isAdminUser, async (req, res) => {
     res.status(HttpStatus.NOT_FOUND).end();
   }
 });
+
+router.patch(
+  '/sort',
+  middleware.isAdminUser,
+  wrapper(async (req, res) => {
+    await models.sequelize.transaction(async (transaction) => {
+      await Promise.all(
+        req.body.map((record) => {
+          const { id, sortSequenceNumber } = record;
+          return models.Hospital.update({ sortSequenceNumber }, { where: { id }, transaction });
+        })
+      );
+    });
+    res.status(HttpStatus.OK).end();
+  })
+);
 
 router.patch(
   '/:id',
