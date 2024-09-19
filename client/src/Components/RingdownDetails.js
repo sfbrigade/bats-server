@@ -47,30 +47,9 @@ const triagePriority = (value) => {
   }
 };
 
-const { Status } = Ringdown;
-
-function RingdownDetails({ className, onStatusChange, ringdown }) {
-  const isMCI = !!ringdown.triageTag || !!ringdown.triagePriority;
-
-  const isArrived = Status.is(ringdown.currentDeliveryStatus, Status.ARRIVED);
-  const isOffloaded = Status.is(ringdown.currentDeliveryStatus, Status.OFFLOADED);
-
+function RingdownDetails({ className, ringdown }) {
   return (
     <>
-      {isMCI && (
-        <div className="margin-top-2 margin-x-1 display-flex flex-justify-start">
-          {!isArrived && (
-            <button onClick={() => onStatusChange(ringdown, Status.ARRIVED)} className="usa-button width-auto">
-              Mark&nbsp;Arrived
-            </button>
-          )}
-          {isArrived && !isOffloaded && (
-            <button onClick={() => onStatusChange(ringdown, Status.OFFLOADED)} className="usa-button width-auto">
-              Mark&nbsp;Offloaded
-            </button>
-          )}
-        </div>
-      )}
       <RingdownTable ringdown={ringdown} className={className}>
         <Section title="Incident info">
           <FieldRow label="Agency" property="organizationName" />

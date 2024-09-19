@@ -83,9 +83,7 @@ export default function ER() {
       }
       data.ringdowns = data.ringdowns.map((r) => new Ringdown(r));
       const newRingdowns = data.ringdowns.sort((a, b) => a.etaDateTimeLocalObj.toMillis() - b.etaDateTimeLocalObj.toMillis());
-      const newUnconfirmedRingdowns = data.ringdowns.filter(
-        (r) => r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT || r.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED
-      );
+      const newUnconfirmedRingdowns = data.ringdowns.filter((r) => r.isUnconfirmed);
       setMcis(data.mcis.filter((mci) => !mci.endedAt).map((mci) => new MassCasualtyIncident(mci)));
       setRingdowns(newRingdowns);
       setUnconfirmedRingdowns(newUnconfirmedRingdowns);

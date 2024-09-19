@@ -169,6 +169,14 @@ class Ringdown {
 
   // Delivery Status
 
+  get isArrived() {
+    return DeliveryStatus.is(this.currentDeliveryStatus, DeliveryStatus.ARRIVED);
+  }
+
+  get isOffloaded() {
+    return DeliveryStatus.is(this.currentDeliveryStatus, DeliveryStatus.OFFLOADED);
+  }
+
   get etaDateTimeLocalObj() {
     return this.timestamps[DeliveryStatus.RINGDOWN_SENT]
       ? DateTime.fromISO(this.timestamps[DeliveryStatus.RINGDOWN_SENT]).plus({
@@ -220,6 +228,14 @@ class Ringdown {
 
   get isValid() {
     return this.isPatientValid && this.hospitalId !== null && this.etaMinutes !== null;
+  }
+
+  get isUnconfirmed() {
+    return this.currentDeliveryStatus === Ringdown.Status.RINGDOWN_SENT || this.currentDeliveryStatus === Ringdown.Status.RINGDOWN_RECEIVED;
+  }
+
+  get isMCI() {
+    return !!this.triageTag || !!this.triagePriority;
   }
 
   toJSON() {
