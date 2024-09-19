@@ -84,6 +84,20 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
           onToggle={() => setExpanded(!isExpanded)}
         >
           <RingdownDetails onStatusChange={onStatusChange} ringdown={ringdown} />
+          {ringdown.isMCI && !ringdown.isUnconfirmed && (
+            <div className="margin-y-2 margin-x-2">
+              {!ringdown.isArrived && (
+                <button onClick={() => onStatusChange(ringdown, Status.ARRIVED)} className="usa-button width-full">
+                  Mark&nbsp;Arrived
+                </button>
+              )}
+              {ringdown.isArrived && !ringdown.isOffloaded && (
+                <button onClick={() => onStatusChange(ringdown, Status.OFFLOADED)} className="usa-button width-full">
+                  Mark&nbsp;Offloaded
+                </button>
+              )}
+            </div>
+          )}
           {children}
         </Drawer>
       )}
