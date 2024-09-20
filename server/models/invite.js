@@ -1,6 +1,8 @@
 const { Model } = require('sequelize');
+const _ = require('lodash');
 
 const metadata = require('shared/metadata/invite');
+const { sendMail } = require('../mailer/emailTransporter');
 const initModel = require('../metadata/initModel');
 
 module.exports = (sequelize) => {
@@ -11,6 +13,35 @@ module.exports = (sequelize) => {
       Invite.belongsTo(models.User, { as: 'RevokedBy' });
       Invite.belongsTo(models.User, { as: 'CreatedBy' });
       Invite.belongsTo(models.User, { as: 'UpdatedBy' });
+    }
+
+    toJSON() {
+      const json = _.pick(this.get(), [
+        'id',
+        'firstName',
+        'lastName',
+        'email',
+        'message',
+        'ResentById',
+        'resentAt',
+        'AcceptedById',
+        'acceptedAt',
+        'RevokedById',
+        'revokedAt',
+        'CreatedById',
+        'createdAt',
+        'UpdatedById',
+        'updatedAt',
+      ]);
+      return json;
+    }
+
+    sendInviteEmail() {
+      return sendMail(this.fullNameAndEmail, undefined, 'invite', {
+        firstName: this.firstName,
+        url: `${process.env.BASE_URL}/invites/${this.id}`,
+        message: this.message,
+      });
     }
   }
 

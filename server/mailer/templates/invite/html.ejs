@@ -1,0 +1,10 @@
+<%- include('../layout/_header.html.ejs') %>
+<% if (firstName) { %><p>Hi <%= firstName %>,</p><% } %>
+<% if (message) { %><p><%= message %></p><% } %>
+<p>Please click on the following link to create your account with Routed:</p>
+<%- include('../layout/_button.html.ejs', {
+  label: 'ACCEPT INVITE',
+  url: url
+}) %>
+<p><a href="<%= url %>"><%= url %></a></p>
+<%- include('../layout/_footer.html.ejs') %>
