@@ -55,6 +55,27 @@ const fields = [
     type: 'text',
   },
   {
+    name: 'isOperationalUser',
+    colName: 'operationaluserindicator',
+    type: 'boolean',
+    allowNull: false,
+    defaultValue: false,
+  },
+  {
+    name: 'isAdminUser',
+    colName: 'administrativeuserindicator',
+    type: 'boolean',
+    allowNull: false,
+    defaultValue: false,
+  },
+  {
+    name: 'isSuperUser',
+    colName: 'superuserindicator',
+    type: 'boolean',
+    allowNull: false,
+    defaultValue: false,
+  },
+  {
     name: 'ResentById',
     colName: 'resentuser_uuid',
     type: 'uuid',

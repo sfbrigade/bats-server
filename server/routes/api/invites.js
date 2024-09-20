@@ -23,7 +23,9 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
 });
 
 router.post('/', middleware.isAdminUser, async (req, res) => {
-  const invite = models.Invite.build(_.pick(req.body, ['OrganizationId', 'firstName', 'lastName', 'email', 'message']));
+  const invite = models.Invite.build(
+    _.pick(req.body, ['OrganizationId', 'firstName', 'lastName', 'email', 'message', 'isOperationalUser', 'isAdminUser', 'isSuperUser'])
+  );
   invite.CreatedById = req.user.id;
   invite.UpdatedById = req.user.id;
   try {
@@ -90,6 +92,9 @@ router.post('/:id/accept', async (req, res, next) => {
         }
         user = models.User.build(_.pick(req.body, ['firstName', 'lastName', 'username', 'email', 'password', 'confirmPassword']));
         user.OrganizationId = invite.OrganizationId;
+        user.isOperationalUser = invite.isOperationalUser;
+        user.isAdminUser = invite.isAdminUser;
+        user.isSuperUser = invite.isSuperUser;
         user.CreatedById = '00000000-0000-0000-0000-000000000000';
         user.UpdatedById = '00000000-0000-0000-0000-000000000000';
         await user.save({ transaction });

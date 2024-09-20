@@ -42,6 +42,9 @@ describe('/api/invites', () => {
           lastName: 'Name',
           email: 'invitee.name@test.com',
           message: 'Welcome!',
+          isOperationalUser: true,
+          isAdminUser: true,
+          isSuperUser: false,
         })
         .expect(HttpStatus.CREATED);
 
@@ -53,6 +56,9 @@ describe('/api/invites', () => {
       assert.deepStrictEqual(invite.lastName, 'Name');
       assert.deepStrictEqual(invite.email, 'invitee.name@test.com');
       assert.deepStrictEqual(invite.message, 'Welcome!');
+      assert.deepStrictEqual(invite.isOperationalUser, true);
+      assert.deepStrictEqual(invite.isAdminUser, true);
+      assert.deepStrictEqual(invite.isSuperUser, false);
       assert.deepStrictEqual(invite.CreatedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
       assert.deepStrictEqual(invite.UpdatedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
@@ -77,6 +83,9 @@ describe('/api/invites', () => {
         lastName: 'User 1',
         email: 'invited.user.1@test.com',
         message: 'This is an invitation to Invited User 1.',
+        isOperationalUser: false,
+        isAdminUser: true,
+        isSuperUser: false,
         CreatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
         createdAt: '2022-01-29T22:58:56.000Z',
         UpdatedById: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
@@ -125,7 +134,7 @@ describe('/api/invites', () => {
         lastName: 'User',
         email: 'accepting.user@test.com',
         isActive: true,
-        isAdminUser: false,
+        isAdminUser: true,
         isOperationalUser: false,
         isSuperUser: false,
       });

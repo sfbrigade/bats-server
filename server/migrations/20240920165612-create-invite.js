@@ -31,6 +31,21 @@ module.exports = {
       message: {
         type: Sequelize.TEXT,
       },
+      operationaluserindicator: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      administrativeuserindicator: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      superuserindicator: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       resentuser_uuid: {
         type: Sequelize.UUID,
         references: {
