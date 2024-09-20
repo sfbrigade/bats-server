@@ -1,3 +1,4 @@
+const path = require('path');
 const nodemailer = require('nodemailer');
 const nodemailermock = require('nodemailer-mock');
 const templateEmail = require('email-templates');
@@ -20,13 +21,21 @@ function createTransport() {
 
 // Wrapper over transporter that allows for the use of templates
 function templateTransporter() {
+  const templatePath = path.resolve(__dirname, 'templates');
   const templateTransporter = new templateEmail({
     send: true,
     transport: createTransport(),
     views: {
-      root: __dirname + '/templates',
+      root: templatePath,
       options: {
         extension: 'ejs', // <---- HERE
+      },
+    },
+    juice: true,
+    juiceResources: {
+      preserveImportant: true,
+      webResources: {
+        relativeTo: templatePath,
       },
     },
   });

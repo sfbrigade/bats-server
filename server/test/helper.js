@@ -27,6 +27,7 @@ async function resetDatabase() {
     DELETE FROM hospital;
     DELETE FROM emergencymedicalservicecall;
     DELETE FROM masscasualtyincident;
+    DELETE FROM invites;
     DELETE FROM organization;
     DELETE FROM token;
     DELETE FROM client;

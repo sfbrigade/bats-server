@@ -18,6 +18,7 @@ module.exports = (sequelize) => {
     toJSON() {
       const json = _.pick(this.get(), [
         'id',
+        'OrganizationId',
         'firstName',
         'lastName',
         'email',
