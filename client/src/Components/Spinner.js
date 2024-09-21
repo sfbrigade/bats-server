@@ -1,9 +1,10 @@
 import React from 'react';
+import classNames from 'classnames';
 
-function Spinner() {
+function Spinner({ className, size }) {
   return (
-    <div className="display-flex flex-justify-center">
-      <div className="spinner-border text-primary-vivid" role="status">
+    <div className={classNames('display-flex flex-justify-center', className)}>
+      <div className={classNames('spinner-border text-primary-vivid', { 'spinner-border-sm': size === 'sm' })} role="status">
         <span className="sr-only">Loading...</span>
       </div>
     </div>

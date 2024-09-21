@@ -86,6 +86,17 @@ export default {
       return instance.patch(`/api/hospitalusers/${id}`, data);
     },
   },
+  invites: {
+    index() {
+      return instance.get('/api/invites');
+    },
+    create(data) {
+      return instance.post('/api/invites', data);
+    },
+    get(id) {
+      return instance.get(`/api/invites/${id}`);
+    },
+  },
   mcis: {
     index() {
       return instance.get('/api/mcis');

@@ -9,14 +9,21 @@ const middleware = require('../../auth/middleware');
 const router = express.Router();
 
 router.get('/', middleware.isAdminUser, async (req, res) => {
+  const { organizationId, page = '1' } = req.query;
   const options = {
-    page: req.query.page || '1',
+    page,
     order: [['createdAt', 'DESC']],
     where: {
       acceptedAt: null,
       revokedAt: null,
     },
   };
+  if (organizationId) {
+    options.where.OrganizationId = organizationId;
+  } else if (!req.user.isSuperUser) {
+    res.status(HttpStatus.FORBIDDEN).end();
+    return;
+  }
   const { records, pages, total } = await models.Invite.paginate(options);
   helpers.setPaginationHeaders(req, res, options.page, pages, total);
   res.json(records.map((record) => record.toJSON()));
