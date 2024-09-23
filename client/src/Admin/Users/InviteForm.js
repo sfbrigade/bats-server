@@ -25,7 +25,7 @@ function InviteForm() {
 
   const [hospitals, setHospitals] = useState();
   const [selectedHospitalId, setSelectedHospitalId] = useState();
-  const [hospitalUsers, setHospitalUsers] = useState();
+  const [hospitalInvites, setHospitalInvites] = useState([]);
 
   useEffect(() => {
     if (organization) {
@@ -45,37 +45,38 @@ function InviteForm() {
       setError();
       const data = {
         ...invite,
-        organizationId: organization.id,
+        OrganizationId: organization.id,
+        HospitalInvites: hospitalInvites,
       };
-      const response = await ApiService.users.create(data);
-      navigate(`/admin/users/${response.data.id}`, { state: { flash: { info: 'Created!' } } });
+      await ApiService.invites.create(data);
+      navigate(`/admin/users`, { state: { flash: { info: 'Invited!' } } });
     } catch (err) {
       setError(new FormError(err));
       window.scrollTo(0, 0);
     }
   }
 
-  async function onChangeHospitalUser(hu, property, newValue) {
-    try {
-      await ApiService.hospitalUsers.update(hu.id, { [property]: newValue });
-      hu[property] = newValue;
-      setHospitalUsers([...hospitalUsers]);
-    } catch {
-      // TODO: display an alert
-    }
+  async function onChangeHospitalInvite(hi, property, newValue) {
+    hi[property] = newValue;
+    setHospitalInvites([...hospitalInvites]);
   }
 
   async function onAddHospital() {
-    if (!selectedHospitalId || hospitalUsers.find((hu) => hu.hospital.id === selectedHospitalId)) {
+    if (!selectedHospitalId || hospitalInvites.find((hi) => hi.hospital.id === selectedHospitalId)) {
       return;
     }
-    try {
-      const response = await ApiService.hospitalUsers.create({ hospitalId: selectedHospitalId });
-      setHospitalUsers([...hospitalUsers, response.data]);
-      setSelectedHospitalId();
-    } catch {
-      // TODO: display an alert
-    }
+    const hospital = hospitals.find((h) => h.id === selectedHospitalId);
+    setHospitalInvites([
+      ...hospitalInvites,
+      {
+        hospital,
+        HospitalId: selectedHospitalId,
+        isActive: true,
+        isInfoUser: true,
+        isRingdownUser: true,
+      },
+    ]);
+    setSelectedHospitalId();
   }
 
   return (
@@ -140,37 +141,37 @@ function InviteForm() {
                         </tr>
                       </thead>
                       <tbody>
-                        {hospitalUsers?.map((hu) => (
-                          <tr key={hu.id}>
-                            <td>{hu.hospital?.name}</td>
+                        {hospitalInvites?.map((hi) => (
+                          <tr key={hi.id}>
+                            <td>{hi.hospital?.name}</td>
                             <td className="w-20">
                               <FormCheckbox
                                 className="margin-0-important"
-                                id={`isActive[${hu.id}]`}
+                                id={`isActive[${hi.id}]`}
                                 label="&nbsp;"
-                                onChange={(property, value) => onChangeHospitalUser(hu, property, value)}
+                                onChange={(property, value) => onChangeHospitalInvite(hi, property, value)}
                                 property="isActive"
-                                currentValue={hu.isActive}
+                                currentValue={hi.isActive}
                               />
                             </td>
                             <td className="w-20">
                               <FormCheckbox
                                 className="margin-0-important"
-                                id={`isInfoUser[${hu.id}]`}
+                                id={`isInfoUser[${hi.id}]`}
                                 label="&nbsp;"
-                                onChange={(property, value) => onChangeHospitalUser(hu, property, value)}
+                                onChange={(property, value) => onChangeHospitalInvite(hi, property, value)}
                                 property="isInfoUser"
-                                currentValue={hu.isInfoUser}
+                                currentValue={hi.isInfoUser}
                               />
                             </td>
                             <td className="w-20">
                               <FormCheckbox
                                 className="margin-0-important"
-                                id={`isRingdownUser[${hu.id}]`}
+                                id={`isRingdownUser[${hi.id}]`}
                                 label="&nbsp;"
-                                onChange={(property, value) => onChangeHospitalUser(hu, property, value)}
+                                onChange={(property, value) => onChangeHospitalInvite(hi, property, value)}
                                 property="isRingdownUser"
-                                currentValue={hu.isRingdownUser}
+                                currentValue={hi.isRingdownUser}
                               />
                             </td>
                           </tr>
