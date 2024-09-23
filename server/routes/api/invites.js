@@ -36,7 +36,34 @@ router.post('/', middleware.isAdminUser, async (req, res) => {
   invite.CreatedById = req.user.id;
   invite.UpdatedById = req.user.id;
   try {
-    await invite.save();
+    await models.sequelize.transaction(async (transaction) => {
+      await invite.save({ transaction });
+      await Promise.all(
+        req.body.HospitalInvites?.map(async (hi) => {
+          const hospital = await models.Hospital.findOne(
+            {
+              where: {
+                id: hi.HospitalId,
+                OrganizationId: invite.OrganizationId,
+              },
+            },
+            { transaction }
+          );
+          if (!hospital) {
+            return null;
+          }
+          return models.HospitalInvite.create(
+            {
+              InviteId: invite.id,
+              CreatedById: req.user.id,
+              UpdatedById: req.user.id,
+              ..._.pick(hi, ['HospitalId', 'isActive', 'isInfoUser', 'isRingdownUser']),
+            },
+            { transaction }
+          );
+        }).filter(Boolean) ?? []
+      );
+    });
     await invite.sendInviteEmail();
     res.status(HttpStatus.CREATED).json(invite.toJSON());
   } catch (error) {

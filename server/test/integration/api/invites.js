@@ -11,7 +11,7 @@ describe('/api/invites', () => {
   let testSession;
 
   beforeEach(async () => {
-    await helper.loadFixtures(['organizations', 'users', 'invites']);
+    await helper.loadFixtures(['organizations', 'users', 'hospitals', 'invites']);
     testSession = session(app);
     await testSession
       .post('/auth/local/login')
@@ -45,6 +45,14 @@ describe('/api/invites', () => {
           isOperationalUser: true,
           isAdminUser: true,
           isSuperUser: false,
+          HospitalInvites: [
+            {
+              HospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
+              isActive: true,
+              isInfoUser: true,
+              isRingdownUser: false,
+            },
+          ],
         })
         .expect(HttpStatus.CREATED);
 
@@ -61,6 +69,14 @@ describe('/api/invites', () => {
       assert.deepStrictEqual(invite.isSuperUser, false);
       assert.deepStrictEqual(invite.CreatedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
       assert.deepStrictEqual(invite.UpdatedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+
+      const hospitalInvites = await invite.getHospitalInvites();
+      assert.deepStrictEqual(hospitalInvites.length, 1);
+      const [hospitalInvite] = hospitalInvites;
+      assert.deepStrictEqual(hospitalInvite.HospitalId, '7f666fe4-dbdd-4c7f-ab44-d9157379a680');
+      assert.deepStrictEqual(hospitalInvite.isActive, true);
+      assert.deepStrictEqual(hospitalInvite.isInfoUser, true);
+      assert.deepStrictEqual(hospitalInvite.isRingdownUser, false);
 
       const emails = nodemailerMock.mock.getSentMail();
       assert.deepStrictEqual(emails.length, 1);

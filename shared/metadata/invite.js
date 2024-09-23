@@ -107,4 +107,4 @@ const fields = [
   },
 ];
 
-module.exports = new ModelMetadata({ modelName: 'Invite', tableName: 'invites', fields });
+module.exports = new ModelMetadata({ modelName: 'Invite', fields });

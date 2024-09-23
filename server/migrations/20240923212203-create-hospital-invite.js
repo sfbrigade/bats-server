@@ -1,86 +1,47 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('invite', {
-      invite_uuid: {
+    await queryInterface.createTable('hospitalinvite', {
+      hospitalinvite_uuid: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('gen_random_uuid()'),
       },
-      organization_uuid: {
-        type: Sequelize.UUID,
+      hospital_uuid: {
         allowNull: false,
+        type: Sequelize.UUID,
         references: {
           model: {
-            tableName: 'organization',
+            tableName: 'hospital',
           },
-          key: 'organization_uuid',
+          key: 'hospital_uuid',
         },
       },
-      firstname: {
-        type: Sequelize.STRING,
-      },
-      lastname: {
-        type: Sequelize.STRING,
-      },
-      email: {
+      invite_uuid: {
         allowNull: false,
-        type: Sequelize.CITEXT,
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: 'invite',
+          },
+          key: 'invite_uuid',
+        },
       },
-      message: {
-        type: Sequelize.TEXT,
-      },
-      operationaluserindicator: {
+      activeindicator: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
-      administrativeuserindicator: {
+      infouserindicator: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
-      superuserindicator: {
+      ringdownuserindicator: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
-      },
-      resentuser_uuid: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'batsuser',
-          },
-          key: 'user_uuid',
-        },
-      },
-      resenttimestamp: {
-        type: Sequelize.DATE,
-      },
-      accepteduser_uuid: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'batsuser',
-          },
-          key: 'user_uuid',
-        },
-      },
-      acceptedtimestamp: {
-        type: Sequelize.DATE,
-      },
-      revokeduser_uuid: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'batsuser',
-          },
-          key: 'user_uuid',
-        },
-      },
-      revokedtimestamp: {
-        type: Sequelize.DATE,
       },
       recordcreateuser_uuid: {
         allowNull: false,
@@ -112,8 +73,7 @@ module.exports = {
       },
     });
   },
-
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('invite');
+    await queryInterface.dropTable('hospitalinvite');
   },
 };

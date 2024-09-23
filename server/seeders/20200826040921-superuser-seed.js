@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.sequelize.transaction(async (transaction) => {
       const org = await models.Organization.create(
         {
-          name: 'Code for San Francisco',
+          name: 'Routed',
           type: 'C4SF',
           CreatedById: '00000000-0000-0000-0000-000000000000',
           UpdatedById: '00000000-0000-0000-0000-000000000000',
@@ -54,7 +54,7 @@ module.exports = {
       });
       await models.Organization.destroy({
         where: {
-          name: 'Code for San Francisco',
+          name: 'Routed',
           type: 'C4SF',
         },
         transaction,

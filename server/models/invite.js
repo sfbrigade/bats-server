@@ -13,6 +13,7 @@ module.exports = (sequelize) => {
       Invite.belongsTo(models.User, { as: 'RevokedBy' });
       Invite.belongsTo(models.User, { as: 'CreatedBy' });
       Invite.belongsTo(models.User, { as: 'UpdatedBy' });
+      Invite.hasMany(models.HospitalInvite);
     }
 
     toJSON() {
