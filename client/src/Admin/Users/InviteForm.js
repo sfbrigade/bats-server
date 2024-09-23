@@ -9,6 +9,8 @@ import FormError from '../../Models/FormError';
 import ApiService from '../../ApiService';
 import Context from '../../Context';
 
+import './InviteForm.scss';
+
 function InviteForm() {
   const navigate = useNavigate();
   const { organization, user } = useContext(Context);
@@ -131,7 +133,7 @@ function InviteForm() {
                 {organization?.type === 'HEALTHCARE' && (
                   <div className="tablet:grid-col-12">
                     <h2>Hospitals</h2>
-                    <table className="usa-table usa-table--striped usa-table--hoverable usa-table--borderless width-full">
+                    <table className="usa-table usa-table--striped usa-table--hoverable usa-table--borderless width-full invite-form__table">
                       <thead>
                         <tr>
                           <th>Name</th>
@@ -186,11 +188,13 @@ function InviteForm() {
                               property="selectedHospitalId"
                               isFreeFormDisabled
                               onChange={(_, newValue) => setSelectedHospitalId(newValue)}
-                              options={hospitals?.map((h) => (
-                                <option key={h.id} value={h.id}>
-                                  {h.name}
-                                </option>
-                              ))}
+                              options={
+                                hospitals?.map((h) => (
+                                  <option key={h.id} value={h.id}>
+                                    {h.name}
+                                  </option>
+                                )) ?? []
+                              }
                               value={selectedHospitalId ?? ''}
                             />
                           </td>
