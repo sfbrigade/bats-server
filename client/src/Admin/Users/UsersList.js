@@ -9,7 +9,7 @@ function UsersList() {
     <main>
       <div className="display-flex flex-align-center flex-justify">
         <h1>Invites</h1>
-        <Link to="/admin/users/new" className="usa-button usa-button--primary">
+        <Link to="/admin/users/invite" className="usa-button usa-button--primary">
           Invite New User
         </Link>
       </div>
