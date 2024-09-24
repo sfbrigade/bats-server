@@ -38,7 +38,7 @@ export default function TwoFactor() {
             <h1 className="hospital-dest-title">
               <img src="/img/logomark-300.png" className="logo" alt="Routed logo" />
             </h1>
-            <h4 className="text-base-light">Please enter the Authorization Code that was sent to your email address.</h4>
+            <h4 className="text-base">Please enter the Authorization Code that was sent to your email address.</h4>
           </div>
           {invalid && <Alert input="Invalid Authorization Code." />}
           {error && <Alert input="An unexpected error has occurred. Please try again." />}

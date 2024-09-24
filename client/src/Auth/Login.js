@@ -58,7 +58,7 @@ export default function Login() {
             <h1 className="hospital-dest-title">
               <img src="/img/logomark-300.png" className="logo" alt="Routed logo" />
             </h1>
-            <h4 className="text-base-light">
+            <h4 className="text-base">
               Start by entering your
               <br />
               email and password below.

@@ -29,13 +29,15 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
   res.json(records.map((record) => record.toJSON()));
 });
 
-router.post('/', middleware.isAdminUser, async (req, res) => {
-  const invite = models.Invite.build(
-    _.pick(req.body, ['OrganizationId', 'firstName', 'lastName', 'email', 'message', 'isOperationalUser', 'isAdminUser', 'isSuperUser'])
-  );
-  invite.CreatedById = req.user.id;
-  invite.UpdatedById = req.user.id;
-  try {
+router.post(
+  '/',
+  middleware.isAdminUser,
+  helpers.wrapper(async (req, res) => {
+    const invite = models.Invite.build(
+      _.pick(req.body, ['OrganizationId', 'firstName', 'lastName', 'email', 'message', 'isOperationalUser', 'isAdminUser', 'isSuperUser'])
+    );
+    invite.CreatedById = req.user.id;
+    invite.UpdatedById = req.user.id;
     await models.sequelize.transaction(async (transaction) => {
       await invite.save({ transaction });
       await Promise.all(
@@ -66,17 +68,8 @@ router.post('/', middleware.isAdminUser, async (req, res) => {
     });
     await invite.sendInviteEmail();
     res.status(HttpStatus.CREATED).json(invite.toJSON());
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') {
-      res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: error.errors,
-      });
-    } else {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
-    }
-  }
-});
+  })
+);
 
 router.post('/:id/resend', middleware.isAdminUser, async (req, res) => {
   await models.sequelize.transaction(async (transaction) => {
@@ -113,26 +106,45 @@ router.delete('/:id', middleware.isAdminUser, async (req, res) => {
   });
 });
 
-router.post('/:id/accept', async (req, res, next) => {
-  req.logout();
-  try {
+router.post(
+  '/:id/accept',
+  helpers.wrapper(async (req, res, next) => {
+    req.logout();
     let user;
     await models.sequelize.transaction(async (transaction) => {
-      const invite = await models.Invite.findByPk(req.params.id, { transaction });
+      const invite = await models.Invite.findByPk(req.params.id, {
+        include: [models.HospitalInvite],
+        transaction,
+      });
       if (invite) {
         if (invite.acceptedAt || invite.revokedAt) {
           res.status(HttpStatus.FORBIDDEN).end();
           return;
         }
-        user = models.User.build(_.pick(req.body, ['firstName', 'lastName', 'username', 'email', 'password', 'confirmPassword']));
+        user = models.User.build(_.pick(req.body, ['firstName', 'lastName', 'email', 'password']));
         user.OrganizationId = invite.OrganizationId;
         user.isOperationalUser = invite.isOperationalUser;
         user.isAdminUser = invite.isAdminUser;
         user.isSuperUser = invite.isSuperUser;
-        user.CreatedById = '00000000-0000-0000-0000-000000000000';
-        user.UpdatedById = '00000000-0000-0000-0000-000000000000';
+        user.CreatedById = invite.CreatedById;
+        user.UpdatedById = invite.CreatedById;
         await user.save({ transaction });
-        await user.update({ CreatedById: user.id, UpdatedById: user.id }, { transaction });
+        await Promise.all(
+          invite.HospitalInvites.map((hi) =>
+            models.HospitalUser.create(
+              {
+                EdAdminUserId: user.id,
+                HospitalId: hi.HospitalId,
+                isActive: hi.isActive,
+                isInfoUser: hi.isInfoUser,
+                isRingdownUser: hi.isRingdownUser,
+                CreatedById: invite.CreatedById,
+                UpdatedById: invite.CreatedById,
+              },
+              { transaction }
+            )
+          )
+        );
         invite.acceptedAt = new Date();
         invite.AcceptedById = user.id;
         invite.UpdatedById = user.id;
@@ -150,17 +162,8 @@ router.post('/:id/accept', async (req, res, next) => {
     } else {
       res.status(HttpStatus.NOT_FOUND).end();
     }
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') {
-      res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: error.errors || [],
-      });
-    } else {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
-    }
-  }
-});
+  })
+);
 
 router.get('/:id', async (req, res) => {
   req.logout();

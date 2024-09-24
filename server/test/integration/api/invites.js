@@ -11,7 +11,7 @@ describe('/api/invites', () => {
   let testSession;
 
   beforeEach(async () => {
-    await helper.loadFixtures(['organizations', 'users', 'hospitals', 'invites']);
+    await helper.loadFixtures(['organizations', 'users', 'hospitals', 'invites', 'hospitalInvites']);
     testSession = session(app);
     await testSession
       .post('/auth/local/login')
@@ -133,7 +133,6 @@ describe('/api/invites', () => {
         .send({
           firstName: 'Accepting',
           lastName: 'User',
-          username: 'acceptinguser',
           email: 'accepting.user@test.com',
           password: 'Abcd1234!',
           confirmPassword: 'Abcd1234!',
@@ -158,6 +157,17 @@ describe('/api/invites', () => {
       const invite = await models.Invite.findByPk('14a500b7-f14c-48cd-b815-3685a8b54370');
       assert(invite.acceptedAt);
       assert.deepStrictEqual(invite.AcceptedById, id);
+
+      const hospitalUser = await models.HospitalUser.findOne({
+        where: {
+          HospitalId: '7f666fe4-dbdd-4c7f-ab44-d9157379a680',
+          EdAdminUserId: id,
+        },
+      });
+      assert(hospitalUser);
+      assert.deepStrictEqual(hospitalUser.isActive, true);
+      assert.deepStrictEqual(hospitalUser.isInfoUser, true);
+      assert.deepStrictEqual(hospitalUser.isRingdownUser, false);
     });
   });
 });

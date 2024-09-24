@@ -12,6 +12,7 @@ import Login from './Auth/Login';
 import Forgot from './Auth/Forgot';
 import NewPassword from './Auth/NewPassword';
 import TwoFactor from './Auth/TwoFactor';
+import Invite from './Invites/Invite';
 
 vh.init();
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/admin/*" element={<Admin />} />
           {!user && (
             <>
+              <Route path="/invites/:id" element={<Invite />} />
               <Route path="/reset" element={<NewPassword />} />
               <Route path="/forgot" element={<Forgot />} />
               <Route path="/twoFactor" element={<TwoFactor />} />

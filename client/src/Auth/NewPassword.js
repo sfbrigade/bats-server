@@ -58,7 +58,7 @@ export default function NewPassword() {
                 <img src="/img/logomark-300.png" className="logo" alt="Routed logo" />
               </h1>
             </Link>
-            <h4 className="text-base-light">
+            <h4 className="text-base">
               Enter and confirm a new password for your account. Your new password must contain at least 8 characters, including upper and
               lowercase letters, a number, and a symbol.
             </h4>
