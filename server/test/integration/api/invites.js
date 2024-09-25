@@ -116,6 +116,24 @@ describe('/api/invites', () => {
     });
   });
 
+  describe('POST /:id/resend', () => {
+    it('resends an Invite email', async () => {
+      await testSession
+        .post('/api/invites/14a500b7-f14c-48cd-b815-3685a8b54370/resend')
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.OK);
+
+      const invite = await models.Invite.findByPk('14a500b7-f14c-48cd-b815-3685a8b54370');
+      assert(invite.resentAt);
+      assert.deepStrictEqual(invite.ResentById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+
+      const emails = nodemailerMock.mock.getSentMail();
+      assert.deepStrictEqual(emails.length, 1);
+      assert.deepStrictEqual(emails[0].subject, `You've been invited to join Routed`);
+      assert.deepStrictEqual(emails[0].to, 'Invited User 1 <invited.user.1@test.com>');
+    });
+  });
+
   describe('DELETE /:id', () => {
     it('revokes an Invite by id', async () => {
       await testSession.delete('/api/invites/14a500b7-f14c-48cd-b815-3685a8b54370').set('Accept', 'application/json').expect(HttpStatus.OK);
