@@ -46,7 +46,7 @@ export default function Forgot() {
                 <img src="/img/logomark-300.png" className="logo" alt="Routed logo" />
               </h1>
             </Link>
-            <h4 className="text-base-light">
+            <h4 className="text-base">
               Enter your email and we will send you a<br />
               link to reset your password.
             </h4>

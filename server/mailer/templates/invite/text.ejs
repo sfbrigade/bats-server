@@ -1,0 +1,11 @@
+<%- include('../layout/_header.text.ejs') %>
+
+<% if (firstName) { %>Hi <%= firstName %>,<% } %>
+
+<%= message %>
+
+Please click on the following link to create your account with <%= process.env.VITE_SITE_TITLE %>:
+
+<%= url %>
+
+<%- include('../layout/_footer.text.ejs') %>

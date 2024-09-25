@@ -29,10 +29,10 @@ function UsersTable({ isActive }) {
     <table className="usa-table usa-table--striped usa-table--hoverable usa-table--borderless width-full">
       <thead>
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th />
+          <th className="w-20">First Name</th>
+          <th className="w-20">Last Name</th>
+          <th className="w-40">Email</th>
+          <th className="w-20" />
         </tr>
       </thead>
       <tbody>

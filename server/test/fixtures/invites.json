@@ -1,0 +1,32 @@
+[
+  {
+    "model": "Invite",
+    "data": {
+      "id": "14a500b7-f14c-48cd-b815-3685a8b54370",
+      "OrganizationId": "aac13870-f6f3-11ea-adc1-0242ac120002",
+      "firstName": "Invited",
+      "lastName": "User 1",
+      "email": "invited.user.1@test.com",
+      "message": "This is an invitation to Invited User 1.",
+      "isAdminUser": true,
+      "createdAt": "2022-01-29T22:58:56+0000",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Invite",
+    "data": {
+      "id": "675ccf53-dcc3-4aac-a279-3e98f2d6e031",
+      "OrganizationId": "25ffdd7c-b4cf-4ebb-9750-1e628370e13b",
+      "firstName": "Invited",
+      "lastName": "User 2",
+      "email": "invited.user.2@test.com",
+      "message": "This is an invitation to Invited User 2.",
+      "isOperationalUser": true,
+      "createdAt": "2022-01-29T22:59:56+0000",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  }
+]

@@ -15,19 +15,21 @@ function FormCheckbox({ className, currentValue, disabled, id, label, onChange, 
     return value;
   }
 
+  const htmlFor = id ?? `${property}-${value}`;
+
   return (
     <div className="usa-checkbox">
       <input
         checked={currentValue === value}
         className="usa-checkbox__input"
         disabled={disabled}
-        id={id ?? `${property}-${value}`}
+        id={htmlFor}
         name={property}
         onChange={() => onChange(property, toggle(currentValue))}
         type="checkbox"
         value={value}
       />
-      <label className={classNames('usa-checkbox__label', className)} htmlFor={id}>
+      <label className={classNames('usa-checkbox__label', className)} htmlFor={htmlFor}>
         {label}
       </label>
     </div>
@@ -37,6 +39,7 @@ function FormCheckbox({ className, currentValue, disabled, id, label, onChange, 
 FormCheckbox.propTypes = {
   currentValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.number, PropTypes.string]),
   disabled: PropTypes.bool,
+  id: PropTypes.string,
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   property: PropTypes.string.isRequired,
@@ -46,6 +49,7 @@ FormCheckbox.propTypes = {
 FormCheckbox.defaultProps = {
   currentValue: null,
   disabled: false,
+  id: undefined,
   value: true,
 };
 

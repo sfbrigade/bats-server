@@ -7,16 +7,17 @@ const router = express.Router();
 
 router.use(middleware.checkAuthorizationHeader);
 
+router.use('/ambulances', require('./ambulances'));
 router.use('/clients', require('./clients'));
-router.use('/users', require('./users'));
-router.use('/ringdowns', require('./ringdowns'));
+router.use('/emscalls', require('./emsCalls'));
 router.use('/hospitals', require('./hospitals'));
 router.use('/hospitalusers', require('./hospitalUsers'));
 router.use('/hospitalstatuses', require('./hospitalStatuses'));
-router.use('/ambulances', require('./ambulances'));
-router.use('/emscalls', require('./emsCalls'));
+router.use('/invites', require('./invites'));
 router.use('/mcis', require('./massCasualtyIncidents'));
 router.use('/organizations', require('./organizations'));
+router.use('/ringdowns', require('./ringdowns'));
+router.use('/users', require('./users'));
 
 router.get('/health', (req, res) => {
   res.status(HttpStatus.NO_CONTENT).end();

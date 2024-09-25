@@ -6,12 +6,22 @@ const instance = axios.create({
   },
 });
 
-const unauthorizedPaths = ['/forgot', '/login', '/reset', '/twoFactor'];
+const unauthorizedPaths = ['/forgot', '/login', '/reset', '/twoFactor', '/invites'];
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error?.response?.status === 401 && !unauthorizedPaths.includes(window.location.pathname)) {
-      window.location = '/login';
+    if (error?.response?.status === 401) {
+      const { pathname } = window.location;
+      let found = false;
+      for (const path of unauthorizedPaths) {
+        if (pathname.startsWith(path)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        window.location = '/login';
+      }
     }
     return Promise.reject(error);
   }
@@ -84,6 +94,26 @@ export default {
     },
     update(id, data) {
       return instance.patch(`/api/hospitalusers/${id}`, data);
+    },
+  },
+  invites: {
+    index() {
+      return instance.get('/api/invites');
+    },
+    create(data) {
+      return instance.post('/api/invites', data);
+    },
+    get(id) {
+      return instance.get(`/api/invites/${id}`);
+    },
+    accept(id, data) {
+      return instance.post(`/api/invites/${id}/accept`, data);
+    },
+    resend(id) {
+      return instance.post(`/api/invites/${id}/resend`);
+    },
+    revoke(id) {
+      return instance.delete(`/api/invites/${id}`);
     },
   },
   mcis: {

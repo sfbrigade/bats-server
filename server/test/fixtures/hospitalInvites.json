@@ -1,0 +1,15 @@
+[
+  {
+    "model": "HospitalInvite",
+    "data": {
+      "HospitalId": "7f666fe4-dbdd-4c7f-ab44-d9157379a680",
+      "InviteId": "14a500b7-f14c-48cd-b815-3685a8b54370",
+      "isActive": true,
+      "isInfoUser": true,
+      "isRingdownUser": false,
+      "createdAt": "2022-01-29T22:58:56+0000",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  }
+]

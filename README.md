@@ -128,7 +128,7 @@ The `upload` npm script runs through the images in the `user-guides/build` direc
 # License
 
 Routed Server
-Copyright (C) 2022 Code for San Francisco
+Copyright (C) 2024 SF Civic Tech
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
