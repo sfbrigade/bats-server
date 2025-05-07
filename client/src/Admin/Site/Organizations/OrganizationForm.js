@@ -96,6 +96,9 @@ function OrganizationForm() {
                     <option key="HEALTHCARE" value="HEALTHCARE">
                       Healthcare
                     </option>,
+                    <option key="VENUE" value="VENUE">
+                      Venue
+                    </option>,
                   ]}
                   required
                   value={data.type}
