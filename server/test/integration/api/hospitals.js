@@ -46,6 +46,7 @@ describe('/api/hospitals', () => {
             state: '06',
             stateFacilityCode: '20050',
             isActive: true,
+            customInventory: ['ICU Beds', 'Ventilators'],
           })
           .set('Accept', 'application/json')
           .expect(HttpStatus.CREATED);
@@ -57,10 +58,12 @@ describe('/api/hospitals', () => {
         assert.deepStrictEqual(record.state, '06');
         assert.deepStrictEqual(record.stateFacilityCode, '20050');
         assert.deepStrictEqual(record.isActive, true);
+        assert.deepStrictEqual(record.customInventory, ['ICU Beds', 'Ventilators']);
 
         const statusUpdate = await models.HospitalStatusUpdate.findOne({ where: { HospitalId: record.id } });
         assert.ok(statusUpdate);
         assert.deepStrictEqual(statusUpdate.openEdBedCount, 0);
+        assert.deepStrictEqual(statusUpdate.customInventoryCount, [0, 0]);
       });
     });
 
@@ -94,6 +97,14 @@ describe('/api/hospitals', () => {
         assert.deepStrictEqual(record.sortSequenceNumber, 5);
         assert.deepStrictEqual(record.isActive, false);
         assert.deepStrictEqual(record.customInventory, ['Ventilators']);
+
+        // Verify status update was created with new customInventory
+        const statusUpdate = await models.HospitalStatusUpdate.findOne({
+          where: { HospitalId: '00752f60-068f-11eb-adc1-0242ac120002' },
+          order: [['updateDateTimeLocal', 'DESC']],
+        });
+        assert.ok(statusUpdate);
+        assert.deepStrictEqual(statusUpdate.customInventoryCount, [0]);
       });
 
       it('creates a new Hospital record with specified ID if it does not exist', async () => {
@@ -188,6 +199,7 @@ describe('/api/hospitals', () => {
             state: '25',
             stateFacilityCode: '123456',
             isActive: false,
+            customInventory: ['ICU Beds', 'Ventilators', 'PPE'],
           })
           .set('Accept', 'application/json')
           .expect(HttpStatus.OK);
@@ -198,6 +210,15 @@ describe('/api/hospitals', () => {
         assert.deepStrictEqual(record.state, '25');
         assert.deepStrictEqual(record.stateFacilityCode, '123456');
         assert.deepStrictEqual(record.isActive, false);
+        assert.deepStrictEqual(record.customInventory, ['ICU Beds', 'Ventilators', 'PPE']);
+
+        // Verify status update was created with new customInventory
+        const statusUpdate = await models.HospitalStatusUpdate.findOne({
+          where: { HospitalId: '00752f60-068f-11eb-adc1-0242ac120002' },
+          order: [['updateDateTimeLocal', 'DESC']],
+        });
+        assert.ok(statusUpdate);
+        assert.deepStrictEqual(statusUpdate.customInventoryCount, [0, 0, 0]);
       });
     });
   });

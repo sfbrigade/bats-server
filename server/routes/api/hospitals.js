@@ -80,13 +80,32 @@ router.put(
       });
       if (record) {
         // Update existing record
-        await record.update(
-          {
-            ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'sortSequenceNumber', 'isActive', 'customInventory']),
-            UpdatedById: req.user.id,
-          },
-          { transaction }
-        );
+        record.set({
+          ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'sortSequenceNumber', 'isActive', 'customInventory']),
+          UpdatedById: req.user.id,
+        });
+        const isCustomInventoryChanged = record.changed('customInventory');
+        await record.save({ transaction });
+        // Create new status update if customInventory changed
+        if (isCustomInventoryChanged) {
+          const now = new Date();
+          await models.HospitalStatusUpdate.create(
+            {
+              HospitalId: record.id,
+              EdAdminUserId: req.user.id,
+              divertStatusIndicator: false,
+              divertStatusUpdateDateTimeLocal: now,
+              openEdBedCount: 0,
+              openPsychBedCount: 0,
+              customInventoryCount: record.customInventory?.length ? new Array(record.customInventory.length).fill(0) : null,
+              bedCountUpdateDateTimeLocal: now,
+              updateDateTimeLocal: now,
+              CreatedById: req.user.id,
+              UpdatedById: req.user.id,
+            },
+            { transaction }
+          );
+        }
       } else {
         // Create new record with specified ID
         record = await models.Hospital.create(
@@ -177,13 +196,31 @@ router.patch(
     await models.sequelize.transaction(async (transaction) => {
       record = await models.Hospital.findOne({ ...options, transaction });
       if (record) {
-        await record.update(
-          {
-            ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'isActive', 'customInventory']),
-            UpdatedById: req.user.id,
-          },
-          { transaction }
-        );
+        record.set({
+          ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'isActive', 'customInventory']),
+          UpdatedById: req.user.id,
+        });
+        const isCustomInventoryChanged = record.changed('customInventory');
+        await record.save({ transaction });
+        if (isCustomInventoryChanged) {
+          const now = new Date();
+          await models.HospitalStatusUpdate.create(
+            {
+              HospitalId: record.id,
+              EdAdminUserId: req.user.id,
+              divertStatusIndicator: false,
+              divertStatusUpdateDateTimeLocal: now,
+              openEdBedCount: 0,
+              openPsychBedCount: 0,
+              customInventoryCount: record.customInventory?.length ? new Array(record.customInventory.length).fill(0) : null,
+              bedCountUpdateDateTimeLocal: now,
+              updateDateTimeLocal: now,
+              CreatedById: req.user.id,
+              UpdatedById: req.user.id,
+            },
+            { transaction }
+          );
+        }
       }
     });
     if (record) {
