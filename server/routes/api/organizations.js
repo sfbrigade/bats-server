@@ -44,6 +44,43 @@ router.get('/:id', middleware.isAdminUser, async (req, res) => {
   }
 });
 
+router.put(
+  '/:id',
+  middleware.isC4SFUser,
+  wrapper(async (req, res) => {
+    let organization;
+    await models.sequelize.transaction(async (transaction) => {
+      organization = await models.Organization.findByPk(req.params.id, { transaction });
+      const data = {
+        ..._.pick(req.body, ['name', 'type', 'state', 'stateUniqueId', 'timeZone', 'isMfaEnabled', 'isActive']),
+        UpdatedById: req.user.id,
+      };
+
+      if (organization) {
+        // Update existing record
+        if ((data.type !== 'EMS' || (!data.type && organization.type !== 'EMS')) && data.stateUniqueId) {
+          data.stateUniqueId = null;
+        }
+        await organization.update(data, { transaction });
+      } else {
+        // Create new record
+        data.CreatedById = req.user.id;
+        if (data.type !== 'EMS' && data.stateUniqueId) {
+          data.stateUniqueId = null;
+        }
+        organization = await models.Organization.create(
+          {
+            ...data,
+            id: req.params.id,
+          },
+          { transaction }
+        );
+      }
+    });
+    res.json(organization.toJSON());
+  })
+);
+
 router.patch(
   '/:id',
   middleware.isAdminUser,
@@ -56,7 +93,7 @@ router.patch(
           ..._.pick(req.body, ['name', 'type', 'state', 'stateUniqueId', 'timeZone', 'isMfaEnabled', 'isActive']),
           UpdatedById: req.user.id,
         };
-        if ((data.type === 'HEALTHCARE' || (!data.type && organization.type === 'HEALTHCARE')) && !data.stateUniqueId) {
+        if ((data.type !== 'EMS' || (!data.type && organization.type !== 'EMS')) && data.stateUniqueId) {
           data.stateUniqueId = null;
         }
         await organization.update(data, { transaction });

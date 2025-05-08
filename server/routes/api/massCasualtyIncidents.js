@@ -4,27 +4,13 @@ const _ = require('lodash');
 const { Op } = require('sequelize');
 const { DeliveryStatus } = require('shared/constants');
 
+const middleware = require('../../auth/middleware');
 const models = require('../../models');
 const { setPaginationHeaders, wrapper } = require('../helpers');
 
 const { dispatchMciUpdate } = require('../../wss');
 
 const router = express.Router();
-
-async function isAllowed(req, res, next) {
-  if (!req.user) {
-    res.status(HttpStatus.UNAUTHORIZED).end();
-    return;
-  }
-  if (!req.user.isSuperUser) {
-    const org = await req.user?.getOrganization();
-    if (org.type !== 'C4SF') {
-      res.status(HttpStatus.FORBIDDEN).end();
-      return;
-    }
-  }
-  next();
-}
 
 async function resetMciCapacities(userId) {
   // check for active MCIs, if all closed, reset MCI counts for all hospitals
@@ -65,7 +51,7 @@ async function resetMciCapacities(userId) {
 
 router.get(
   '/',
-  isAllowed,
+  middleware.isC4SFUser,
   wrapper(async (req, res) => {
     const page = req.query.page || '1';
     const options = {
@@ -83,7 +69,7 @@ router.get(
 
 router.post(
   '/',
-  isAllowed,
+  middleware.isC4SFUser,
   wrapper(async (req, res) => {
     const defaults = {
       ..._.pick(req.body, [
@@ -136,7 +122,7 @@ router.post(
   })
 );
 
-router.get('/:id/ringdowns', isAllowed, async (req, res) => {
+router.get('/:id/ringdowns', middleware.isC4SFUser, async (req, res) => {
   const record = await models.MassCasualtyIncident.findByPk(req.params.id);
   if (record) {
     const patientDeliveries = await models.PatientDelivery.findAll({
@@ -162,7 +148,7 @@ router.get('/:id/ringdowns', isAllowed, async (req, res) => {
   }
 });
 
-router.get('/:id', isAllowed, async (req, res) => {
+router.get('/:id', middleware.isC4SFUser, async (req, res) => {
   const record = await models.MassCasualtyIncident.findByPk(req.params.id);
   if (record) {
     res.json(record.toJSON());
@@ -173,7 +159,7 @@ router.get('/:id', isAllowed, async (req, res) => {
 
 router.patch(
   '/:id',
-  isAllowed,
+  middleware.isC4SFUser,
   wrapper(async (req, res) => {
     let record;
     await models.sequelize.transaction(async (transaction) => {
