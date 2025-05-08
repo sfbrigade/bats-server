@@ -48,7 +48,7 @@ router.put(
   '/:id',
   middleware.isC4SFUser,
   wrapper(async (req, res) => {
-    let organization;
+    let organization, isCreated = false;
     await models.sequelize.transaction(async (transaction) => {
       organization = await models.Organization.findByPk(req.params.id, { transaction });
       const data = {
@@ -63,6 +63,7 @@ router.put(
         }
         await organization.update(data, { transaction });
       } else {
+        isCreated = true;
         // Create new record
         data.CreatedById = req.user.id;
         if (data.type !== 'EMS' && data.stateUniqueId) {
@@ -77,7 +78,7 @@ router.put(
         );
       }
     });
-    res.json(organization.toJSON());
+    res.status(isCreated ? HttpStatus.CREATED : HttpStatus.OK).json(organization.toJSON());
   })
 );
 

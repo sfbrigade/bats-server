@@ -100,7 +100,7 @@ describe('/api/organizations', () => {
           timeZone: 'America/Los_Angeles',
           isActive: true,
         })
-        .expect(HttpStatus.OK);
+        .expect(HttpStatus.CREATED);
 
       const data = response.body;
       assert.deepStrictEqual(data.id, newId);
