@@ -4,11 +4,11 @@ module.exports = {
     await queryInterface.addColumn('hospitalstatusupdate', 'custominventorycount', {
       type: Sequelize.JSONB,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     });
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('hospitalstatusupdate', 'custominventorycount');
-  }
-}; 
+  },
+};

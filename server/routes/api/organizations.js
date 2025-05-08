@@ -48,7 +48,8 @@ router.put(
   '/:id',
   middleware.isC4SFUser,
   wrapper(async (req, res) => {
-    let organization, isCreated = false;
+    let organization,
+      isCreated = false;
     await models.sequelize.transaction(async (transaction) => {
       organization = await models.Organization.findByPk(req.params.id, { transaction });
       const data = {
