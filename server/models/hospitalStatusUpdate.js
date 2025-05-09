@@ -46,7 +46,21 @@ module.exports = (sequelize) => {
         ambulanceCountsByHospitalId[result.HospitalId].offloading = result.count;
       });
       const statusUpdates = await HospitalStatusUpdate.scope('latest').findAll({
-        include: [sequelize.models.Hospital],
+        include: [
+          {
+            model: sequelize.models.Hospital,
+            required: true,
+            include: [
+              {
+                model: sequelize.models.Organization,
+                where: {
+                  type: 'HEALTHCARE',
+                },
+                required: true,
+              },
+            ],
+          },
+        ],
         transaction: options?.transaction,
       });
       statusUpdates.sort((a, b) => a.Hospital.sortSequenceNumber - b.Hospital.sortSequenceNumber);
