@@ -59,7 +59,7 @@ router.put(
 
       if (organization) {
         // Update existing record
-        if ((data.type !== 'EMS' || (!data.type && organization.type !== 'EMS')) && data.stateUniqueId) {
+        if ((data.type !== 'EMS' || (!data.type && organization.type !== 'EMS')) && data.stateUniqueId !== null) {
           data.stateUniqueId = null;
         }
         await organization.update(data, { transaction });
@@ -95,7 +95,7 @@ router.patch(
           ..._.pick(req.body, ['name', 'type', 'state', 'stateUniqueId', 'timeZone', 'isMfaEnabled', 'isActive']),
           UpdatedById: req.user.id,
         };
-        if ((data.type !== 'EMS' || (!data.type && organization.type !== 'EMS')) && data.stateUniqueId) {
+        if ((data.type !== 'EMS' || (!data.type && organization.type !== 'EMS')) && data.stateUniqueId !== null) {
           data.stateUniqueId = null;
         }
         await organization.update(data, { transaction });

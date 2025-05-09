@@ -106,6 +106,7 @@ describe('/api/users', () => {
               stateFacilityCode: '20048',
               sortSequenceNumber: 2,
               isActive: true,
+              customInventory: null,
             },
             user: {
               id: '449b1f54-7583-417c-8c25-8da7dde65f6d',
