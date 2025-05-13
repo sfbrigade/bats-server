@@ -37,6 +37,11 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
           isAllowed = true;
         }
       }
+      // TODO: figure out permissions for venues
+      const hospital = await models.Hospital.findByPk(req.body.hospitalId, { include: [models.Organization] });
+      if (hospital.Organization.type === 'VENUE') {
+        isAllowed = true;
+      }
       if (!isAllowed) {
         // ensure authenticated user is an administrator of this hospital ED
         await models.HospitalUser.findOne({
@@ -54,6 +59,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
     }
   } catch (error) {
     res.status(HttpStatus.FORBIDDEN).end();
+    return;
   }
   try {
     let statusUpdate;

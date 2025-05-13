@@ -14,7 +14,7 @@ import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function EMS() {
   const [searchParams] = useSearchParams();
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user?venueId=${searchParams.get('venueId')}`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user?venueId=${searchParams.get('venueId') ?? ''}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
   const [mcis, setMcis] = useState([]);

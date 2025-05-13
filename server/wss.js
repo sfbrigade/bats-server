@@ -282,6 +282,7 @@ function configure(server, app) {
           // ensure valid hospital
           if (query.id && query.id !== 'undefined') {
             req.hospital = await models.Hospital.findByPk(query.id);
+            // TODO: check if user is allowed to view this hospital
           }
           if (!req.hospital) {
             socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
