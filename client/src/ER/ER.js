@@ -39,14 +39,6 @@ export default function ER() {
 
   const [playSound] = useSound(notification);
 
-  useEffect(() => {
-    if (hospitalId) {
-      ApiService.hospitals.get(hospitalId).then((response) => {
-        setHospital(response.data);
-      });
-    }
-  }, [hospitalId]);
-
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
     setUnconfirmedRingdowns(newUnconfirmedRingdowns);
@@ -79,6 +71,14 @@ export default function ER() {
       r.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
       r.currentDeliveryStatus !== Ringdown.Status.REDIRECTED
   ).length;
+
+  useEffect(() => {
+    if (hospitalId) {
+      ApiService.hospitals.get(hospitalId).then((response) => {
+        setHospital(response.data);
+      });
+    }
+  }, [hospitalId]);
 
   useEffect(() => {
     if (lastMessage?.data) {
@@ -125,8 +125,9 @@ export default function ER() {
           <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
           {!!mcis.length && mcis.map((mci) => <MciCard key={mci.id} className="margin-x-3 margin-y-2" data={mci} />)}
           {showRingdown && (!showTabs || selectedTab === 'ringdown') && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
-          {showInfo && (!showTabs || selectedTab === 'hospitalInfo') && (
+          {showInfo && hospital && (!showTabs || selectedTab === 'hospitalInfo') && (
             <Beds
+              hospital={hospital}
               showMci={!!mcis.length}
               statusUpdate={statusUpdate}
               onStatusUpdate={onStatusUpdate}

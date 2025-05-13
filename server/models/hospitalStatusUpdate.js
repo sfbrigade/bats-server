@@ -100,6 +100,7 @@ module.exports = (sequelize) => {
         'mciUpdateDateTime',
         'openEdBedCount',
         'openPsychBedCount',
+        'customInventoryCount',
         'bedCountUpdateDateTimeLocal',
         'divertStatusIndicator',
         'divertStatusUpdateDateTimeLocal',

@@ -7,6 +7,7 @@ class HospitalStatus {
     mciGreenCapacity,
     openEdBedCount,
     openPsychBedCount,
+    customInventoryCount,
     bedCountUpdateDateTimeLocal,
     divertStatusIndicator,
     divertStatusUpdateDateTimeLocal,
@@ -25,6 +26,7 @@ class HospitalStatus {
     this.mciGreenCapacity = mciGreenCapacity;
     this.openEdBedCount = openEdBedCount;
     this.openPsychBedCount = openPsychBedCount;
+    this.customInventoryCount = customInventoryCount;
     this.bedCountUpdateDateTimeLocal = bedCountUpdateDateTimeLocal;
     this.divertStatusIndicator = divertStatusIndicator;
     this.divertStatusUpdateDateTimeLocal = divertStatusUpdateDateTimeLocal;
@@ -55,6 +57,7 @@ class HospitalStatus {
       mciGreenCapacity: this.mciGreenCapacity,
       openEdBedCount: this.openEdBedCount,
       openPsychBedCount: this.openPsychBedCount,
+      customInventoryCount: this.customInventoryCount,
       bedCountUpdateDateTimeLocal: this.bedCountUpdateDateTimeLocal,
       additionalServiceAvailabilityNotes: this.additionalServiceAvailabilityNotes,
       notesUpdateDateTimeLocal: this.notesUpdateDateTimeLocal,
