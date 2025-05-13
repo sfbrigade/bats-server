@@ -61,6 +61,10 @@ $row-height: 6rem;
   font-weight: bold;
 }
 
+.hospitalstatusrow__data .text-light {
+  @include u-text('base-light');
+}
+
 .hospitalstatusrow__notes {
   @include u-margin-left(2);
   @include u-margin-bottom(1);

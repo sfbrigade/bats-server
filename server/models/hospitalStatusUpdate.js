@@ -92,6 +92,7 @@ module.exports = (sequelize) => {
     }
 
     async toJSON(options) {
+      const { transaction } = options || {};
       const json = _.pick(this, [
         'id',
         'mciRedCapacity',
@@ -111,9 +112,10 @@ module.exports = (sequelize) => {
       json.edAdminUserId = this.EdAdminUserId;
       json.createdById = this.CreatedById;
       json.updatedById = this.UpdatedById;
-      const hospital = this.Hospital || (await this.getHospital(options));
-      json.hospital = _.pick(hospital, ['id', 'name', 'state', 'stateFacilityCode', 'sortSequenceNumber']);
-      const ambulanceCounts = hospital.ambulanceCounts || (await hospital.getAmbulanceCounts(options));
+      const hospital = this.Hospital || (await this.getHospital({ include: [sequelize.models.Organization], transaction }));
+      json.hospital = _.pick(hospital, ['id', 'name', 'customInventory', 'state', 'stateFacilityCode', 'sortSequenceNumber']);
+      json.hospital.organization = _.pick(hospital.Organization, ['id', 'name', 'type']);
+      const ambulanceCounts = hospital.ambulanceCounts || (await hospital.getAmbulanceCounts({ transaction }));
       json.hospital.ambulancesEnRoute = ambulanceCounts.enRoute;
       json.hospital.ambulancesOffloading = ambulanceCounts.offloading;
       return json;
