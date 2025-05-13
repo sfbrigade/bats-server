@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import FormInput from '../Components/FormInput';
@@ -13,13 +14,15 @@ import FormRadioFieldSet from '../Components/FormRadioFieldSet';
 import './HospitalSelection.scss';
 
 function HospitalSelection({ ringdown, onChange }) {
+  const [searchParams] = useSearchParams();
+  const venueId = searchParams.get('venueId');
   const [hospitalStatuses, setHospitalStatuses] = useState([]);
 
   useEffect(() => {
-    ApiService.hospitalStatuses.get().then((response) => {
+    ApiService.hospitalStatuses.index(venueId).then((response) => {
       setHospitalStatuses(response.data);
     });
-  }, []);
+  }, [venueId]);
 
   return (
     <div className="usa-accordion">

@@ -77,8 +77,8 @@ export default {
     },
   },
   hospitalStatuses: {
-    get() {
-      return instance.get('/api/hospitalstatuses');
+    index(venueId) {
+      return instance.get('/api/hospitalstatuses', { params: { venueId } });
     },
     create(data) {
       return instance.post('/api/hospitalstatuses', data);
