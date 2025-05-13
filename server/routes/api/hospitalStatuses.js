@@ -11,7 +11,12 @@ const router = express.Router();
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
   try {
+    const { venueId } = req.query;
     const statusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts();
+    if (venueId) {
+      const moreStatusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts(venueId);
+      statusUpdates.unshift(...moreStatusUpdates);
+    }
     const response = await Promise.all(statusUpdates.map((statusUpdate) => statusUpdate.toJSON()));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {

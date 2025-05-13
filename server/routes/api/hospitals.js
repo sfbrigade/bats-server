@@ -9,6 +9,7 @@ const { wrapper } = require('../helpers');
 const router = express.Router();
 
 router.get('/', middleware.isAdminUser, async (req, res) => {
+  const { type = 'HEALTHCARE' } = req.query;
   const options = {
     order: [
       ['sortSequenceNumber', 'ASC'],
@@ -24,7 +25,16 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
       OrganizationId,
     };
   } else {
-    options.include = ['Organization'];
+    options.include = [
+      {
+        model: models.Organization,
+        as: 'Organization',
+        where: {
+          type,
+        },
+        required: true,
+      },
+    ];
   }
   const records = await models.Hospital.findAll(options);
   res.json(records.map((record) => record.toJSON()));
