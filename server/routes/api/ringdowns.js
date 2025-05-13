@@ -247,7 +247,6 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
               res.status(HttpStatus.FORBIDDEN).end();
               return;
             }
-            return;
           }
         } else {
           res.status(HttpStatus.FORBIDDEN).end();
