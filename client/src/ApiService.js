@@ -177,8 +177,8 @@ export default {
     },
   },
   organizations: {
-    index({ type } = {}) {
-      return instance.get('/api/organizations/', { params: { type } });
+    index({ type, include } = {}) {
+      return instance.get('/api/organizations/', { params: { type, include } });
     },
     create(data) {
       return instance.post(`/api/organizations`, data);

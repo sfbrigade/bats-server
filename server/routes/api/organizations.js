@@ -9,13 +9,16 @@ const { setPaginationHeaders, wrapper } = require('../helpers');
 const router = express.Router();
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
-  const { page = '1', type } = req.query;
+  const { page = '1', type, include } = req.query;
   const options = {
     page,
     order: [['name', 'ASC']],
   };
   if (type) {
     options.where = { type: type.trim() };
+  }
+  if (include) {
+    options.include = include.split(',').map((i) => ({ model: models[i] }));
   }
   const { records, pages, total } = await models.Organization.paginate(options);
   setPaginationHeaders(req, res, pages, pages, total);

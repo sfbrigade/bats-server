@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
 
@@ -19,14 +20,17 @@ import notification from '../assets/notification.mp3';
 import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function ER() {
+  const [searchParams] = useSearchParams();
+  const hospitalId = searchParams.get('hospitalId');
   const { hospitalUser } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalId || hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
     ringdown: 0,
     hospitalInfo: 0,
   });
 
+  const [hospital, setHospital] = useState();
   const [mcis, setMcis] = useState([]);
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
@@ -34,6 +38,14 @@ export default function ER() {
   const lastIdRef = useRef(null);
 
   const [playSound] = useSound(notification);
+
+  useEffect(() => {
+    if (hospitalId) {
+      ApiService.hospitals.get(hospitalId).then((response) => {
+        setHospital(response.data);
+      });
+    }
+  }, [hospitalId]);
 
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
@@ -57,8 +69,8 @@ export default function ER() {
     setStatusUpdate(newStatusUpdate);
   }
 
-  const showRingdown = hospitalUser?.isRingdownUser;
-  const showInfo = hospitalUser?.isInfoUser;
+  const showRingdown = hospitalUser?.isRingdownUser || hospital?.organization?.type === 'VENUE';
+  const showInfo = hospitalUser?.isInfoUser || hospital?.organization?.type === 'VENUE';
   const showTabs = showRingdown && showInfo;
   const hasUnconfirmedRingdowns = unconfirmedRingdowns.length > 0;
   const incomingRingdownsCount = ringdowns.filter(

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Components/Header';
 
@@ -8,7 +8,7 @@ function Venues() {
   const [orgs, setOrgs] = useState([]);
 
   useEffect(() => {
-    ApiService.organizations.index({ type: 'VENUE' }).then((response) => {
+    ApiService.organizations.index({ type: 'VENUE', include: 'Hospital' }).then((response) => {
       setOrgs(response.data);
     });
   }, []);
@@ -22,16 +22,30 @@ function Venues() {
             <table className="usa-table usa-table--striped usa-table--borderless usa-table--hoverable width-full">
               <tbody>
                 {orgs.map((org) => (
-                  <tr key={org.id}>
-                    <td>
-                      <h3>{org.name}</h3>
-                    </td>
-                    <td>
-                      <Link className="usa-button" to={`/ems?venueId=${org.id}`}>
-                        EMS
-                      </Link>
-                    </td>
-                  </tr>
+                  <Fragment key={org.id}>
+                    <tr>
+                      <td>
+                        <h3>{org.name}</h3>
+                      </td>
+                      <td>
+                        <Link className="usa-button width-full" to={`/ems?venueId=${org.id}`}>
+                          EMS
+                        </Link>
+                      </td>
+                    </tr>
+                    {org.hospitals.map((hospital) => (
+                      <tr key={hospital.id}>
+                        <td>
+                          <h3 className="padding-left-5">{hospital.name}</h3>
+                        </td>
+                        <td>
+                          <Link className="usa-button width-full" to={`/er?hospitalId=${hospital.id}`}>
+                            Clinic
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </Fragment>
                 ))}
               </tbody>
             </table>

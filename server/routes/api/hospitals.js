@@ -161,13 +161,11 @@ router.put(
   })
 );
 
-router.get('/:id', middleware.isAdminUser, async (req, res) => {
+router.get('/:id', middleware.isAuthenticated, async (req, res) => {
   const options = {
     where: { id: req.params.id },
+    include: [models.Organization],
   };
-  if (!req.user.isSuperUser) {
-    options.where.OrganizationId = req.user.OrganizationId;
-  }
   const record = await models.Hospital.findOne(options);
   if (record) {
     res.json(record.toJSON());
