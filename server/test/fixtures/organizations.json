@@ -81,5 +81,16 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Organization",
+    "data": {
+      "id": "50ff83e4-c00d-43b2-a4c4-f7b616fbd972",
+      "name": "Chase Center",
+      "type": "VENUE",
+      "state": "06",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]

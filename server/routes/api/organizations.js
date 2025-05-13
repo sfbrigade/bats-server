@@ -4,16 +4,22 @@ const _ = require('lodash');
 
 const middleware = require('../../auth/middleware');
 const models = require('../../models');
-const { wrapper } = require('../helpers');
+const { setPaginationHeaders, wrapper } = require('../helpers');
 
 const router = express.Router();
 
-router.get('/', middleware.isSuperUser, async (req, res) => {
-  const orgs = await models.Organization.findAll({
-    include: [models.Hospital],
+router.get('/', middleware.isAuthenticated, async (req, res) => {
+  const { page = '1', type } = req.query;
+  const options = {
+    page,
     order: [['name', 'ASC']],
-  });
-  res.json(orgs.map((org) => org.toJSON()));
+  };
+  if (type) {
+    options.where = { type: type.trim() };
+  }
+  const { records, pages, total } = await models.Organization.paginate(options);
+  setPaginationHeaders(req, res, pages, pages, total);
+  res.json(records.map((r) => r.toJSON()));
 });
 
 router.post(

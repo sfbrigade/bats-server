@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 import RoutedHeader from '../Components/RoutedHeader';
 import Context from '../Context';
@@ -13,7 +13,8 @@ import RingdownForm from './RingdownForm';
 import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function EMS() {
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user`;
+  const [searchParams] = useSearchParams();
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user?venueId=${searchParams.get('venueId')}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
   const [mcis, setMcis] = useState([]);

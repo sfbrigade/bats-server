@@ -62,5 +62,39 @@
       "CreatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d",
       "UpdatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d"
     }
+  },
+  {
+    "model": "HospitalStatusUpdate",
+    "data": {
+      "id": "c750a79f-f7dc-429f-98d7-4e4622fddbfd",
+      "HospitalId": "a5c5bb20-bca0-40d3-8440-aea95c0a8a9b",
+      "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
+      "updateDateTimeLocal": "2005-10-19 10:23:54+02",
+      "openEdBedCount": 0,
+      "openPsychBedCount": 0,
+      "customInventoryCount": [2, 6],
+      "bedCountUpdateDateTimeLocal": "2004-10-19 10:23:54",
+      "divertStatusIndicator": true,
+      "divertStatusUpdateDateTimeLocal": "2004-10-19 10:23:54",
+      "CreatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d",
+      "UpdatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d"
+    }
+  },
+  {
+    "model": "HospitalStatusUpdate",
+    "data": {
+      "id": "85144bd2-96b9-42fb-a0e9-7524542b1a2f",
+      "HospitalId": "ecf5cfc4-326f-4e74-88da-7aea2a3b1c70",
+      "EdAdminUserId": "449b1f54-7583-417c-8c25-8da7dde65f6d",
+      "updateDateTimeLocal": "2005-10-19 10:23:54+02",
+      "openEdBedCount": 0,
+      "openPsychBedCount": 0,
+      "customInventoryCount": [8],
+      "bedCountUpdateDateTimeLocal": "2004-10-19 10:23:54",
+      "divertStatusIndicator": true,
+      "divertStatusUpdateDateTimeLocal": "2004-10-19 10:23:54",
+      "CreatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d",
+      "UpdatedById": "449b1f54-7583-417c-8c25-8da7dde65f6d"
+    }
   }
 ]

@@ -67,7 +67,7 @@ describe('models.HospitalStatusUpdate', () => {
         include: [models.Hospital],
       });
       // should only return one update per the 2 hospitals
-      assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
+      assert.deepStrictEqual(hospitalStatusUpdates.length, 4);
       // each update should reflect the latest (test data year 2005 vs 2004)
       assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'CPMC Van Ness');
       assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
@@ -90,6 +90,15 @@ describe('models.HospitalStatusUpdate', () => {
       assert.deepStrictEqual(hospitalStatusUpdates[1].updateDateTimeLocal.getFullYear(), 2005);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.enRoute, 3);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.offloading, 1);
+    });
+
+    it('returns the latest status update for hospitals for a specific venue, with ambulance counts', async () => {
+      const hospitalStatusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts(
+        '50ff83e4-c00d-43b2-a4c4-f7b616fbd972'
+      );
+      assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'FA 1');
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'FA 2');
     });
   });
 

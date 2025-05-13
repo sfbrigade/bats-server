@@ -6,6 +6,8 @@ import TabBar from './TabBar';
 import RingdownIcon from './Icons/Ringdown';
 import HospitalIcon from './Icons/Hospital';
 
+import './RoutedHeader.scss';
+
 const tabs = [
   { label: 'Ringdown', Icon: RingdownIcon, id: 'ringdown' },
   { label: 'Hospital Info', Icon: HospitalIcon, id: 'hospitalInfo' },
@@ -13,7 +15,7 @@ const tabs = [
 
 function RoutedHeader({ selectedTab, onSelect }) {
   return (
-    <Header name="Routed">
+    <Header className="routed-header" name="Routed">
       <TabBar tabs={tabs} selectedTab={selectedTab} onSelect={onSelect} />
     </Header>
   );

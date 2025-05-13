@@ -13,6 +13,7 @@ import Forgot from './Auth/Forgot';
 import NewPassword from './Auth/NewPassword';
 import TwoFactor from './Auth/TwoFactor';
 import Invite from './Invites/Invite';
+import Venues from './Venues/Venues';
 
 vh.init();
 
@@ -38,6 +39,7 @@ function App() {
           <Route path="/ems/*" element={<EMS />} />
           <Route path="/er/*" element={<ER />} />
           <Route path="/admin/*" element={<Admin />} />
+          <Route path="/venues/*" element={<Venues />} />
           {!user && (
             <>
               <Route path="/invites/:id" element={<Invite />} />
