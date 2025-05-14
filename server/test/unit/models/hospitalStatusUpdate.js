@@ -114,6 +114,7 @@ describe('models.HospitalStatusUpdate', () => {
         mciUpdateDateTime: null,
         openEdBedCount: 10,
         openPsychBedCount: 2,
+        customInventoryCount: null,
         bedCountUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),
         divertStatusIndicator: false,
         divertStatusUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),
@@ -131,6 +132,12 @@ describe('models.HospitalStatusUpdate', () => {
           sortSequenceNumber: 2,
           ambulancesEnRoute: 3,
           ambulancesOffloading: 1,
+          customInventory: null,
+          organization: {
+            id: '25ffdd7c-b4cf-4ebb-9750-1e628370e13b',
+            name: 'Sutter Health',
+            type: 'HEALTHCARE',
+          },
         },
       });
     });
