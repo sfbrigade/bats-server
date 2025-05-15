@@ -122,7 +122,7 @@ export default function ER() {
     <div className="grid-container minh-100vh">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
+          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} venue={hospital?.organization} hospital={hospital} />
           {!!mcis.length && mcis.map((mci) => <MciCard key={mci.id} className="margin-x-3 margin-y-2" data={mci} />)}
           {showRingdown && (!showTabs || selectedTab === 'ringdown') && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
           {showInfo && hospital && (!showTabs || selectedTab === 'hospitalInfo') && (

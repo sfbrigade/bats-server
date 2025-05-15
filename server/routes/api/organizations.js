@@ -42,7 +42,7 @@ router.post(
   })
 );
 
-router.get('/:id', middleware.isAdminUser, async (req, res) => {
+router.get('/:id', middleware.isAuthenticated, async (req, res) => {
   const organization = await models.Organization.findByPk(req.params.id, {
     include: [models.Hospital],
   });
