@@ -53,6 +53,81 @@ router.get('/:id', middleware.isAuthenticated, async (req, res) => {
   }
 });
 
+router.post(
+  '/:id/assign',
+  middleware.isC4SFUser,
+  wrapper(async (req, res) => {
+    let { FromOrganizationId } = req.body;
+    const { state, stateUniqueId } = req.body;
+    if (!FromOrganizationId && state && stateUniqueId) {
+      const organization = await models.Organization.findOne({
+        where: {
+          state,
+          stateUniqueId,
+        },
+      });
+      FromOrganizationId = organization?.id;
+    }
+    if (!FromOrganizationId) {
+      res.status(HttpStatus.BAD_REQUEST).end();
+      return;
+    }
+    const [assignment, created] = await models.Assignment.findOrCreate({
+      where: {
+        FromOrganizationId,
+        ToOrganizationId: req.params.id,
+        deletedAt: null,
+      },
+      defaults: {
+        CreatedById: req.user.id,
+        UpdatedById: req.user.id,
+      },
+    });
+    res.status(created ? HttpStatus.CREATED : HttpStatus.OK).json(assignment.toJSON());
+  })
+);
+
+router.delete(
+  '/:id/assign',
+  middleware.isC4SFUser,
+  wrapper(async (req, res) => {
+    let { FromOrganizationId } = req.query;
+    const { state, stateUniqueId } = req.query;
+    if (!FromOrganizationId && state && stateUniqueId) {
+      const organization = await models.Organization.findOne({
+        where: {
+          state,
+          stateUniqueId,
+        },
+      });
+      FromOrganizationId = organization?.id;
+    }
+    if (!FromOrganizationId) {
+      res.status(HttpStatus.BAD_REQUEST).end();
+      return;
+    }
+    let assignment;
+    await models.sequelize.transaction(async (transaction) => {
+      assignment = await models.Assignment.findOne({
+        where: {
+          FromOrganizationId,
+          ToOrganizationId: req.params.id,
+          deletedAt: null,
+        },
+        transaction,
+      });
+      if (assignment) {
+        await assignment.update({ deletedAt: new Date(), DeletedById: req.user.id }, { transaction });
+      }
+    });
+    if (assignment) {
+      res.status(HttpStatus.NO_CONTENT).end();
+    } else {
+      res.status(HttpStatus.NOT_FOUND).end();
+    }
+  })
+);
+
 router.put(
   '/:id',
   middleware.isC4SFUser,

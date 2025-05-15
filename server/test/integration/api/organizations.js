@@ -10,7 +10,7 @@ describe('/api/organizations', () => {
   let testSession;
 
   beforeEach(async () => {
-    await helper.loadFixtures(['organizations', 'users']);
+    await helper.loadFixtures(['organizations', 'users', 'assignments']);
     testSession = session(app);
     /// log in as a superuser
     await testSession
@@ -140,6 +140,64 @@ describe('/api/organizations', () => {
 
       const record = await models.Organization.findByPk(data.id);
       assert.deepStrictEqual(record.stateUniqueId, null);
+    });
+  });
+
+  describe('POST /:id/assign', () => {
+    it('assigns an organization to another organization', async () => {
+      const response = await testSession
+        .post('/api/organizations/50ff83e4-c00d-43b2-a4c4-f7b616fbd972/assign')
+        .set('Accept', 'application/json')
+        .send({ FromOrganizationId: '0b01d3a3-3a8c-40a9-b07a-b360f256d5fc' })
+        .expect(HttpStatus.CREATED);
+
+      const data = response.body;
+      assert.deepStrictEqual(data.FromOrganizationId, '0b01d3a3-3a8c-40a9-b07a-b360f256d5fc');
+      assert.deepStrictEqual(data.ToOrganizationId, '50ff83e4-c00d-43b2-a4c4-f7b616fbd972');
+
+      const assignment = await models.Assignment.findByPk(data.id);
+      assert.deepStrictEqual(assignment.FromOrganizationId, '0b01d3a3-3a8c-40a9-b07a-b360f256d5fc');
+      assert.deepStrictEqual(assignment.ToOrganizationId, '50ff83e4-c00d-43b2-a4c4-f7b616fbd972');
+    });
+
+    it('assigns an organization to another organization by state and stateUniqueId', async () => {
+      const response = await testSession
+        .post('/api/organizations/50ff83e4-c00d-43b2-a4c4-f7b616fbd972/assign')
+        .set('Accept', 'application/json')
+        .send({ state: '06', stateUniqueId: 'S38-50827' })
+        .expect(HttpStatus.CREATED);
+
+      const data = response.body;
+      assert.deepStrictEqual(data.FromOrganizationId, '1dd0dfd7-562e-48db-ae78-31b9136d3e15');
+      assert.deepStrictEqual(data.ToOrganizationId, '50ff83e4-c00d-43b2-a4c4-f7b616fbd972');
+
+      const assignment = await models.Assignment.findByPk(data.id);
+      assert.deepStrictEqual(assignment.FromOrganizationId, '1dd0dfd7-562e-48db-ae78-31b9136d3e15');
+      assert.deepStrictEqual(assignment.ToOrganizationId, '50ff83e4-c00d-43b2-a4c4-f7b616fbd972');
+    });
+  });
+
+  describe('DELETE /:id/assign', () => {
+    it('deletes an assignment', async () => {
+      await testSession
+        .delete('/api/organizations/50ff83e4-c00d-43b2-a4c4-f7b616fbd972/assign?FromOrganizationId=7c9023ff-dd16-4e87-823a-80567a7b834a')
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.NO_CONTENT);
+
+      const assignment = await models.Assignment.findByPk('de6dbb62-b601-4969-83db-22a5907a6e57');
+      assert.ok(assignment.deletedAt);
+      assert.deepStrictEqual(assignment.DeletedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+    });
+
+    it('deletes an assignment by state and stateUniqueId', async () => {
+      await testSession
+        .delete('/api/organizations/50ff83e4-c00d-43b2-a4c4-f7b616fbd972/assign?state=06&stateUniqueId=S38-50088')
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.NO_CONTENT);
+
+      const assignment = await models.Assignment.findByPk('de6dbb62-b601-4969-83db-22a5907a6e57');
+      assert.ok(assignment.deletedAt);
+      assert.deepStrictEqual(assignment.DeletedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
     });
   });
 

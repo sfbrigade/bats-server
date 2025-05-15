@@ -17,6 +17,7 @@ async function loadFixtures(files) {
 async function resetDatabase() {
   /// clear all test data (order matters due to foreign key relationships)
   await models.sequelize.query(`
+    DELETE FROM assignment;
     DELETE FROM patientdeliveryupdate;
     DELETE FROM patientdelivery;
     DELETE FROM patient;
