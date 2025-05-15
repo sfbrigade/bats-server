@@ -1,6 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('assignment', {
       assignment_uuid: {
         allowNull: false,
@@ -26,7 +26,7 @@ module.exports = {
       },
       recordcreatetimestamp: {
         type: Sequelize.DATE,
-        allowNull: false,        
+        allowNull: false,
       },
       recordcreateuser_uuid: {
         type: Sequelize.UUID,
@@ -60,11 +60,11 @@ module.exports = {
       },
     });
     await queryInterface.sequelize.query(
-      'CREATE UNIQUE INDEX assignment_from_to_uk ON assignment (fromorganization_uuid, toorganization_uuid) WHERE recorddeletetimestamp IS NULL',
+      'CREATE UNIQUE INDEX assignment_from_to_uk ON assignment (fromorganization_uuid, toorganization_uuid) WHERE recorddeletetimestamp IS NULL'
     );
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('assignment');
-  }
+  },
 };
