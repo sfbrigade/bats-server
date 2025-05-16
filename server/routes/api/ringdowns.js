@@ -227,7 +227,18 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
           deliveryStatus === DeliveryStatus.REDIRECT_ACKNOWLEDGED
         ) {
           const hospital = await patientDelivery.getHospital({ include: [models.Organization], transaction });
-          // TODO: figure out permissions for venues
+          if (hospital.Organization.type === 'VENUE') {
+            const assignment = await models.Assignment.findOne({
+              where: {
+                ToOrganizationId: hospital.OrganizationId,
+                FromOrganizationId: req.user.OrganizationId,
+              },
+            });
+            if (!assignment) {
+              res.status(HttpStatus.FORBIDDEN).end();
+              return;
+            }
+          }
           if (hospital.Organization.type !== 'VENUE') {
             // check if user is in the receiving hospital ED
             const options = {

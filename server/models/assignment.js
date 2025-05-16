@@ -16,5 +16,11 @@ module.exports = (sequelize) => {
 
   initModel(Assignment, metadata, sequelize);
 
+  Assignment.addScope('defaultScope', {
+    where: {
+      deletedAt: null,
+    },
+  });
+
   return Assignment;
 };
