@@ -81,7 +81,6 @@ router.post(
       where: {
         FromOrganizationId,
         ToOrganizationId: req.params.id,
-        deletedAt: null,
       },
       defaults: {
         CreatedById: req.user.id,
@@ -117,7 +116,6 @@ router.delete(
         where: {
           FromOrganizationId,
           ToOrganizationId: req.params.id,
-          deletedAt: null,
         },
         transaction,
       });
