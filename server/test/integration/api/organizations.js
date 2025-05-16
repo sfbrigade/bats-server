@@ -184,7 +184,7 @@ describe('/api/organizations', () => {
         .set('Accept', 'application/json')
         .expect(HttpStatus.NO_CONTENT);
 
-      const assignment = await models.Assignment.findByPk('de6dbb62-b601-4969-83db-22a5907a6e57');
+      const assignment = await models.Assignment.unscoped().findByPk('de6dbb62-b601-4969-83db-22a5907a6e57');
       assert.ok(assignment.deletedAt);
       assert.deepStrictEqual(assignment.DeletedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
     });
@@ -195,7 +195,7 @@ describe('/api/organizations', () => {
         .set('Accept', 'application/json')
         .expect(HttpStatus.NO_CONTENT);
 
-      const assignment = await models.Assignment.findByPk('de6dbb62-b601-4969-83db-22a5907a6e57');
+      const assignment = await models.Assignment.unscoped().findByPk('de6dbb62-b601-4969-83db-22a5907a6e57');
       assert.ok(assignment.deletedAt);
       assert.deepStrictEqual(assignment.DeletedById, 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
     });
