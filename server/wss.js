@@ -281,8 +281,17 @@ function configure(server, app) {
         case '/wss/hospital':
           // ensure valid hospital
           if (query.id && query.id !== 'undefined') {
-            req.hospital = await models.Hospital.findByPk(query.id);
-            // TODO: check if user is allowed to view this hospital
+            const hospital = await models.Hospital.findByPk(query.id);
+            // check if user is allowed to view this hospital
+            const assignment = await models.Assignment.findOne({
+              where: {
+                ToOrganizationId: hospital.OrganizationId,
+                FromOrganizationId: req.user.OrganizationId,
+              },
+            });
+            if (assignment) {
+              req.hospital = hospital;
+            }
           }
           if (!req.hospital) {
             socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');

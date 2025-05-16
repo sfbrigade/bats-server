@@ -9,7 +9,8 @@ module.exports = (sequelize) => {
       Organization.hasMany(models.Ambulance);
       Organization.hasMany(models.Hospital);
       Organization.hasMany(models.User);
-
+      Organization.hasMany(models.Assignment, { foreignKey: 'FromOrganizationId' });
+      Organization.hasMany(models.Assignment, { as: 'Assignees', foreignKey: 'ToOrganizationId' });
       Organization.belongsTo(models.User, { as: 'CreatedBy' });
       Organization.belongsTo(models.User, { as: 'UpdatedBy' });
     }

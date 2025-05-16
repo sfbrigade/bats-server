@@ -16,9 +16,14 @@ router.get('/', middleware.isAuthenticated, async (req, res) => {
   };
   if (type) {
     options.where = { type: type.trim() };
+    if (options.where.type === 'VENUE') {
+      options.include = [
+        { model: models.Assignment, as: 'Assignees', required: true, where: { FromOrganizationId: req.user.OrganizationId } },
+      ];
+    }
   }
   if (include) {
-    options.include = include.split(',').map((i) => ({ model: models[i] }));
+    options.include = (options.include || []).concat(include.split(',').map((i) => ({ model: models[i.trim()] })));
   }
   const { records, pages, total } = await models.Organization.paginate(options);
   setPaginationHeaders(req, res, pages, pages, total);
