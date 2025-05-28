@@ -8502,6 +8502,11 @@ passport-local@^1.0.0:
   dependencies:
     passport-strategy "1.x.x"
 
+passport-oauth2-refresh@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/passport-oauth2-refresh/-/passport-oauth2-refresh-2.2.0.tgz#e60dd4e84e8df3c6ead87b6aab0754dec7a89aca"
+  integrity sha512-yXwXHL7ZZH0s2oknnjugfvwzCB5mpJ5ZNpzkb+b/sTsHeZFbx2BXfzvwsoD4aq6gq/aWuCxBV89ef+L/cjjrjg==
+
 passport-oauth2@^1.6.1:
   version "1.7.0"
   resolved "https://registry.npmjs.org/passport-oauth2/-/passport-oauth2-1.7.0.tgz"

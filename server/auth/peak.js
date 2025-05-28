@@ -1,6 +1,7 @@
 const axios = require('axios');
 const crypto = require('crypto');
 const OAuth2Strategy = require('passport-oauth2');
+const refresh = require('passport-oauth2-refresh');
 
 const models = require('../models');
 
@@ -20,8 +21,9 @@ const strategy = new OAuth2Strategy(
     clientID: PR_CLIENT_ID,
     clientSecret: PR_CLIENT_SECRET,
     callbackURL: `${BASE_URL}/auth/peak/callback`,
+    passReqToCallback: true,
   },
-  async function verify(accessToken, refreshToken, profile, done) {
+  async function verify(req, accessToken, refreshToken, profile, done) {
     let user = null;
     try {
       if (profile?.User?.email) {
@@ -68,6 +70,11 @@ const strategy = new OAuth2Strategy(
           }
         }
       }
+      if (user) {
+        req.session.peakAccessToken = accessToken;
+        req.session.peakRefreshToken = refreshToken;
+        req.session.peakSubdomain = profile.Agency[0]?.subdomain;
+      }
       done(null, user);
     } catch (err) {
       done(err, false);
@@ -87,5 +94,7 @@ strategy.userProfile = function userProfile(accessToken, done) {
       return done(null, response.data);
     });
 };
+
+refresh.use('peak', strategy);
 
 module.exports = strategy;

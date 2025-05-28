@@ -10,12 +10,11 @@ import './Header.scss';
 
 function Header({ className, name, children }) {
   const { user } = useContext(Context);
-  const [hasVenues, setVenues] = useState(false);
+  const [hasEvents, setEvents] = useState(false);
 
   useEffect(() => {
-    ApiService.organizations.index({ type: 'VENUE' }).then((response) => {
-      const total = parseInt(response.headers['x-total-count'] ?? '0', 10);
-      setVenues(total > 0);
+    ApiService.peak.events.index().then((response) => {
+      setEvents((response.data?.length ?? 0) > 0);
     });
   }, []);
 
@@ -23,9 +22,9 @@ function Header({ className, name, children }) {
     <header className={classNames('header', className)}>
       <img src={Logo} alt={`${name} logo`} className="header__logo" />
       <span className="header__logout h4">
-        {hasVenues && (
+        {hasEvents && (
           <>
-            <Link to="/venues">Venues</Link>&nbsp;|&nbsp;
+            <Link to="/events">Events</Link>&nbsp;|&nbsp;
           </>
         )}
         {user?.isAdminUser && (

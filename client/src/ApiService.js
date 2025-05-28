@@ -178,7 +178,7 @@ export default {
   },
   organizations: {
     index({ type, include } = {}) {
-      return instance.get('/api/organizations/', { params: { type, include } });
+      return instance.get('/api/organizations', { params: { type, include } });
     },
     create(data) {
       return instance.post(`/api/organizations`, data);
@@ -188,6 +188,16 @@ export default {
     },
     update(id, data) {
       return instance.patch(`/api/organizations/${id}`, data);
+    },
+  },
+  peak: {
+    events: {
+      index() {
+        return instance.get('/api/peak/events');
+      },
+      get(id) {
+        return instance.get(`/api/peak/events/${id}`);
+      },
     },
   },
   auth: {
