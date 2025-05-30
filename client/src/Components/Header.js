@@ -20,7 +20,9 @@ function Header({ className, name, children }) {
 
   return (
     <header className={classNames('header', className)}>
-      <img src={Logo} alt={`${name} logo`} className="header__logo" />
+      <Link to="/">
+        <img src={Logo} alt={`${name} logo`} className="header__logo" />
+      </Link>
       <span className="header__logout h4">
         {hasEvents && (
           <>
