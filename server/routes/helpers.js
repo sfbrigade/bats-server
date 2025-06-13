@@ -41,7 +41,6 @@ function setPaginationHeaders(req, res, page, pages, total) {
 function wrapper(handler) {
   return (req, res, next) => {
     Promise.resolve(handler(req, res, next)).catch((error) => {
-      console.log(error);
       if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
         /// if we've got a schema validation error, extract the individual errors
         let originalError = error;
