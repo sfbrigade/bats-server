@@ -42,7 +42,7 @@ test.describe('Reset Password', () => {
 
     await page.getByLabel('Email').fill('op.ems@c4sf.me');
     await page.getByLabel('Password').fill('Abcd1234!');
-    await page.getByText('Login').click();
+    await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page).toHaveURL('/ems');
   });
