@@ -22,7 +22,7 @@ import { useTabPositions } from '../hooks/useTabPositions';
 export default function ER() {
   const [searchParams] = useSearchParams();
   const hospitalId = searchParams.get('hospitalId');
-  const { hospitalUser } = useContext(Context);
+  const { hospitalUser, organization } = useContext(Context);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalId || hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
@@ -77,8 +77,10 @@ export default function ER() {
       ApiService.hospitals.get(hospitalId).then((response) => {
         setHospital(response.data);
       });
+    } else if (hospitalUser && organization) {
+      setHospital({ ...hospitalUser.hospital, organization });
     }
-  }, [hospitalId]);
+  }, [hospitalId, hospitalUser, organization]);
 
   useEffect(() => {
     if (lastMessage?.data) {
