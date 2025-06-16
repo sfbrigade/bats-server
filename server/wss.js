@@ -4,6 +4,7 @@ const url = require('url');
 const WebSocket = require('ws');
 const { DeliveryStatus } = require('shared/constants');
 const models = require('./models');
+const rollbar = require('./lib/rollbar');
 
 const mciServer = new WebSocket.Server({ noServer: true });
 mciServer.on('connection', async (ws, req) => {
@@ -239,72 +240,91 @@ function getActiveOrganizationUsers(organizationId) {
 function configure(server, app) {
   server.on('upgrade', (req, socket, head) => {
     app.sessionParser(req, {}, async () => {
-      const query = querystring.parse(url.parse(req.url).query);
-      // ensure user logged in
-      if (req.session?.passport?.user) {
-        req.user = await models.User.findByPk(req.session.passport.user);
-      }
-      if (!req.user) {
-        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
-        socket.destroy();
-        return;
-      }
-      // connect based on pathname
-      const { pathname } = url.parse(req.url);
-      switch (pathname) {
-        case '/wss/mci':
-          if (!req.user.isSuperUser) {
-            const org = await req.user.getOrganization();
-            if (org.type !== 'C4SF') {
+      try {
+        const query = querystring.parse(url.parse(req.url).query);
+        // ensure user logged in
+        if (req.session?.passport?.user) {
+          req.user = await models.User.findByPk(req.session.passport.user);
+        }
+        if (!req.user) {
+          socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+          socket.destroy();
+          return;
+        }
+        // connect based on pathname
+        const { pathname } = url.parse(req.url);
+        switch (pathname) {
+          case '/wss/mci':
+            if (!req.user.isSuperUser) {
+              const org = await req.user.getOrganization();
+              if (org.type !== 'C4SF') {
+                socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+                socket.destroy();
+                return;
+              }
+            }
+            mciServer.handleUpgrade(req, socket, head, (ws) => {
+              mciServer.emit('connection', ws, req);
+            });
+            break;
+          case '/wss/user':
+            if (query.venueId && query.venueId !== 'undefined') {
+              req.venue = await models.Organization.findByPk(query.venueId);
+              if (!req.venue) {
+                socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
+                socket.destroy();
+                return;
+              }
+            }
+            userServer.handleUpgrade(req, socket, head, (ws) => {
+              userServer.emit('connection', ws, req);
+            });
+            break;
+          case '/wss/hospital':
+            // ensure valid hospital
+            if (query.id && query.id !== 'undefined') {
+              const hospital = await models.Hospital.findByPk(query.id);
+              // check if user is allowed to view this hospital
+              const hospitalUser = await models.HospitalUser.findOne({
+                where: {
+                  HospitalId: hospital.id,
+                  EdAdminUserId: req.user.id,
+                  isActive: true,
+                },
+              });
+              if (hospitalUser) {
+                req.hospital = hospital;
+              } else {
+                const assignment = await models.Assignment.findOne({
+                  where: {
+                    ToOrganizationId: hospital.OrganizationId,
+                    FromOrganizationId: req.user.OrganizationId,
+                    deletedAt: null,
+                  },
+                });
+                if (assignment) {
+                  req.hospital = hospital;
+                }
+              }
+            }
+            if (!req.hospital) {
               socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
               socket.destroy();
               return;
             }
-          }
-          mciServer.handleUpgrade(req, socket, head, (ws) => {
-            mciServer.emit('connection', ws, req);
-          });
-          break;
-        case '/wss/user':
-          if (query.venueId && query.venueId !== 'undefined') {
-            req.venue = await models.Organization.findByPk(query.venueId);
-            if (!req.venue) {
-              socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
-              socket.destroy();
-              return;
-            }
-          }
-          userServer.handleUpgrade(req, socket, head, (ws) => {
-            userServer.emit('connection', ws, req);
-          });
-          break;
-        case '/wss/hospital':
-          // ensure valid hospital
-          if (query.id && query.id !== 'undefined') {
-            const hospital = await models.Hospital.findByPk(query.id);
-            // check if user is allowed to view this hospital
-            const assignment = await models.Assignment.findOne({
-              where: {
-                ToOrganizationId: hospital.OrganizationId,
-                FromOrganizationId: req.user.OrganizationId,
-              },
+            hospitalServer.handleUpgrade(req, socket, head, (ws) => {
+              hospitalServer.emit('connection', ws, req);
             });
-            if (assignment) {
-              req.hospital = hospital;
-            }
-          }
-          if (!req.hospital) {
+            break;
+          default:
             socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
             socket.destroy();
-            return;
-          }
-          hospitalServer.handleUpgrade(req, socket, head, (ws) => {
-            hospitalServer.emit('connection', ws, req);
-          });
-          break;
-        default:
-          socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
-          socket.destroy();
+        }
+      } catch (err) {
+        // console.log(err);
+        socket.write('HTTP/1.1 500 Internal Server Error\r\n\r\n');
+        socket.destroy();
+        rollbar.error(err, req);
       }
     });
   });
