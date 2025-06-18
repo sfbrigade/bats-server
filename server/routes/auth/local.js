@@ -47,7 +47,7 @@ router.post('/twoFactor', async (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  req.session.twoFactor = false;
+  req.session = null;
   if (req.accepts('html')) {
     res.redirect('/');
   } else {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './HospitalStatusHeader.scss';
 
-const HospitalStatusHeader = () => (
+const HospitalStatusHeader = ({ isVenue = false }) => (
   <div className="grid-container">
     <div className="grid-row hospitalstatusheader__container">
       <div className="grid-col-4" />
@@ -11,16 +11,16 @@ const HospitalStatusHeader = () => (
           <h3 className="hospitalstatusheader__column-name">Diversion</h3>
         </div>
         <div className="hospitalstatusheader__column-container">
-          <h3 className="hospitalstatusheader__column-name">ER Beds</h3>
+          {!isVenue && <h3 className="hospitalstatusheader__column-name">ER Beds</h3>}
         </div>
         <div className="hospitalstatusheader__column-container">
-          <h3 className="hospitalstatusheader__column-name">Behav. Beds</h3>
+          {!isVenue && <h3 className="hospitalstatusheader__column-name">Behav. Beds</h3>}
         </div>
         <div className="hospitalstatusheader__column-container">
-          <h3 className="hospitalstatusheader__column-name">Amb. en route</h3>
+          <h3 className="hospitalstatusheader__column-name">En route</h3>
         </div>
         <div className="hospitalstatusheader__column-container">
-          <h3 className="hospitalstatusheader__column-name">Amb. offloading</h3>
+          <h3 className="hospitalstatusheader__column-name">Waiting</h3>
         </div>
       </div>
     </div>

@@ -1,0 +1,17 @@
+@import '../theme/base';
+
+.routed-header {
+  min-height: units(15);
+  box-shadow: 0 6px 6px -6px rgba(0, 0, 0, 0.1);
+}
+
+.routed-header__venue {
+  text-align: center;
+  font-weight: $theme-font-weight-bold;
+  margin-top: units(2);
+  margin-bottom: units(1);
+
+  & + .tabbar {
+    margin-top: units(1);
+  }
+}

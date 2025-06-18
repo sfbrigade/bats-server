@@ -55,6 +55,10 @@ const fields = [
     allowNull: false,
   },
   {
+    name: 'customInventoryCount',
+    type: 'jsonb',
+  },
+  {
     name: 'bedCountUpdateDateTimeLocal',
     type: 'date',
   },

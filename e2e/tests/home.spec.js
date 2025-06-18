@@ -9,7 +9,7 @@ test.describe('home', () => {
     await expect(page.getByAltText('Routed logo')).toBeVisible();
     await expect(page.getByLabel('Email')).toBeVisible();
     await expect(page.getByLabel('Password')).toBeVisible();
-    await expect(page.getByText('Login')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
   });
 
   test('shows error message after invalid credentials submitted', async ({ page }) => {

@@ -14,9 +14,9 @@ module.exports = (sequelize) => {
       HospitalStatusUpdate.belongsTo(models.User, { as: 'UpdatedBy' });
     }
 
-    static async getLatestUpdatesWithAmbulanceCounts(options) {
+    static async getLatestUpdatesWithAmbulanceCounts(venueId, { transaction } = {}) {
       const ambulanceCountsByHospitalId = {};
-      const enroute = await sequelize.models.PatientDelivery.count({
+      let options = {
         distinct: true,
         col: 'AmbulanceId',
         where: {
@@ -26,29 +26,64 @@ module.exports = (sequelize) => {
         },
         group: 'HospitalId',
         attributes: ['HospitalId'],
-        transaction: options?.transaction,
-      });
+        transaction,
+      };
+      if (venueId) {
+        const venue = await sequelize.models.Organization.findByPk(venueId, { include: ['Hospitals'], transaction });
+        if (venue) {
+          options.where.HospitalId = venue.Hospitals.map((hospital) => hospital.id);
+        }
+      }
+      const enroute = await sequelize.models.PatientDelivery.count(options);
       enroute.forEach((result) => {
         ambulanceCountsByHospitalId[result.HospitalId] = { enRoute: result.count, offloading: 0 };
       });
-      const offloading = await sequelize.models.PatientDelivery.count({
-        distinct: true,
-        col: 'AmbulanceId',
-        where: {
-          currentDeliveryStatus: DeliveryStatus.ARRIVED,
-        },
-        group: 'HospitalId',
-        attributes: ['HospitalId'],
-        transaction: options?.transaction,
-      });
+      options.where.currentDeliveryStatus = DeliveryStatus.ARRIVED;
+      const offloading = await sequelize.models.PatientDelivery.count(options);
       offloading.forEach((result) => {
         ambulanceCountsByHospitalId[result.HospitalId] ||= { enRoute: 0 };
         ambulanceCountsByHospitalId[result.HospitalId].offloading = result.count;
       });
-      const statusUpdates = await HospitalStatusUpdate.scope('latest').findAll({
-        include: [sequelize.models.Hospital],
-        transaction: options?.transaction,
-      });
+      if (venueId) {
+        options = {
+          include: [
+            {
+              model: sequelize.models.Hospital,
+              required: true,
+              include: [
+                {
+                  model: sequelize.models.Organization,
+                  where: {
+                    id: venueId,
+                  },
+                  required: true,
+                },
+              ],
+            },
+          ],
+          transaction,
+        };
+      } else {
+        options = {
+          include: [
+            {
+              model: sequelize.models.Hospital,
+              required: true,
+              include: [
+                {
+                  model: sequelize.models.Organization,
+                  where: {
+                    type: 'HEALTHCARE',
+                  },
+                  required: true,
+                },
+              ],
+            },
+          ],
+          transaction,
+        };
+      }
+      const statusUpdates = await HospitalStatusUpdate.scope('latest').findAll(options);
       statusUpdates.sort((a, b) => a.Hospital.sortSequenceNumber - b.Hospital.sortSequenceNumber);
       statusUpdates.forEach((statusUpdate) => {
         statusUpdate.Hospital.ambulanceCounts = ambulanceCountsByHospitalId[statusUpdate.HospitalId] || { enRoute: 0, offloading: 0 };
@@ -57,6 +92,7 @@ module.exports = (sequelize) => {
     }
 
     async toJSON(options) {
+      const { transaction } = options || {};
       const json = _.pick(this, [
         'id',
         'mciRedCapacity',
@@ -65,6 +101,7 @@ module.exports = (sequelize) => {
         'mciUpdateDateTime',
         'openEdBedCount',
         'openPsychBedCount',
+        'customInventoryCount',
         'bedCountUpdateDateTimeLocal',
         'divertStatusIndicator',
         'divertStatusUpdateDateTimeLocal',
@@ -75,9 +112,10 @@ module.exports = (sequelize) => {
       json.edAdminUserId = this.EdAdminUserId;
       json.createdById = this.CreatedById;
       json.updatedById = this.UpdatedById;
-      const hospital = this.Hospital || (await this.getHospital(options));
-      json.hospital = _.pick(hospital, ['id', 'name', 'state', 'stateFacilityCode', 'sortSequenceNumber']);
-      const ambulanceCounts = hospital.ambulanceCounts || (await hospital.getAmbulanceCounts(options));
+      const hospital = this.Hospital || (await this.getHospital({ include: [sequelize.models.Organization], transaction }));
+      json.hospital = _.pick(hospital, ['id', 'name', 'customInventory', 'state', 'stateFacilityCode', 'sortSequenceNumber']);
+      json.hospital.organization = _.pick(hospital.Organization, ['id', 'name', 'type']);
+      const ambulanceCounts = hospital.ambulanceCounts || (await hospital.getAmbulanceCounts({ transaction }));
       json.hospital.ambulancesEnRoute = ambulanceCounts.enRoute;
       json.hospital.ambulancesOffloading = ambulanceCounts.offloading;
       return json;

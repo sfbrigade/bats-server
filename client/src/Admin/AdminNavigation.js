@@ -158,7 +158,7 @@ function AdminNavigation() {
                   <UserIcon className="admin-navigation__link-icon" /> Users
                 </NavLink>
               )}
-              {organization?.type === 'HEALTHCARE' && (
+              {(organization?.type === 'HEALTHCARE' || organization?.type === 'VENUE') && (
                 <NavLink
                   to={`${url}/hospitals`}
                   className={({ isActive }) => `admin-navigation__link ${isActive ? 'admin-navigation__link--active' : ''}`}

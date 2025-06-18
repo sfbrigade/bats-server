@@ -24,5 +24,33 @@
       "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
       "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
     }
+  },
+  {
+    "model": "Hospital",
+    "data": {
+      "id": "a5c5bb20-bca0-40d3-8440-aea95c0a8a9b",
+      "OrganizationId": "50ff83e4-c00d-43b2-a4c4-f7b616fbd972",
+      "name": "FA 1",
+      "state": "06",
+      "stateFacilityCode": "a5c5bb20-bca0-40d3-8440-aea95c0a8a9b",
+      "sortSequenceNumber": 1,
+      "customInventory": ["Chairs", "Beds"],
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Hospital",
+    "data": {
+      "id": "ecf5cfc4-326f-4e74-88da-7aea2a3b1c70",
+      "OrganizationId": "50ff83e4-c00d-43b2-a4c4-f7b616fbd972",
+      "name": "FA 2",
+      "state": "06",
+      "stateFacilityCode": "ecf5cfc4-326f-4e74-88da-7aea2a3b1c70",
+      "sortSequenceNumber": 2,
+      "customInventory": ["Chairs"],
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
   }
 ]

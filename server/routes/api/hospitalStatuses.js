@@ -11,7 +11,12 @@ const router = express.Router();
 
 router.get('/', middleware.isAuthenticated, async (req, res) => {
   try {
+    const { venueId } = req.query;
     const statusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts();
+    if (venueId) {
+      const moreStatusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts(venueId);
+      statusUpdates.unshift(...moreStatusUpdates);
+    }
     const response = await Promise.all(statusUpdates.map((statusUpdate) => statusUpdate.toJSON()));
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
@@ -32,6 +37,18 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
           isAllowed = true;
         }
       }
+      const hospital = await models.Hospital.findByPk(req.body.hospitalId, { include: [models.Organization] });
+      if (hospital.Organization.type === 'VENUE') {
+        const assignment = await models.Assignment.findOne({
+          where: {
+            ToOrganizationId: hospital.OrganizationId,
+            FromOrganizationId: req.user.OrganizationId,
+          },
+        });
+        if (assignment) {
+          isAllowed = true;
+        }
+      }
       if (!isAllowed) {
         // ensure authenticated user is an administrator of this hospital ED
         await models.HospitalUser.findOne({
@@ -49,6 +66,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
     }
   } catch (error) {
     res.status(HttpStatus.FORBIDDEN).end();
+    return;
   }
   try {
     let statusUpdate;
@@ -68,6 +86,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
           'mciUpdateDateTime',
           'openEdBedCount',
           'openPsychBedCount',
+          'customInventoryCount',
           'bedCountUpdateDateTimeLocal',
           'divertStatusIncicator',
           'divertStatusUpdateDateTimeLocal',
@@ -85,6 +104,7 @@ router.post('/', middleware.isAuthenticated, async (req, res) => {
           'mciUpdateDateTime',
           'openEdBedCount',
           'openPsychBedCount',
+          'customInventoryCount',
           'bedCountUpdateDateTimeLocal',
           'divertStatusIncicator',
           'divertStatusUpdateDateTimeLocal',

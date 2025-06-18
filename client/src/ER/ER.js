@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
 
@@ -19,14 +20,17 @@ import notification from '../assets/notification.mp3';
 import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function ER() {
-  const { hospitalUser } = useContext(Context);
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalUser?.hospital.id}`;
+  const [searchParams] = useSearchParams();
+  const hospitalId = searchParams.get('hospitalId');
+  const { hospitalUser, organization } = useContext(Context);
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalId || hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
     ringdown: 0,
     hospitalInfo: 0,
   });
 
+  const [hospital, setHospital] = useState();
   const [mcis, setMcis] = useState([]);
   const [ringdowns, setRingdowns] = useState([]);
   const [unconfirmedRingdowns, setUnconfirmedRingdowns] = useState([]);
@@ -57,8 +61,8 @@ export default function ER() {
     setStatusUpdate(newStatusUpdate);
   }
 
-  const showRingdown = hospitalUser?.isRingdownUser;
-  const showInfo = hospitalUser?.isInfoUser;
+  const showRingdown = hospitalUser?.isRingdownUser || hospital?.organization?.type === 'VENUE';
+  const showInfo = hospitalUser?.isInfoUser || hospital?.organization?.type === 'VENUE';
   const showTabs = showRingdown && showInfo;
   const hasUnconfirmedRingdowns = unconfirmedRingdowns.length > 0;
   const incomingRingdownsCount = ringdowns.filter(
@@ -67,6 +71,16 @@ export default function ER() {
       r.currentDeliveryStatus !== Ringdown.Status.CANCELLED &&
       r.currentDeliveryStatus !== Ringdown.Status.REDIRECTED
   ).length;
+
+  useEffect(() => {
+    if (hospitalId) {
+      ApiService.hospitals.get(hospitalId).then((response) => {
+        setHospital(response.data);
+      });
+    } else if (hospitalUser && organization) {
+      setHospital({ ...hospitalUser.hospital, organization });
+    }
+  }, [hospitalId, hospitalUser, organization]);
 
   useEffect(() => {
     if (lastMessage?.data) {
@@ -110,11 +124,12 @@ export default function ER() {
     <div className="grid-container minh-100vh">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
+          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} venue={hospital?.organization} hospital={hospital} />
           {!!mcis.length && mcis.map((mci) => <MciCard key={mci.id} className="margin-x-3 margin-y-2" data={mci} />)}
           {showRingdown && (!showTabs || selectedTab === 'ringdown') && <Ringdowns ringdowns={ringdowns} onStatusChange={onStatusChange} />}
-          {showInfo && (!showTabs || selectedTab === 'hospitalInfo') && (
+          {showInfo && hospital && (!showTabs || selectedTab === 'hospitalInfo') && (
             <Beds
+              hospital={hospital}
               showMci={!!mcis.length}
               statusUpdate={statusUpdate}
               onStatusUpdate={onStatusUpdate}

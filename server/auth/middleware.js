@@ -42,7 +42,7 @@ async function checkAuthorizationHeader(req, res, next) {
   next();
 }
 
-const isAuthenticated = (req, res, next) => {
+function isAuthenticated(req, res, next) {
   if (req.user) {
     // ensure authenticated user is active
     if (!req.user.isActive) {
@@ -55,9 +55,9 @@ const isAuthenticated = (req, res, next) => {
   } else {
     res.status(HttpStatus.UNAUTHORIZED).end();
   }
-};
+}
 
-const isSuperUser = (req, res, next) => {
+function isSuperUser(req, res, next) {
   if (req.user?.isSuperUser) {
     if (!req.session.twoFactor) {
       res.status(HttpStatus.UNAUTHORIZED).end();
@@ -67,9 +67,9 @@ const isSuperUser = (req, res, next) => {
   } else {
     res.status(HttpStatus.UNAUTHORIZED).end();
   }
-};
+}
 
-const isAdminUser = (req, res, next) => {
+function isAdminUser(req, res, next) {
   if (req.user?.isSuperUser || req.user?.isAdminUser) {
     if (!req.session.twoFactor) {
       res.status(HttpStatus.UNAUTHORIZED).end();
@@ -79,11 +79,27 @@ const isAdminUser = (req, res, next) => {
   } else {
     res.status(HttpStatus.UNAUTHORIZED).end();
   }
-};
+}
+
+async function isC4SFUser(req, res, next) {
+  if (!req.user) {
+    res.status(HttpStatus.UNAUTHORIZED).end();
+    return;
+  }
+  if (!req.user.isSuperUser) {
+    const org = await req.user?.getOrganization();
+    if (org.type !== 'C4SF') {
+      res.status(HttpStatus.FORBIDDEN).end();
+      return;
+    }
+  }
+  next();
+}
 
 module.exports = {
   checkAuthorizationHeader,
-  isAuthenticated,
-  isSuperUser,
   isAdminUser,
+  isAuthenticated,
+  isC4SFUser,
+  isSuperUser,
 };

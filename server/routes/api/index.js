@@ -16,6 +16,7 @@ router.use('/hospitalstatuses', require('./hospitalStatuses'));
 router.use('/invites', require('./invites'));
 router.use('/mcis', require('./massCasualtyIncidents'));
 router.use('/organizations', require('./organizations'));
+router.use('/peak', require('./peak'));
 router.use('/ringdowns', require('./ringdowns'));
 router.use('/users', require('./users'));
 

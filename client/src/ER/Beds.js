@@ -12,13 +12,19 @@ import HospitalStatus from '../Models/HospitalStatus';
 
 import './Beds.scss';
 
-function Beds({ showMci, statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
+function Beds({ hospital, showMci, statusUpdate, onStatusUpdate, incomingRingdownsCount }) {
   const [additionalNotes, setAdditionalNotes] = useState(null);
   const [isEditing, setEditing] = useState(false);
 
   function handleChange(event) {
     const newStatusUpdate = new HospitalStatus(statusUpdate);
-    newStatusUpdate[event.target.name] = parseInt(event.target.value, 10);
+    const m = event.target.name.match(/^customInventoryCount\[(\d+)\]$/);
+    if (m) {
+      newStatusUpdate.customInventoryCount ||= new Array(hospital.customInventory.length).fill(0);
+      newStatusUpdate.customInventoryCount[parseInt(m[1], 10)] = parseInt(event.target.value, 10);
+    } else {
+      newStatusUpdate[event.target.name] = parseInt(event.target.value, 10);
+    }
     onStatusUpdate(newStatusUpdate);
   }
 
@@ -71,32 +77,60 @@ function Beds({ showMci, statusUpdate, onStatusUpdate, incomingRingdownsCount })
               </fieldset>
             </>
           )}
-          <Heading title="Available Beds">
-            {incomingRingdownsCount > 0 && (
-              <span className="beds__incoming">
-                <i className="fas fa-exclamation-circle" /> {incomingRingdownsCount} incoming
-              </span>
-            )}
-          </Heading>
-          {statusUpdate && (
-            <fieldset className="usa-fieldset beds__availability">
-              <Counter
-                isEditing={isEditing}
-                label="ER Beds"
-                name="openEdBedCount"
-                min={0}
-                onChange={handleChange}
-                value={statusUpdate.openEdBedCount}
-              />
-              <Counter
-                isEditing={isEditing}
-                label="Behavioral Beds"
-                name="openPsychBedCount"
-                min={0}
-                onChange={handleChange}
-                value={statusUpdate.openPsychBedCount}
-              />
-            </fieldset>
+          {hospital?.organization?.type === 'VENUE' && hospital.customInventory?.length && (
+            <>
+              <Heading title="Availability">
+                <span className="beds__incoming">
+                  <i className="fas fa-exclamation-circle" /> {incomingRingdownsCount} incoming
+                </span>
+              </Heading>
+              {statusUpdate && (
+                <fieldset className="usa-fieldset beds__availability">
+                  {hospital.customInventory.map((label, i) => (
+                    <Counter
+                      key={`customInventoryCount-${i}`}
+                      isEditing={isEditing}
+                      label={label}
+                      name={`customInventoryCount[${i}]`}
+                      min={0}
+                      onChange={handleChange}
+                      value={statusUpdate.customInventoryCount?.[i] ?? 0}
+                    />
+                  ))}
+                </fieldset>
+              )}
+            </>
+          )}
+          {(hospital?.organization?.type !== 'VENUE' || !hospital.customInventory?.length) && (
+            <>
+              <Heading title="Available Beds">
+                {incomingRingdownsCount > 0 && (
+                  <span className="beds__incoming">
+                    <i className="fas fa-exclamation-circle" /> {incomingRingdownsCount} incoming
+                  </span>
+                )}
+              </Heading>
+              {statusUpdate && (
+                <fieldset className="usa-fieldset beds__availability">
+                  <Counter
+                    isEditing={isEditing}
+                    label="ER Beds"
+                    name="openEdBedCount"
+                    min={0}
+                    onChange={handleChange}
+                    value={statusUpdate.openEdBedCount}
+                  />
+                  <Counter
+                    isEditing={isEditing}
+                    label="Behavioral Beds"
+                    name="openPsychBedCount"
+                    min={0}
+                    onChange={handleChange}
+                    value={statusUpdate.openPsychBedCount}
+                  />
+                </fieldset>
+              )}
+            </>
           )}
           <Heading title="ER conditions" />
           {statusUpdate && (
@@ -132,6 +166,7 @@ function Beds({ showMci, statusUpdate, onStatusUpdate, incomingRingdownsCount })
 }
 
 Beds.propTypes = {
+  hospital: PropTypes.object,
   onStatusUpdate: PropTypes.func.isRequired,
   statusUpdate: PropTypes.instanceOf(HospitalStatus),
   incomingRingdownsCount: PropTypes.number.isRequired,

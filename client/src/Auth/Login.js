@@ -9,6 +9,7 @@ import RequiredInput from './Components/RequiredInput';
 import { handleValidationEvent } from './Components/helperFunctions';
 
 export default function Login() {
+  const [showEmailPassword, setShowEmailPassword] = useState(window.env.REACT_APP_PR_AUTH !== 'true');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [invalid, setInvalid] = useState();
@@ -58,31 +59,51 @@ export default function Login() {
             <h1 className="hospital-dest-title">
               <img src="/img/logomark-300.png" className="logo" alt="Routed logo" />
             </h1>
-            <h4 className="text-base">
-              Start by entering your
-              <br />
-              email and password below.
-            </h4>
-            {invalid && <Alert input="Invalid email and/or password." />}
-            {error && <Alert input="An unexpected error has occurred. Please try again." />}
-            {!error && !invalid && location.state?.flash?.success && <Alert type="success" input={location.state.flash.success} />}
-            <form id="login" className="usa-form" onSubmit={onSubmit}>
-              <RequiredInput type="email" name="username" label="Email" handleValidationEvent={handleValidationEvent} onChange={setEmail} />
-              <RequiredInput
-                type="password"
-                name="password"
-                label="Password"
-                value={password}
-                handleValidationEvent={handleValidationEvent}
-                onChange={setPassword}
-              />
-              <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
-                Login
-              </button>
-              <div className="margin-y-3">
-                <Link to="/forgot">Forgot your password?</Link>
+            {window.env.REACT_APP_PR_AUTH && (
+              <div>
+                <a className="usa-button width-full" href="/auth/peak">
+                  Login with Peak Response
+                </a>
+                <h4>or</h4>
+                {!showEmailPassword && (
+                  <>
+                    <button className="usa-button usa-button--unstyled" onClick={() => setShowEmailPassword(true)}>
+                      Login with Email
+                    </button>
+                  </>
+                )}
               </div>
-            </form>
+            )}
+            {showEmailPassword && (
+              <div>
+                {invalid && <Alert input="Invalid email and/or password." />}
+                {error && <Alert input="An unexpected error has occurred. Please try again." />}
+                {!error && !invalid && location.state?.flash?.success && <Alert type="success" input={location.state.flash.success} />}
+                <form id="login" className="usa-form" onSubmit={onSubmit}>
+                  <RequiredInput
+                    type="email"
+                    name="username"
+                    label="Email"
+                    handleValidationEvent={handleValidationEvent}
+                    onChange={setEmail}
+                  />
+                  <RequiredInput
+                    type="password"
+                    name="password"
+                    label="Password"
+                    value={password}
+                    handleValidationEvent={handleValidationEvent}
+                    onChange={setPassword}
+                  />
+                  <button type="submit" className="usa-button width-full" disabled={isNotValid()}>
+                    Login
+                  </button>
+                  <div className="margin-y-3">
+                    <Link to="/forgot">Forgot your password?</Link>
+                  </div>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       </div>

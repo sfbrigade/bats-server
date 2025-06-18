@@ -226,23 +226,38 @@ router.patch('/:id/deliveryStatus', middleware.isAuthenticated, async (req, res)
           deliveryStatus === DeliveryStatus.CANCEL_ACKNOWLEDGED ||
           deliveryStatus === DeliveryStatus.REDIRECT_ACKNOWLEDGED
         ) {
-          // check if user is in the receiving hospital ED
-          const options = {
-            where: {
-              HospitalId: patientDelivery.HospitalId,
-              EdAdminUserId: req.user.id,
-            },
-            transaction,
-          };
-          // when showing ringdowns from all hospitals for testing, also
-          // allow any hospital user to update its delivery status
-          if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
-            delete options.where.HospitalId;
+          const hospital = await patientDelivery.getHospital({ include: [models.Organization], transaction });
+          if (hospital.Organization.type === 'VENUE') {
+            const assignment = await models.Assignment.findOne({
+              where: {
+                ToOrganizationId: hospital.OrganizationId,
+                FromOrganizationId: req.user.OrganizationId,
+              },
+            });
+            if (!assignment) {
+              res.status(HttpStatus.FORBIDDEN).end();
+              return;
+            }
           }
-          const hospitalUser = await models.HospitalUser.findOne(options);
-          if (!hospitalUser || !req.user.isOperationalUser) {
-            res.status(HttpStatus.FORBIDDEN).end();
-            return;
+          if (hospital.Organization.type !== 'VENUE') {
+            // check if user is in the receiving hospital ED
+            const options = {
+              where: {
+                HospitalId: patientDelivery.HospitalId,
+                EdAdminUserId: req.user.id,
+              },
+              transaction,
+            };
+            // when showing ringdowns from all hospitals for testing, also
+            // allow any hospital user to update its delivery status
+            if (process.env.REACT_APP_PILOT_SHOW_ALL_RINGDOWNS === 'true') {
+              delete options.where.HospitalId;
+            }
+            const hospitalUser = await models.HospitalUser.findOne(options);
+            if (!hospitalUser || !req.user.isOperationalUser) {
+              res.status(HttpStatus.FORBIDDEN).end();
+              return;
+            }
           }
         } else {
           res.status(HttpStatus.FORBIDDEN).end();

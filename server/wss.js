@@ -4,6 +4,7 @@ const url = require('url');
 const WebSocket = require('ws');
 const { DeliveryStatus } = require('shared/constants');
 const models = require('./models');
+const rollbar = require('./lib/rollbar');
 
 const mciServer = new WebSocket.Server({ noServer: true });
 mciServer.on('connection', async (ws, req) => {
@@ -17,9 +18,9 @@ mciServer.on('connection', async (ws, req) => {
 const userServer = new WebSocket.Server({ noServer: true });
 userServer.on('connection', async (ws, req) => {
   // eslint-disable-next-line no-param-reassign
-  ws.info = { userId: req.user.id, organizationId: req.user.OrganizationId };
+  ws.info = { userId: req.user.id, organizationId: req.user.OrganizationId, venueId: req.venue?.id };
   // eslint-disable-next-line no-use-before-define
-  const data = await getRingdownData(req.user.id);
+  const data = await getRingdownData(req.user.id, req.venue?.id);
   ws.send(data);
 });
 
@@ -76,7 +77,7 @@ async function getMciData(cachedMcis, cachedStatusUpdates, mciId) {
   return data;
 }
 
-async function getRingdownData(userId, cachedMcis, cachedStatusUpdates) {
+async function getRingdownData(userId, venueId, cachedMcis, cachedStatusUpdates) {
   const patientDeliveries = await models.PatientDelivery.findAll({
     include: { all: true },
     where: {
@@ -86,7 +87,7 @@ async function getRingdownData(userId, cachedMcis, cachedStatusUpdates) {
       },
     },
   });
-  const data = JSON.stringify({
+  const data = {
     mcis: cachedMcis || (await models.MassCasualtyIncident.scope('active').findAll()).map((mci) => mci.toJSON()),
     ringdowns: await Promise.all(patientDeliveries.map((pd) => pd.toRingdownJSON())),
     statusUpdates:
@@ -94,8 +95,14 @@ async function getRingdownData(userId, cachedMcis, cachedStatusUpdates) {
       (await Promise.all(
         (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts()).map((statusUpdate) => statusUpdate.toJSON())
       )),
-  });
-  return data;
+  };
+  if (venueId) {
+    const statusUpdates = await Promise.all(
+      (await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts(venueId)).map((statusUpdate) => statusUpdate.toJSON())
+    );
+    data.statusUpdates = statusUpdates.concat(data.statusUpdates);
+  }
+  return JSON.stringify(data);
 }
 
 async function getStatusUpdateData(hospitalId, cachedMcis) {
@@ -148,7 +155,7 @@ async function dispatchMciUpdate(mciId) {
   const userPromises = [];
   userServer.clients.forEach((ws) => {
     userPromises.push(
-      getRingdownData(ws.info.userId, cachedMcis, cachedStatusUpdates).then((data) => {
+      getRingdownData(ws.info.userId, ws.info.venueId, cachedMcis, cachedStatusUpdates).then((data) => {
         ws.send(data);
       })
     );
@@ -170,7 +177,7 @@ async function dispatchStatusUpdate(hospitalId) {
   const userPromises = [];
   userServer.clients.forEach((ws) => {
     userPromises.push(
-      getRingdownData(ws.info.userId, cachedMcis, cachedStatusUpdates).then((data) => {
+      getRingdownData(ws.info.userId, ws.info.venueId, cachedMcis, cachedStatusUpdates).then((data) => {
         ws.send(data);
       })
     );
@@ -233,54 +240,91 @@ function getActiveOrganizationUsers(organizationId) {
 function configure(server, app) {
   server.on('upgrade', (req, socket, head) => {
     app.sessionParser(req, {}, async () => {
-      const query = querystring.parse(url.parse(req.url).query);
-      // ensure user logged in
-      if (req.session?.passport?.user) {
-        req.user = await models.User.findByPk(req.session.passport.user);
-      }
-      if (!req.user) {
-        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
-        socket.destroy();
-        return;
-      }
-      // connect based on pathname
-      const { pathname } = url.parse(req.url);
-      switch (pathname) {
-        case '/wss/mci':
-          if (!req.user.isSuperUser) {
-            const org = await req.user.getOrganization();
-            if (org.type !== 'C4SF') {
+      try {
+        const query = querystring.parse(url.parse(req.url).query);
+        // ensure user logged in
+        if (req.session?.passport?.user) {
+          req.user = await models.User.findByPk(req.session.passport.user);
+        }
+        if (!req.user) {
+          socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+          socket.destroy();
+          return;
+        }
+        // connect based on pathname
+        const { pathname } = url.parse(req.url);
+        switch (pathname) {
+          case '/wss/mci':
+            if (!req.user.isSuperUser) {
+              const org = await req.user.getOrganization();
+              if (org.type !== 'C4SF') {
+                socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+                socket.destroy();
+                return;
+              }
+            }
+            mciServer.handleUpgrade(req, socket, head, (ws) => {
+              mciServer.emit('connection', ws, req);
+            });
+            break;
+          case '/wss/user':
+            if (query.venueId && query.venueId !== 'undefined') {
+              req.venue = await models.Organization.findByPk(query.venueId);
+              if (!req.venue) {
+                socket.write('HTTP/1.1 404 Not Found\r\n\r\n');
+                socket.destroy();
+                return;
+              }
+            }
+            userServer.handleUpgrade(req, socket, head, (ws) => {
+              userServer.emit('connection', ws, req);
+            });
+            break;
+          case '/wss/hospital':
+            // ensure valid hospital
+            if (query.id && query.id !== 'undefined') {
+              const hospital = await models.Hospital.findByPk(query.id);
+              // check if user is allowed to view this hospital
+              const hospitalUser = await models.HospitalUser.findOne({
+                where: {
+                  HospitalId: hospital.id,
+                  EdAdminUserId: req.user.id,
+                  isActive: true,
+                },
+              });
+              if (hospitalUser) {
+                req.hospital = hospital;
+              } else {
+                const assignment = await models.Assignment.findOne({
+                  where: {
+                    ToOrganizationId: hospital.OrganizationId,
+                    FromOrganizationId: req.user.OrganizationId,
+                    deletedAt: null,
+                  },
+                });
+                if (assignment) {
+                  req.hospital = hospital;
+                }
+              }
+            }
+            if (!req.hospital) {
               socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
               socket.destroy();
               return;
             }
-          }
-          mciServer.handleUpgrade(req, socket, head, (ws) => {
-            mciServer.emit('connection', ws, req);
-          });
-          break;
-        case '/wss/user':
-          userServer.handleUpgrade(req, socket, head, (ws) => {
-            userServer.emit('connection', ws, req);
-          });
-          break;
-        case '/wss/hospital':
-          // ensure valid hospital
-          if (query.id && query.id !== 'undefined') {
-            req.hospital = await models.Hospital.findByPk(query.id);
-          }
-          if (!req.hospital) {
+            hospitalServer.handleUpgrade(req, socket, head, (ws) => {
+              hospitalServer.emit('connection', ws, req);
+            });
+            break;
+          default:
             socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
             socket.destroy();
-            return;
-          }
-          hospitalServer.handleUpgrade(req, socket, head, (ws) => {
-            hospitalServer.emit('connection', ws, req);
-          });
-          break;
-        default:
-          socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
-          socket.destroy();
+        }
+      } catch (err) {
+        // console.log(err);
+        socket.write('HTTP/1.1 500 Internal Server Error\r\n\r\n');
+        socket.destroy();
+        rollbar.error(err, req);
       }
     });
   });

@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
+import ApiService from '../ApiService';
 import RoutedHeader from '../Components/RoutedHeader';
 import Context from '../Context';
 import MassCasualtyIncident from '../Models/MassCasualtyIncident';
@@ -13,7 +14,10 @@ import RingdownForm from './RingdownForm';
 import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function EMS() {
-  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user`;
+  const [searchParams] = useSearchParams();
+  const venueId = searchParams.get('venueId') ?? '';
+  const [venue, setVenue] = useState();
+  const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/user?venueId=${venueId}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { setRingdowns, setStatusUpdates } = useContext(Context);
   const [mcis, setMcis] = useState([]);
@@ -47,6 +51,14 @@ export default function EMS() {
   }
 
   useEffect(() => {
+    if (venueId) {
+      ApiService.organizations.get(venueId).then((response) => {
+        setVenue(response.data);
+      });
+    }
+  }, [venueId]);
+
+  useEffect(() => {
     if (lastMessage?.data) {
       const data = JSON.parse(lastMessage.data);
       setMcis(data.mcis.filter((mci) => !mci.endedAt).map((mci) => new MassCasualtyIncident(mci)));
@@ -64,7 +76,7 @@ export default function EMS() {
     <div className="grid-container">
       <div className="grid-row">
         <div className="tablet:grid-col-6 tablet:grid-offset-3">
-          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} />
+          <RoutedHeader selectedTab={selectedTab} onSelect={handleSelectTab} venue={venue} />
           <RingdownForm
             defaultPayload={defaultPayload}
             className={classNames('tabbar-content', { 'tabbar-content--selected': selectedTab === 'ringdown' })}

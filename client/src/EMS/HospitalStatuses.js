@@ -9,11 +9,24 @@ import HospitalStatusHeader from './HospitalStatusHeader';
 const HospitalStatuses = ({ className, onReturn }) => {
   const { statusUpdates } = useContext(Context);
 
+  const venueClinics = statusUpdates?.filter((hs) => hs.hospital.organization.type === 'VENUE');
+  const hospitals = statusUpdates?.filter((hs) => hs.hospital.organization.type !== 'VENUE');
+
   return (
     <div className={className}>
+      {venueClinics?.length > 0 && (
+        <>
+          <HospitalStatusHeader isVenue />
+          <div className="grid-container">
+            {venueClinics.map((hs) => {
+              return <HospitalStatusRow key={hs.id} hospitalStatus={hs} />;
+            })}
+          </div>
+        </>
+      )}
       <HospitalStatusHeader />
       <div className="grid-container">
-        {statusUpdates?.map((hs) => {
+        {hospitals?.map((hs) => {
           return <HospitalStatusRow key={hs.id} hospitalStatus={hs} />;
         })}
       </div>

@@ -1,0 +1,24 @@
+[
+  {
+    "model": "Assignment",
+    "data": {
+      "id": "de6dbb62-b601-4969-83db-22a5907a6e57",
+      "FromOrganizationId": "7c9023ff-dd16-4e87-823a-80567a7b834a",
+      "ToOrganizationId": "50ff83e4-c00d-43b2-a4c4-f7b616fbd972",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  },
+  {
+    "model": "Assignment",
+    "data": {
+      "id": "6327d67c-2b7a-427f-bbe5-7dda2a4afa0e",
+      "FromOrganizationId": "7c9023ff-dd16-4e87-823a-80567a7b834a",
+      "ToOrganizationId": "50ff83e4-c00d-43b2-a4c4-f7b616fbd972",
+      "CreatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "DeletedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      "deletedAt": "2024-05-16T15:30:00.000Z",
+      "UpdatedById": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  }
+]

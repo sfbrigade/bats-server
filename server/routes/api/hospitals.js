@@ -9,6 +9,7 @@ const { wrapper } = require('../helpers');
 const router = express.Router();
 
 router.get('/', middleware.isAdminUser, async (req, res) => {
+  const { type = 'HEALTHCARE' } = req.query;
   const options = {
     order: [
       ['sortSequenceNumber', 'ASC'],
@@ -24,7 +25,16 @@ router.get('/', middleware.isAdminUser, async (req, res) => {
       OrganizationId,
     };
   } else {
-    options.include = ['Organization'];
+    options.include = [
+      {
+        model: models.Organization,
+        as: 'Organization',
+        where: {
+          type,
+        },
+        required: true,
+      },
+    ];
   }
   const records = await models.Hospital.findAll(options);
   res.json(records.map((record) => record.toJSON()));
@@ -38,7 +48,7 @@ router.post(
     await models.sequelize.transaction(async (transaction) => {
       record = await models.Hospital.create(
         {
-          ..._.pick(req.body, ['OrganizationId', 'name', 'state', 'stateFacilityCode', 'isActive']),
+          ..._.pick(req.body, ['OrganizationId', 'name', 'state', 'stateFacilityCode', 'isActive', 'customInventory']),
           CreatedById: req.user.id,
           UpdatedById: req.user.id,
         },
@@ -54,6 +64,7 @@ router.post(
           divertStatusUpdateDateTimeLocal: now,
           openEdBedCount: 0,
           openPsychBedCount: 0,
+          customInventoryCount: record.customInventory?.length ? new Array(record.customInventory.length).fill(0) : null,
           bedCountUpdateDateTimeLocal: now,
           updateDateTimeLocal: now,
           CreatedById: req.user.id,
@@ -66,13 +77,95 @@ router.post(
   })
 );
 
-router.get('/:id', middleware.isAdminUser, async (req, res) => {
+router.put(
+  '/:id',
+  middleware.isC4SFUser,
+  wrapper(async (req, res) => {
+    const { id } = req.params;
+    let record;
+    await models.sequelize.transaction(async (transaction) => {
+      record = await models.Hospital.findOne({
+        where: { id },
+        transaction,
+      });
+      if (record) {
+        // Update existing record
+        record.set({
+          ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'sortSequenceNumber', 'isActive', 'customInventory']),
+          UpdatedById: req.user.id,
+        });
+        const isCustomInventoryChanged = record.changed('customInventory');
+        await record.save({ transaction });
+        // Create new status update if customInventory changed
+        if (isCustomInventoryChanged) {
+          const now = new Date();
+          await models.HospitalStatusUpdate.create(
+            {
+              HospitalId: record.id,
+              EdAdminUserId: req.user.id,
+              divertStatusIndicator: false,
+              divertStatusUpdateDateTimeLocal: now,
+              openEdBedCount: 0,
+              openPsychBedCount: 0,
+              customInventoryCount: record.customInventory?.length ? new Array(record.customInventory.length).fill(0) : null,
+              bedCountUpdateDateTimeLocal: now,
+              updateDateTimeLocal: now,
+              CreatedById: req.user.id,
+              UpdatedById: req.user.id,
+            },
+            { transaction }
+          );
+        }
+      } else {
+        // Create new record with specified ID
+        record = await models.Hospital.create(
+          {
+            id,
+            ..._.pick(req.body, [
+              'OrganizationId',
+              'name',
+              'state',
+              'stateFacilityCode',
+              'sortSequenceNumber',
+              'isActive',
+              'customInventory',
+            ]),
+            CreatedById: req.user.id,
+            UpdatedById: req.user.id,
+          },
+          { transaction }
+        );
+
+        // Create initial empty status update
+        const now = new Date();
+        await models.HospitalStatusUpdate.create(
+          {
+            HospitalId: record.id,
+            EdAdminUserId: req.user.id,
+            divertStatusIndicator: false,
+            divertStatusUpdateDateTimeLocal: now,
+            openEdBedCount: 0,
+            openPsychBedCount: 0,
+            customInventoryCount: record.customInventory?.length ? new Array(record.customInventory.length).fill(0) : null,
+            bedCountUpdateDateTimeLocal: now,
+            updateDateTimeLocal: now,
+            CreatedById: req.user.id,
+            UpdatedById: req.user.id,
+          },
+          { transaction }
+        );
+      }
+    });
+
+    res.json(record.toJSON());
+  })
+);
+
+router.get('/:id', middleware.isAuthenticated, async (req, res) => {
   const options = {
     where: { id: req.params.id },
+    include: [models.Organization],
   };
-  if (!req.user.isSuperUser) {
-    options.where.OrganizationId = req.user.OrganizationId;
-  }
   const record = await models.Hospital.findOne(options);
   if (record) {
     res.json(record.toJSON());
@@ -111,13 +204,31 @@ router.patch(
     await models.sequelize.transaction(async (transaction) => {
       record = await models.Hospital.findOne({ ...options, transaction });
       if (record) {
-        await record.update(
-          {
-            ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'isActive']),
-            UpdatedById: req.user.id,
-          },
-          { transaction }
-        );
+        record.set({
+          ..._.pick(req.body, ['name', 'state', 'stateFacilityCode', 'isActive', 'customInventory']),
+          UpdatedById: req.user.id,
+        });
+        const isCustomInventoryChanged = record.changed('customInventory');
+        await record.save({ transaction });
+        if (isCustomInventoryChanged) {
+          const now = new Date();
+          await models.HospitalStatusUpdate.create(
+            {
+              HospitalId: record.id,
+              EdAdminUserId: req.user.id,
+              divertStatusIndicator: false,
+              divertStatusUpdateDateTimeLocal: now,
+              openEdBedCount: 0,
+              openPsychBedCount: 0,
+              customInventoryCount: record.customInventory?.length ? new Array(record.customInventory.length).fill(0) : null,
+              bedCountUpdateDateTimeLocal: now,
+              updateDateTimeLocal: now,
+              CreatedById: req.user.id,
+              UpdatedById: req.user.id,
+            },
+            { transaction }
+          );
+        }
       }
     });
     if (record) {

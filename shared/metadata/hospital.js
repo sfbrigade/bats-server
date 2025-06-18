@@ -42,6 +42,11 @@ const fields = [
     allowNull: false,
     defaultValue: true,
   },
+  {
+    name: 'customInventory',
+    colName: 'custominventory',
+    type: 'jsonb',
+  },
 ];
 
 module.exports = new ModelMetadata({ modelName: 'Hospital', fields });

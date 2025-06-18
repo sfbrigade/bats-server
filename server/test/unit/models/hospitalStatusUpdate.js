@@ -67,7 +67,7 @@ describe('models.HospitalStatusUpdate', () => {
         include: [models.Hospital],
       });
       // should only return one update per the 2 hospitals
-      assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
+      assert.deepStrictEqual(hospitalStatusUpdates.length, 4);
       // each update should reflect the latest (test data year 2005 vs 2004)
       assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'CPMC Van Ness');
       assert.deepStrictEqual(hospitalStatusUpdates[0].updateDateTimeLocal.getFullYear(), 2005);
@@ -91,6 +91,15 @@ describe('models.HospitalStatusUpdate', () => {
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.enRoute, 3);
       assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.ambulanceCounts.offloading, 1);
     });
+
+    it('returns the latest status update for hospitals for a specific venue, with ambulance counts', async () => {
+      const hospitalStatusUpdates = await models.HospitalStatusUpdate.getLatestUpdatesWithAmbulanceCounts(
+        '50ff83e4-c00d-43b2-a4c4-f7b616fbd972'
+      );
+      assert.deepStrictEqual(hospitalStatusUpdates.length, 2);
+      assert.deepStrictEqual(hospitalStatusUpdates[0].Hospital.name, 'FA 1');
+      assert.deepStrictEqual(hospitalStatusUpdates[1].Hospital.name, 'FA 2');
+    });
   });
 
   describe('toJSON()', () => {
@@ -105,6 +114,7 @@ describe('models.HospitalStatusUpdate', () => {
         mciUpdateDateTime: null,
         openEdBedCount: 10,
         openPsychBedCount: 2,
+        customInventoryCount: null,
         bedCountUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),
         divertStatusIndicator: false,
         divertStatusUpdateDateTimeLocal: new Date('2004-10-19T10:23:54.000Z'),
@@ -122,6 +132,12 @@ describe('models.HospitalStatusUpdate', () => {
           sortSequenceNumber: 2,
           ambulancesEnRoute: 3,
           ambulancesOffloading: 1,
+          customInventory: null,
+          organization: {
+            id: '25ffdd7c-b4cf-4ebb-9750-1e628370e13b',
+            name: 'Sutter Health',
+            type: 'HEALTHCARE',
+          },
         },
       });
     });
