@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@node-oauth/express-oauth-server": "^4.0.0",
+    "agora-token": "^2.0.5",
     "axios": "^0.21.4",
     "bcrypt": "^5.0.1",
     "bufferutil": "^4.0.6",
