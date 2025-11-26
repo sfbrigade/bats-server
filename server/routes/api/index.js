@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.use(middleware.checkAuthorizationHeader);
 
+router.use('/agora', require('./agora'));
 router.use('/ambulances', require('./ambulances'));
 router.use('/clients', require('./clients'));
 router.use('/emscalls', require('./emsCalls'));
