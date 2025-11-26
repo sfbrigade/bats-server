@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
@@ -15,8 +15,10 @@ import Ringdown from '../Models/Ringdown';
 
 import Beds from './Beds';
 import Ringdowns from './Ringdowns';
+import Consult from './Consult';
 
 import notification from '../assets/notification.mp3';
+import useAgora from '../hooks/useAgora';
 import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function ER() {
@@ -28,6 +30,9 @@ export default function ER() {
   const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
     ringdown: 0,
     hospitalInfo: 0,
+  });
+  const agora = useAgora({
+    userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
   });
 
   const [hospital, setHospital] = useState();
@@ -136,6 +141,7 @@ export default function ER() {
               incomingRingdownsCount={incomingRingdownsCount}
             />
           )}
+          {selectedTab === 'consult' && <Consult agora={agora} />}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
         </div>
       </div>
