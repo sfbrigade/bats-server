@@ -31,8 +31,10 @@ export default function ER() {
     ringdown: 0,
     hospitalInfo: 0,
   });
+  const channelName = hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '';
   const agora = useAgora({
-    userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
+    userId: channelName,
+    channelName,
   });
 
   const [hospital, setHospital] = useState();

@@ -4,7 +4,7 @@ import ApiService from '../ApiService';
 
 const { RTM } = AgoraRTM;
 
-export default function useAgora({ userId }) {
+export default function useAgora({ userId, channelName }) {
   const [rtm, setRtm] = useState();
   const [error, setError] = useState();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -15,13 +15,13 @@ export default function useAgora({ userId }) {
       try {
         const rtm = new RTM(window.env.REACT_APP_AGORA_APP_ID, userId);
         const messageListener = (event) => {
-          console.log(event);
+          console.log('message', event);
         };
         const presenceListener = (event) => {
-          console.log(event);
+          console.log('presence', event);
         };
         const statusListener = (event) => {
-          console.log(event);
+          console.log('status', event);
         };
         rtm.addEventListener('message', messageListener);
         rtm.addEventListener('presence', presenceListener);
@@ -45,14 +45,16 @@ export default function useAgora({ userId }) {
 
   const login = useCallback(async () => {
     try {
-      const { token } = await ApiService.get(`/api/agora/token?channelName=${userId}`);
+      const response = await ApiService.agora.getToken(userId, channelName);
+      const { token } = response.data;
       const result = await rtm.login({ token });
-      console.log(result);
+      console.log('login result=', result);
       setLoggedIn(true);
     } catch (error) {
-      console.error(error);
+      console.error('login error=', error);
       setError(error);
     }
-  }, [rtm, userId]);
+  }, [rtm, userId, channelName]);
+
   return { isInitialized, isLoggedIn, login, error };
 }

@@ -28,6 +28,11 @@ instance.interceptors.response.use(
 );
 
 export default {
+  agora: {
+    getToken(userId, channelName) {
+      return instance.get('/api/agora/token', { params: { userId, channelName } });
+    },
+  },
   ambulances: {
     getIdentifiers(organizationId) {
       return instance.get('/api/ambulances/identifiers', { params: { organizationId } });
