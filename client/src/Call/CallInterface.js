@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import AgoraRTC from 'agora-rtc-sdk-ng';
 import {
   useConnectionState,
   useCurrentUID,
@@ -7,6 +8,7 @@ import {
   useLocalCameraTrack,
   usePublish,
   useRemoteUsers,
+  useRTCClient,
   LocalUser,
   RemoteUser,
 } from 'agora-rtc-react';
@@ -14,6 +16,7 @@ import {
 import ApiService from '../ApiService';
 
 export default function CallInterface({ channel }) {
+  const client = useRTCClient();
   const [isCalling, setCalling] = useState(false);
   const { isConnected } = useJoin(async () => {
     const response = await ApiService.agora.getRtcToken(channel);
@@ -26,11 +29,39 @@ export default function CallInterface({ channel }) {
   }, isCalling);
 
   const uid = useCurrentUID() || 0;
-  const [isMicOn, setMicOn] = useState(false);
-  const [isCameraOn, setCameraOn] = useState(false);
+  const [isMicOn, setMicOn] = useState(true);
+  const [isCameraOn, setCameraOn] = useState(true);
   const connectionState = useConnectionState();
-  const { localMicrophoneTrack: localAudioTrack } = useLocalMicrophoneTrack(isMicOn);
-  const { localCameraTrack: localVideoTrack } = useLocalCameraTrack(isCameraOn);
+
+  const [localVideoTrack, setLocalVideoTrack] = useState();
+  const [localAudioTrack, setLocalAudioTrack] = useState();
+  useEffect(() => {
+    if (isConnected) {
+      AgoraRTC.createMicrophoneAudioTrack()
+        .then((result) => {
+          console.trace('microphone track', result, result.constructor.name);
+          //return client.publish(result);
+          setLocalAudioTrack(result);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      console.log('creating camera track?');
+      AgoraRTC.createCameraVideoTrack()
+        .then((result) => {
+          console.trace('camera track', result, result.constructor.name);
+          //return client.publish(result);
+          setLocalVideoTrack(result);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [client, isConnected]);
+
+  // const { localMicrophoneTrack: localAudioTrack } = useLocalMicrophoneTrack(isMicOn);
+  // const { localCameraTrack: localVideoTrack } = useLocalCameraTrack(isCameraOn);
+  console.log('!!!', localAudioTrack?.constructor?.name, localVideoTrack?.constructor?.name);
   const publishResult = usePublish([localAudioTrack, localVideoTrack]);
   const remoteUsers = useRemoteUsers();
 
@@ -40,7 +71,7 @@ export default function CallInterface({ channel }) {
       <div>
         Connected: {JSON.stringify(isConnected)} | {connectionState}
       </div>
-      <div>{JSON.stringify(publishResult)}</div>
+      {/* <div>{JSON.stringify(publishResult)}</div> */}
       <div>
         <button onClick={() => setCalling((prev) => !prev)}>{isCalling ? 'Hang up' : 'Call'}</button>{' '}
         <button onClick={() => setMicOn((prev) => !prev)}>{isMicOn ? 'Mute' : 'Un-mute'}</button>{' '}
