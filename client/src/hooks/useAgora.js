@@ -4,18 +4,34 @@ import ApiService from '../ApiService';
 
 const { RTM } = AgoraRTM;
 
-export default function useAgora({ userId, channelName }) {
+export default function useAgora({ userId, signalUserId }) {
   const [rtm, setRtm] = useState();
   const [error, setError] = useState();
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [calls, setCalls] = useState([]);
+
   useEffect(() => {
     setIsInitialized(false);
-    if (userId) {
+    if (signalUserId) {
       try {
-        const rtm = new RTM(window.env.REACT_APP_AGORA_APP_ID, userId);
+        const rtm = new RTM(window.env.REACT_APP_AGORA_APP_ID, signalUserId);
         const messageListener = (event) => {
-          console.log('message', event);
+          let { message, messageType } = event;
+          if (messageType === 'BINARY') {
+            message = new TextDecoder('utf-8').decode(message);
+          }
+          message = JSON.parse(message);
+          setCalls((prevCalls) => {
+            let newCalls = [...prevCalls];
+            let index = newCalls.findIndex((call) => call.id === message.id);
+            if (index >= 0) {
+              newCalls[index] = { ...newCalls[index], ...message };
+            } else {
+              newCalls.push(message);
+            }
+            return newCalls;
+          });
         };
         const presenceListener = (event) => {
           console.log('presence', event);
@@ -41,20 +57,26 @@ export default function useAgora({ userId, channelName }) {
     } else {
       setRtm(null);
     }
-  }, [userId]);
+  }, [signalUserId]);
 
   const login = useCallback(async () => {
     try {
-      const response = await ApiService.agora.getToken(userId, channelName);
+      const response = await ApiService.agora.getRtmToken(signalUserId);
       const { token } = response.data;
-      const result = await rtm.login({ token });
-      console.log('login result=', result);
+      await rtm.login({ token });
       setLoggedIn(true);
     } catch (error) {
       console.error('login error=', error);
       setError(error);
     }
-  }, [rtm, userId, channelName]);
+  }, [rtm, signalUserId]);
 
-  return { isInitialized, isLoggedIn, login, error };
+  const join = useCallback(
+    async (channelId) => {
+      console.log(userId, 'join', channelId);
+    },
+    [userId]
+  );
+
+  return { isInitialized, isLoggedIn, login, calls, setCalls, join, error };
 }

@@ -29,8 +29,11 @@ instance.interceptors.response.use(
 
 export default {
   agora: {
-    getToken(userId, channelName) {
-      return instance.get('/api/agora/token', { params: { userId, channelName } });
+    getRtcToken(userId, channelName) {
+      return instance.get('/api/agora/rtc-token', { params: { userId, channelName } });
+    },
+    getRtmToken(userId) {
+      return instance.get('/api/agora/rtm-token', { params: { userId } });
     },
   },
   ambulances: {
