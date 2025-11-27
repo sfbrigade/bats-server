@@ -18,7 +18,7 @@ import Ringdowns from './Ringdowns';
 import Consult from './Consult';
 
 import notification from '../assets/notification.mp3';
-import useAgora from '../hooks/useAgora';
+import useAgoraRTM from '../hooks/useAgoraRTM';
 import { useTabPositions } from '../hooks/useTabPositions';
 
 export default function ER() {
@@ -31,7 +31,7 @@ export default function ER() {
     ringdown: 0,
     hospitalInfo: 0,
   });
-  const agora = useAgora({
+  const agoraRTM = useAgoraRTM({
     userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
   });
 
@@ -141,7 +141,7 @@ export default function ER() {
               incomingRingdownsCount={incomingRingdownsCount}
             />
           )}
-          {selectedTab === 'consult' && <Consult agora={agora} />}
+          {selectedTab === 'consult' && <Consult agoraRTM={agoraRTM} />}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
         </div>
       </div>

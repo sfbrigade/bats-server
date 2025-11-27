@@ -2,10 +2,26 @@
   height: 100vh;
 }
 
-.remote-user {
+.call-interface-content {
   background-color: black;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.call-interface-content__video {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.call-interface-content__controls {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .local-user {
@@ -15,5 +31,5 @@
   height: 200px;
   right: 1rem;
   border: 2px solid #fff;
-  bottom: 1rem;
+  bottom: calc(100px + 1rem);
 }

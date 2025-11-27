@@ -13,10 +13,12 @@ import {
 
 import ApiService from '../ApiService';
 import './CallInterface.scss';
+import MicrophoneButton from './MicrophoneButton';
+import CameraButton from './CameraButton';
 
 export default function CallInterface({ channel }) {
   const client = useRTCClient();
-  const [isCalling, setCalling] = useState(true);
+  const [isCalling, setCalling] = useState(false);
   const { isConnected } = useJoin(async () => {
     const response = await ApiService.agora.getRtcToken(channel);
     const { token } = response.data;
@@ -77,21 +79,30 @@ export default function CallInterface({ channel }) {
   return (
     <div className="grid-row call-interface">
       <div className="tablet:grid-col-9">
-        <div className="remote-user">
-          {activeUser && <RemoteUser user={activeUser} playAudio playVideo videoPlayerConfig={{ fit: 'contain' }} />}
-        </div>
-        {isConnected && (
-          <div className="local-user">
-            <LocalUser
-              audioTrack={localMicrophoneTrack}
-              cameraOn={isCameraOn}
-              micOn={isMicOn}
-              playAudio={false}
-              playVideo
-              videoTrack={localCameraTrack}
-            />
+        <div className="call-interface-content">
+          <div className="call-interface-content__video">
+            {activeUser && (
+              <RemoteUser user={activeUser} playAudio playVideo videoPlayerConfig={{ fit: 'contain' }} cover="/img/user.png" />
+            )}
+            {isConnected && (
+              <div className="local-user">
+                <LocalUser
+                  audioTrack={localMicrophoneTrack}
+                  cameraOn={isCameraOn}
+                  cover="/img/user.png"
+                  micOn={isMicOn}
+                  playAudio={false}
+                  playVideo={isCameraOn}
+                  videoTrack={localCameraTrack}
+                />
+              </div>
+            )}
           </div>
-        )}
+          <div className="call-interface-content__controls">
+            <MicrophoneButton disabled={!isConnected} isMicOn={isMicOn} onClick={() => setMicOn((prev) => !prev)} />
+            <CameraButton disabled={!isConnected} isVideoOn={isCameraOn} onClick={() => setCameraOn((prev) => !prev)} />
+          </div>
+        </div>
       </div>
       <div className="tablet:grid-col-3">
         <div>UID: {uid}</div>
@@ -100,12 +111,6 @@ export default function CallInterface({ channel }) {
         </div>
         <div>
           <button onClick={() => setCalling((prev) => !prev)}>{isCalling ? 'Hang up' : 'Call'}</button>{' '}
-          <button disabled={!isConnected} onClick={() => setMicOn((prev) => !prev)}>
-            {isMicOn ? 'Mute' : 'Un-mute'}
-          </button>{' '}
-          <button disabled={!isConnected} onClick={() => setCameraOn((prev) => !prev)}>
-            {isCameraOn ? 'Stop Video' : 'Start Video'}
-          </button>
         </div>
       </div>
     </div>

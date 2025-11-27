@@ -3,13 +3,13 @@ import Spinner from '../Components/Spinner';
 import CallCard from '../Components/CallCard';
 import './Consult.scss';
 
-export default function Consult({ agora }) {
+export default function Consult({ agoraRTM }) {
   async function onLogin() {
-    await agora.login();
+    await agoraRTM.login();
   }
 
   function onDismiss(call) {
-    agora.setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== call.id));
+    agoraRTM.setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== call.id));
   }
 
   function onAnswer(call) {
@@ -21,14 +21,14 @@ export default function Consult({ agora }) {
       <div className="usa-accordion__content">
         <Heading title="Status" />
         <fieldset className="usa-fieldset">
-          {!(agora?.isInitialized ?? false) && (
+          {!(agoraRTM?.isInitialized ?? false) && (
             <>
               <Spinner />
             </>
           )}
-          {agora?.isInitialized && (
+          {agoraRTM?.isInitialized && (
             <>
-              {!(agora?.isLoggedIn ?? false) && (
+              {!(agoraRTM?.isLoggedIn ?? false) && (
                 <>
                   <div className="usa-alert usa-alert--error">
                     <div className="usa-alert__body">
@@ -45,7 +45,7 @@ export default function Consult({ agora }) {
                   </ul>
                 </>
               )}
-              {agora?.isLoggedIn && (
+              {agoraRTM?.isLoggedIn && (
                 <>
                   <div className="usa-alert usa-alert--success">
                     <div className="usa-alert__body">
@@ -65,11 +65,11 @@ export default function Consult({ agora }) {
             </>
           )}
         </fieldset>
-        {agora?.isLoggedIn && (
+        {agoraRTM?.isLoggedIn && (
           <>
             <Heading title="Incoming Calls" />
             <div>
-              {agora?.messages.map((message) => (
+              {agoraRTM?.messages.map((message) => (
                 <CallCard className="margin-x-3 margin-y-2" key={message.id} call={message} onAnswer={onAnswer} onDismiss={onDismiss} />
               ))}
             </div>

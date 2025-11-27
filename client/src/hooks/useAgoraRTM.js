@@ -4,7 +4,7 @@ import ApiService from '../ApiService';
 
 const { RTM } = AgoraRTM;
 
-export default function useAgora({ userId }) {
+export default function useAgoraRTM({ userId }) {
   const [rtm, setRtm] = useState();
   const [error, setError] = useState();
   const [isInitialized, setIsInitialized] = useState(false);

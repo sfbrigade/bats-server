@@ -1,0 +1,23 @@
+@import '../theme/base';
+
+.icon-toggle-button {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  border: 2px solid white;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background-color: color('primary');
+  }
+  &:disabled {
+    border-color: color('gray-50');
+    color: color('gray-50');
+    cursor: default;
+  }
+}
