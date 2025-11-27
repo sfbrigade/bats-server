@@ -23,7 +23,18 @@ describe('/api/agora', () => {
   describe('GET /rtm-token', () => {
     it('returns a token', async () => {
       const response = await testSession
-        .get(`/api/agora/rtm-token?userId=H-06-20048`)
+        .get(`/api/agora/rtm-token`)
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.OK);
+      const { token } = response.body;
+      assert.ok(token);
+    });
+  });
+
+  describe('GET /rtc-token', () => {
+    it('returns a token', async () => {
+      const response = await testSession
+        .get(`/api/agora/rtc-token?channelName=8c62df8c-953b-4a7a-846c-78627a941161`)
         .set('Accept', 'application/json')
         .expect(HttpStatus.OK);
       const { token } = response.body;
