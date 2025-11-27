@@ -16,6 +16,7 @@ export default function Consult({ agora }) {
   function onAnswer(call) {
     // TODO
     console.log(call);
+    window.open(`/call?channel=${call.userId}`, '_blank');
   }
 
   return (
