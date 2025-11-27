@@ -6,16 +6,13 @@ import './Consult.scss';
 export default function Consult({ agora }) {
   async function onLogin() {
     await agora.login();
-    console.log('log in');
   }
 
   function onDismiss(call) {
-    agora.setCalls((prevCalls) => prevCalls.filter((prevCall) => prevCall.id !== call.id));
+    agora.setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== call.id));
   }
 
   function onAnswer(call) {
-    // TODO
-    console.log(call);
     window.open(`/call?channel=${call.userId}`, '_blank');
   }
 
@@ -72,8 +69,8 @@ export default function Consult({ agora }) {
           <>
             <Heading title="Incoming Calls" />
             <div>
-              {agora?.calls.map((call) => (
-                <CallCard className="margin-x-3 margin-y-2" key={call.id} call={call} onAnswer={onAnswer} onDismiss={onDismiss} />
+              {agora?.messages.map((message) => (
+                <CallCard className="margin-x-3 margin-y-2" key={message.id} call={message} onAnswer={onAnswer} onDismiss={onDismiss} />
               ))}
             </div>
           </>

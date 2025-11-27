@@ -4,25 +4,25 @@ import ApiService from '../ApiService';
 
 const { RTM } = AgoraRTM;
 
-export default function useAgora({ userId, signalUserId }) {
+export default function useAgora({ userId }) {
   const [rtm, setRtm] = useState();
   const [error, setError] = useState();
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [calls, setCalls] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     setIsInitialized(false);
-    if (signalUserId) {
+    if (userId) {
       try {
-        const rtm = new RTM(window.env.REACT_APP_AGORA_APP_ID, signalUserId);
+        const rtm = new RTM(window.env.REACT_APP_AGORA_APP_ID, userId);
         const messageListener = (event) => {
           let { message, messageType } = event;
           if (messageType === 'BINARY') {
             message = new TextDecoder('utf-8').decode(message);
           }
           message = JSON.parse(message);
-          setCalls((prevCalls) => {
+          setMessages((prevCalls) => {
             let newCalls = [...prevCalls];
             let index = newCalls.findIndex((call) => call.id === message.id);
             if (index >= 0) {
@@ -57,11 +57,11 @@ export default function useAgora({ userId, signalUserId }) {
     } else {
       setRtm(null);
     }
-  }, [signalUserId]);
+  }, [userId]);
 
   const login = useCallback(async () => {
     try {
-      const response = await ApiService.agora.getRtmToken(signalUserId);
+      const response = await ApiService.agora.getRtmToken(userId);
       const { token } = response.data;
       await rtm.login({ token });
       setLoggedIn(true);
@@ -69,14 +69,7 @@ export default function useAgora({ userId, signalUserId }) {
       console.error('login error=', error);
       setError(error);
     }
-  }, [rtm, signalUserId]);
+  }, [rtm, userId]);
 
-  const join = useCallback(
-    async (channelId) => {
-      console.log(userId, 'join', channelId);
-    },
-    [userId]
-  );
-
-  return { isInitialized, isLoggedIn, login, calls, setCalls, join, error };
+  return { isInitialized, isLoggedIn, login, messages, setMessages, error };
 }

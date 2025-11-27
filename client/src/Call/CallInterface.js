@@ -4,8 +4,6 @@ import {
   useConnectionState,
   useCurrentUID,
   useJoin,
-  useLocalMicrophoneTrack,
-  useLocalCameraTrack,
   usePublish,
   useRemoteUsers,
   useRTCClient,
@@ -14,10 +12,11 @@ import {
 } from 'agora-rtc-react';
 
 import ApiService from '../ApiService';
+import './CallInterface.scss';
 
 export default function CallInterface({ channel }) {
   const client = useRTCClient();
-  const [isCalling, setCalling] = useState(false);
+  const [isCalling, setCalling] = useState(true);
   const { isConnected } = useJoin(async () => {
     const response = await ApiService.agora.getRtcToken(channel);
     const { token } = response.data;
@@ -30,70 +29,85 @@ export default function CallInterface({ channel }) {
 
   const uid = useCurrentUID() || 0;
   const [isMicOn, setMicOn] = useState(true);
-  const [isCameraOn, setCameraOn] = useState(true);
+  const [isCameraOn, setCameraOn] = useState(false);
   const connectionState = useConnectionState();
 
-  const [localVideoTrack, setLocalVideoTrack] = useState();
-  const [localAudioTrack, setLocalAudioTrack] = useState();
+  const [localMicrophoneTrack, setLocalMicrophoneTrack] = useState();
   useEffect(() => {
     if (isConnected) {
-      AgoraRTC.createMicrophoneAudioTrack()
-        .then((result) => {
-          console.trace('microphone track', result, result.constructor.name);
-          //return client.publish(result);
-          setLocalAudioTrack(result);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      console.log('creating camera track?');
-      AgoraRTC.createCameraVideoTrack()
-        .then((result) => {
-          console.trace('camera track', result, result.constructor.name);
-          //return client.publish(result);
-          setLocalVideoTrack(result);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      if (!localMicrophoneTrack && isMicOn) {
+        AgoraRTC.createMicrophoneAudioTrack()
+          .then((result) => {
+            setLocalMicrophoneTrack(result);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     }
-  }, [client, isConnected]);
+  }, [client, isConnected, localMicrophoneTrack, isMicOn]);
+  const [localCameraTrack, setLocalCameraTrack] = useState();
+  useEffect(() => {
+    if (isConnected) {
+      if (!localCameraTrack && isCameraOn) {
+        AgoraRTC.createCameraVideoTrack()
+          .then((result) => {
+            setLocalCameraTrack(result);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }
+  }, [client, isConnected, localCameraTrack, isCameraOn]);
+  usePublish([localMicrophoneTrack, localCameraTrack]);
 
-  // const { localMicrophoneTrack: localAudioTrack } = useLocalMicrophoneTrack(isMicOn);
-  // const { localCameraTrack: localVideoTrack } = useLocalCameraTrack(isCameraOn);
-  console.log('!!!', localAudioTrack?.constructor?.name, localVideoTrack?.constructor?.name);
-  const publishResult = usePublish([localAudioTrack, localVideoTrack]);
   const remoteUsers = useRemoteUsers();
+  const [activeUser, setActiveUser] = useState();
+  useEffect(() => {
+    if (remoteUsers?.length > 0) {
+      if (!activeUser) {
+        setActiveUser(remoteUsers[0]);
+      }
+    } else {
+      setActiveUser();
+    }
+  }, [remoteUsers, activeUser]);
 
   return (
-    <>
-      <div>UID: {uid}</div>
-      <div>
-        Connected: {JSON.stringify(isConnected)} | {connectionState}
-      </div>
-      {/* <div>{JSON.stringify(publishResult)}</div> */}
-      <div>
-        <button onClick={() => setCalling((prev) => !prev)}>{isCalling ? 'Hang up' : 'Call'}</button>{' '}
-        <button onClick={() => setMicOn((prev) => !prev)}>{isMicOn ? 'Mute' : 'Un-mute'}</button>{' '}
-        <button onClick={() => setCameraOn((prev) => !prev)}>{isCameraOn ? 'Stop Video' : 'Start Video'}</button>
-      </div>
-      {isConnected && (
-        <div style={{ width: 320, height: 200 }}>
-          <LocalUser
-            audioTrack={localAudioTrack}
-            cameraOn={isCameraOn}
-            micOn={isMicOn}
-            playAudio={false}
-            playVideo
-            videoTrack={localVideoTrack}
-          />
+    <div className="grid-row call-interface">
+      <div className="tablet:grid-col-9">
+        <div className="remote-user">
+          {activeUser && <RemoteUser user={activeUser} playAudio playVideo videoPlayerConfig={{ fit: 'contain' }} />}
         </div>
-      )}
-      {remoteUsers?.map((ru) => (
-        <div key={ru.uid} style={{ width: 640, height: 480 }}>
-          <RemoteUser user={ru} playAudio playVideo />
+        {isConnected && (
+          <div className="local-user">
+            <LocalUser
+              audioTrack={localMicrophoneTrack}
+              cameraOn={isCameraOn}
+              micOn={isMicOn}
+              playAudio={false}
+              playVideo
+              videoTrack={localCameraTrack}
+            />
+          </div>
+        )}
+      </div>
+      <div className="tablet:grid-col-3">
+        <div>UID: {uid}</div>
+        <div>
+          Connected: {JSON.stringify(isConnected)} | {connectionState}
         </div>
-      ))}
-    </>
+        <div>
+          <button onClick={() => setCalling((prev) => !prev)}>{isCalling ? 'Hang up' : 'Call'}</button>{' '}
+          <button disabled={!isConnected} onClick={() => setMicOn((prev) => !prev)}>
+            {isMicOn ? 'Mute' : 'Un-mute'}
+          </button>{' '}
+          <button disabled={!isConnected} onClick={() => setCameraOn((prev) => !prev)}>
+            {isCameraOn ? 'Stop Video' : 'Start Video'}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

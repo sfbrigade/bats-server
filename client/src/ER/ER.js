@@ -24,7 +24,7 @@ import { useTabPositions } from '../hooks/useTabPositions';
 export default function ER() {
   const [searchParams] = useSearchParams();
   const hospitalId = searchParams.get('hospitalId');
-  const { user, hospitalUser, organization } = useContext(Context);
+  const { hospitalUser, organization } = useContext(Context);
   const socketUrl = `${window.location.origin.replace(/^http/, 'ws')}/wss/hospital?id=${hospitalId || hospitalUser?.hospital.id}`;
   const { lastMessage } = useWebSocket(socketUrl, { shouldReconnect: () => true });
   const { selectedTab, handleSelectTab } = useTabPositions('ringdown', {
@@ -32,8 +32,7 @@ export default function ER() {
     hospitalInfo: 0,
   });
   const agora = useAgora({
-    userId: user?.id,
-    signalUserId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
+    userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
   });
 
   const [hospital, setHospital] = useState();
