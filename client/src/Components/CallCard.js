@@ -16,20 +16,22 @@ import './RingdownCard.scss';
 const { Status } = Ringdown;
 
 function CallCard({ call, children, className, onAnswer, onDismiss }) {
-  const { status, ringdown: ringdownData, calledAt, cancelledAt } = call;
+  const { status, ringdown: ringdownData, calledAt, answeredAt, cancelledAt } = call;
   const ringdown = new Ringdown(ringdownData);
   const [isExpanded, setExpanded] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const { triageTag, triagePriority, chiefComplaintDescription, hospitalTeamActivation } = ringdown;
 
   const isRinging = status === 'ringing';
-  const canBeDismissed = status === 'cancelled';
+  const isAnswered = status === 'answered';
+  const isCancelled = status === 'cancelled';
+  const canBeDismissed = !isRinging;
 
   const drawerTitle = (
     <Timestamp
       className="ringdown-card__status"
-      label={isRinging ? 'Called at' : 'Cancelled at'}
-      time={isRinging ? DateTime.fromISO(calledAt) : DateTime.fromISO(cancelledAt)}
+      label={isRinging ? 'Called at' : isAnswered ? 'Answered at' : 'Cancelled at'}
+      time={isRinging ? DateTime.fromISO(calledAt) : isAnswered ? DateTime.fromISO(answeredAt) : DateTime.fromISO(cancelledAt)}
     />
   );
 
@@ -62,7 +64,8 @@ function CallCard({ call, children, className, onAnswer, onDismiss }) {
       {canBeDismissed && (
         <>
           <div className="ringdown-card__header">
-            <RingdownBadge status={Status.CANCELLED} />
+            {isAnswered && drawerTitle}
+            {isCancelled && <RingdownBadge status={Status.CANCELLED} />}
             <button type="button" onClick={() => setShowConfirmation(true)}>
               Dismiss
             </button>

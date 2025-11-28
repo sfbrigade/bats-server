@@ -20,6 +20,7 @@ export default function Call() {
     channel.postMessage({
       id,
       status: 'answered',
+      answeredAt: new Date().toISOString(),
     });
     return () => channel.close();
   }, [id]);
