@@ -22,7 +22,10 @@ describe('/api/agora', () => {
 
   describe('GET /rtm-token', () => {
     it('returns a token', async () => {
-      const response = await testSession.get(`/api/agora/rtm-token`).set('Accept', 'application/json').expect(HttpStatus.OK);
+      const response = await testSession
+        .get(`/api/agora/rtm-token?userId=H-06-20048`)
+        .set('Accept', 'application/json')
+        .expect(HttpStatus.OK);
       const { token } = response.body;
       assert.ok(token);
     });

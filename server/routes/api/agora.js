@@ -10,10 +10,14 @@ router.get(
   '/rtm-token',
   middleware.isAuthenticated,
   helpers.wrapper(async (req, res) => {
+    const { userId } = req.query;
+    if (req.user.id !== userId) {
+      // TODO: ensure user has ability to represent the facility represented by the userId
+    }
     const token = RtmTokenBuilder.buildToken(
       process.env.REACT_APP_AGORA_APP_ID,
       process.env.AGORA_APP_CERTIFICATE,
-      0,
+      userId,
       23 /* hr */ * 60 /* min/hr */ * 60 /* sec/min */
     );
     res.json({ token });

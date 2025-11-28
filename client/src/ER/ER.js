@@ -31,9 +31,25 @@ export default function ER() {
     ringdown: 0,
     hospitalInfo: 0,
   });
+
   const agoraRTM = useAgoraRTM({
     userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
   });
+  useEffect(() => {
+    let channel = new BroadcastChannel('callCoordination');
+    channel.onmessage = (event) => {
+      agoraRTM.setMessages((prevMessages) => {
+        let newMessages = [...prevMessages];
+        let index = newMessages.findIndex((message) => message.id === event.data.id);
+        if (index >= 0) {
+          newMessages[index] = { ...newMessages[index], ...event.data };
+          channel.postMessage(newMessages[index]);
+        }
+        return newMessages;
+      });
+    };
+    return () => channel.close();
+  }, [agoraRTM]);
 
   const [hospital, setHospital] = useState();
   const [mcis, setMcis] = useState([]);

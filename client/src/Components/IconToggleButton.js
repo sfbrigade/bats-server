@@ -1,8 +1,10 @@
+import classNames from 'classnames';
+
 import './IconToggleButton.scss';
 
-export default function IconToggleButton({ disabled, selected, selectedIcon, deselectedIcon, onClick }) {
+export default function IconToggleButton({ className, disabled, selected, selectedIcon, deselectedIcon, onClick }) {
   return (
-    <button className="usa-button--unstyled icon-toggle-button" disabled={disabled} onClick={onClick}>
+    <button className={classNames('usa-button--unstyled icon-toggle-button', className)} disabled={disabled} onClick={onClick}>
       {selected && selectedIcon}
       {!selected && deselectedIcon}
     </button>

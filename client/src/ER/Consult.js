@@ -13,7 +13,7 @@ export default function Consult({ agoraRTM }) {
   }
 
   function onAnswer(call) {
-    window.open(`/call?channel=${call.userId}`, '_blank');
+    window.open(`/call?id=${call.id}`, '_blank');
   }
 
   return (

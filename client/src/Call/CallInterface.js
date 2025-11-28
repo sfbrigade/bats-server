@@ -1,24 +1,20 @@
 import { useEffect, useState } from 'react';
 import AgoraRTC from 'agora-rtc-sdk-ng';
-import {
-  useConnectionState,
-  useCurrentUID,
-  useJoin,
-  usePublish,
-  useRemoteUsers,
-  useRTCClient,
-  LocalUser,
-  RemoteUser,
-} from 'agora-rtc-react';
+import { useJoin, usePublish, useRemoteUsers, useRTCClient, LocalUser, RemoteUser } from 'agora-rtc-react';
 
 import ApiService from '../ApiService';
-import './CallInterface.scss';
 import MicrophoneButton from './MicrophoneButton';
 import CameraButton from './CameraButton';
+import Ringdown from '../Models/Ringdown';
+import RingdownDetails from '../Components/RingdownDetails';
 
-export default function CallInterface({ channel }) {
+import './CallInterface.scss';
+import EndCallButton from './EndCallButton';
+
+export default function CallInterface({ call }) {
+  const channel = call?.userId;
   const client = useRTCClient();
-  const [isCalling, setCalling] = useState(false);
+  const [isCalling, setCalling] = useState(true);
   const { isConnected } = useJoin(async () => {
     const response = await ApiService.agora.getRtcToken(channel);
     const { token } = response.data;
@@ -27,12 +23,10 @@ export default function CallInterface({ channel }) {
       channel,
       token,
     };
-  }, isCalling);
+  }, channel && isCalling);
 
-  const uid = useCurrentUID() || 0;
   const [isMicOn, setMicOn] = useState(true);
   const [isCameraOn, setCameraOn] = useState(false);
-  const connectionState = useConnectionState();
 
   const [localMicrophoneTrack, setLocalMicrophoneTrack] = useState();
   useEffect(() => {
@@ -101,16 +95,15 @@ export default function CallInterface({ channel }) {
           <div className="call-interface-content__controls">
             <MicrophoneButton disabled={!isConnected} isMicOn={isMicOn} onClick={() => setMicOn((prev) => !prev)} />
             <CameraButton disabled={!isConnected} isVideoOn={isCameraOn} onClick={() => setCameraOn((prev) => !prev)} />
+            <EndCallButton disabled={!isConnected} onClick={() => setCalling(false)} />
           </div>
         </div>
       </div>
       <div className="tablet:grid-col-3">
-        <div>UID: {uid}</div>
-        <div>
-          Connected: {JSON.stringify(isConnected)} | {connectionState}
-        </div>
-        <div>
-          <button onClick={() => setCalling((prev) => !prev)}>{isCalling ? 'Hang up' : 'Call'}</button>{' '}
+        <div className="usa-accordion consult">
+          <div className="usa-accordion__content">
+            <RingdownDetails ringdown={new Ringdown(call.ringdown)} />
+          </div>
         </div>
       </div>
     </div>
