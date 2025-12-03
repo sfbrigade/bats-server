@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import PropTypes from 'prop-types';
 
+import { CallStatus, HospitalTeamActivation } from 'shared/constants';
+
 import Ringdown from '../Models/Ringdown';
 
 import Alert from './Alert';
@@ -22,9 +24,9 @@ function CallCard({ call, children, className, onAnswer, onDismiss }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const { triageTag, triagePriority, chiefComplaintDescription, hospitalTeamActivation } = ringdown;
 
-  const isRinging = status === 'ringing';
-  const isAnswered = status === 'answered';
-  const isCancelled = status === 'cancelled';
+  const isCancelled = CallStatus.is(status, CallStatus.CANCELLED);
+  const isAnswered = !isCancelled && CallStatus.is(status, CallStatus.ANSWERED);
+  const isRinging = !isCancelled && !isAnswered;
   const canBeDismissed = !isRinging;
 
   const drawerTitle = (
@@ -38,6 +40,11 @@ function CallCard({ call, children, className, onAnswer, onDismiss }) {
   const subtitle = (
     <>
       <div className="ringdown-card__complaint-summary">
+        {!!hospitalTeamActivation && (
+          <>
+            <b>{HospitalTeamActivation.STRINGS[hospitalTeamActivation]}&nbsp;Alert:&nbsp;</b>
+          </>
+        )}
         {!!triageTag && `#${triageTag}: `}
         {chiefComplaintDescription}
       </div>

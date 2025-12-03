@@ -94,7 +94,7 @@ export default function CallInterface({ call }) {
           </div>
           <div className="call-interface-content__controls">
             <MicrophoneButton disabled={!isConnected} isMicOn={isMicOn} onClick={() => setMicOn((prev) => !prev)} />
-            <CameraButton disabled={!isConnected} isVideoOn={isCameraOn} onClick={() => setCameraOn((prev) => !prev)} />
+            <CameraButton disabled={!isConnected} isCameraOn={isCameraOn} onClick={() => setCameraOn((prev) => !prev)} />
             <EndCallButton disabled={!isConnected} onClick={() => setCalling(false)} />
           </div>
         </div>

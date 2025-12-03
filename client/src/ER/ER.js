@@ -3,6 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
 
+import { CallStatus } from 'shared/constants';
+
+import Alert from '../Components/Alert';
 import RoutedHeader from '../Components/RoutedHeader';
 import UnconfirmedRingdowns from './UnconfirmedRingdowns';
 
@@ -141,6 +144,30 @@ export default function ER() {
     }
   }, [hasUnconfirmedRingdowns]);
 
+  let incomingCall, incomingCallRingdown;
+  for (const message of agoraRTM.messages) {
+    if (message.status === CallStatus.RINGING) {
+      incomingCall = message;
+      incomingCallRingdown = new Ringdown(message.ringdown);
+      break;
+    }
+  }
+
+  function onAnswerCall(call) {
+    window.open(`/call?id=${call.id}`, '_blank');
+  }
+
+  function onIgnoreCall(call) {
+    agoraRTM.setMessages((prevMessages) => {
+      const newMessages = [...prevMessages];
+      const index = newMessages.findIndex((m) => m.id === call.id);
+      if (index > -1) {
+        newMessages[index].status = CallStatus.ACKNOWLEDGED;
+      }
+      return newMessages;
+    });
+  }
+
   return (
     <div className="grid-container minh-100vh">
       <div className="grid-row">
@@ -159,6 +186,23 @@ export default function ER() {
           )}
           {selectedTab === 'consult' && <Consult agoraRTM={agoraRTM} />}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
+          {incomingCall && (
+            <Alert
+              type={incomingCallRingdown.hospitalTeamActivation ? 'error' : 'warning'}
+              title="Incoming Call"
+              primary="Answer"
+              cancel="Silence"
+              onPrimary={() => onAnswerCall(incomingCall)}
+              onCancel={() => onIgnoreCall(incomingCall)}
+            >
+              {!!incomingCallRingdown.hospitalTeamActivation && (
+                <>
+                  <b>{incomingCallRingdown.hospitalTeamActivationString}&nbsp;Alert:</b>&nbsp;
+                </>
+              )}
+              {incomingCallRingdown.chiefComplaintDescription}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

@@ -67,7 +67,7 @@ export default function Consult({ agoraRTM }) {
         </fieldset>
         {agoraRTM?.isLoggedIn && (
           <>
-            <Heading title="Incoming Calls" />
+            {!!agoraRTM?.messages.length && <Heading title="Incoming Calls" />}
             <div>
               {agoraRTM?.messages.map((message) => (
                 <CallCard className="margin-x-3 margin-y-2" key={message.id} call={message} onAnswer={onAnswer} onDismiss={onDismiss} />
