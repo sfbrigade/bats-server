@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
+import { v4 as uuid } from 'uuid';
 
 import { CallStatus } from 'shared/constants';
 
@@ -35,25 +36,6 @@ export default function ER() {
     hospitalInfo: 0,
   });
 
-  const agoraRTM = useAgoraRTM({
-    userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
-  });
-  useEffect(() => {
-    let channel = new BroadcastChannel('callCoordination');
-    channel.onmessage = (event) => {
-      agoraRTM.setMessages((prevMessages) => {
-        let newMessages = [...prevMessages];
-        let index = newMessages.findIndex((message) => message.id === event.data.id);
-        if (index >= 0) {
-          newMessages[index] = { ...newMessages[index], ...event.data };
-          channel.postMessage(newMessages[index]);
-        }
-        return newMessages;
-      });
-    };
-    return () => channel.close();
-  }, [agoraRTM]);
-
   const [hospital, setHospital] = useState();
   const [mcis, setMcis] = useState([]);
   const [ringdowns, setRingdowns] = useState([]);
@@ -62,6 +44,43 @@ export default function ER() {
   const lastIdRef = useRef(null);
 
   const [playSound] = useSound(notification);
+
+  const agoraRTM = useAgoraRTM({
+    userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
+  });
+  useEffect(() => {
+    let channel = new BroadcastChannel('callCoordination');
+    channel.onmessage = (event) => {
+      if (event.data.id) {
+        // responding to an incoming call
+        agoraRTM.setMessages((prevMessages) => {
+          let newMessages = [...prevMessages];
+          let index = newMessages.findIndex((message) => message.id === event.data.id);
+          if (index >= 0) {
+            newMessages[index] = { ...newMessages[index], ...event.data };
+            channel.postMessage(newMessages[index]);
+          }
+          return newMessages;
+        });
+      } else if (event.data.ringdownId) {
+        // calling out to incoming ringdown
+        const ringdown = ringdowns.find((rd) => rd.id === event.data.ringdownId);
+        if (ringdown) {
+          const call = {
+            id: uuid(),
+            name: hospital.name,
+            userId: ringdown.id,
+            status: 'ringing',
+            calledAt: new Date().toISOString(),
+          };
+          console.log('!!! calling', ringdown.id, call);
+          agoraRTM.publish(ringdown.id, call);
+          channel.postMessage({ ...call, ringdown: ringdown.payload });
+        }
+      }
+    };
+    return () => channel.close();
+  }, [hospital, agoraRTM, ringdowns]);
 
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);

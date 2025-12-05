@@ -8,22 +8,29 @@ import CallInterface from './CallInterface';
 export default function Call() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
+  const ringdownId = searchParams.get('ringdownId');
   const [call, setCall] = useState();
 
   useEffect(() => {
     let channel = new BroadcastChannel('callCoordination');
     channel.onmessage = (event) => {
-      if (event.data.id === id) {
+      if (event.data.id === id || event.data.userId === ringdownId) {
         setCall(event.data);
       }
     };
-    channel.postMessage({
-      id,
-      status: 'answered',
-      answeredAt: new Date().toISOString(),
-    });
+    if (id) {
+      channel.postMessage({
+        id,
+        status: 'answered',
+        answeredAt: new Date().toISOString(),
+      });
+    } else if (ringdownId) {
+      channel.postMessage({
+        ringdownId,
+      });
+    }
     return () => channel.close();
-  }, [id]);
+  }, [id, ringdownId]);
 
   const client = useMemo(() => AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' }), []);
 

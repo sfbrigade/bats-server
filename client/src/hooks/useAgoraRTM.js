@@ -28,7 +28,7 @@ export default function useAgoraRTM({ userId }) {
             if (index >= 0) {
               newCalls[index] = { ...newCalls[index], ...message };
             } else {
-              newCalls.push(message);
+              newCalls.unshift(message);
             }
             return newCalls;
           });
@@ -71,5 +71,21 @@ export default function useAgoraRTM({ userId }) {
     }
   }, [rtm, userId]);
 
-  return { isInitialized, isLoggedIn, login, messages, setMessages, error };
+  const publish = useCallback(
+    async (channelName, message) => {
+      try {
+        if (!isLoggedIn) {
+          await login();
+        }
+        const result = await rtm.publish(channelName, JSON.stringify(message), { channelType: 'USER' });
+        console.log('publish result=', result);
+      } catch (error) {
+        console.error('publish error=', error);
+        setError(error);
+      }
+    },
+    [rtm, isLoggedIn, login]
+  );
+
+  return { isInitialized, isLoggedIn, login, messages, setMessages, error, publish };
 }

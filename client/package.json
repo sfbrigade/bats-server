@@ -31,7 +31,8 @@
     "shared": "file:../shared",
     "sortablejs": "^1.15.2",
     "use-sound": "^4.0.1",
-    "uswds": "^2.13.3"
+    "uswds": "^2.13.3",
+    "uuid": "^13.0.0"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",

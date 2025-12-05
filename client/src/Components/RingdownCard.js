@@ -20,7 +20,7 @@ const AcknowledgedStatus = {
   [Status.REDIRECTED]: Status.REDIRECT_ACKNOWLEDGED,
 };
 
-function RingdownCard({ children, className, ringdown, dismissable, onStatusChange }) {
+function RingdownCard({ children, className, ringdown, dismissable, onCall, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const { triageTag, triagePriority, currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj, timestamps } = ringdown;
@@ -96,6 +96,13 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
                   Mark&nbsp;Offloaded
                 </button>
               )}
+            </div>
+          )}
+          {!!onCall && (
+            <div className="margin-y-2 margin-x-2">
+              <button onClick={() => onCall(ringdown)} className="usa-button width-full">
+                Call Back
+              </button>
             </div>
           )}
           {children}
