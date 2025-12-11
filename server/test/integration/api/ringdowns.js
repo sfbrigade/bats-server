@@ -97,6 +97,7 @@ describe('/api/ringdowns', () => {
       glasgowComaScale: 3,
       ivIndicator: false,
       otherObservationNotes: 'Needs assistance walking',
+      hospitalTeamActivation: null,
     };
 
     it('creates a ringdown', async () => {
@@ -198,6 +199,7 @@ describe('/api/ringdowns', () => {
       glasgowComaScale: 3,
       ivIndicator: false,
       otherObservationNotes: 'Needs assistance walking',
+      hospitalTeamActivation: null,
     };
 
     it('creates a ringdown accepting null value for an unrequired field', async () => {
@@ -533,6 +535,7 @@ describe('/api/ringdowns', () => {
           ivIndicator: false,
           glasgowComaScale: null,
           otherObservationNotes: null,
+          hospitalTeamActivation: null,
         },
         patientDelivery: {
           currentDeliveryStatus: 'RETURNED TO SERVICE',

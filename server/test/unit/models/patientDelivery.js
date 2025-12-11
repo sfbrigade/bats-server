@@ -222,6 +222,7 @@ describe('models.PatientDelivery', () => {
           ivIndicator: false,
           glasgowComaScale: null,
           otherObservationNotes: null,
+          hospitalTeamActivation: null,
         },
         patientDelivery: {
           currentDeliveryStatus: 'RETURNED TO SERVICE',
