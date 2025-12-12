@@ -62,9 +62,7 @@ export default function CallInterface({ call }) {
   const [activeUser, setActiveUser] = useState();
   useEffect(() => {
     if (remoteUsers?.length > 0) {
-      if (!activeUser) {
-        setActiveUser(remoteUsers[0]);
-      }
+      setActiveUser(remoteUsers[0]);
     } else {
       setActiveUser();
     }
