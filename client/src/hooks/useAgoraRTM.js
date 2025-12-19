@@ -79,7 +79,7 @@ export default function useAgoraRTM({ userId, isOnline }) {
     async (channelName, message) => {
       try {
         if (rtm) {
-          const result = await rtm?.publish(channelName, JSON.stringify(message), { channelType: 'USER' });
+          const result = await rtm.publish(channelName, JSON.stringify(message), { channelType: 'USER' });
           console.log('publish result=', result);
         } else {
           throw new Error('not online');

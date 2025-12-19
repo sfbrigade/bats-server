@@ -79,7 +79,7 @@ export default function CallInterface({ call }) {
               <RemoteUser user={activeUser} playAudio playVideo videoPlayerConfig={{ fit: 'contain' }} cover="/img/user.png" />
             )}
             {isConnected && (
-              <div className="local-user">
+              <div className="call-interface-content__local-user">
                 <LocalUser
                   audioTrack={localMicrophoneTrack}
                   cameraOn={isCameraOn}
@@ -92,14 +92,14 @@ export default function CallInterface({ call }) {
               </div>
             )}
           </div>
-          {!isConnected ||
-            (call?.status !== 'answered' && (
-              <div className="call-interface-content__status">
-                <Spinner />
-                {!isConnected && 'Connecting...'}
-                {isConnected && call?.status === 'ringing' && 'Ringing...'}
-              </div>
-            ))}
+          {(!isConnected || !activeUser) && (
+            <div className="call-interface-content__status">
+              <Spinner />
+              {!isConnected && 'Connecting...'}
+              {isConnected && call?.status === 'ringing' && 'Ringing...'}
+              Status: {call?.status}
+            </div>
+          )}
           <div className="call-interface-content__controls">
             <MicrophoneButton disabled={!isConnected} isMicOn={isMicOn} onClick={() => setMicOn((prev) => !prev)} />
             <CameraButton disabled={!isConnected} isCameraOn={isCameraOn} onClick={() => setCameraOn((prev) => !prev)} />
@@ -107,8 +107,8 @@ export default function CallInterface({ call }) {
           </div>
         </div>
       </div>
-      <div className="tablet:grid-col-3">
-        <div className="usa-accordion consult">
+      <div className="tablet:grid-col-3 call-interface-sidebar">
+        <div className="usa-accordion">
           <div className="usa-accordion__content">
             <RingdownDetails ringdown={new Ringdown(call.ringdown)} />
           </div>

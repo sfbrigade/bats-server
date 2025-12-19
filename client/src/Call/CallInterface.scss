@@ -41,7 +41,7 @@
   gap: 1rem;
 }
 
-.local-user {
+.call-interface-content__local-user {
   position: absolute;
   background-color: black;
   width: 320px;
@@ -49,4 +49,9 @@
   right: 1rem;
   border: 2px solid #fff;
   bottom: calc(100px + 1rem);
+}
+
+.call-interface-sidebar {
+  max-height: 100vh;
+  overflow-y: scroll;
 }

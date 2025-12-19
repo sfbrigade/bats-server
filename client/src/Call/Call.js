@@ -2,8 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import { AgoraRTCProvider } from 'agora-rtc-react';
+import { v4 as uuid } from 'uuid';
 
 import CallInterface from './CallInterface';
+
+const callId = uuid();
 
 export default function Call() {
   const [searchParams] = useSearchParams();
@@ -14,9 +17,13 @@ export default function Call() {
   useEffect(() => {
     let channel = new BroadcastChannel('callCoordination');
     channel.onmessage = (event) => {
-      if (event.data.id === id || event.data.userId === ringdownId) {
-        setCall(event.data);
-      }
+      console.log('???', event.data);
+      setCall((call) => {
+        if (event.data.id === call.id || event.data.id === id || event.data.ringdown?.id === ringdownId) {
+          return { ...call, ...event.data };
+        }
+        return call;
+      });
     };
     if (id) {
       channel.postMessage({
@@ -26,6 +33,7 @@ export default function Call() {
       });
     } else if (ringdownId) {
       channel.postMessage({
+        callId,
         ringdownId,
       });
     }

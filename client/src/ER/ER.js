@@ -25,6 +25,9 @@ import notification from '../assets/notification.mp3';
 import useAgoraRTM from '../hooks/useAgoraRTM';
 import { useTabPositions } from '../hooks/useTabPositions';
 
+// generate a unique random user id for the callback channel
+const callbackChannelUserId = uuid();
+
 export default function ER() {
   const [searchParams] = useSearchParams();
   const hospitalId = searchParams.get('hospitalId');
@@ -45,6 +48,11 @@ export default function ER() {
 
   const [playSound] = useSound(notification);
 
+  const callbackChannel = useAgoraRTM({
+    userId: callbackChannelUserId,
+    isOnline: true,
+  });
+
   const [isConsultOnline, setConsultOnline] = useState(false);
   const consultChannel = useAgoraRTM({
     userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
@@ -52,7 +60,7 @@ export default function ER() {
   });
   useEffect(() => {
     let channel = new BroadcastChannel('callCoordination');
-    channel.onmessage = (event) => {
+    channel.onmessage = async (event) => {
       if (event.data.id) {
         // responding to an incoming call
         consultChannel.setMessages((prevMessages) => {
@@ -64,25 +72,29 @@ export default function ER() {
           }
           return newMessages;
         });
-      } else if (event.data.ringdownId) {
-        // calling out to incoming ringdown
+      } else if (event.data.callId && event.data.ringdownId) {
+        // calling out to a ringdown
         const ringdown = ringdowns.find((rd) => rd.id === event.data.ringdownId);
         if (ringdown) {
           const call = {
-            id: uuid(),
+            id: event.data.callId,
             name: hospital.name,
-            userId: ringdown.id,
+            userId: callbackChannelUserId,
             status: 'ringing',
             calledAt: new Date().toISOString(),
           };
           console.log('!!! calling', ringdown.id, call);
-          consultChannel.publish(ringdown.id, call);
+          await callbackChannel.publish(ringdown.id, call);
           channel.postMessage({ ...call, ringdown: ringdown.payload });
         }
       }
     };
+    console.log('!!! callback channel messages=', callbackChannel.messages);
+    for (const message of callbackChannel.messages) {
+      channel.postMessage(message);
+    }
     return () => channel.close();
-  }, [hospital, consultChannel, ringdowns]);
+  }, [hospital, callbackChannel, consultChannel, ringdowns]);
 
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
