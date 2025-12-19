@@ -45,15 +45,17 @@ export default function ER() {
 
   const [playSound] = useSound(notification);
 
-  const agoraRTM = useAgoraRTM({
+  const [isConsultOnline, setConsultOnline] = useState(false);
+  const consultChannel = useAgoraRTM({
     userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
+    isOnline: isConsultOnline,
   });
   useEffect(() => {
     let channel = new BroadcastChannel('callCoordination');
     channel.onmessage = (event) => {
       if (event.data.id) {
         // responding to an incoming call
-        agoraRTM.setMessages((prevMessages) => {
+        consultChannel.setMessages((prevMessages) => {
           let newMessages = [...prevMessages];
           let index = newMessages.findIndex((message) => message.id === event.data.id);
           if (index >= 0) {
@@ -74,13 +76,13 @@ export default function ER() {
             calledAt: new Date().toISOString(),
           };
           console.log('!!! calling', ringdown.id, call);
-          agoraRTM.publish(ringdown.id, call);
+          consultChannel.publish(ringdown.id, call);
           channel.postMessage({ ...call, ringdown: ringdown.payload });
         }
       }
     };
     return () => channel.close();
-  }, [hospital, agoraRTM, ringdowns]);
+  }, [hospital, consultChannel, ringdowns]);
 
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
@@ -164,7 +166,7 @@ export default function ER() {
   }, [hasUnconfirmedRingdowns]);
 
   let incomingCall, incomingCallRingdown;
-  for (const message of agoraRTM.messages) {
+  for (const message of consultChannel.messages) {
     if (message.status === CallStatus.RINGING) {
       incomingCall = message;
       incomingCallRingdown = new Ringdown(message.ringdown);
@@ -177,7 +179,7 @@ export default function ER() {
   }
 
   function onIgnoreCall(call) {
-    agoraRTM.setMessages((prevMessages) => {
+    consultChannel.setMessages((prevMessages) => {
       const newMessages = [...prevMessages];
       const index = newMessages.findIndex((m) => m.id === call.id);
       if (index > -1) {
@@ -203,7 +205,9 @@ export default function ER() {
               incomingRingdownsCount={incomingRingdownsCount}
             />
           )}
-          {selectedTab === 'consult' && <Consult agoraRTM={agoraRTM} />}
+          {selectedTab === 'consult' && (
+            <Consult consultChannel={consultChannel} isConsultOnline={isConsultOnline} setConsultOnline={setConsultOnline} />
+          )}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
           {incomingCall && (
             <Alert

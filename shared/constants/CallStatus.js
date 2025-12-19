@@ -2,6 +2,7 @@ const CallStatus = {
   RINGING: 'ringing',
   ACKNOWLEDGED: 'acknowledged',
   ANSWERED: 'answered',
+  DECLINED: 'declined',
   CANCELLED: 'cancelled',
 };
 

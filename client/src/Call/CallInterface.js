@@ -7,6 +7,7 @@ import MicrophoneButton from './MicrophoneButton';
 import CameraButton from './CameraButton';
 import Ringdown from '../Models/Ringdown';
 import RingdownDetails from '../Components/RingdownDetails';
+import Spinner from '../Components/Spinner';
 
 import './CallInterface.scss';
 import EndCallButton from './EndCallButton';
@@ -16,6 +17,7 @@ export default function CallInterface({ call }) {
   const client = useRTCClient();
   const [isCalling, setCalling] = useState(true);
   const { isConnected } = useJoin(async () => {
+    console.log('!!! getting RTC token for channel', channel, isCalling, !!channel && isCalling);
     const response = await ApiService.agora.getRtcToken(channel);
     const { token } = response.data;
     return {
@@ -23,7 +25,7 @@ export default function CallInterface({ call }) {
       channel,
       token,
     };
-  }, channel && isCalling);
+  }, !!channel && isCalling);
 
   const [isMicOn, setMicOn] = useState(true);
   const [isCameraOn, setCameraOn] = useState(false);
@@ -66,7 +68,7 @@ export default function CallInterface({ call }) {
     } else {
       setActiveUser();
     }
-  }, [remoteUsers, activeUser]);
+  }, [remoteUsers]);
 
   return (
     <div className="grid-row call-interface">
@@ -90,6 +92,14 @@ export default function CallInterface({ call }) {
               </div>
             )}
           </div>
+          {!isConnected ||
+            (call?.status !== 'answered' && (
+              <div className="call-interface-content__status">
+                <Spinner />
+                {!isConnected && 'Connecting...'}
+                {isConnected && call?.status === 'ringing' && 'Ringing...'}
+              </div>
+            ))}
           <div className="call-interface-content__controls">
             <MicrophoneButton disabled={!isConnected} isMicOn={isMicOn} onClick={() => setMicOn((prev) => !prev)} />
             <CameraButton disabled={!isConnected} isCameraOn={isCameraOn} onClick={() => setCameraOn((prev) => !prev)} />

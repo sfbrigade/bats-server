@@ -3,13 +3,9 @@ import Spinner from '../Components/Spinner';
 import CallCard from '../Components/CallCard';
 import './Consult.scss';
 
-export default function Consult({ agoraRTM }) {
-  async function onLogin() {
-    await agoraRTM.login();
-  }
-
+export default function Consult({ consultChannel, isConsultOnline, setConsultOnline }) {
   function onDismiss(call) {
-    agoraRTM.setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== call.id));
+    consultChannel.setMessages((prevMessages) => prevMessages.filter((prevMessage) => prevMessage.id !== call.id));
   }
 
   function onAnswer(call) {
@@ -21,55 +17,55 @@ export default function Consult({ agoraRTM }) {
       <div className="usa-accordion__content">
         <Heading title="Status" />
         <fieldset className="usa-fieldset">
-          {!(agoraRTM?.isInitialized ?? false) && (
+          {!isConsultOnline && (
+            <>
+              <div className="usa-alert usa-alert--error">
+                <div className="usa-alert__body">
+                  <h3 className="usa-alert__heading">Offline</h3>
+                  <p className="usa-alert__text">Not receiving calls.</p>
+                </div>
+              </div>
+              <ul className="usa-button-group flex-column flex-align-stretch">
+                <li className="usa-button-group__item">
+                  <button type="button" className="usa-button width-full" onClick={() => setConsultOnline(true)}>
+                    Set Status Online
+                  </button>
+                </li>
+              </ul>
+            </>
+          )}
+          {isConsultOnline && !(consultChannel?.isLoggedIn ?? false) && (
             <>
               <Spinner />
             </>
           )}
-          {agoraRTM?.isInitialized && (
+          {isConsultOnline && (consultChannel?.isLoggedIn ?? false) && (
             <>
-              {!(agoraRTM?.isLoggedIn ?? false) && (
-                <>
-                  <div className="usa-alert usa-alert--error">
-                    <div className="usa-alert__body">
-                      <h3 className="usa-alert__heading">Offline</h3>
-                      <p className="usa-alert__text">Not receiving calls.</p>
-                    </div>
-                  </div>
-                  <ul className="usa-button-group flex-column flex-align-stretch">
-                    <li className="usa-button-group__item">
-                      <button type="button" className="usa-button width-full" onClick={onLogin}>
-                        Set Status Online
-                      </button>
-                    </li>
-                  </ul>
-                </>
-              )}
-              {agoraRTM?.isLoggedIn && (
-                <>
-                  <div className="usa-alert usa-alert--success">
-                    <div className="usa-alert__body">
-                      <h3 className="usa-alert__heading">Online</h3>
-                      <p className="usa-alert__text">Receiving calls.</p>
-                    </div>
-                  </div>
-                  <ul className="usa-button-group flex-column flex-align-stretch">
-                    <li className="usa-button-group__item">
-                      <button type="button" className="usa-button usa-button--outline usa-button--secondary width-full" onClick={onLogin}>
-                        Set Status Offline
-                      </button>
-                    </li>
-                  </ul>
-                </>
-              )}
+              <div className="usa-alert usa-alert--success">
+                <div className="usa-alert__body">
+                  <h3 className="usa-alert__heading">Online</h3>
+                  <p className="usa-alert__text">Receiving calls.</p>
+                </div>
+              </div>
+              <ul className="usa-button-group flex-column flex-align-stretch">
+                <li className="usa-button-group__item">
+                  <button
+                    type="button"
+                    className="usa-button usa-button--outline usa-button--secondary width-full"
+                    onClick={() => setConsultOnline(false)}
+                  >
+                    Set Status Offline
+                  </button>
+                </li>
+              </ul>
             </>
           )}
         </fieldset>
-        {agoraRTM?.isLoggedIn && (
+        {isConsultOnline && (consultChannel?.isLoggedIn ?? false) && (
           <>
-            {!!agoraRTM?.messages.length && <Heading title="Incoming Calls" />}
+            {!!consultChannel?.messages.length && <Heading title="Incoming Calls" />}
             <div>
-              {agoraRTM?.messages.map((message) => (
+              {consultChannel?.messages.map((message) => (
                 <CallCard className="margin-x-3 margin-y-2" key={message.id} call={message} onAnswer={onAnswer} onDismiss={onDismiss} />
               ))}
             </div>

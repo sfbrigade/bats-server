@@ -9,7 +9,7 @@ export default function Call() {
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
   const ringdownId = searchParams.get('ringdownId');
-  const [call, setCall] = useState();
+  const [call, setCall] = useState({});
 
   useEffect(() => {
     let channel = new BroadcastChannel('callCoordination');
