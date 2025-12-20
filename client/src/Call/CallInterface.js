@@ -99,7 +99,7 @@ export default function CallInterface({ call }) {
             <div className="call-interface-content__status">
               <Spinner />
               {!isConnected && 'Connecting...'}
-              {isConnected && call?.status === 'ringing' && 'Ringing...'}
+              {isConnected && call?.status === CallStatus.RINGING && 'Ringing...'}
             </div>
           )}
           <div className="call-interface-content__controls">
@@ -116,7 +116,7 @@ export default function CallInterface({ call }) {
           </div>
         </div>
       </div>
-      {call?.status === 'declined' && (
+      {call?.status === CallStatus.DECLINED && (
         <Alert
           type="error"
           title="Call Declined"
