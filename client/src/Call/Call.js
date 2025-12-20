@@ -44,7 +44,7 @@ export default function Call() {
 
   return (
     <>
-      <AgoraRTCProvider client={client}>{call && <CallInterface call={call} />}</AgoraRTCProvider>
+      <AgoraRTCProvider client={client}>{call && <CallInterface call={call} setCall={setCall} />}</AgoraRTCProvider>
     </>
   );
 }
