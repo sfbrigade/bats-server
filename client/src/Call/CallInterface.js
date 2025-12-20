@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import { useJoin, usePublish, useRemoteUsers, useRTCClient, LocalUser, RemoteUser } from 'agora-rtc-react';
 
+import { CallStatus } from 'shared/constants';
+
+import Alert from '../Components/Alert';
 import ApiService from '../ApiService';
 import MicrophoneButton from './MicrophoneButton';
 import CameraButton from './CameraButton';
@@ -92,12 +95,11 @@ export default function CallInterface({ call }) {
               </div>
             )}
           </div>
-          {(!isConnected || !activeUser) && (
+          {(!isConnected || !CallStatus.is(call?.status, CallStatus.ANSWERED)) && (
             <div className="call-interface-content__status">
               <Spinner />
               {!isConnected && 'Connecting...'}
               {isConnected && call?.status === 'ringing' && 'Ringing...'}
-              Status: {call?.status}
             </div>
           )}
           <div className="call-interface-content__controls">
@@ -114,6 +116,18 @@ export default function CallInterface({ call }) {
           </div>
         </div>
       </div>
+      {call?.status === 'declined' && (
+        <Alert
+          type="error"
+          title="Call Declined"
+          cancel="No"
+          primary="Yes"
+          onCancel={() => window.close()}
+          onPrimary={() => window.location.reload()}
+        >
+          The call was declined on the receiving end. Ring again?
+        </Alert>
+      )}
     </div>
   );
 }
