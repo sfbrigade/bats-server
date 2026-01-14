@@ -120,7 +120,6 @@ export default function CallInterface({ call, setCall }) {
       <div className="tablet:grid-col-3 call-interface-sidebar">
         <div className="usa-accordion">
           <div className="usa-accordion__content">
-            <div>Remote video: {JSON.stringify(activeUser?.hasVideo)}</div>
             <RingdownDetails ringdown={new Ringdown(call.ringdown)} />
           </div>
         </div>
