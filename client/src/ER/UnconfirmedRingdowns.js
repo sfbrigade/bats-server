@@ -22,9 +22,7 @@ const UnconfirmedRingdowns = ({ onConfirm, ringdowns }) => {
     ringdowns.forEach((ringdown) => {
       if (isCancelled) return;
       if (!ringdown.timestamps[Ringdown.Status.RINGDOWN_RECEIVED]) {
-        try {
-          ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date());
-        } catch {}
+        ApiService.ringdowns.setDeliveryStatus(ringdown.id, 'RINGDOWN RECEIVED', new Date()).catch(() => {});
       }
     });
     return () => (isCancelled = true);
