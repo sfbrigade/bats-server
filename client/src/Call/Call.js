@@ -17,7 +17,6 @@ export default function Call() {
   useEffect(() => {
     let channel = new BroadcastChannel('callCoordination');
     channel.onmessage = (event) => {
-      console.log('???', event.data);
       setCall((call) => {
         if (event.data.id === call.id || event.data.id === id || event.data.ringdown?.id === ringdownId) {
           return { ...call, ...event.data };

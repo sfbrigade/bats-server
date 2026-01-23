@@ -28,20 +28,10 @@ export default function useAgoraRTM({ userId, isOnline }) {
           } else {
             newCalls.unshift(message);
           }
-          console.log('!!! messages=', newCalls);
           return newCalls;
         });
       };
-      const presenceListener = (event) => {
-        console.log('presence', event);
-      };
-      const statusListener = (event) => {
-        console.log('status', event);
-      };
       rtm.addEventListener('message', messageListener);
-      rtm.addEventListener('presence', presenceListener);
-      rtm.addEventListener('status', statusListener);
-      console.log('!!! logging in with userId=', userId);
       ApiService.agora
         .getRtmToken(userId)
         .then((response) => {
@@ -66,8 +56,6 @@ export default function useAgoraRTM({ userId, isOnline }) {
         isCancelled = true;
         rtm.logout().finally(() => {
           rtm.removeEventListener('message', messageListener);
-          rtm.removeEventListener('presence', presenceListener);
-          rtm.removeEventListener('status', statusListener);
           setRtm();
           setLoggedIn(false);
         });
@@ -79,13 +67,11 @@ export default function useAgoraRTM({ userId, isOnline }) {
     async (channelName, message) => {
       try {
         if (rtm) {
-          const result = await rtm.publish(channelName, JSON.stringify(message), { channelType: 'USER' });
-          console.log('publish result=', result);
+          await rtm.publish(channelName, JSON.stringify(message), { channelType: 'USER' });
         } else {
           throw new Error('not online');
         }
       } catch (error) {
-        console.error('publish error=', error);
         setError(error);
       }
     },

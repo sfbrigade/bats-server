@@ -102,7 +102,6 @@ const server = new OAuthServer({
   allowEmptyState: true,
   authenticateHandler: {
     handle(req) {
-      console.log('calling handle?', req);
       return req.user;
     },
   },

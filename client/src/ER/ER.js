@@ -83,13 +83,11 @@ export default function ER() {
             status: 'ringing',
             calledAt: new Date().toISOString(),
           };
-          console.log('!!! calling', ringdown.id, call);
           await callbackChannel.publish(ringdown.id, call);
           channel.postMessage({ ...call, ringdown: ringdown.payload });
         }
       }
     };
-    console.log('!!! callback channel messages=', callbackChannel.messages);
     for (const message of callbackChannel.messages) {
       channel.postMessage(message);
     }
