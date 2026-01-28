@@ -1,8 +1,12 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import useSound from 'use-sound';
+import { v4 as uuid } from 'uuid';
 
+import { CallStatus } from 'shared/constants';
+
+import Alert from '../Components/Alert';
 import RoutedHeader from '../Components/RoutedHeader';
 import UnconfirmedRingdowns from './UnconfirmedRingdowns';
 
@@ -15,9 +19,14 @@ import Ringdown from '../Models/Ringdown';
 
 import Beds from './Beds';
 import Ringdowns from './Ringdowns';
+import Consult from './Consult';
 
 import notification from '../assets/notification.mp3';
+import useAgoraRTM from '../hooks/useAgoraRTM';
 import { useTabPositions } from '../hooks/useTabPositions';
+
+// generate a unique random user id for the callback channel
+const callbackChannelUserId = uuid();
 
 export default function ER() {
   const [searchParams] = useSearchParams();
@@ -38,6 +47,52 @@ export default function ER() {
   const lastIdRef = useRef(null);
 
   const [playSound] = useSound(notification);
+
+  const callbackChannel = useAgoraRTM({
+    userId: callbackChannelUserId,
+    isOnline: true,
+  });
+
+  const [isConsultOnline, setConsultOnline] = useState(false);
+  const consultChannel = useAgoraRTM({
+    userId: hospitalUser ? `H-${hospitalUser?.hospital.state ?? ''}-${hospitalUser?.hospital.stateFacilityCode ?? ''}` : '',
+    isOnline: isConsultOnline,
+  });
+  useEffect(() => {
+    let channel = new BroadcastChannel('callCoordination');
+    channel.onmessage = async (event) => {
+      if (event.data.id) {
+        // responding to an incoming call
+        consultChannel.setMessages((prevMessages) => {
+          let newMessages = [...prevMessages];
+          let index = newMessages.findIndex((message) => message.id === event.data.id);
+          if (index >= 0) {
+            newMessages[index] = { ...newMessages[index], ...event.data };
+            channel.postMessage(newMessages[index]);
+          }
+          return newMessages;
+        });
+      } else if (event.data.callId && event.data.ringdownId) {
+        // calling out to a ringdown
+        const ringdown = ringdowns.find((rd) => rd.id === event.data.ringdownId);
+        if (ringdown) {
+          const call = {
+            id: event.data.callId,
+            name: hospital.name,
+            userId: callbackChannelUserId,
+            status: 'ringing',
+            calledAt: new Date().toISOString(),
+          };
+          await callbackChannel.publish(ringdown.id, call);
+          channel.postMessage({ ...call, ringdown: ringdown.payload });
+        }
+      }
+    };
+    for (const message of callbackChannel.messages) {
+      channel.postMessage(message);
+    }
+    return () => channel.close();
+  }, [hospital, callbackChannel, consultChannel, ringdowns]);
 
   function onConfirm(ringdown) {
     const newUnconfirmedRingdowns = unconfirmedRingdowns.filter((r) => r.id !== ringdown.id);
@@ -120,6 +175,30 @@ export default function ER() {
     }
   }, [hasUnconfirmedRingdowns]);
 
+  let incomingCall, incomingCallRingdown;
+  for (const message of consultChannel.messages) {
+    if (message.status === CallStatus.RINGING) {
+      incomingCall = message;
+      incomingCallRingdown = new Ringdown(message.ringdown);
+      break;
+    }
+  }
+
+  function onAnswerCall(call) {
+    window.open(`/call?id=${call.id}`, '_blank');
+  }
+
+  function onIgnoreCall(call) {
+    consultChannel.setMessages((prevMessages) => {
+      const newMessages = [...prevMessages];
+      const index = newMessages.findIndex((m) => m.id === call.id);
+      if (index > -1) {
+        newMessages[index].status = CallStatus.ACKNOWLEDGED;
+      }
+      return newMessages;
+    });
+  }
+
   return (
     <div className="grid-container minh-100vh">
       <div className="grid-row">
@@ -136,7 +215,27 @@ export default function ER() {
               incomingRingdownsCount={incomingRingdownsCount}
             />
           )}
+          {selectedTab === 'consult' && (
+            <Consult consultChannel={consultChannel} isConsultOnline={isConsultOnline} setConsultOnline={setConsultOnline} />
+          )}
           {showRingdown && hasUnconfirmedRingdowns && <UnconfirmedRingdowns onConfirm={onConfirm} ringdowns={unconfirmedRingdowns} />}
+          {incomingCall && (
+            <Alert
+              type={incomingCallRingdown.hospitalTeamActivation ? 'error' : 'warning'}
+              title="Incoming Call"
+              primary="Answer"
+              cancel="Silence"
+              onPrimary={() => onAnswerCall(incomingCall)}
+              onCancel={() => onIgnoreCall(incomingCall)}
+            >
+              {!!incomingCallRingdown.hospitalTeamActivation && (
+                <>
+                  <b>{incomingCallRingdown.hospitalTeamActivationString}&nbsp;Alert:</b>&nbsp;
+                </>
+              )}
+              {incomingCallRingdown.chiefComplaintDescription}
+            </Alert>
+          )}
         </div>
       </div>
     </div>

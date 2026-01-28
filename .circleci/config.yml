@@ -28,7 +28,7 @@ jobs:
       - run:
           command: yarn workspace server sequelize db:seed:all
       - run:
-          command: eval $(cat example.env | grep -v -e 'DATABASE_URL' -e 'SMTP_HOST' | sed 's/^/export /'); yarn run test
+          command: eval $(cat example.env | grep -v -e 'AGORA_APP_CERTIFICATE' -e 'REACT_APP_AGORA_APP_ID' -e 'DATABASE_URL' -e 'SMTP_HOST' | sed 's/^/export /'); yarn run test
 
 workflows:
   test:

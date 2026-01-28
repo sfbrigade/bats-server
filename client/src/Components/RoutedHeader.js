@@ -1,16 +1,17 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import Header from './Header';
 import TabBar from './TabBar';
 import RingdownIcon from './Icons/Ringdown';
 import HospitalIcon from './Icons/Hospital';
+import PhoneIcon from './Icons/Phone';
 
 import './RoutedHeader.scss';
 
 const tabs = [
   { label: 'Ringdown', Icon: RingdownIcon, id: 'ringdown' },
-  { label: 'Hospital Info', Icon: HospitalIcon, id: 'hospitalInfo' },
+  { label: 'Status', Icon: HospitalIcon, id: 'hospitalInfo' },
+  { label: 'Consult', Icon: PhoneIcon, id: 'consult' },
 ];
 
 function RoutedHeader({ selectedTab, onSelect, venue, hospital }) {

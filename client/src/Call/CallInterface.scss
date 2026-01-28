@@ -1,0 +1,57 @@
+.call-interface {
+  height: 100vh;
+}
+
+.call-interface-content {
+  position: relative;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.call-interface-content__video {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.call-interface-content__controls {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.call-interface-content__status {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.call-interface-content__local-user {
+  position: absolute;
+  background-color: black;
+  width: 320px;
+  height: 200px;
+  right: 1rem;
+  border: 2px solid #fff;
+  bottom: calc(100px + 1rem);
+}
+
+.call-interface-sidebar {
+  max-height: 100vh;
+  overflow-y: scroll;
+}

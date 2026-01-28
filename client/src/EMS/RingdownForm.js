@@ -66,7 +66,6 @@ function RingdownForm({ defaultPayload, className, mcis }) {
   }
 
   function onChange(property, value) {
-    console.log('!!!', property, value);
     ringdown[property] = value;
     ringdown.validatePatientField(property, value);
     const newRingdown = new Ringdown(ringdown.payload, ringdown.validationData);

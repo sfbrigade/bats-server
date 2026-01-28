@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
+import { HospitalTeamActivation } from 'shared/constants';
+
 import Ringdown from '../Models/Ringdown';
 
 import Alert from './Alert';
@@ -20,10 +22,18 @@ const AcknowledgedStatus = {
   [Status.REDIRECTED]: Status.REDIRECT_ACKNOWLEDGED,
 };
 
-function RingdownCard({ children, className, ringdown, dismissable, onStatusChange }) {
+function RingdownCard({ children, className, ringdown, dismissable, onCall, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const { triageTag, triagePriority, currentDeliveryStatus, chiefComplaintDescription, etaDateTimeLocalObj, timestamps } = ringdown;
+  const {
+    hospitalTeamActivation,
+    triageTag,
+    triagePriority,
+    currentDeliveryStatus,
+    chiefComplaintDescription,
+    etaDateTimeLocalObj,
+    timestamps,
+  } = ringdown;
 
   function handleDismiss() {
     setShowConfirmation(false);
@@ -36,6 +46,7 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
     (currentDeliveryStatus === Status.OFFLOADED ||
       currentDeliveryStatus === Status.CANCELLED ||
       currentDeliveryStatus === Status.REDIRECTED);
+
   const drawerTitle =
     currentDeliveryStatus === Status.OFFLOADED ? (
       <RingdownBadge status={currentDeliveryStatus} />
@@ -47,12 +58,19 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
       />
     );
 
+  const description = (
+    <>
+      {!!hospitalTeamActivation && <b>{`${HospitalTeamActivation.STRINGS[hospitalTeamActivation]} Alert: `}</b>}
+      {chiefComplaintDescription}
+    </>
+  );
+
   return (
     <div
       className={classNames('ringdown-card height-auto', className, {
         'ringdown-card--dismissable': canBeDismissed,
         'ringdown-card--expanded': isExpanded,
-        'ringdown-card--immediate': triagePriority === 'RED',
+        'ringdown-card--immediate': triagePriority === 'RED' || !!hospitalTeamActivation,
         'ringdown-card--delayed': triagePriority === 'YELLOW',
         'ringdown-card--minor': triagePriority === 'GREEN',
       })}
@@ -67,7 +85,7 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
           </div>
           <div className="ringdown-card__complaint-summary">
             {!!triageTag && `#${triageTag}: `}
-            {chiefComplaintDescription}
+            {description}
           </div>
         </>
       )}
@@ -77,7 +95,7 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
           subtitle={
             <div className="ringdown-card__complaint-summary">
               {!!triageTag && `#${triageTag}: `}
-              {chiefComplaintDescription}
+              {description}
             </div>
           }
           isOpened={isExpanded}
@@ -96,6 +114,13 @@ function RingdownCard({ children, className, ringdown, dismissable, onStatusChan
                   Mark&nbsp;Offloaded
                 </button>
               )}
+            </div>
+          )}
+          {!!onCall && (
+            <div className="margin-y-2 margin-x-2">
+              <button onClick={() => onCall(ringdown)} className="usa-button width-full">
+                Call Back
+              </button>
             </div>
           )}
           {children}

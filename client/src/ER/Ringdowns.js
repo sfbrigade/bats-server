@@ -33,12 +33,16 @@ function Ringdowns({ ringdowns, onStatusChange }) {
       r.currentDeliveryStatus !== Ringdown.Status.RETURNED_TO_SERVICE
   );
 
+  function onCall(ringdown) {
+    window.open(`/call?ringdownId=${ringdown.id}`, '_blank');
+  }
+
   return (
     <>
       <div className="usa-accordion ringdowns">
         <RingdownSection title="Waiting" ringdowns={waiting} onStatusChange={onStatusChange} />
         {!!mcs.length && <RingdownSection title="MCI Incoming" ringdowns={mcs} onStatusChange={onStatusChange} />}
-        <RingdownSection title="Incoming" ringdowns={enroute} onStatusChange={onStatusChange} />
+        <RingdownSection title="Incoming" ringdowns={enroute} onCall={onCall} onStatusChange={onStatusChange} />
       </div>
     </>
   );

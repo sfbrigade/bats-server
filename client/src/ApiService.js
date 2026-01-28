@@ -28,6 +28,14 @@ instance.interceptors.response.use(
 );
 
 export default {
+  agora: {
+    getRtcToken(channelName) {
+      return instance.get('/api/agora/rtc-token', { params: { channelName } });
+    },
+    getRtmToken(userId) {
+      return instance.get('/api/agora/rtm-token', { params: { userId } });
+    },
+  },
   ambulances: {
     getIdentifiers(organizationId) {
       return instance.get('/api/ambulances/identifiers', { params: { organizationId } });

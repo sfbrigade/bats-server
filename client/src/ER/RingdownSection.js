@@ -6,7 +6,7 @@ import RingdownCard from '../Components/RingdownCard';
 
 import './RingdownSection.scss';
 
-function RingdownSection({ title, ringdowns, onStatusChange }) {
+function RingdownSection({ title, ringdowns, onCall, onStatusChange }) {
   const [isExpanded, setExpanded] = useState(true);
 
   return (
@@ -29,7 +29,9 @@ function RingdownSection({ title, ringdowns, onStatusChange }) {
         </div>
       </div>
       {isExpanded &&
-        ringdowns.map((r) => <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} onStatusChange={onStatusChange} />)}
+        ringdowns.map((r) => (
+          <RingdownCard key={r.id} className="margin-x-3 margin-y-2" ringdown={r} onCall={onCall} onStatusChange={onStatusChange} />
+        ))}
     </div>
   );
 }

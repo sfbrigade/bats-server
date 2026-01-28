@@ -175,6 +175,11 @@ const fields = [
     type: 'text',
     label: 'Other',
   },
+  {
+    name: 'hospitalTeamActivation',
+    type: 'string',
+    label: 'Pre-Arrival Alert',
+  },
 ];
 
 module.exports = new ModelMetadata({ modelName: 'Patient', fields });
