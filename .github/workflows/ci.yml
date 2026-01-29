@@ -64,7 +64,7 @@ jobs:
       - name: Set up package cache
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '18.10.0'
           cache: 'yarn'
       - name: Install Dependencies
         run: yarn install && yarn workspace e2e install-chromium
