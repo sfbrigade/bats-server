@@ -65,6 +65,8 @@ jobs:
     env:
       DATABASE_URL: postgres://postgres@db/bats
       SMTP_HOST: mailcatcher
+      AGORA_APP_CERTIFICATE: ${{ secrets.AGORA_APP_CERTIFICATE }}
+      REACT_APP_AGORA_APP_ID: ${{ secrets.REACT_APP_AGORA_APP_ID }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
