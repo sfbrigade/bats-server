@@ -55,9 +55,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.meta.outputs.tag_exists == 'false' }}
     container: node:18.10.0-bullseye
+    env:
+      DATABASE_URL: postgres://postgres@localhost/bats
+      SMTP_HOST: 'localhost'
     services:
       db:
         image: postgres:12
+      mailcatcher:
+        image: dockage/mailcatcher:0.8.2
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
