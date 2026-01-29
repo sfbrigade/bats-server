@@ -58,6 +58,8 @@ jobs:
     services:
       db:
         image: postgres:12
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
       mailcatcher:
         image: dockage/mailcatcher:0.8.2
     env:
