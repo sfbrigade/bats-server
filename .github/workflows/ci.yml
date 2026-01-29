@@ -56,8 +56,8 @@ jobs:
     if: ${{ needs.meta.outputs.tag_exists == 'false' }}
     container: node:18.10.0-bullseye
     env:
-      DATABASE_URL: postgres://postgres@localhost/bats
-      SMTP_HOST: localhost
+      DATABASE_URL: postgres://postgres@db/bats
+      SMTP_HOST: mailcatcher
     services:
       db:
         image: postgres:12
