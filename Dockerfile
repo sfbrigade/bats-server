@@ -20,3 +20,6 @@ ADD . $APP_HOME
 WORKDIR $APP_HOME
 
 RUN yarn install && yarn workspace client build
+
+# Set up default command
+CMD ["yarn", "workspace", "server", "start:prod"]
