@@ -166,19 +166,3 @@ jobs:
       - name: Inspect image
         run: |
           docker buildx imagetools inspect ${{ needs.meta.outputs.tag }}
-
-  deploy:
-    name: Deploy
-    needs: [meta, merge]
-    if: |
-      always()
-      && (needs.meta.outputs.tag_exists == 'true' || needs.merge.result == 'success')
-    runs-on: ubuntu-latest
-    environment: ${{ needs.meta.outputs.environment }}
-    steps:
-      - name: Push to dokku
-        uses: dokku/github-action@master
-        with:
-          git_remote_url: ${{ vars.DOKKU_GIT_REMOTE_URL }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          deploy_docker_image: ${{ needs.meta.outputs.tag }}
