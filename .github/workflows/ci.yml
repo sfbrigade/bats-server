@@ -96,7 +96,7 @@ jobs:
           - ubuntu-24.04
           - ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
-    if: ${{ github.ref_name == 'dev' || github.ref_name == 'main' }}
+    if: ${{ github.ref_name == 'main' }}
     steps:
       - name: Prepare
         run: |
