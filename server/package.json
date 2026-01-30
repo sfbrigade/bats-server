@@ -50,7 +50,7 @@
   },
   "scripts": {
     "start:dev": "./bin/init; nodemon -V --ignore ./test ./bin/www",
-    "start:prod": "node ./bin/www",
+    "start:prod": "pm2-runtime ./bin/www",
     "test": "mocha --recursive test"
   }
 }
