@@ -1,11 +1,11 @@
-FROM node:18.10.0-bullseye
+FROM node:18.20.8-bookworm
 
 # Set an env variable for the location of the app files
 ENV APP_HOME=/opt/node/app
 
 # Install helper utilities for gcloud deployment management
 RUN wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | apt-key add - && \
-    echo "deb http://apt.postgresql.org/pub/repos/apt/ bullseye-pgdg main" >> /etc/apt/sources.list.d/pgdg.list && \
+    echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" >> /etc/apt/sources.list.d/pgdg.list && \
     apt-get update -y && \
     apt-get install -y postgresql-client-12 libnss3-dev libatk-bridge2.0-dev libcups2-dev libdrm-dev libxkbcommon-dev libxcomposite-dev libxdamage-dev libxrandr-dev libgbm-dev libasound2-dev libwayland-client0
 
