@@ -54,14 +54,14 @@ jobs:
     needs: meta
     runs-on: ubuntu-latest
     if: ${{ needs.meta.outputs.tag_exists == 'false' }}
-    container: node:18.10.0-bullseye
+    container: node:18.20.8-bookworm
     services:
       db:
         image: postgres:12
         env:
           POSTGRES_HOST_AUTH_METHOD: trust
       mailcatcher:
-        image: dockage/mailcatcher:0.8.2
+        image: dockage/mailcatcher:0.9.0
     env:
       DATABASE_URL: postgres://postgres@db/bats
       SMTP_HOST: mailcatcher
@@ -73,7 +73,7 @@ jobs:
       - name: Set up package cache
         uses: actions/setup-node@v4
         with:
-          node-version: '18.10.0'
+          node-version: '18.20.8'
           cache: 'yarn'
       - name: Install Dependencies
         run: yarn install && yarn workspace e2e install-chromium

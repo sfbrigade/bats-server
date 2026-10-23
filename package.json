@@ -10,7 +10,7 @@
     "user-guides"
   ],
   "engines": {
-    "node": "18.10.0"
+    "node": "18.20.8"
   },
   "scripts": {
     "docker:start": "docker compose up",
